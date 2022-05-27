@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+
+<html lang="es-py" >
+<head>
+<title>
+
+Añadir rol 
+</title>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+
+  <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
+  <script src="/static/admin/js/nav_sidebar.js" defer></script>
+
+
+
+
+
+<style type="text/css">
+/*
+django-admin-interface 0.16.3
+https://github.com/fabiocaccamo/django-admin-interface
+*/
+@media (prefers-color-scheme: dark) {
+    :root .admin-interface {
+        --primary: #79aec8;
+        --secondary: #417690;
+        --accent: #f5dd5d;
+        --primary-fg: #fff;
+        --body-fg: #333;
+        --body-bg: #fff;
+        --body-quiet-color: #666;
+        --body-loud-color: #000;
+        --header-color: #ffc;
+        --header-branding-color: var(--accent);
+        --header-bg: var(--secondary);
+        --header-link-color: var(--primary-fg);
+        --breadcrumbs-fg: #c4dce8;
+        --breadcrumbs-link-fg: var(--body-bg);
+        --breadcrumbs-bg: var(--primary);
+        --link-fg: #447e9b;
+        --link-hover-color: #036;
+        --link-selected-fg: #5b80b2;
+        --hairline-color: #e8e8e8;
+        --border-color: #ccc;
+        --error-fg: #ba2121;
+        --message-success-bg: #dfd;
+        --message-warning-bg: #ffc;
+        --message-error-bg: #ffefef;
+        --darkened-bg: #f8f8f8;
+        --selected-bg: #e4e4e4;
+        --selected-row: #ffc;
+        --button-fg: #fff;
+        --button-bg: var(--primary);
+        --button-hover-bg: #609ab6;
+        --default-button-bg: var(--secondary);
+        --default-button-hover-bg: #205067;
+        --close-button-bg: #888;
+        --close-button-hover-bg: #747474;
+        --delete-button-bg: #ba2121;
+        --delete-button-hover-bg: #a41515;
+        --object-tools-fg: var(--button-fg);
+        --object-tools-bg: var(--close-button-bg);
+        --object-tools-hover-bg: var(--close-button-hover-bg);
+    }
+}
+
+:root .admin-interface {
+    --admin-interface-title-color: #F5DD5D;
+    --admin-interface-logo-color: #FF2613;
+    --admin-interface-env-color: #E7DF0E;
+    --admin-interface-header-background-color: #139385;
+    --admin-interface-header-text-color: #1DDEC9;
+    --admin-interface-header-link-color: #FFFFFF;
+    --admin-interface-header-link_hover-color: #E6F0EB;
+    --admin-interface-module-background-color: #159D8E;
+    --admin-interface-module-background-selected-color: #C7FFDC;
+    --admin-interface-module-text-color: #FFFFFF;
+    --admin-interface-module-link-color: #FFFFFF;
+    --admin-interface-module-link-selected-color: #FFFFFF;
+    --admin-interface-module-link-hover-color: #CCF3E0;
+    --admin-interface-generic-link-color: #0C3C26;
+    --admin-interface-generic-link-hover-color: #156641;
+    --admin-interface-save-button-background-color: #0F672E;
+    --admin-interface-save-button-background-hover-color: #0C3C26;
+    --admin-interface-save-button-text-color: #FFFFFF;
+    --admin-interface-delete-button-background-color: #D62626;
+    --admin-interface-delete-button-background-hover-color: #A41515;
+    --admin-interface-delete-button-text-color: #FFFFFF;
+    --admin-interface-related-modal-background-color: #000000;
+    --admin-interface-related-modal-background-opacity: 0.3;
+}
+
+.admin-interface #header {
+    background: #139385;
+    color: #1DDEC9;
+}
+
+.admin-interface #header + #main {
+    
+    border-top: 10px solid #159D8E;
+    
+}
+
+
+
+.admin-interface .environment-label::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #E7DF0E;
+    border-radius: 100%;
+    margin-right: 6px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.admin-interface .environment-label::after {
+    content: "SmileSoft - ";
+}
+
+@media (max-width:1024px) {
+    .admin-interface .environment-label::after {
+        content: "SmileSoft";
+    }
+}
+
+.admin-interface .language-chooser {
+    display: inline-block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+@media (min-width:768px) {
+    .admin-interface .language-chooser {
+        right: 30px;
+    }
+}
+@media (min-width:1024px) {
+    .admin-interface .language-chooser {
+        position: static;
+        float: right;
+        margin-left: 20px;
+    }
+}
+
+.admin-interface .language-chooser-hidden-form {
+    display: none;
+}
+
+.admin-interface .language-chooser-select-form {
+    display: inline-block;
+}
+
+.admin-interface #branding h1 {
+    color: #F5DD5D;
+}
+
+.admin-interface #branding h1 .logo.default {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 104px 36px;
+    background-image: url("data:image/svg+xml;utf8,<?xml version='1.0' encoding='utf-8'?><svg width='104px' height='36px' viewBox='0 0 104 36' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns'><g id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' sketch:type='MSPage'><g id='logo-django' sketch:type='MSArtboardGroup' transform='translate(-8.000000, -5.000000)' fill='%23FF2613'><path d='M20.2602817,5 L25.9509859,5 L25.9509859,31.0824248 C23.0360563,31.6338042 20.8901408,31.8507285 18.5684507,31.8507285 C11.6180282,31.8434735 8,28.7383366 8,22.7747325 C8,17.0287781 11.8377465,13.2997118 17.7847887,13.2997118 C18.7076056,13.2997118 19.4107042,13.3722617 20.2602817,13.5899115 L20.2602817,5 L20.2602817,5 Z M20.2602817,18.1242821 C19.5938028,17.9066323 19.044507,17.8340823 18.3414085,17.8340823 C15.4630986,17.8340823 13.8005634,19.5897906 13.8005634,22.6666331 C13.8005634,25.6622196 15.3898592,27.316358 18.3047887,27.316358 C18.9346479,27.316358 19.4473239,27.2808085 20.2602817,27.1719836 L20.2602817,18.1242821 L20.2602817,18.1242821 Z M34.9960563,13.6987364 L34.9960563,26.7577235 C34.9960563,31.2550936 34.6591549,33.417807 33.6704225,35.2823401 C32.7476056,37.0750489 31.531831,38.2053768 29.0197183,39.453961 L23.7391549,36.9654985 C26.2512676,35.7981701 27.4670423,34.7665101 28.2433803,33.1921767 C29.056338,31.5822938 29.3126761,29.7177606 29.3126761,24.8133855 L29.3126761,13.6987364 L34.9960563,13.6987364 Z M29.3126761,5.02901997 L35.0033803,5.02901997 L35.0033803,10.8112493 L29.3126761,10.8112493 L29.3126761,5.02901997 Z M38.4302535,14.9828702 C40.9430986,13.8148163 43.3453521,13.2997118 45.9673239,13.2997118 C48.8895775,13.2997118 50.8077183,14.0687411 51.6580282,15.5705246 C52.1340845,16.4121037 52.2878873,17.5076077 52.2878873,19.8509704 L52.2878873,31.2993491 C49.7398873,31.6620987 46.5239437,31.922553 44.1649014,31.922553 C39.3970141,31.922553 37.2584225,30.2756696 37.2584225,26.6198787 C37.2584225,22.6659076 40.1008451,20.8376494 47.079831,20.2565245 L47.079831,19.0159207 C47.079831,17.9929667 46.559831,17.6229621 45.124338,17.6229621 C43.0223662,17.6229621 40.6567324,18.2106165 38.4375775,19.3423954 L38.4302535,14.9828702 Z M47.336169,23.9420608 C43.571662,24.3048105 42.3485634,24.8931904 42.3485634,26.3579734 C42.3485634,27.4549284 43.051662,27.9693073 44.604338,27.9693073 C45.4539155,27.9693073 46.2302535,27.8967574 47.3354366,27.7153826 L47.3354366,23.9420608 L47.336169,23.9420608 Z M55.056338,14.5765906 C58.4180282,13.6987364 61.1857465,13.2997118 63.9908169,13.2997118 C66.9057465,13.2997118 69.0157746,13.9599162 70.2674366,15.2367949 C71.4458592,16.4411237 71.8208451,17.7615324 71.8208451,20.5764696 L71.8208451,31.6258237 L66.1294085,31.6258237 L66.1294085,20.8013744 C66.1294085,18.6393866 65.3896901,17.8340823 63.3616901,17.8340823 C62.5846197,17.8340823 61.8822535,17.9066323 60.7397183,18.2403619 L60.7397183,31.6265492 L55.056338,31.6265492 L55.056338,14.5765906 Z M74.0326761,34.7012152 C76.0240563,35.7241692 78.0169014,36.1964692 80.1261972,36.1964692 C83.8540845,36.1964692 85.4433803,34.6946857 85.4433803,31.1107193 L85.4433803,31.0018944 C84.3374648,31.5460188 83.223493,31.7716491 81.7513803,31.7716491 C76.764507,31.7716491 73.5932394,28.5141573 73.5932394,23.3558574 C73.5932394,16.9496987 78.2878873,13.3294573 86.5932394,13.3294573 C89.0321127,13.3294573 91.2878873,13.583382 94.0189859,14.1347615 L92.0708169,18.1975575 C90.5562254,17.9073578 91.9463099,18.1540275 90.804507,18.0452026 L90.804507,18.6328571 L90.8777465,21.0124947 L90.9136338,24.0886117 C90.9509859,24.8583664 90.9509859,25.6259447 90.988338,26.3956994 L90.988338,27.9330324 C90.988338,32.7648576 90.5774648,35.0291409 89.3616901,36.900929 C87.5892958,39.6425908 84.5212958,41 80.1620845,41 C77.943662,41 76.0240563,40.6727998 74.0326761,39.9030451 L74.0326761,34.7012152 L74.0326761,34.7012152 Z M85.3335211,17.8703573 L85.1504225,17.8703573 L84.7395493,17.8703573 C83.6336338,17.8340823 82.3380282,18.1242821 81.4510986,18.6756615 C80.0895775,19.4446908 79.3872113,20.8376494 79.3872113,22.8110074 C79.3872113,25.6252192 80.7934085,27.2365531 83.3055211,27.2365531 C84.0811268,27.2365531 84.7117183,27.0921787 85.4441127,26.8738034 L85.4441127,26.4667983 L85.4441127,24.9294653 C85.4441127,24.269261 85.4067606,23.5365067 85.4067606,22.7674775 L85.3708732,20.17019 L85.3335211,18.3056569 L85.3335211,17.8703573 Z M102.84507,13.2271619 C108.528451,13.2271619 112,16.7748534 112,22.5208077 C112,28.4118619 108.382704,32.1039278 102.617296,32.1039278 C96.9265915,32.1039278 93.4176901,28.5569618 93.4176901,22.8480079 C93.4272113,16.9199532 97.044507,13.2271619 102.84507,13.2271619 Z M102.727887,27.5623023 C104.910423,27.5623023 106.199437,25.7710445 106.199437,22.6586526 C106.199437,19.5825356 104.94631,17.7542774 102.765239,17.7542774 C100.509465,17.7542774 99.2189859,19.5462607 99.2189859,22.6586526 C99.2189859,25.7710445 100.516056,27.5623023 102.727887,27.5623023 L102.727887,27.5623023 Z M102.727887,27.5623023' id='Shape' sketch:type='MSShapeGroup'></path></g></g></svg>");
+}
+
+.admin-interface #user-tools {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+}
+
+.admin-interface #user-tools br {
+    display: none;
+}
+@media (max-width: 768px) {
+    .admin-interface #user-tools br {
+        display: block;
+    }
+}
+
+.admin-interface #header #user-tools a {
+    color:#FFFFFF;
+}
+
+.admin-interface #header #user-tools a:hover,
+.admin-interface #header #user-tools a:active {
+    color:#E6F0EB;
+    border-bottom-color:rgba(255, 255, 255, 0.5);
+}
+
+.admin-interface #nav-sidebar .current-app .section:link,
+.admin-interface #nav-sidebar .current-app .section:visited {
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+.admin-interface #nav-sidebar .current-app .section:focus,
+.admin-interface #nav-sidebar .current-app .section:hover {
+    color: #CCF3E0;
+}
+
+.admin-interface #nav-sidebar .current-model {
+    background: #C7FFDC;
+}
+
+.admin-interface #changelist table tbody tr.selected {
+    background-color: #C7FFDC;
+}
+
+.admin-interface .module h2,
+.admin-interface .module caption,
+.admin-interface .module.filtered h2 {
+    background:#159D8E;
+    color:#FFFFFF;
+}
+
+.admin-interface .module a.section:link,
+.admin-interface .module a.section:visited {
+    color:#FFFFFF;
+}
+
+.admin-interface .module a.section:active,
+.admin-interface .module a.section:hover {
+    color:#CCF3E0;
+}
+
+.admin-interface div.breadcrumbs {
+    background:#159D8E;
+    color:#FFFFFF;
+}
+
+.admin-interface div.breadcrumbs a {
+    color:#FFFFFF;
+}
+
+.admin-interface div.breadcrumbs a:active,
+.admin-interface div.breadcrumbs a:focus,
+.admin-interface div.breadcrumbs a:hover {
+    color:#CCF3E0;
+}
+
+.admin-interface fieldset.collapse.collapsed a.collapse-toggle {
+    color:#FFFFFF;
+}
+
+.admin-interface fieldset.collapse.collapsed a.collapse-toggle:hover,
+.admin-interface fieldset.collapse.collapsed a.collapse-toggle:active {
+    color:#CCF3E0;
+}
+
+.admin-interface fieldset.collapse a.collapse-toggle {
+    color:#FFFFFF;
+}
+
+.admin-interface fieldset.collapse a.collapse-toggle:hover,
+.admin-interface fieldset.collapse a.collapse-toggle:active {
+    color:#CCF3E0;
+}
+
+.admin-interface .inline-group h2 {
+    background:#159D8E;
+    color:#FFFFFF;
+}
+
+.admin-interface .selector .selector-chosen h2 {
+    border-color:#159D8E;
+    background:#159D8E;
+    color:#FFFFFF;
+}
+
+.admin-interface .selector .selector-available h2,
+.admin-interface .selector .selector-chosen h2 {
+    
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
+    
+}
+
+.admin-interface .selector a.selector-chooseall:focus,
+.admin-interface .selector a.selector-chooseall:hover,
+.admin-interface .selector a.selector-clearall:focus,
+.admin-interface .selector a.selector-clearall:hover {
+    color:#156641;
+}
+
+.admin-interface a:link,
+.admin-interface a:visited {
+    color:#0C3C26;
+}
+
+.admin-interface a:hover {
+    color:#156641;
+}
+
+.admin-interface thead th a,
+.admin-interface thead th a:link,
+.admin-interface thead th a:visited,
+.admin-interface thead th a:focus,
+.admin-interface thead th a:hover {
+    color: #666666;
+}
+
+.admin-interface .button,
+.admin-interface input[type=submit],
+.admin-interface input[type=button],
+.admin-interface .submit-row input,
+.admin-interface a.button {
+    background:#0F672E;
+    color:#FFFFFF;
+}
+
+.admin-interface .button:active,
+.admin-interface .button:focus,
+.admin-interface .button:hover,
+.admin-interface input[type=submit]:active,
+.admin-interface input[type=submit]:focus,
+.admin-interface input[type=submit]:hover,
+.admin-interface input[type=button]:active,
+.admin-interface input[type=button]:focus,
+.admin-interface input[type=button]:hover {
+    background:#0C3C26;
+    color:#FFFFFF;
+    outline: none;
+}
+
+.admin-interface .button.default,
+.admin-interface input[type=submit].default,
+.admin-interface .submit-row input.default {
+    background:#0F672E;
+    color:#FFFFFF;
+    outline: none;
+}
+
+.admin-interface .button.default:active,
+.admin-interface .button.default:focus,
+.admin-interface .button.default:hover,
+.admin-interface input[type=submit].default:active,
+.admin-interface input[type=submit].default:focus,
+.admin-interface input[type=submit].default:hover,
+.admin-interface.delete-confirmation form .cancel-link:hover {
+    background:#0C3C26;
+    color:#FFFFFF;
+    outline: none;
+}
+
+.admin-interface .submit-row a.deletelink:link,
+.admin-interface .submit-row a.deletelink:visited,
+.admin-interface.delete-confirmation form input[type="submit"] {
+    background:#D62626;
+    color:#FFFFFF;
+}
+
+.admin-interface .submit-row a.deletelink:hover,
+.admin-interface.delete-confirmation form input[type="submit"]:hover {
+    background:#A41515;
+    color:#FFFFFF;
+}
+
+.admin-interface .paginator a,
+.admin-interface .paginator a:link,
+.admin-interface .paginator a:visited,
+.admin-interface .paginator .this-page {
+    border-radius:4px;
+}
+
+.admin-interface .paginator a,
+.admin-interface .paginator a:link,
+.admin-interface .paginator a:visited {
+    background-color:#FFFFFF;
+    color:#0C3C26;
+}
+
+.admin-interface .paginator a:hover,
+.admin-interface .paginator a:active {
+    background-color:#F8F8F8;
+    color:#156641;
+}
+
+.admin-interface .paginator .this-page {
+    background-color:#159D8E;
+    color:#FFFFFF;
+}
+
+.admin-interface .paginator a.showall,
+.admin-interface .paginator a.showall:link,
+.admin-interface .paginator a.showall:visited {
+    color:#0C3C26;
+}
+
+.admin-interface .paginator a.showall:hover,
+.admin-interface .paginator a.showall:active {
+    color:#156641;
+}
+
+/* list-filter sticky */
+
+@media (min-width: 768px) {
+    .admin-interface .module.filtered #changelist-filter {
+        position: sticky;
+        top: 40px;
+        float: right;
+        z-index: 30;
+    }
+    /* feature not available for django < 3.1.2 */
+    .admin-interface .module.filtered #toolbar + #changelist-filter {
+        position: absolute;
+        top: 0px;
+        z-index: 30;
+    }
+}
+
+
+.admin-interface .module.filtered #changelist-filter {
+    
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    
+}
+
+.admin-interface .module.filtered #changelist-filter #changelist-filter-clear a:focus,
+.admin-interface .module.filtered #changelist-filter #changelist-filter-clear a:hover {
+    color: #666;
+    text-decoration: none;
+}
+
+.admin-interface .module.filtered #changelist-filter li a:focus,
+.admin-interface .module.filtered #changelist-filter li a:hover {
+    color: #666;
+    text-decoration: none;
+}
+
+.admin-interface .module.filtered #changelist-filter li.selected a,
+.admin-interface .module.filtered #changelist-filter li.selected a:link,
+.admin-interface .module.filtered #changelist-filter li.selected a:visited,
+.admin-interface .module.filtered #changelist-filter li.selected a:focus,
+.admin-interface .module.filtered #changelist-filter li.selected a:hover {
+    /* color: #666; */
+    color: #156641;
+}
+
+/* begin fix issue #11 - Inline border bottom should not be rounded */
+.admin-interface .module h2,
+.admin-interface.dashboard .module caption,
+.admin-interface #nav-sidebar .module th,
+.admin-interface #nav-sidebar .module caption,
+.admin-interface .module.filtered h2 {
+    
+    border-radius:4px;
+    
+}
+
+.admin-interface .inline-group h2 {
+    
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
+    
+}
+/* end fix */
+
+.admin-interface #content-related {
+    
+    border-radius:4px;
+    
+}
+
+.admin-interface .select2-container--admin-autocomplete .select2-results__option--highlighted[aria-selected] {
+    background-color: #159D8E;
+    color: #FFFFFF;
+}
+
+.admin-interface #toggle-nav-sidebar {
+    
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    
+    color: #0C3C26;
+}
+
+.admin-interface #toggle-nav-sidebar:focus,
+.admin-interface #toggle-nav-sidebar:hover,
+.admin-interface #toggle-nav-sidebar:active {
+    color: #156641;
+}
+
+.admin-interface .calendar td.selected a,
+.admin-interface .calendar td a:active,
+.admin-interface .calendar td a:focus,
+.admin-interface .calendar td a:hover,
+.admin-interface .timelist a:active,
+.admin-interface .timelist a:focus,
+.admin-interface .timelist a:hover {
+    background: #159D8E;
+}
+
+.admin-interface {
+    overflow-x: hidden;
+}
+
+/* fix login */
+.admin-interface.login #container {
+    width: 100%;
+    max-width: 360px;
+    margin: 15px auto;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.admin-interface.login #content {
+    padding: 15px 30px 30px 30px;
+}
+
+@media (min-width:768px){
+    .admin-interface.login #container {
+        margin: 90px auto;
+    }
+}
+
+.admin-interface.login #header {
+    padding: 10px 30px;
+    line-height: 30px;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.admin-interface.login #header #branding h1 {
+    margin-right:0;
+}
+
+.admin-interface.login #header #branding h1 img.logo {
+    max-width: 100%;
+    margin-right: 0;
+}
+
+.admin-interface.login #header #branding h1 img.logo+span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.admin-interface.login #login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-interface.login .submit-row {
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 0;
+    padding-left: 0;
+    text-align: right;
+}
+
+.admin-interface.login .submit-row label {
+    display: none;
+}
+
+.admin-interface.login .submit-row input[type="submit"] {
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.admin-interface.login #footer {
+    display: none;
+}
+/* end login fix*/
+
+.admin-interface #header {
+    height: auto;
+    min-height: 55px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+@media (max-width:1024px) {
+    .admin-interface #header {
+        align-items: flex-start;
+    }
+}
+
+.admin-interface #branding h1 img.logo {
+    max-width: 400px;
+    max-height:100px;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-right:15px;
+    display:inline-block !important; /* override inline display:none; */
+}
+
+@media (max-width:400px) {
+    .admin-interface #branding h1 img.logo {
+        max-width: 100%;
+    }
+}
+
+.admin-interface #branding h1 span {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.admin-interface #branding h1 img.logo+span {
+    white-space:nowrap;
+}
+
+.admin-interface fieldset.collapse {
+    border: 1px solid transparent;
+}
+
+.admin-interface fieldset.collapse.collapsed a.collapse-toggle,
+.admin-interface fieldset.collapse a.collapse-toggle {
+    font-weight: normal;
+    text-transform: lowercase;
+    font-size: 12px;
+    text-decoration: underline;
+    padding: 0 1px;
+}
+
+@media (min-width: 1024px) {
+    .admin-interface #changelist .actions .button,
+    .admin-interface #changelist .actions .action-counter {
+        margin-left: 8px;
+    }
+}
+
+.admin-interface #changelist .paginator {
+    margin-top:-1px; /* merge 2 borders into 1 */
+    line-height:42px;
+}
+
+.admin-interface .paginator a,
+.admin-interface .paginator a:link,
+.admin-interface .paginator a:visited,
+.admin-interface .paginator .this-page {
+    padding:7px 12px;
+}
+
+.admin-interface .paginator a,
+.admin-interface .paginator .this-page {
+    margin-left:0px;
+}
+
+.admin-interface .paginator .this-page,
+.admin-interface .paginator a.end {
+    margin-right:25px;
+}
+
+.admin-interface .paginator .this-page + a:not(.showall)  {
+    margin-left:-25px;
+}
+
+body.admin-interface .paginator a.showall,
+body.admin-interface .paginator a.showall:link,
+body.admin-interface .paginator a.showall:visited {
+    margin-left:20px;
+}
+
+/* fix help text icon on newline */
+.admin-interface .inline-group thead th {
+    white-space:nowrap;
+}
+
+.admin-interface .inline-group thead th img {
+    vertical-align: -2px;
+    margin-left: 5px;
+}
+
+.admin-interface .inline-group .inlinechangelink {
+    background-size: contain;
+    padding-left: 15px;
+    margin-left: 10px;
+}
+
+.admin-interface .file-thumbnail > a {
+    display: inline-block;
+}
+
+.admin-interface .aligned p.file-upload {
+    display:table;
+}
+
+.admin-interface form .form-row p.file-upload > a {
+    margin-right:20px;
+}
+
+.admin-interface form .form-row p.file-upload .clearable-file-input {
+    display:inline-block;
+}
+
+.admin-interface form .form-row p.file-upload .clearable-file-input label {
+    padding-bottom:0px;
+    margin-left:2px;
+}
+
+.admin-interface form .form-row p.file-upload > input[type="file"] {
+    margin-top: 0px;
+}
+
+@media (max-width:767px){
+
+    .admin-interface form .form-row p.file-upload {
+        width: 100%;
+    }
+
+    .admin-interface form .form-row p.file-upload > a {
+        margin-right:0px;
+        display: block;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .admin-interface form .form-row p.file-upload .clearable-file-input {
+        display: block;
+        margin-top: 10px;
+        margin-left: 0;
+        margin-bottom: -10px;
+    }
+
+    .admin-interface form .form-row p.file-upload > input[type="file"] {
+        display: block;
+        width: auto;
+        padding: 0px;
+    }
+
+    /* fix inline horizontal scroll caused by checkbox-row */
+    .admin-interface form .form-row > div.checkbox-row {
+        width: 100%;
+    }
+}
+
+
+/* FIX WIDE FIELDSET HELPS / ERROR MESSAGES */
+.admin-interface form .wide p.help,
+.admin-interface form .wide div.help {
+    padding-left: 50px;
+}
+
+.admin-interface form .wide input + p.help,
+.admin-interface form .wide input + div.help {
+    margin-left: 160px;
+}
+
+@media (max-width:767px){
+    .admin-interface form .form-row div.help {
+        display: block;
+        width: 100%;
+    }
+}
+
+.admin-interface form .wide ul.errorlist {
+    margin-left: 200px;
+}
+
+/* LIST FILTER */
+.admin-interface .module.filtered h2 {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.admin-interface .module.filtered #changelist-filter {
+    min-width: 240px;
+}
+
+@media (max-width: 1024px) {
+    .admin-interface .module.filtered #changelist-filter {
+        min-width: 200px;
+    }
+}
+
+.admin-interface .module.filtered #changelist-filter h2 {
+    font-size: 11px;
+    padding: 10px 15px;
+}
+
+/* begin fix issue #13 - Datetime widget broken in long inlines */
+.admin-interface p.datetime {
+    white-space:nowrap;
+}
+/* end fix */
+
+/* begin fix lateral padding to align text with field labels */
+.admin-interface .module h2,
+.admin-interface.dashboard .module caption,
+.admin-interface.dashboard .module th,
+.admin-interface .module.filtered h2,
+.admin-interface .inline-group h2,
+.admin-interface #nav-sidebar .module caption,
+.admin-interface #nav-sidebar .module th {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+/* end fix */
+
+/* begin fix restrict tabular-inline horizontal-scroll to inline-group instead of whole page */
+.admin-interface .inline-group[data-inline-type="tabular"] {
+    overflow-x:auto;
+}
+/* end fix */
+
+/* begin fix stacked-inline margin-bottom in responsive small viewport */
+.admin-interface .inline-group[data-inline-type="stacked"] .module {
+    margin-bottom:0px;
+}
+/* end fix */
+
+/* begin fix tabular inlines horizontal scroll */
+.admin-interface .inline-related.tabular {
+    overflow-x: scroll;
+}
+.admin-interface .inline-related.tabular fieldset.module {
+    display: contents;
+    width: 100%;
+    white-space: nowrap;
+    position: relative;
+}
+.admin-interface .inline-related.tabular fieldset.module h2 {
+    position: sticky;
+    left: 0;
+}
+.admin-interface .inline-related.tabular fieldset.module table tbody tr {
+    position: relative;
+}
+/* end fix */
+
+.admin-interface .inline-related h3 {
+    padding:6px 10px;
+}
+
+/* begin fix issue #12 - Inlines bad delete buttons alignement */
+.admin-interface .inline-group .tabular thead th:last-child:not([class]):not([style]) {
+    text-align:right;
+}
+
+.admin-interface .inline-group .tabular tr td {
+    vertical-align: top;
+}
+
+.admin-interface .inline-group .tabular tr td.delete {
+    text-align:right;
+    padding-right:15px;
+    vertical-align: top;
+}
+
+.admin-interface .inline-group .tabular tr td input[type="checkbox"] {
+    margin: 7px 0px;
+}
+
+.admin-interface .inline-group .tabular tr td.delete a.inline-deletelink {
+    margin-top:4px;
+    overflow:hidden;
+    text-indent:9999px;
+}
+/* end fix */
+
+/* top-right buttons color on hover -> just a lighten grey */
+.admin-interface .object-tools a {
+    color:#FFFFFF;
+}
+.admin-interface .object-tools a:focus,
+.admin-interface .object-tools a:hover,
+.admin-interface .object-tools li:focus a,
+.admin-interface .object-tools li:hover a {
+    background-color:#AAAAAA;
+}
+
+/* improve responsive selector */
+
+/* fix [stacked, not-stacked] equalize horizontal and vertical select padding for selector */
+.admin-interface .selector .selector-available select,
+.admin-interface .selector .selector-chosen select {
+    padding: 7px 10px;
+    display: block;
+}
+
+/* fix [stacked, not-stacked] select options text overflow */
+.admin-interface .selector .selector-available select option,
+.admin-interface .selector .selector-chosen select option {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* fix [not-stacked] equalize selectors height by adding the height of the .selector-available filter-bar */
+.admin-interface .selector:not(.stacked) .selector-chosen select {
+    height: calc(46px + 17.2em) !important;
+}
+
+/* fix nav-sidebar (added in django 3.1.0) */
+.admin-interface #toggle-nav-sidebar {
+    top: 10px;
+    left: 0;
+    z-index: 20;
+    flex: 0 0 30px;
+    width: 30px;
+    height: 45px;
+    margin-top: 10px;
+    margin-right: 10px;
+    background-color: #FFFFFF;
+    font-size: 16px;
+    border: 1px solid #eaeaea;
+    border-left: none;
+    outline: none;
+    -webkit-box-shadow: 4px 2px 8px -4px #DBDBDB;
+    -moz-box-shadow: 4px 2px 8px -4px #DBDBDB;
+    box-shadow: 4px 2px 8px -4px #DBDBDB;
+    /*transition: left .3s;*/
+}
+
+.admin-interface .toggle-nav-sidebar::before {
+    margin-top: -2px;
+}
+
+.admin-interface .main > #nav-sidebar + .content,
+.admin-interface .main.shifted > #nav-sidebar + .content {
+    max-width: 100%;
+}
+
+/* hide nav-sidebar below 1280px to prevent horizontal overflow issues */
+@media (max-width:1279px) {
+    .admin-interface #nav-sidebar,
+    .admin-interface #toggle-nav-sidebar {
+        display: none;
+    }
+}
+
+.admin-interface #nav-sidebar {
+    flex: 0 0 320px;
+    left: -320px;
+    margin-left: -360px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    padding: 40px 40px 40px 0px;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    /*transition: left .3s, margin-left .3s;*/
+}
+
+@media (min-width:1280px) {
+    .admin-interface #main.shifted > #toggle-nav-sidebar {
+        left: 359px;
+    }
+    .admin-interface #main.shifted > #nav-sidebar {
+        left: 0px;
+        margin-left: 0;
+    }
+    .admin-interface #main:not(.shifted) > .content {
+        max-width: 100%;
+    }
+    .admin-interface.change-list:not(.popup) #main.shifted > #nav-sidebar + .content,
+    .admin-interface.change-form:not(.popup) #main.shifted > #nav-sidebar + .content {
+        max-width: calc(100% - 360px);
+    }
+}
+
+/* fixed related widget and select2 */
+/* begin fix issue #10 - Related widget broken in long tabular inline */
+.admin-interface .related-widget-wrapper {
+    white-space: nowrap;
+}
+/* end fix */
+
+.admin-interface .related-widget-wrapper select + .related-widget-wrapper-link,
+.admin-interface .related-widget-wrapper .select2-container + .related-widget-wrapper-link {
+    margin-left: 12px !important;
+}
+
+@media (min-width: 768px) {
+    .admin-interface.change-form select {
+        min-width: 150px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .admin-interface.change-form select {
+        min-width: 200px;
+    }
+}
+
+.admin-interface.change-form .inline-related.tabular select {
+    min-width: auto !important;
+}
+
+/* fixed time widget header border radius */
+.admin-interface .clockbox.module h2 {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* fix searchbar overriden padding */
+.admin-interface #changelist #changelist-search #searchbar {
+    padding: 2px 5px 3px 5px;
+}
+
+@media (min-width: 1024px) {
+    .admin-interface #changelist #changelist-search #searchbar,
+    .admin-interface #changelist #changelist-search input[type="submit"],
+    .admin-interface #changelist #changelist-search .quiet {
+        margin-left: 8px;
+    }
+    .admin-interface #changelist #changelist-search label img {
+        vertical-align: text-top;
+        margin-right: 0px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .admin-interface #changelist #toolbar {
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+    }
+    /* fixed changelist search size when there are search results and .quiet is visible */
+    .admin-interface #changelist-search label img {
+        margin-top: 2px;
+    }
+    .admin-interface #changelist-search .quiet {
+        margin: 0 0 0 10px;
+        align-self: center;
+        flex-basis: content;
+    }
+}
+
+@media (max-width: 767px) {
+    /* fixed responsive widgets */
+    .admin-interface .aligned.collapsed .form-row {
+        display: none;
+    }
+
+    .admin-interface .aligned .form-row > div {
+        display: flex;
+        max-width: 100vw;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-interface .aligned .form-row .help {
+        margin-left: 0;
+    }
+
+    .admin-interface .aligned .form-row .checkbox-row label {
+        margin: 10px 0 0 0;
+        padding: 0;
+    }
+
+    .admin-interface .aligned .form-row input[type="file"],
+    .admin-interface .aligned .form-row input[type="text"],
+    .admin-interface .aligned .form-row input[type="email"] {
+        width: 100%;
+    }
+
+    /* fix textarea horizontal scroll on Firefox */
+    .admin-interface .aligned .form-row textarea {
+        width: 100% !important;
+        flex: 0 1 auto;
+    }
+
+    .admin-interface .aligned .form-row .datetime input[type="text"] {
+        width: 50%;
+    }
+
+    .admin-interface .aligned .form-row span + .file-upload {
+        margin-top: 10px;
+    }
+
+    .admin-interface .aligned .form-row .file-upload input[type="file"] {
+        margin-top: 5px;
+    }
+}
+/* sticky pagination */
+
+.admin-interface.sticky-pagination.change-list #content-main {
+    padding-bottom: 4.375rem;
+}
+
+.admin-interface.sticky-pagination.change-list .paginator {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 40;
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-radius: 0;
+    border-top: 1px solid #EEEEEE;
+    border-bottom: none;
+    margin: 0;
+}
+
+.admin-interface.sticky-pagination.change-list.popup .paginator {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+@media (min-width:768px) {
+    .admin-interface.sticky-pagination.change-list:not(.popup) .paginator {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+
+@media (min-width:1024px) {
+    .admin-interface.sticky-pagination.change-list:not(.popup) .paginator {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+@media (min-width:1280px) {
+    .admin-interface.sticky-pagination.change-list:not(.popup) #main.shifted > #nav-sidebar + .content .paginator {
+        width: calc(100% - 359px);
+    }
+}
+
+/* sticky submit */
+
+@media (min-width:768px) {
+    .admin-interface.sticky-submit.change-form #content-main {
+        padding-bottom: 4.375rem;
+    }
+
+    .admin-interface.sticky-submit.change-form .submit-row:last-of-type {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        z-index: 40;
+        box-sizing: border-box;
+        padding-left: 15px;
+        padding-right: 15px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        border-radius: 0;
+        border-top: 1px solid #EEEEEE;
+        border-bottom: none;
+        margin: 0;
+    }
+
+    .admin-interface.sticky-submit.change-form.popup .submit-row:last-of-type {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .admin-interface.sticky-submit.change-form:not(.popup) .submit-row:last-of-type {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+
+@media (min-width:1024px) {
+    .admin-interface.sticky-submit.change-form:not(.popup) .submit-row:last-of-type {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+@media (min-width:1280px) {
+    .admin-interface.sticky-submit.change-form:not(.popup) #main.shifted > #nav-sidebar + .content .submit-row:last-of-type {
+        width: calc(100% - 359px);
+    }
+}
+/*
+list-filter-dropdown
+*/
+
+.admin-interface .list-filter-dropdown {
+    margin-top:10px;
+    margin-bottom:20px;
+}
+
+.admin-interface .list-filter-dropdown select {
+    background-color: #FFFFFF;
+    width: calc(100% - 30px);
+    margin-right: 15px;
+}
+
+.admin-interface.dashboard #content {
+    max-width:600px;
+    margin-right:0;
+}
+.admin-interface.dashboard #content #recent-actions-module {
+    display:none;
+}
+
+/*
+related modal + magnific popup customization
+https://github.com/dimsemenov/Magnific-Popup
+*/
+.admin-interface .related-modal.mfp-bg {
+    background-color: #000000;
+    opacity: 0.3;
+}
+
+.admin-interface .related-modal .mfp-content {
+    height: 100%;
+    -webkit-box-shadow: 0px 5px 30px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 5px 30px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 5px 30px 0px rgba(0,0,0,0.2);
+}
+
+.admin-interface .related-modal .mfp-container {
+    padding: 80px 80px 80px 80px;
+}
+
+.admin-interface .related-modal__nested .mfp-container {
+    padding: 40px 80px 40px 80px;
+}
+
+@media (max-width:640px){
+    .admin-interface .related-modal .mfp-container {
+        padding: 80px 20px 80px 20px;
+    }
+    .admin-interface .related-modal__nested .mfp-container {
+        padding: 40px 40px 40px 40px;
+    }
+}
+
+@media (max-height:640px){
+    .admin-interface .related-modal .mfp-container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .admin-interface .related-modal__nested .mfp-container {
+        padding: 40px 40px 40px 40px;
+    }
+}
+
+.admin-interface .related-modal .related-modal-iframe-container {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 100;
+    overflow: hidden;
+    
+    border-radius: 4px;
+    
+}
+
+.admin-interface .related-modal #related-modal-iframe {
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 30px 30px;
+    background-image: url("data:image/svg+xml;utf8,<?xml version='1.0' encoding='utf-8'?><svg width='30px' height='30px' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid' class='uil-ring-alt'><rect x='0' y='0' width='100' height='100' fill='none' class='bk'></rect><circle cx='50' cy='50' r='40' stroke='%23eeeeee' fill='none' stroke-width='6' stroke-linecap='round'></circle><circle cx='50' cy='50' r='40' stroke='%23aaaaaa' fill='none' stroke-width='6' stroke-linecap='round'><animate attributeName='stroke-dashoffset' dur='2s' repeatCount='indefinite' from='0' to='500'></animate><animate attributeName='stroke-dasharray' dur='2s' repeatCount='indefinite' values='150 100;1 250;150 100'></animate></circle></svg>");
+    border: none;
+    margin: 0 auto;
+    padding: 0;
+    display: block;
+}
+
+.admin-interface .related-modal .mfp-close {
+    width: 40px;
+    height: 40px;
+    opacity: 1.0;
+    color: rgba(0, 0, 0, 0.4);
+    
+}
+
+.admin-interface .related-modal .mfp-close:hover,
+.admin-interface .related-modal .mfp-close:active {
+    color: rgba(0, 0, 0, 0.6);
+    top: 0;
+}
+
+/*
+* jQuery UI CSS Framework
+* Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
+* Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
+* http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery.ui.core.css
+*/
+
+/*
+backward compatibility:
+.ui-tabs-selected:      jquery ui <  1.10
+.ui-tabs-active classes jquery ui >= 1.10
+*/
+
+/* Layout helpers
+----------------------------------*/
+.ui-helper-hidden { display: none; }
+.ui-helper-hidden-accessible { position: absolute; left: -99999999px; }
+.ui-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
+.ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.ui-helper-clearfix { display: inline-block; }
+/* required comment for clearfix to work in Opera \*/
+* html .ui-helper-clearfix { height:1%; }
+.ui-helper-clearfix { display:block; }
+.ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
+.ui-state-disabled { cursor: default !important; }
+.ui-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
+/* http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery.ui.tabs.css */
+.ui-widget-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.ui-tabs { position: relative; padding: .2em; zoom: 1; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+.ui-tabs .ui-tabs-nav { margin: 0; padding: .2em .2em 0; }
+.ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
+.ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-active, .ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a, .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
+.ui-tabs .ui-tabs-hide {
+    position: absolute;
+    display: none;
+}
+
+/* Custom tabs theme */
+.admin-interface .ui-tabs {
+    padding: 0;
+}
+
+.admin-interface .ui-tabs,
+.admin-interface .ui-tabs .ui-widget-header,
+.admin-interface .ui-tabs .ui-widget-header .ui-state-default {
+    border: none;
+    background: transparent;
+}
+
+.admin-interface .ui-tabs .ui-tabs-nav {
+    padding: 10px 0 0 10px;
+    border-bottom: none;
+}
+.admin-interface .ui-tabs .ui-tabs-nav li {
+    margin: 0 0 0 -1px;
+}
+.admin-interface .ui-tabs .ui-tabs-nav li.required {
+    font-weight: bold;
+}
+.admin-interface .ui-tabs .ui-tabs-nav li a {
+    border: 1px solid #eeeeee;
+    background-color: #f8f8f8;
+    border-bottom: none;
+    color: #666666;
+    padding: 7px 14px 8px 14px;
+    margin-top: 1px;
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -webkit-border-top-left-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    outline: none;
+}
+
+.admin-interface .ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.admin-interface .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+    padding: 8px 14px 8px 14px;
+    margin-top: 0px;
+    margin-bottom: -1px;
+    font-weight: bold;
+    background-color: #FFFFFF;
+    color: #159D8E;
+    border-bottom: 1px solid #FFFFFF;
+}
+
+.admin-interface .ui-tabs .ui-tabs-panel {
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.admin-interface .inline-group .tabular .ui-tabs .ui-tabs-panel {
+    padding: 8px;
+}
+
+.admin-interface .inline-group .tabular .ui-tabs .ui-tabs-nav {
+    padding-left: 4px;
+}
+
+.admin-interface .inline-group .tabular tr td {
+    vertical-align: bottom;
+}
+
+.admin-interface .inline-group .tabular tr.has_original td.original,
+.admin-interface .inline-group .tabular tr td.delete {
+    vertical-align: top;
+}
+
+.admin-interface .inline-group .tabular .datetime > input {
+    margin-right: 5px;
+}
+
+.admin-interface .inline-group .tabular .datetime br {
+    display: none;
+}
+
+.admin-interface #changelist .row1:not(.selected):hover,
+.admin-interface #changelist .row2:not(.selected):hover {
+    background: #f9f9f9;
+}
+
+.admin-interface .row2 {
+    background: #fcfcfc;
+}
+
+.admin-interface .row2 .ui-tabs .ui-tabs-nav li a {
+    background-color: #f5f5f5;
+    border: 1px solid #ebebeb;
+}
+
+.admin-interface .row2 .ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.admin-interface .row2 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+    background-color: #fcfcfc;
+    border-bottom: 1px solid #fcfcfc;
+}
+
+/*
+django-modeltranslation support
+https://github.com/deschler/django-modeltranslation
+*/
+
+.admin-interface #content h1 select {
+    text-transform: uppercase;
+    margin-left: 15px;
+    min-width: 50px;
+}
+
+.admin-interface .ui-tabs .ui-tabs-panel[id^=tab_id_] {
+    border: none;
+    border-top: 1px solid #eeeeee;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+/*
+sorl-thumbnail - improved AdminImageMixin widget layout
+https://github.com/mariocesar/sorl-thumbnail
+*/
+
+.admin-interface a.thumbnail + a {
+    font-weight: normal;
+}
+
+.admin-interface a.thumbnail + a + input[type="checkbox"] {
+    margin: 10px 0px 10px 18px;
+}
+
+@media (max-width: 767px){
+    .admin-interface a.thumbnail + a {
+        display: block;
+        margin-top: 3px;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    .admin-interface a.thumbnail + a + input[type="checkbox"]  {
+        margin: 15px 0;
+    }
+}
+
+.admin-interface a.thumbnail ~ label {
+    color: #333;
+    font-size: 11px;
+    display: inline;
+    float: none;
+    margin-left: 2px;
+}
+
+.admin-interface.change-form div[style="float:left"] {
+    font-size: 11px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 767px){
+    .admin-interface.change-form div[style="float:left"] {
+        font-size: 12px;
+        width: 100%;
+    }
+}
+
+.admin-interface .aligned .form-row a.thumbnail ~ input[type="file"] {
+    margin-top: 0px;
+}
+
+@media (max-width:767px){
+    .admin-interface .aligned .form-row a.thumbnail ~ input[type="file"] {
+        width: auto;
+        padding: 0px;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .admin-interface div[style="float:left"] {
+        margin-bottom: 0px;
+    }
+
+    .admin-interface div[style="float:left"] + div.help {
+        margin-top: 0px !important;
+    }
+}
+
+/*
+django-tabbed-admin support
+https://github.com/omji/django-tabbed-admin
+*/
+
+/* Hide tabs until ready */
+/*
+.admin-interface #tabs ul {
+    display: none;
+}
+
+.admin-interface #tabs ul.ui-tabs-nav {
+    display: block;
+}
+*/
+
+.admin-interface .ui-tabs .ui-tabs-panel[id^=tabs] .module.aligned:last-child {
+    margin-bottom: 0;
+}
+
+.admin-interface .ui-tabs .ui-tabs-panel[id^=tabs] .module.aligned:last-child .form-row:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 350px){
+    .admin-interface .ui-tabs .ui-tabs-panel[id^=tabs] .vTextField,
+    .admin-interface .inline-related .vTextField {
+        width: 17em;
+    }
+}
+
+@media (max-width: 767px){
+    /* fix horizontal overflow - responsive.css:563 */
+    .admin-interface .ui-tabs .ui-tabs-panel[id^=tabs] .aligned .form-row > div:not([class]) {
+        width: 100% !important;
+    }
+}
+
+/*
+ckeditor + light theme
+https://github.com/Ikimea/ckeditor-light-theme
+*/
+
+.admin-interface .cke {
+    border: none;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.admin-interface .cke_inner,
+.admin-interface .cke_wysiwyg_frame {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.admin-interface .cke_inner {
+    border: 1px solid #CCCCCC;
+}
+
+.admin-interface .cke_chrome {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.admin-interface .cke_top {
+    background: #f8f8f8;
+    border-top: none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom: 1px solid #EEEEEE;
+    padding-left: 10px;
+    padding-right: 10px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.admin-interface .cke_toolgroup {
+    background: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.admin-interface .cke_bottom {
+    background: #f8f8f8;
+    border-top: 1px solid #EEEEEE;
+
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.admin-interface .cke_source {
+    padding: 13px 15px;
+    box-sizing: border-box;
+}
+
+.admin-interface a.cke_button,
+.admin-interface a.cke_button:active,
+.admin-interface a.cke_button:hover,
+.admin-interface a.cke_button:focus {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    background-image: none;
+    border-radius: 4px;
+    border: none;
+}
+
+.admin-interface a.cke_button:active,
+.admin-interface a.cke_button:hover,
+.admin-interface a.cke_button:focus {
+    background-color: #E8E8E8 !important;
+}
+
+.admin-interface a.cke_button.cke_button_on {
+    background-color: #CCCCCC !important;
+}
+
+.admin-interface a.cke_button.cke_button_disabled {
+    background-color: transparent !important;
+}
+
+.admin-interface .cke_resizer {
+    border-color: transparent #666666 transparent transparent;
+}
+
+@media (max-width: 767px){
+
+    .admin-interface .django-ckeditor-widget,
+    .admin-interface .cke {
+        width: 100% !important;
+    }
+
+    .admin-interface .cke_top {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .admin-interface .cke_toolbar {
+        height: auto;
+    }
+
+    .admin-interface .cke_contents {
+        height: auto;
+    }
+
+    .admin-interface .tabular .django-ckeditor-widget,
+    .admin-interface .tabular .cke {
+        width: 400px !important;
+    }
+
+    .admin-interface .tabular .cke_contents {
+        height: 90px !important;
+    }
+}
+.admin-interface textarea.tinymce ~ p.help {
+    margin-top:5px !important;
+}
+/*
+django-json-widget support
+https://github.com/jmrivas86/django-json-widget
+*/
+
+.admin-interface div.jsoneditor {
+    border: 1px solid #159D8E;
+    
+    border-radius: 4px;
+    overflow: hidden;
+    
+}
+
+.admin-interface div.jsoneditor-menu {
+    background-color: #159D8E;
+    border-bottom: 1px solid #159D8E;
+}
+
+.admin-interface div.jsoneditor-menu a.jsoneditor-poweredBy {
+    color: #FFFFFF;
+}
+
+.admin-interface div.jsoneditor-contextmenu ul li button.jsoneditor-selected,
+.admin-interface div.jsoneditor-contextmenu ul li button.jsoneditor-selected:focus,
+.admin-interface div.jsoneditor-contextmenu ul li button.jsoneditor-selected:hover {
+    background-color: #C7FFDC;
+    color: #000000;
+    font-weight: bold;
+}
+
+[dir="rtl"] .admin-interface,
+[dir="rtl"] .admin-interface * {
+    font-family: 'Vazir', sans-serif !important;
+}
+
+[dir="rtl"] .admin-interface .main .toggle-nav-sidebar.sticky {
+    left: auto !important;
+    right: 0px !important;
+    margin-right: 0px !important;
+    margin-left: 10px;
+    border: 1px solid #eaeaea !important;
+    border-right: none !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    box-shadow: -4px 2px 8px -2px #DBDBDB !important;
+}
+
+[dir="rtl"] .admin-interface #main.shifted > #toggle-nav-sidebar {
+    right: 359px !important;
+}
+
+[dir="rtl"] .admin-interface #main > #nav-sidebar {
+    margin-right: -360px !important;
+    margin-left: 0px !important;
+    right: -320px !important;
+}
+
+[dir="rtl"] .admin-interface #main.shifted > #nav-sidebar {
+    border-left: 1px solid #eaeaea;
+    margin-right: 0px !important;
+    padding: 40px 0px 40px 40px !important;
+}
+
+
+
+
+</style>
+
+
+
+<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+
+
+<script src="/admin/jsi18n/"></script>
+<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script src="/static/admin/js/jquery.init.js"></script>
+<script src="/static/admin/js/core.js"></script>
+<script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script src="/static/admin/js/SelectBox.js"></script>
+<script src="/static/admin/js/actions.js"></script>
+<script src="/static/admin/js/SelectFilter2.js"></script>
+<script src="/static/admin/js/urlify.js"></script>
+<script src="/static/admin/js/prepopulate.js"></script>
+<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+
+
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    
+
+
+<meta name="robots" content="NONE,NOARCHIVE">
+
+
+
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css?v=0.16.3">
+<link rel="stylesheet" type="text/css" href="/static/admin/css/responsive_rtl.css?v=0.16.3" />
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/static/admin_interface/magnific-popup/magnific-popup.css?v=0.16.3">
+<script type="text/javascript" src="/static/admin_interface/magnific-popup/jquery.magnific-popup.js?v=0.16.3"></script>
+<script type="text/javascript" src="/static/admin_interface/related-modal/related-modal.js?v=0.16.3"></script>
+
+
+
+</head>
+
+
+<body class="admin-interface flat-theme default-theme sticky-submit  sticky-pagination  app-auth model-group change-form"
+  data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+
+    
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+        
+
+<h1 id="site-name">
+    
+   
+    <!-- END Header -->
+    
+<div class="breadcrumbs">
+<a href="/admin/">Inicio</a>
+&rsaquo; <a href="/admin/auth/">Autenticación y autorización</a>
+&rsaquo; <a href="/admin/auth/group/">Roles</a>
+&rsaquo; Añadir rol
+</div>
+
+    
+
+    <div class="main shifted" id="main">
+      
+        
+          
+<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Activar navegación"></button>
+<nav class="sticky" id="nav-sidebar">
+  
+
+
+  
+  
+    <div class="app-auth module current-app">
+      <table>
+        <caption>
+          <a href="/admin/auth/" class="section" title="Modelos en la aplicación Autenticación y autorización">Autenticación y autorización</a>
+        </caption>
+        
+          <tr class="model-group current-model">
+            
+              <th scope="row"><a href="/admin/auth/group/" aria-current="page">Roles</a></th>
+            
+
+            
+              <td><a href="/admin/auth/group/add/" class="addlink">Añadir</a></td>
+            
+
+            
+          </tr>
+        
+      </table>
+    </div>
+  
+
+  
+   
+  
+    <div class="app-gestion_roles module">
+      <table>
+        <caption>
+          <a href="/admin/gestion_roles/" class="section" title="Modelos en la aplicación Gestion_Roles">Gestion_Roles</a>
+        </caption>
+        
+          <tr class="model-rol">
+            
+              <th scope="row"><a href="/admin/gestion_roles/rol/">Roles</a></th>
+            
+
+            
+              <td><a href="/admin/gestion_roles/rol/add/" class="addlink">Añadir</a></td>
+            
+
+            
+          </tr>
+        
+      </table>
+    </div>
+  
+    
+
+       
+  
+
+</nav>
+
+        
+      
+      <div class="content">
+        
+          
+        
+        <!-- Content -->
+        <div id="content" class="colM">
+          
+          <h1>Añadir rol</h1>
+          <div id="content-main">
+
+
+
+<form method="post" id="group_form" novalidate><input type="hidden" name="csrfmiddlewaretoken" value="qiq70t87GV7q5pUBH0QrcJ08ecsEGDauaquGsTn5cs5omQGKfd4qP30rvuc1lALX">
+<div>
+
+
+
+
+
+
+
+  <fieldset class="module aligned ">
+    
+    
+    
+        <div class="form-row field-name">
+            
+            
+                <div>
+                    
+                    
+                        <label class="required" for="id_name">Nombre:</label>
+                        
+                            <input type="text" name="name" class="vTextField" maxlength="150" required id="id_name">
+                        
+                    
+                    
+                </div>
+            
+        </div>
+    
+        <div class="form-row field-permissions">
+            
+            
+                <div>
+                    
+                    
+                        <label for="id_permissions">Permisos:</label>
+                        
+                            <div class="related-widget-wrapper">
+    <select name="permissions" id="id_permissions" multiple class="selectfilter" data-field-name="permisos" data-is-stacked="0">
+  <option value="5">admin | entrada de registro | Can add log entry</option>
+
+  <option value="6">admin | entrada de registro | Can change log entry</option>
+
+  <option value="7">admin | entrada de registro | Can delete log entry</option>
+
+  <option value="8">admin | entrada de registro | Can view log entry</option>
+
+  <option value="1">admin_interface | Tema | Can add Theme</option>
+
+  <option value="2">admin_interface | Tema | Can change Theme</option>
+
+  <option value="3">admin_interface | Tema | Can delete Theme</option>
+
+  <option value="4">admin_interface | Tema | Can view Theme</option>
+
+  <option value="29">agregar_mas | Cargo | Can add Cargo</option>
+
+  <option value="30">agregar_mas | Cargo | Can change Cargo</option>
+
+  <option value="31">agregar_mas | Cargo | Can delete Cargo</option>
+
+  <option value="32">agregar_mas | Cargo | Can view Cargo</option>
+
+  <option value="13">auth | rol | Can add rol</option>
+
+  <option value="14">auth | rol | Can change rol</option>
+
+  <option value="15">auth | rol | Can delete rol</option>
+
+  <option value="16">auth | rol | Can view rol</option>
+
+  <option value="9">auth | permiso | Can add permission</option>
+
+  <option value="10">auth | permiso | Can change permission</option>
+
+  <option value="11">auth | permiso | Can delete permission</option>
+
+  <option value="12">auth | permiso | Can view permission</option>
+
+  <option value="17">contenttypes | tipo de contenido | Can add content type</option>
+
+  <option value="18">contenttypes | tipo de contenido | Can change content type</option>
+
+  <option value="19">contenttypes | tipo de contenido | Can delete content type</option>
+
+  <option value="20">contenttypes | tipo de contenido | Can view content type</option>
+
+  <option value="33">gestion_administrativo | Categoria | Can add Categoria</option>
+
+  <option value="34">gestion_administrativo | Categoria | Can change Categoria</option>
+
+  <option value="35">gestion_administrativo | Categoria | Can delete Categoria</option>
+
+  <option value="36">gestion_administrativo | Categoria | Can view Categoria</option>
+
+  <option value="45">gestion_administrativo | Especialista de salud | Can add Especialista de salud</option>
+
+  <option value="46">gestion_administrativo | Especialista de salud | Can change Especialista de salud</option>
+
+  <option value="47">gestion_administrativo | Especialista de salud | Can delete Especialista de salud</option>
+
+  <option value="48">gestion_administrativo | Especialista de salud | Can view Especialista de salud</option>
+
+  <option value="49">gestion_administrativo | funcionario | Can add funcionario</option>
+
+  <option value="50">gestion_administrativo | funcionario | Can change funcionario</option>
+
+  <option value="51">gestion_administrativo | funcionario | Can delete funcionario</option>
+
+  <option value="52">gestion_administrativo | funcionario | Can view funcionario</option>
+
+  <option value="53">gestion_administrativo | paciente | Can add paciente</option>
+
+  <option value="54">gestion_administrativo | paciente | Can change paciente</option>
+
+  <option value="55">gestion_administrativo | paciente | Can delete paciente</option>
+
+  <option value="56">gestion_administrativo | paciente | Can view paciente</option>
+
+  <option value="37">gestion_administrativo | persona | Can add persona</option>
+
+  <option value="38">gestion_administrativo | persona | Can change persona</option>
+
+  <option value="39">gestion_administrativo | persona | Can delete persona</option>
+
+  <option value="40">gestion_administrativo | persona | Can view persona</option>
+
+  <option value="69">gestion_administrativo | Cargos de empleado | Can add Cargos de empleado</option>
+
+  <option value="70">gestion_administrativo | Cargos de empleado | Can change Cargos de empleado</option>
+
+  <option value="71">gestion_administrativo | Cargos de empleado | Can delete Cargos de empleado</option>
+
+  <option value="72">gestion_administrativo | Cargos de empleado | Can view Cargos de empleado</option>
+
+  <option value="57">gestion_administrativo | proveedor | Can add proveedor</option>
+
+  <option value="58">gestion_administrativo | proveedor | Can change proveedor</option>
+
+  <option value="59">gestion_administrativo | proveedor | Can delete proveedor</option>
+
+  <option value="60">gestion_administrativo | proveedor | Can view proveedor</option>
+
+  <option value="41">gestion_administrativo | servicio | Can add servicio</option>
+
+  <option value="42">gestion_administrativo | servicio | Can change servicio</option>
+
+  <option value="43">gestion_administrativo | servicio | Can delete servicio</option>
+
+  <option value="44">gestion_administrativo | servicio | Can view servicio</option>
+
+  <option value="65">gestion_administrativo | Trabajo Realizado | Can add Trabajo Realizado</option>
+
+  <option value="66">gestion_administrativo | Trabajo Realizado | Can change Trabajo Realizado</option>
+
+  <option value="67">gestion_administrativo | Trabajo Realizado | Can delete Trabajo Realizado</option>
+
+  <option value="68">gestion_administrativo | Trabajo Realizado | Can view Trabajo Realizado</option>
+
+  <option value="61">gestion_administrativo | tratamiento realizado | Can add tratamiento realizado</option>
+
+  <option value="62">gestion_administrativo | tratamiento realizado | Can change tratamiento realizado</option>
+
+  <option value="63">gestion_administrativo | tratamiento realizado | Can delete tratamiento realizado</option>
+
+  <option value="64">gestion_administrativo | tratamiento realizado | Can view tratamiento realizado</option>
+
+  <option value="125">antecedenteclinico | Can add antecedente clinico</option>
+
+  <option value="126">antecedenteclinico | Can change antecedente clinico</option>
+
+  <option value="127">antecedenteclinico | Can delete antecedente clinico</option>
+
+  <option value="128">antecedenteclinico | Can view antecedente clinico</option>
+
+  <option value="121">gestion_historial_clinico | Historial Clinico | Can add Historial Clinico</option>
+
+  <option value="122">gestion_historial_clinico | Historial Clinico | Can change Historial Clinico</option>
+
+  <option value="123">gestion_historial_clinico | Historial Clinico | Can delete Historial Clinico</option>
+
+  <option value="124">gestion_historial_clinico | Historial Clinico | Can view Historial Clinico</option>
+
+  <option value="129">gestion_roles | rol | Can add rol</option>
+
+  <option value="130">gestion_roles | rol | Can change rol</option>
+
+  <option value="131">gestion_roles | rol | Can delete rol</option>
+
+  <option value="132">gestion_roles | rol | Can view rol</option>
+
+  <option value="73">gestion_tratamiento | tratamiento | Can add tratamiento</option>
+
+  <option value="74">gestion_tratamiento | tratamiento | Can change tratamiento</option>
+
+  <option value="75">gestion_tratamiento | tratamiento | Can delete tratamiento</option>
+
+  <option value="76">gestion_tratamiento | tratamiento | Can view tratamiento</option>
+
+  <option value="21">sessions | sesión | Can add session</option>
+
+  <option value="22">sessions | sesión | Can change session</option>
+
+  <option value="23">sessions | sesión | Can delete session</option>
+
+  <option value="24">sessions | sesión | Can view session</option>
+
+  <option value="25">webapp | usuario | Can add usuario</option>
+
+  <option value="26">webapp | usuario | Can change usuario</option>
+
+  <option value="27">webapp | usuario | Can delete usuario</option>
+
+  <option value="28">webapp | usuario | Can view usuario</option>
+
+</select>
+    
+        
+    
+</div>
+                        
+                    
+                    
+                        <div class="help">Mantenga presionado "Control" o "Comando" en una Mac, para seleccionar más de uno.</div>
+                    
+                </div>
+            
+        </div>
+    
+</fieldset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="submit-row">
+
+<input type="submit" value="Guardar" class="default" name="_save">
+
+
+<input type="submit" value="Guardar y añadir otro" name="_addanother">
+<input type="submit" value="Guardar y continuar editando" name="_continue">
+
+
+</div>
+
+
+
+    <script id="django-admin-form-add-constants"
+            src="/static/admin/js/change_form.js"
+            
+                data-model-name="group"
+            
+            async>
+    </script>
+
+
+
+
+<script id="django-admin-prepopulated-fields-constants"
+        src="/static/admin/js/prepopulate_init.js"
+        data-prepopulated-fields="[]">
+</script>
+
+
+</div>
+</form></div>
+
+          
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+        <div id="footer"></div>
+      </div>
+    </div>
+</div>
+<!-- END Container -->
+</body>
+</html>

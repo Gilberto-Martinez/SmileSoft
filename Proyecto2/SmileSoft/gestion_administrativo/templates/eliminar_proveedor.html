@@ -1,0 +1,14 @@
+{%extends 'panel_control/base.html'%}
+
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+        {% if object %}
+            <h3>¿Desea eliminar el proveedor {{ object.nombre }}?</h3>
+            <button class="btn btn-primary" type="submit">Sí, eliminar</button>
+            <a class= "btn btn-danger" href="/administrativo/listar_proveedor/">Cancelar</a>
+        {% endif %}
+    </center>
+</form>
+{% endblock %}

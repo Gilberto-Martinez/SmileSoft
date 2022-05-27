@@ -1,0 +1,1 @@
+-Corregir Trigger_crear_usuario para que la contraseña generada sea la adecuada para django

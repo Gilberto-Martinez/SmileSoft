@@ -1,0 +1,258 @@
+
+def crear_persona(request):
+    
+# data= {
+#     'form' : PersonaForm()
+    
+# }
+
+if request.method == "POST":
+    form = PersonaForm (data = request.POST)
+    if form.is_valid():
+        content = form.save()
+        data ["mensaje"]= "Registrado Correctamente"
+        if content.es_funcionario is True:
+            return redirect('agregar_funcionario/', key=content.numero_documento)
+        else:
+            if content.es_personal_salud is True:
+                return redirect('agregar_especialista_salud/', key=content.numero_documento)
+            else:
+                if content.es_paciente is True:
+                    return redirect('agregar_paciente/', key=content.numero_documento)
+    else:
+        # data["form"]=form
+        
+      #  messages.error(request, 'Ya existe el numero de cedula ingresado')      
+#form = PersonaForm()
+return render(request, 'registro_personas.html', {'form': form})
+#return render(request, '/', data)
+
+
+
+from django.contrib import admin
+from django.urls import path,include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls.resolvers import URLPattern
+from .views import *
+
+
+urlpatterns = [
+            path('login/', include ('django.contrib.auth.urls')),
+           
+]
+    
+   
+
+
+
+
+
+
+---para que salga el nro de cedula abajo
+
+
+class Formulario (forms.ModelForm):
+   
+#   numero_documento= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su documento'}))
+   
+   usuario= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su usuario'}))
+  
+   # correo_electronico= forms.EmailField()
+    
+   class Meta:
+        model = Usuario
+        fields= '__all__'
+      #   fields = [
+      #             'usuario',
+      #             ]
+
+#    def clean_numero_documento(self):
+#       numero_documento= self.cleaned_data["numero_documento"]
+#             #Puede ser que aca sea ManejadorUsuario VER
+#       if Usuario.objects.filter(numero_documento=numero_documento).exists():
+#             print ("Ya existe el numero de cedula ingresado")
+#             #messages.error(request, 'Ya existe el numero de cedula ingresado')
+#                   # self.error_cedula()
+#       return numero_documento
+
+<!--WEBapp views-->
+#views
+
+def inicio_login (request):
+    #return render (request, 'login.html')
+ #   form = Formulario()
+ #data como variable que luego usaremos para mensajes 
+    data= {
+        'form' : Formulario()
+    }
+    #print(dir(form))
+    if request.method== "POST":
+        # --PARA VER SI AGARRA EN LA CONSOLA
+        print (request.POST)
+        form= Formulario(data = request.POST)
+        
+       # if form== 'is_staff':
+        if form.is_valid():
+            content = form.save()
+            data ["mensaje"]= "Usuario Correcto"
+            print ("El usuario es valido")
+            # if content.is_active is True:
+            #     return redirect('panel_control/', key=content.numero_documento)
+            # else:
+            #     if content.is_staff is False:
+            #         return redirect('login/', key=content.numero_documento)
+        else:
+             data["form"]=form
+        
+    return render(request,'login.html', data)
+
+    <!--CRUD USUARIO-->
+
+    {%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+<main>
+        <!--Inicio de Sesion bloque-->
+        <div class="row">
+            <!--Para los margenes este div es centrado-->
+            <div class="col-12 col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2> Ingrese sus datos</h2>
+                        <!--hr hace un bloque-->
+                        <hr>
+                        <!-- Fomulario de Inicio-->
+                        <form action="" method="post">
+                                {%csrf_token%}
+                                {{form}}
+                          
+                         
+                            <center>
+                                <br>
+                           
+                                <input type ="submit" value="Crear Usuario" style="color:#6495ED"=>
+                                <br>
+                            
+                            </center>
+                       
+                         </form>
+                </div>
+            </div>
+        </div>
+    </main>
+        {% endblock %}
+
+
+
+
+
+        {%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+
+             <!--ESTE ES EL FONDO detras del texto pero con una img cualquiera-->
+{% comment %} <div class="bg-image p-5 text-center shadow-1-strong rounded mb-5 text-white" style="background-image: url('https://mdbcdn.b-cdn.net/img/new/slides/003.webp');"> {% endcomment %}
+<main>
+          <!--Inicio de Sesion bloque-->
+        <div class="row">
+             <!--ESTE ES EL fondo logo pero no está detras del contenido-->
+            {% comment %} <img class="bg-img" src="{% static 'img/Smile fondo.jpg' %}" alt="...">  {% endcomment %}
+
+            <!--Para los margenes este div es centrado-->
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                {% comment %} {% if messages %}
+                    {%for messages in messages%}
+                        <!--alertas de BOOTSTRAP, este se desvanece -->
+                        <div class="alert alert-dismissible alert-success">    
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                                    <strong class="text-dark"> {{messages}} </strong>
+                        </div>
+                    {%endfor%}
+                {% endif %} {% endcomment %}
+<!--#########################################################################################################################################-->                                
+                <!--Cuadro CREAR USUARIO-->
+<!--#########################################################################################################################################-->                                   
+                    <div class="card">
+                        <br>
+                      <center>  <h2> Crear Usuario</h2> </center>
+                        <div class="card-body">
+                            <!--hr hace un bloque-->
+                            <!-- Fomulario de Inicio-->
+                            <form action="" method="post">
+                                    {%csrf_token%}
+                                    {{form}}
+                                <center>
+                                    <br>
+                                    <div class="form-group">
+                                        <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
+                                        <button type="submit" class= "btn btn-primary btn-block txt-white">
+                                            Guardar
+                                        </buton>
+                                    </div>
+                                </center>
+                            </form>
+                       </div>
+                   </div>
+                </div>
+                   <!--fin Cuadro CREAR USUARIO-->
+
+<!--#########################################################################################################################################-->                   
+            <!--Cuadro Lista de USUARIO-->
+<!--#########################################################################################################################################-->                   
+            <!--1. col md-6 y col-md-6 debe dar 12.. por eso da 2 columnas -->
+                <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                <center> <h1>Usuarios Smile </h1> </center>
+                    <div class="table-responsive py-2"> 
+                        <table>
+                            <!--table striped es para que resalte 1 fila y otra no-->
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nro</th>
+                                        <th>Nombre </th>
+                                        <th>Cédula</th>
+                                        <th>Rol/Cargo</th>
+                                        <th colspan="2">Opciones</th>
+        
+                                    </tr>
+                                </thead>
+        
+                                <tbody>
+                                    {%for c in usuarios%}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{c.nombre}}</td>
+                                        <td>{{c.cedula}}</td>
+                                        <td>{{c.rol}}</td>
+                                        <td><a href="edicionCurso/{{c.codigo}}" class="btn btn-primary">Editar</a></td>
+                                        <td><a href="eliminarCurso/{{c.codigo}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </table>
+                    </div>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+    </main>
+        {% endblock %}
+
+

@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> Login</title>
+    <link rel="stylesheet" href= "{% static 'estilo.css'%}">
+  </head>
+  <body>
+  
+    <div class="login-page">
+     <h5> Bienvenido a SmileSoft</h5>
+      <div class="form">
+        <form class="register-form">
+          <label> Usuario: </label>
+          <input type="text" placeholder="Ingrese un nombre de usuario"/>
+            <label> Contraseña: </label>
+          <input type="password" placeholder="Ingrese la contraseña"/>
+          <input type="text" placeholder="email address"/>
+          <button>create</button>
+          <p class="message">Already registered? <a href="#">Sign In</a></p>
+        </form>
+        <form class="login-form">
+          <input type="text" placeholder="username"/>
+          <input type="password" placeholder="password"/>
+          <button>login</button>
+          <p class="message">Not registered? <a href="#">Create an account</a></p>
+        </form>
+      </div>
+    </div>
+
+  </body>
+</html>

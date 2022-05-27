@@ -1,0 +1,67 @@
+{%extends 'panel_control/base.html'%}
+
+{% block content %}
+<div class="card">
+	<div class="card-body">
+		<center>  <h2> <i class="bi-truck">Listado de Proveedores</i></h2> </center>
+
+<table  align="right" >
+    <tr>
+    <td> 
+		<a href="/administrativo/agregar_proveedor/" class="btn btn-success">
+			<i class="bi-person-plus-fill"></i>
+			Agregar un proveedor 
+		</a> 
+	</td>
+    </tr>
+</table>
+<br>
+<br>
+<br>
+
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>RUC</th>
+			<th>Nombre</th>
+			<th>Dirección</th>
+			<th>Teléfono</th>
+			<th>Correo electrónico</th>
+			<!-- <td>Producto</td> -->
+			<td>Acciones</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for proveedor in object_list %}
+		<tr>
+			<td>{{ proveedor.ruc }}</td>
+			<td>{{ proveedor.nombre }}</td>
+			<td>{{ proveedor.direccion }}</td>
+			<td>{{ proveedor.telefono }}</td>
+			<td>{{ proveedor.correo_electronico }}</td>
+			<!-- <td>{{ proveedor.producto }}</td> -->
+			<td>
+				<a class="btn btn-primary" href="/administrativo/modificar_proveedor/{{proveedor.ruc}}">
+					<i class="bi-pencil-square"></i>
+					Editar
+				</a>
+				<a class="btn btn-danger" href="/administrativo/eliminar_proveedor/{{proveedor.ruc}}">
+					<i class="bi-trash-fill" ></i>
+					Eliminar
+				</a>
+				</a>
+				
+			</td>
+		</tr>
+		{% endfor %}
+		
+		{% else %}
+		<h1>No hay registros de proveedores</h1>
+		{% endif %}
+	</tbody>
+</table> 
+	</div>
+</div>
+
+{% endblock%}

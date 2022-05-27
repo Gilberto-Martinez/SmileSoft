@@ -1,0 +1,46 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript">
+
+        function hideTable(IDtabla, accion){
+            var tableObject = document.getElementById(IDtabla);
+            if(accion == "visibilidad")
+                tableObject.style.visibility = "oculto";
+            else if(accion == "bloque")
+                tableObject.style.display = "none";
+        } 
+        function showTable(IDtabla, acción){
+           var tableObject = document.getElementById(IDtabla);
+            if(acción == "visibilidad")
+                tableObject.style.visibility = "visible";
+            else if(acción == "bloque")
+                tableObject.style.display = "bloque";
+        } 
+    </script>
+</head>
+<body>
+    <Table id ="tabla1">
+        <Tr>
+            <Td> red </td>
+            <Td> amarillo </td>
+            <Td> verde </td>
+        </Tr>
+
+        <Tr>
+            <Td> azul </td>
+            <Td> púrpura </td>
+            <Td> naranja </td>
+        </Tr>
+        </Table>
+
+        <Input type="button"  value="Ocultar tabla Método 1" onclick = "return hideTable('tabla1', 'block')" ></Imput>
+        <Input type ="button" value="Ocultar tabla Método 2" onclick = "return hideTable('tabla1', 'visibilidad')"></Imput>
+        <Input type ="button" value="Mostrar tabla Método 1" onclick = "return showTable('tabla1', 'block')"></Imput>
+        <Input type = "button" value= "Mostrar tabla Método 2" onclick = "return showTable('tabla1', 'visibilidad')"></Imput>
+</body>
+</html>
