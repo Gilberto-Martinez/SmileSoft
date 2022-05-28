@@ -81,6 +81,8 @@ class PersonaCreate(CreateView):
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = form.save()
                 paciente.save()
+                messages.success(
+                request, " ✅Se ha agregado  correctamente")
             if form4.is_valid():
                 print('Validoooooooooooooooooooo')
                 especialista_salud = form4.save(commit=False)
@@ -254,6 +256,8 @@ class PacienteCreate(CreateView):
             paciente = form.save(commit=False)
             paciente.numero_documento = form2.save()
             paciente.save()
+            messages.success(
+                request, " ✅Se ha agregado  correctamente")
             # messages.success(request,"Paciente agregado")
 
             data['mensaje'] = "Agregado correctamente"
