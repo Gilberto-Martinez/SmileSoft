@@ -62,6 +62,8 @@ from gestion_administrativo.models import Paciente, Persona
 '''Inicio de Sesion'''
 #------------------------------------------------------------------------------------------------------#
 # Vista de Login
+
+
 def inicio_login(request):
     if request.method == 'POST':
         user = authenticate(
@@ -83,6 +85,8 @@ def inicio_login(request):
     return render(request, "inicio/login.html")
 
 # Vista de Cerrar sesión
+
+
 def cerrar_sesion(request):
     logout(request)
     messages.info(
@@ -137,12 +141,13 @@ class FormPacienteCreate(CreateView):
             messages.success(request, "Paciente agregado")
             #data['mensaje'] = "Agregado correctamente"
             # return HttpResponseRedirect(self.success_url)
-            return redirect("/sesion/registrologinpaciente/%s" %(persona.numero_documento))
+            return redirect("/registrologinpaciente/%s" % (persona.numero_documento))
             # return render(request, "inicio/login.html")
             # return render(request, "usuario/agregar_usuario.html")
         else:
             print('**********NO ENTRA***********')
-            messages.error(request, "El Paciente NO fue agregado")
+            messages.error(
+                request, "El Paciente NO fue agregado, intentelo nuevamente")
             return render(request, "inicio/login.html")
             # return self.render_to_response(self.get_context_data(form=form)) """
 
@@ -157,10 +162,10 @@ def registrologin(request, cedula):
     if request.method == "POST":
         form = UsuarioLoginForm(request.POST)
         if form.is_valid():
-            print('Cedula en registrologin',cedula)
+            print('Cedula en registrologin', cedula)
             user = form.save(commit=False)
             persona = Persona.objects.get(numero_documento=cedula)
-            grupo = Group.objects.get(name= 'Paciente')
+            grupo = Group.objects.get(name='Paciente')
             user.numero_documento = persona
             user.save()
             grupo.user_set.add(user)
@@ -174,9 +179,6 @@ def registrologin(request, cedula):
     context = {'form': form}
 
     return render(request, 'inicio/registrologinpaciente.html', context)
-
-
-
 
 
 '''CRUD de Usuario'''
@@ -322,7 +324,7 @@ def estado_usuario(request):
     return render(request, "usuario/estado_usuario.html", {'listado_usuarios': listado_usuarios})
 
 
-#Vista de Reset de PASSWORD mediante el correo
+# Vista de Reset de PASSWORD mediante el correo
 
 class ResetPasswordView(FormView):
     template_name = 'inicio/recuperar_pass.html'
