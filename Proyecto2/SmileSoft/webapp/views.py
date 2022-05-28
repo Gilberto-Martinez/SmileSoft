@@ -137,12 +137,12 @@ class FormPacienteCreate(CreateView):
             messages.success(request, "Paciente agregado")
             #data['mensaje'] = "Agregado correctamente"
             # return HttpResponseRedirect(self.success_url)
-            return redirect("/sesion/registrologinpaciente/%s" %(persona.numero_documento))
+            return redirect("/registrologinpaciente/%s" %(persona.numero_documento))
             # return render(request, "inicio/login.html")
             # return render(request, "usuario/agregar_usuario.html")
         else:
             print('**********NO ENTRA***********')
-            messages.error(request, "El Paciente NO fue agregado")
+            messages.error(request, "El Paciente NO fue agregado, intentelo nuevamente")
             return render(request, "inicio/login.html")
             # return self.render_to_response(self.get_context_data(form=form)) """
 
