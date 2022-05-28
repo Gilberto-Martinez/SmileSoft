@@ -73,9 +73,10 @@ class PersonaCreate(CreateView):
             print('Validoooooooooooooooooooo el primero')
             if form2.is_valid():
                 print('Validoooooooooooooooooooo')
-                funcionario = form2.save(commit=False)
-                funcionario.numero_documento = form.save()
+                funcionario = form.save(commit=False)
+                funcionario.numero_documento = form2.save()
                 funcionario.save()
+                form.save_m2m()
             if form3.is_valid():
                 print('Validoooooooooooooooooooo')
                 paciente = form3.save(commit=False)
