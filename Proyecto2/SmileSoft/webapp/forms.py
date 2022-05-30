@@ -61,16 +61,6 @@ class UsuarioForm(forms.ModelForm):
     password2 = forms.CharField(label="Confirmación de contraseña", min_length=6, max_length=25,help_text='<small> Para verificar, introduzca la misma contraseña anterior.</small>', widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Confirmación de contraseña'}), strip=False)
 
-   #  cargo_Elegir= forms.ModelMultipleChoiceField(
-   #     widget = forms.CheckboxSelectMultiple,
-   #      queryset = Group.objects.all(),
-   #       initial = 0
-   #       )
-
-    # estado =forms.ModelMultipleChoiceField(
-    #   widget = forms.CheckboxSelectMultiple,
-    #    queryset = AbstractBaseUser.objects.all(),
-    #     initial = 0
 
     class Meta:
         proxy = True
@@ -189,26 +179,7 @@ class UsuarioUpdateForm(forms.ModelForm):
                                                 'required': 'required'
                                             }
                                             ),
-            
-            # 'numero_documento': CheckboxInput(attrs={
-            #                                             'readonly':'True'
-            #                                         }),
-                                                    
-           
-            
 
-            # 'user_permissions': CheckboxSelectMultiple(attrs={
-            #     'class': 'form-select2',
-
-            #     'style': 'width: 50%',
-            #     'multiple': 'multiple'
-            # }),
-
-            # 'error_messages' = {
-            #     'usuario': {
-            #         'max_length': ("Ha Superado la longitud. Ingrese nuevamente el usuario. Por Favor'"),
-            #     },
-            # }
 
         }
 

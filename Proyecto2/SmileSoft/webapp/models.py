@@ -40,7 +40,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin,):
                                             Persona, 
                                             blank = False, 
                                             null = False, 
-                                           # verbose_name = 'Numero de documento', 
+                                           verbose_name = 'Numero de cedula', 
                                             on_delete = models.CASCADE, 
                                             # default = 0,
                                             unique=True
