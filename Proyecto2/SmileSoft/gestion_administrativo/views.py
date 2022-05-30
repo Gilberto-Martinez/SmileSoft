@@ -10,16 +10,6 @@ from django.views.generic import ListView,CreateView, TemplateView, UpdateView, 
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 
-# def crear_persona(request):
-#     success_url = reverse_lazy('listar_persona')
-#     if request.method == "POST":
-#         form = PersonaForm(request.POST)
-#         if form.is_valid():
-#             content = form.save()
-#             messages.success(request, "Persona Registrada")
-#             return HttpResponseRedirect(success_url)
-#     form = PersonaForm()
-#     return render(request, 'registro_de_datos.html', {'form': form})
 
 ############################ LISTADOS ###############################################
 class PersonaList(ListView):
@@ -109,7 +99,6 @@ class FuncionarioCreate(CreateView):
     model = Funcionario
     template_name = 'agregar_funcionario.html'
     second_form_class = PersonaForm
-    # third_form_class = Cargo
     success_url = reverse_lazy('listar_funcionario')
     form_class = FuncionarioForm
 
@@ -119,8 +108,6 @@ class FuncionarioCreate(CreateView):
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
             context['form2'] = self.second_form_class(self.request.GET)
-        # if 'form3' not in context:
-            # context['form3'] = self.third_form_class(self.request.GET)
         return context
 
     @method_decorator(csrf_protect)
