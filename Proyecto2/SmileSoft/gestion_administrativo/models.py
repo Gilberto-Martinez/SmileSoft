@@ -22,7 +22,7 @@ class Persona(models.Model):
     sexo = models.CharField(max_length=12, choices=SEXOS, verbose_name='Sexo')
     
     es_funcionario = models.BooleanField(verbose_name='Funcionario', default=False)
-    es_personal_salud = models.BooleanField(verbose_name='Personal de salud', default=False)
+    es_especialista_salud = models.BooleanField(verbose_name='Especialista de salud', default=False)
     es_paciente =models.BooleanField(verbose_name='Paciente', default=False)
     #es_proveedor = models.BooleanField(verbose_name='Proveedor', default=False)
 

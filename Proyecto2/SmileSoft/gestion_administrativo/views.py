@@ -70,28 +70,31 @@ class PersonaCreate(CreateView):
         form3 = self.third_form_class(request.POST)
         form4 = self.fourth_form_class(request.POST)
         if form.is_valid():
-            print('Validoooooooooooooooooooo el primero')
             if form2.is_valid():
-                print('Validoooooooooooooooooooo')
-                funcionario = form.save(commit=False)
-                funcionario.numero_documento = form2.save()
+                persona = form.save(commit=False)
+                persona.es_funcionario = True
+                persona.save()
+                funcionario = form2.save(commit=False)
+                funcionario.numero_documento = persona
                 funcionario.save()
-                form.save_m2m()
+                form2.save_m2m()
             if form3.is_valid():
-                print('Validoooooooooooooooooooo')
+                persona = form.save(commit=False)
+                persona.es_paciente = True
+                persona.save()
                 paciente = form3.save(commit=False)
-                paciente.numero_documento = form.save()
+                paciente.numero_documento = persona
                 paciente.save()
             if form4.is_valid():
-                print('Validoooooooooooooooooooo')
+                persona = form.save(commit=False)
+                persona.es_especialista_salud = True
+                persona.save()
                 especialista_salud = form4.save(commit=False)
-                especialista_salud.numero_documento = form.save()
+                especialista_salud.numero_documento = persona
                 especialista_salud.save()
-            else:
-                form.save()
             return HttpResponseRedirect(self.success_url)
         else:
-            print('NO ENTRAAAAA')
+            # messages.error('No ha ingresado los datos correctamente')
             return self.render_to_response(self.get_context_data(form=form, form2=form2, form3=form3, form4=form4))
 
 
@@ -268,20 +271,33 @@ class PacienteCreate(CreateView):
 class PersonaUpdate(UpdateView):
     model = Persona
     second_model = Funcionario
+    third_model = Paciente
     template_name = 'modificar_persona.html'
     form_class = PersonaUpdateForm
     second_form_class = FuncionarioForm
+    third_form_class = PacienteForm
     success_url = reverse_lazy('listar_persona')
 
     def get_context_data(self, **kwargs):
         context = super(PersonaUpdate, self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk',0)
         persona = self.model.objects.get(numero_documento=pk)
-        funcionario = self.second_model.objects.get(numero_documento=persona.numero_documento)
         if 'form' not in context:
             context['form'] = self.form_class()
-        if 'form2' not in context:
-            context['form2'] = self.second_form_class(instance=funcionario)
+        if persona.es_funcionario is True:
+            funcionario = self.second_model.objects.get(numero_documento=persona.numero_documento)
+            if 'form2' not in context:
+                context['form2'] = self.second_form_class(instance=funcionario)
+        else:
+            if 'form2' not in context:
+                context['form2'] = self.second_form_class()
+        if persona.es_paciente is True:
+            paciente = self.third_model.objects.get(numero_documento=persona.numero_documento)
+            if 'form3' not in context:
+                context['form3'] = self.third_form_class(instance=paciente)
+        else:
+            if 'form3' not in context:
+                context['form3'] = self.third_form_class()
         context['numero_documento'] = pk
         return context
 
@@ -289,17 +305,21 @@ class PersonaUpdate(UpdateView):
         self.object = self.get_object
         id_pers = kwargs['pk']
         persona = self.model.objects.get(numero_documento=id_pers)
-        funcionario = self.second_model.objects.get(numero_documento=persona.numero_documento)
         form = self.form_class(request.POST, instance=persona)
-        form2 = self.second_form_class(request.POST, instance=funcionario)
+        if persona.es_funcionario is True:
+            funcionario = self.second_model.objects.get(numero_documento=persona.numero_documento)
+            form2 = self.second_form_class(request.POST, instance=funcionario)
+        else:
+            form2 = self.second_form_class(request.POST)
+        if persona.es_funcionario is True:
+            paciente = self.third_model.objects.get(numero_documento=persona.numero_documento)
+            form3 = self.third_form_class(request.POST, instance=paciente)
         if form.is_valid():
-            print('Validoooooooooooooooooooo el primero')
+            form.save()
             if form2.is_valid():
-                print('Validoooooooooooooooooooo')
-                form.save()
                 form2.save()
-            else:
-                form.save()
+            if form2.is_valid():
+                form3.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
