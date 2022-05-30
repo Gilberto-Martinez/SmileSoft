@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--titulo de barra-->
+    <title>SmileSoft</title>
+    <link rel="icon" href="favicon.ico" size="32x32" >
+    {% load static %}
+    <!--===CDN Bootstrap CSS, Animate===-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+     
+    {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"> {% endcomment %}
+    <!--es para los iconos-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!--css una libreria-->
+    <link rel="stylesheet" href="css/bootstrap.min.js" crossorigin="anonymous">
+
+    <!--Solo style usar como estilo-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" >
+
+    <!-- Bootstrap JavaScript -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- jQuery -->
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script src="{% static 'js/eliminar.js'%}"></script>
+
+  <header>
+    <!--Barra de inicio-->
+
+    <div class="container">
+          <!-- Logo Nombre y Menu -->
+          <div class="nav row rounded-top align-items-center justify-content-between bg-transparent text-dark">
+
+            <!-- Nombre de usuario -->
+             <div class="alert alert-light align-items-center justify-content-between" role="alert">
+               {% if messages %}
+                        <ul class="messages">
+                        
+                             {% for message in messages %}
+                            <li>
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %} 
+                                 
+                                {% endif %}
+                                {{ message }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        
+                        {% endif %}
+               </div>          
+               <!--Inicio de SESION PANEL-->
+            <div 
+              class="col-md-12 col-lg logo d-flex align-items-center justify-content-center justify-content-lg-start ">
+              <!-- {% comment %} al colocar el mouse da click <a class="nombre" href="/login"> {% endcomment %} -->
+                 <a class="nombre" >
+                  <i class="bi bi-person-check-fill" > <FONT COLOR="blue"> {{user.usuario}}</FONT> </i>
+            
+              </a>
+              <samp class="icono icon-dot"></samp>
+              <p> 
+                <li><a class="dropdown-item" href="/modificar_password/">  <FONT COLOR="blue"></FONT> </a></li>
+              </p>
+            </div>
+            <!-- Menu de navegación -->
+            <nav class="col-md-12 col-lg-auto menu d-flex align-items-stretch flex-wrap flex-sm-nowrap">
+                
+              <div 
+              class="col-md-12 col-lg logo d-flex align-items-center justify-content-center justify-content-lg-start ">
+                  <samp class="icono icon-dot"></samp>
+              <p> 
+                <li><a class="dropdown-item" href="/modificar_password/">  <FONT COLOR="blue">Modificar Contraseña</FONT></a></li>
+                                  </p>
+              <a class="nombre" href="/cerrar_sesion"> <i class="bi bi-arrow-bar-left">Cerrar sesión</i>
+                
+               {% comment %} <img src="{% static 'img/apagar.png' %}"  width="20" height="20"> {% endcomment %}
+              </a>
+          
+            
+            </div>
+              {% comment %} <a href="/contact/" class="c-3 d-flex align-items-center bg-primary">
+                <div class="d-flex flex-column text-center">
+                  <span>Usuario</span>
+                  
+                </div>
+              </a> {% endcomment %}
+            </nav>
+          </div>
+
+
+      <!--======================================BARRA NAVBAR=======================================================-->
+  
+    
+      <center> 
+        <h1 style="font-size: 2rem">
+          ＳｍｉｌｅＳｏｆｔ
+        </h1>
+      
+      </center> 
+       {% comment %} 𝚂𝚖𝚒𝚕𝚎𝚂𝚘𝚏𝚝  {% endcomment %}
+      <!--Barra 2-> Opciones de Navegacion-->     
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href=" ">
+                  <FONT  SIZE=6 COLOR="black">Bienvenido </FONT>
+                </a>
+                    <!--PARA EL IMG DEL logo-->
+                <img src="{% static 'img/favicon.png' %}" width="100px" alt="logo">
+                    
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon">Barra de Navegacion</span>
+                      </button>
+              <!-- Menu de navegación -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!--con ml-auto debe mudarse a la derecha-->
+                   <ul class="navbar-nav me-auto mb-2 mb-lg-0"> 
+                      <!--Opcion 1-->
+                        <li class="nav-item active">
+                          <a class="nav-link" class="c-1 d-flex align-items-center" aria-current="page" href=" http://127.0.0.1:8000/panel_control/inicio/">
+                            <FONT COLOR="blue">Inicio </FONT>
+                          </a>
+                        </li>
+                        <!--Opcion 2-->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="roles" id="navbarDropdown"
+                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Roles
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <!--Opcion 4.1 -->
+                            <li><a class="dropdown-item" href="/roles/agregar_roles/">• Agregar Roles</li></a>
+                            <div class="dropdown-divider"></div>
+                            <li><a class="dropdown-item" href="/roles/listar_roles/">• Listar Roles</li></a>
+                          </ul>
+                        </li>
+                    
+                        <!--Opcion 3 SOLO PARA USER Administrador, crear usuario-->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                            Usuarios
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                                  <!--Opcion 3 SOLO PARA USER ADMIN, crear usuario-->
+                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                    Registro de Usuarios
+                                  </strong>
+                                  <div class="dropdown-divider"></div>
+                                  <li class="dropdown-menu-right" aria-labelledby="navbarDropdown"></li>
+                                    
+                                  <a class="dropdown-item" href="/agregar_usuario/" > • Agregar usuario</a>
+                                  {% comment %} <a class="dropdown-item" href="/sesion/estado_usuario/" >• Estado de Usuarios</a> {% endcomment %}
+                                  {% comment %} <a class="dropdown-item" href="/sesion/modificar_usuario/<c.numero_documento>"> • Modificar usuario</a> {% endcomment %}
+                                  {% comment %} <a class="dropdown-item" href="/sesion/eliminar_usuario/<c.numero_documento>"> • Eliminar usuario</a> {% endcomment %}
+                                  <a class="dropdown-item" href="/listar_usuario/"> • Lista de usuario</a>  
+                            </ul>
+                        </li>
+            
+                      <!--Opcion 4-->
+                       <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Administrativo</a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/administrativo/listar_persona/">Registrar Datos Personales</a></li>
+                            <div class="dropdown-divider"></div>
+                            <!--Opcion 4.1 -->
+                            <li><a class="dropdown-item" href="/administrativo/listar_paciente/"> • Paciente </a></li>
+                            <!--Opcion 4.2 TODOS-->
+                            <li><a class="dropdown-item" href="/administrativo/listar_funcionario/"> • Funcionario</a></li>
+                            <li><a class="dropdown-item" href="/administrativo/listar_especialista_salud/"> • Especialista de Salud</a></li>
+                            <li><a class="dropdown-item" href="/administrativo/listar_proveedor/"> • Proveedores</a></li>
+                            <div class="dropdown-divider"></div>
+                            <li><a class="dropdown-item" href="/administrativo/listar_cargo/"> • Cargos</a></li>
+                          </ul>
+                      </li>
+                      <!--Opcion 5-->
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="tratamiento" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Tratamiento</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <!--Opcion 5.1 -->
+                          <li><a class="dropdown-item" href="/tratamiento/agregar_tratamiento/">• Agregar Tratamientos</li></a>
+                              <div class="dropdown-divider"></div>
+                          <li><a class="dropdown-item" href="/tratamiento/listar_tratamiento/">• Listar Tratamientos</li></a>
+                        </ul>
+                      </li>
+                        <!--Opcion 6 Para paciente-->
+                      <li class="nav-item">
+                          <a class="nav-link" href="#">Agendamiento</a>
+                      </li>
+                        <!--Opcion 7 solo el Administrador-->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Historial Clínico</a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <!--Opcion 7.1 -->
+                            <li><a class="dropdown-item" href="#">Tratamientos Realizados</li>
+                            <!--Opcion 7.2 -->
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Antecedente Clínico Personal</a></li>
+                            <!--Opcion 7.3 -->
+                            <li><a class="dropdown-item" href="#">Antecedente Clínico Familiar</a></li>
+                          </ul>
+                      </li>
+                        <!--Opcion 8-->
+                      <li class="nav-item">
+                          <a class="nav-link" href="#">Precios</a>
+                      </li>
+
+                      <!--Opcion 9-->
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">Inventario</a>
+                    </li>
+                </ul>
+          </div>
+    </nav>
+
+
+ </header> 
+<br>
+      <!--fin de Barra de Navegacion-->
+
+      <!--Slider======================================BLOQUE DEl CARROUSEL========================================================-->
+      {%block slider%}
+
+      {% endblock %}
+
+    
+        <!--fin -->
+   
+<!--Contenido-->
+ <br>  
+ {%block content%}
+
+ {% endblock %}
+  
+
+	<!--Pie de pagina -->
+	
+				<div class="col-12 text-center copyright">
+					<samp>
+            <br>
+            <br>
+            <br>
+						<p>Copyright &copy; FP-UNA 2022 · Proyecto de Grado  </p>
+					</samp>
+				</div>
+			</div>
+
+		</div>
+
+    <!--===CDN Separate Popper and Bootstrap JS ===-->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+   
+   
+    <!--CDN para los alert-->
+       <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+       <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.js"></script>
+   
+    <!--JS de los modulos (hechos)-->
+    <script src="{%static 'js/eliminar.js'%}"> </script> 
+   
+
+{% comment %} 
+    <script>
+       
+      Swal.fire('Bienvenido a SmileSoft')
+    </script> {% endcomment %}
+
+
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+
+|Pag. para Animaciones de css: https://animate.style/
+    *CDN
+    <head> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+     </head>
+    *EJEMPLO
+    <h1 class="animate__animated animate__bounce">DA SALTOS</h1>
+
+
+    *EJEMPLO 2. CENTRA Y SALTA
+    
+                <div class="col-md12">
+                    <h1 class="animate__animated animate__bounce">SmileSoft
+                        <!--small es para subtitulo al lado del titulo principal-->
+                        <small> Bienvenido al sistema </small>
+                    </h1>
+                </div>
+            </div>
+
+<!-->
+|Es para las 3barras del icono
+ <a class="navbar-brand" href="#">Menu</a>
+                <button class="navbar-toggler"  data-target="menu" data-toggle="collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+              <!--MENU-->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+<!-->
+|BARRITA PARA BUSCAR
+ <form class="d-flex">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+
+|imagen de logo
+      {% comment %} <!--para la imagen en la esquina PERO NO FUNCIONA-->
+        <img src="img/fondo.jpg" alt="logo" width="150px"> {% endcomment %}
+
+|Barra con color
+style="background-color: rgba(178, 60, 253, 0.6);
+
+|alineacion
+|<div class="row align-items-center" style="heigth:240px; border:1px solid #000 background #bbb">
+        <div class="col"> SmileSoft </div> 
+        <div class="col"> SmileSoft </div> 
+        <div class="col"> SmileSoft </div> 
+      </div>
+
+|OPCION NO DESPLABLE DE LA Barra
+ <li class="nav-item">
+              <a class="nav-link" href="#">Roles</a>
+            </li>
+
+
+|para BORDES
+
+  <span class="border border-primary">
+                                            Sistema Odontológico 
+                                            </span>
+                                          </div> 
+
+      
+|ICONOS
+
+      
+  <samp class="icono icon-dot"> 
+   <FONT COLOR="blue">Inicio </FONT>
+    </samp>
+
+ |COLORES
+
+ B><FONT COLOR="red">Texto ROJO </FONT>
+<br>
+<FONT COLOR="blue">Texto AZUL </FONT>
+<br>
+<FONT COLOR="navy">Texto AZUL MARINO </FONT>
+<br>
+<FONT COLOR="green">Texto VERDE </FONT>
+<br>
+<FONT COLOR="olive">Texto OLIVA </FONT>
+<br>
+<FONT COLOR="yellow">Texto AMARILLO </FONT>
+<br>
+<FONT COLOR="lime">Texto LIMA </FONT>
+<br>
+<FONT COLOR="magenta">Texto MAGENTA </FONT>
+<br>
+<FONT COLOR="purple">Texto PURPURA </FONT>
+<br>
+<FONT COLOR="cyan">Texto CYAN </FONT>
+<br>
+<FONT COLOR="brown">Texto MARRON </FONT>
+<br>
+<FONT COLOR="black">Texto NEGRO </FONT>
+<br>
+<FONT COLOR="gray">Texto GRIS </FONT>
+<br>
+<FONT COLOR="teal">Texto TEAL </FONT>
+<br>
+<FONT COLOR="white">Texto BLANCO </FONT>
+<br>
+
+| TAMAÑOS   
+<FONT SIZE=6 COLOR="red">E</FONT><FONT SIZE=4>sto es una </FONT> 
+<FONT SIZE=6 COLOR="red">P</FONT><FONT SIZE=4>rueba </FONT>
+Resulta:
+Esto es una Prueba
+
+
+|Para los formularios
+class CustomSetForm(forms.ModelForm):
+    title = forms.CharField(max_length = 32)
+    description = forms.CharField(max_length = 256)
+    duration = forms.CharField(widget = forms.TextInput(attrs =   
+                        {'min': 20,'max': 300,'type': 'number'}))
+    problems = forms.ModelMultipleChoiceField(
+                       widget = forms.CheckboxSelectMultiple,
+                       queryset = Problem.objects.all()
+               )
+
+|Para los textos de ayuda
+<div class="help">
+                                <ul>
+                                    <li>Ejemplo del nombre de usuario >>jperez>>
+                                      
+                                    </li>
+                                </ul>
+                            </div> 
+|Para la caption (titulo de una tabla es caption)
+        {% comment %} <caption>
+                        List of users</caption>
+                        <label for="team_name">Enter name: </label>
+
+                        <div class="outer">
+                            <p>This is in the outer div.</p>
+                            <div class="inner">
+                              <p>This text is in the inner div.</p>
+                            </div>
+                          </div>
+                        {% endcomment %}
+
+|Para los comentarios
+     {% comment %} <samp>
+                             <div class="col-lg-10">
+                                <p class="form-control-static">Ejemplo: jperez</p>
+                              </div>
+                            </samp>    {% endcomment %}
+
+
+
+ <div class="btn-group dropright">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown2" data-toggle="dropdown">
+                          Buscadores
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="http://www.google.com">Google</a>
+                          <a class="dropdown-item" href="http://www.bing.com">Bing</a>
+                          <a class="dropdown-item disabled" href="http://www.yahoo.com">Yahoo</a>
+                        </div>
+                      </div>          
+
+{% comment %} <li><a class="dropdown-item" href="#"></a>  </li> {% endcomment %}
+                      {% comment %} <a class="nav-link dropdown-toggle btn-group dropright" href="#" id="navbarDropdown" role="menu" 
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      Registro de Usuarios
+                      </a> {% endcomment %}
+
+|TABLA A LA DERECHA
+ <table  align="left" >
+        <tr>
+        <td> <a href="/sesion/agregar_usuario/" class="btn btn-success">Agregar +</a> </td>
+        </tr>
+  </table> {% endcomment %}                      
+
+|barra de Busqueda
+{% comment %} <input class="form-control mr-sm-2" type="text" placeholder="Buscar..." aria-label="Buscar...">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="document.getElementById('bencc').submit()">Buscar</button> {% endcomment %}
+            {% comment %} <aside id="search" class="box widget widget_search">
+                <form role="search" method="get" id="searchform" class="searchform" action="/sesion/listar_usuario/">
+                <div>
+                <label class="screen-reader-text" for="s">Buscar:</label>
+                <input type="text" value="" name="s" id="s">
+                <input type="submit" id="searchsubmit" value="Buscar">
+                </div>
+                </form><i class="fa fa-search"></i>
+                </aside> {% endcomment %} 
+
+

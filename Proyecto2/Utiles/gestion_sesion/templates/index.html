@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es"></html>
+    <head>
+        <meta charset="utf-8">
+       
+        <title>Autenticación de Usuario</title>
+       
+        <link rel="stylesheet" href= "{% static 'estilo.css'%}">
+    </head>
+    <body>
+
+        <section class="form-login">
+            <h5> Bienvenido a SmileSoft</h5>
+            <input class="controls" type ="text" name:"USUARIO" value="" placeholder="Escribe nombre">
+            <input class="controls" type ="password" name:"pass" value="" placeholder="Escribe npass">
+                    
+            <button  type= "submit"> <a href='/inicio'> Inicio Sesion(SignUp)</a> </button>
+            <button type= "submit"> <a href= "/iniciosesion"> Inicio (Signin) </button>
+            <button type= "submit"> <a href= "/cierre"> Cerrar Sesion </button>
+        </section>
+
+
+   <div class="login-page">
+  <div class="form">
+    <form class="register-form">
+      <input type="text" placeholder="name"/>
+      <input type="password" placeholder="password"/>
+      <input type="text" placeholder="email address"/>
+      <button>create</button>
+      <p class="message">Already registered? <a href="#">Sign In</a></p>
+    </form>
+
+        <form class="login-form">
+         <label> Usuario: </label>
+          <input type="text" placeholder="Ingrese un nombre de usuario"/>
+         <label> Contraseña: </label>
+          <input type="password" placeholder="Ingrese la contraseña"/>
+            <label> Contraseña: </label>
+          <input type="password" placeholder="Confirme la contraseña"/>
+          <button>Iniciar Sesion</button>
+          <p class="message"> Gracias </p>
+          <p><a href="#">¿Olvidaste tu contraseña?</a></p> 
+          <p><a href="#">¿Ya tienes una cuenta?. Regístrate</a></p> 
+        </form>
+      </div>
+    </div>
+       
+    </body>
+</html>

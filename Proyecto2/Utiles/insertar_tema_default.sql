@@ -1,0 +1,2 @@
+insert into admin_interface_theme
+values(2,'Default',true,'Bienvenido a SmileSoft',true, '',false,'#139385','#F5DD5D','#1DDEC9','#FFFFFF','#E6F0EB','#159D8E','#FFFFFF','#FFFFFF','#CCF3E0',true,'#0C3C26','#156641',	'#0F672E',	'#0C3C26',	'#FFFFFF',	'#D62626',	'#A41515',	'#FFFFFF','',true,true,'#000000',true,'#FF2613',false,'','0.3','SmileSoft',true,'#E7DF0E',true,true,true,'code',	true,true,true,'#C7FFDC','#FFFFFF');

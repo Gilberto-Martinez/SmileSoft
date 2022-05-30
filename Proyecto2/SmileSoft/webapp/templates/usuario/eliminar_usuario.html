@@ -1,0 +1,283 @@
+{%extends 'panel_control/base.html'%}  
+
+{%load static%}
+
+
+{%block content%}
+      
+
+            <div class="card" style="width: 18rem;">
+            <img src="/img/eliminado.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">El usuario ha sido eliminado.</p>
+            </div>
+            </div>
+
+       
+
+{%endblock%} 
+
+
+<div class="modal-dialog modals-default">
+    <div class="modal-content">
+        <div class="modal-header">
+            Eliminación de {{ object }}
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body text-center" >{% csrf_token %}
+            <h3><strong>¿Desea eliminar {{ object }} ?</strong></h3>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-align="right"
+                onclick="eliminar({{ object.usuario }});"><strong>CONFIRMAR ELIMINACIÓN</strong></button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"><strong>CANCELAR</strong></button>
+        </div>
+    </div>
+</div>
+
+  <script>
+                                    function confirmarEliminacion(){
+                                            Swal.fire({
+                                                title: '¿Estás seguro que quiere eliminar este usuario?',
+                                                text: 'La operación no se podrá deshacer',
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#3085d6',
+                                                cancelButtonColor: '#d33',
+                                                confirmButtonText: 'Aceptar',
+                                                cancelmButtonText: 'Cancelar',
+                                                buttons: true,
+                                                dangerMode: true,
+                                              
+                                            }).then((result) => {
+                                                    if (result.value) {
+                                                        for(var usuario in listado_usuarios) {
+                                                            listado_usuarios[usuario]=c.usuario
+                                                                          
+                                                            console.log('El usuario con índice (usamos su nombre como índice) ' + usuario + ' es uno de tus favoritos');
+                                                            window.location.href = "/sesion/eliminar_usuario/c.usuario"
+                                                       }
+                                                        swal.fire("Eliminado correctamente", {
+                                                            icon: "success",
+                                                            times:3000,
+                                                        });
+                                                     
+                                                    } else {
+                                                        swal("Recuperar");
+                                                    }
+                                                });
+                                        }
+
+                                    </script> 
+
+<!--funciona con la ventana de 127.0.0.1:8000-->
+  <a href="/sesion/eliminar_usuario/{{c.usuario}}"  onclick="Eliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>
+       
+ <script>
+
+function Eliminacion()
+    {
+    var mensaje;
+    var opcion = confirm("Clicka en Aceptar o Cancelar");
+    if (opcion == true) {
+        mensaje = "Has clickado OK";
+	} else {
+	    mensaje = "Has clickado Cancelar";
+	}
+	document.getElementById("value").innerHTML = mensaje;
+}
+                                </script>    
+
+
+----funciona agregas un imput
+                                
+<label for="domTextElement">USUARIO </label>
+  <input type="text" id="domTextElement" > 
+  
+  <button type="button"  onclick="getValueInput()"> 
+      Eliminar 
+  </button> 
+  
+  <p id="valueInput"></p> 
+
+  <script> 
+
+    const getValueInput = () =>{
+      let inputValue = document.getElementById("domTextElement").value; 
+      document.getElementById("valueInput").innerHTML = inputValue; 
+    }
+    
+  </script> 
+
+
+
+
+
+  ||||||||||||||||||||||||||
+  
+ <p>
+     Eliminar 
+  </p>
+  
+    Usuario
+    <input type="text"
+           id="myText"
+           value="{{c.usuario}}">
+  
+    <button  value="{{c.usuario}}" type="button" 
+            onclick="myFunction()">
+     Eliminar
+  </button>
+  
+    <p id="demo"></p>
+  
+    <script>
+        // Here the value is stored in new variable x 
+  
+        function myFunction() {
+             var x =document.getElementById("myText").value;
+                                                    
+                                                    document.getElementById("demo").innerHTML = x;
+                                 
+                Swal.fire({
+                                        title: '¿Estás seguro que quiere eliminar este usuario? '+   document.getElementById("demo").innerHTML,
+                                        text: "La operación no se podrá deshacer",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Aceptar',
+                                        cancelmButtonText: 'Cancelar',
+                                        inputValue:'{{c.usuario}}',
+
+                                    }).then((result) => {
+                                        if (result.value) {
+                                          
+                                            window.location.href = "/sesion/eliminar_usuario/"+   document.getElementById("demo").innerHTML;
+                                            Swal.fire("Eliminado correctamente",{
+                                                icon: "success",
+                                            });
+                                        } else {
+                                            swal.fire("Recuperar");
+                                        }
+                                    });
+        }
+    </script>
+
+
+    ||||||||||||
+    colores
+    .swal-overlay {
+  background-color: rgba(43, 165, 137, 0.45);
+}
+    |||||||||||
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+funciona para que salude
+                                             
+
+  <p>
+     Eliminar 
+  </p>
+  
+    Usuario
+    <input type="text"
+           id="myText"
+           value="{{c.usuario}}">{{c.usuario}}</input>
+  
+    <button  value="{{c.usuario}}" type="button" 
+            onclick="myFunction()">
+     Eliminar
+  </button>
+  
+    <p id="demo">Hola</p>
+  
+    <script>
+        let usuario=   "{{c.usuario}}" 
+        function myFunction() {
+             var usuario =document.getElementById("myText").value;
+                                                    
+             document.getElementById("demo").innerHTML = usuario;
+                                 
+                Swal.fire({
+                                        title: '¿Estás seguro que quiere eliminar este usuario? '+   document.getElementById("demo").innerHTML,
+                                        text: "La operación no se podrá deshacer",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Aceptar',
+                                        cancelmButtonText: 'Cancelar',
+                                        inputValue:'{{c.usuario}}',
+
+                                    }).then((result) => {
+                                        if (result.value) {
+                                          
+                                            window.location.href = "/sesion/eliminar_usuario/"+   document.getElementById("demo").innerHTML;
+                                            Swal.fire("Eliminado correctamente",{
+                                                icon: "success",
+                                            });
+                                        } else {
+                                            swal.fire("Recuperar");
+                                        }
+                                    });
+        }
+    </script>
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+
+funciona al tocar cambia
+
+
+***
+  <!-- Eliminar-->
+                                <td>               
+                                    {% comment %} <a href="/sesion/eliminar_usuario/{{c.usuario}}"  onclick="confirmarEliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>  {% endcomment %}
+                                    <p id="demo">Usuario->{{c.usuario}}</p>
+                                    <button id="boton" type="button"  class="btn btn-danger btnEliminacion"
+                                                onclick="confirmarEliminacion()" >
+                                        Eliminar
+                                    </button>
+{% comment %} <script>
+  var usuario =document.getElementById("boton").value;
+             document.getElementById("myText").innerHTML = usuario;  
+</script> {% endcomment %}
+                                    <script>
+                                      {% comment %} var usuario=document.getElementById("boton").value;
+
+                                      document.getElementById("boton").innerHTML = usuario; {% endcomment %}
+                                                                      
+                                       function confirmarEliminacion() {
+                                         document.getElementById("demo").innerHTML = "cambio ";
+                                        Swal.fire({
+                                        title: '¿Estás seguro que quiere eliminar este usuario '+usuario+'?',
+                                        text: "La operación no se podrá deshacer",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Aceptar',
+                                        cancelmButtonText: 'Cancelar',
+                                      
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            
+                                            
+                                             window.location.href = "/sesion/eliminar_usuario/{{c.usuario}}",
+                                            Swal.fire({
+                                                title: 'Eliminado correctamente',
+                                                icon: 'success',
+                                                timer: 5000,
+                                            });
+                                        } else {
+                                            swal.fire({
+                                                title:"La eliminación fue cancelada",
+                                                timer: 2000,
+                                            });
+                                        }
+                                    });
+                                }
+                                </script>        
+    
+***

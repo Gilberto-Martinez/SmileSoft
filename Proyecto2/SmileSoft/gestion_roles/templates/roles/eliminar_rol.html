@@ -1,0 +1,283 @@
+{%extends 'panel_control/base.html'%}  
+
+{%load static%}
+
+
+{%block content%}
+      
+
+            <div class="card" style="width: 18rem;">
+            <img src="/img/eliminado.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">El rol ha sido eliminado.</p>
+            </div>
+            </div>
+
+       
+
+{%endblock%} 
+
+
+<div class="modal-dialog modals-default">
+    <div class="modal-content">
+        <div class="modal-header">
+            Eliminación de {{ object }}
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body text-center" >{% csrf_token %}
+            <h3><strong>¿Desea eliminar {{ object }} ?</strong></h3>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-align="right"
+                onclick="eliminar({{ object.name }});"><strong>CONFIRMAR ELIMINACIÓN</strong></button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"><strong>CANCELAR</strong></button>
+        </div>
+    </div>
+</div>
+
+  <script>
+                                    function confirmarEliminacion(){
+                                            Swal.fire({
+                                                title: '¿Estás seguro que quiere eliminar este rol?',
+                                                text: 'La operación no se podrá deshacer',
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#3085d6',
+                                                cancelButtonColor: '#d33',
+                                                confirmButtonText: 'Aceptar',
+                                                cancelmButtonText: 'Cancelar',
+                                                buttons: true,
+                                                dangerMode: true,
+                                              
+                                            }).then((result) => {
+                                                    if (result.value) {
+                                                        for(var name in listado_roles) {
+                                                            listado_roles[name]=c.name
+                                                                          
+                                                            console.log('El rol con índice (usamos su nombre como índice) ' + rol + ' es uno de tus favoritos');
+                                                            window.location.href = "/roles/eliminar_rol/c.name"
+                                                       }
+                                                        swal.fire("Eliminado correctamente", {
+                                                            icon: "success",
+                                                            times:3000,
+                                                        });
+                                                     
+                                                    } else {
+                                                        swal("Recuperar");
+                                                    }
+                                                });
+                                        }
+
+                                    </script> 
+
+<!--funciona con la ventana de 127.0.0.1:8000-->
+  <a href="/roles/eliminar_rol/{{c.name}}"  onclick="Eliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>
+       
+ <script>
+
+function Eliminacion()
+    {
+    var mensaje;
+    var opcion = confirm("Clicka en Aceptar o Cancelar");
+    if (opcion == true) {
+        mensaje = "Has clickado OK";
+	} else {
+	    mensaje = "Has clickado Cancelar";
+	}
+	document.getElementById("value").innerHTML = mensaje;
+}
+                                </script>    
+
+
+----funciona agregas un imput
+                                
+<label for="domTextElement">ROL </label>
+  <input type="text" id="domTextElement" > 
+  
+  <button type="button"  onclick="getValueInput()"> 
+      Eliminar 
+  </button> 
+  
+  <p id="valueInput"></p> 
+
+  <script> 
+
+    const getValueInput = () =>{
+      let inputValue = document.getElementById("domTextElement").value; 
+      document.getElementById("valueInput").innerHTML = inputValue; 
+    }
+    
+  </script> 
+
+
+
+
+
+  ||||||||||||||||||||||||||
+  
+ <p>
+     Eliminar 
+  </p>
+  
+    Rol
+    <input type="text"
+           id="myText"
+           value="{{c.name}}">
+  
+    <button  value="{{c.name}}" type="button" 
+            onclick="myFunction()">
+     Eliminar
+  </button>
+  
+    <p id="demo"></p>
+  
+    <script>
+        // Here the value is stored in new variable x 
+  
+        function myFunction() {
+             var x =document.getElementById("myText").value;
+                                                    
+                                                    document.getElementById("demo").innerHTML = x;
+                                 
+                Swal.fire({
+                                        title: '¿Estás seguro que quiere eliminar este rol? '+   document.getElementById("demo").innerHTML,
+                                        text: "La operación no se podrá deshacer",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Aceptar',
+                                        cancelmButtonText: 'Cancelar',
+                                        inputValue:'{{c.name}}',
+
+                                    }).then((result) => {
+                                        if (result.value) {
+                                          
+                                            window.location.href = "/roles/eliminar_rol/"+   document.getElementById("demo").innerHTML;
+                                            Swal.fire("Eliminado correctamente",{
+                                                icon: "success",
+                                            });
+                                        } else {
+                                            swal.fire("Recuperar");
+                                        }
+                                    });
+        }
+    </script>
+
+
+    ||||||||||||
+    colores
+    .swal-overlay {
+  background-color: rgba(43, 165, 137, 0.45);
+}
+    |||||||||||
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+funciona para que salude
+                                             
+
+  <p>
+     Eliminar 
+  </p>
+  
+    Usuario
+    <input type="text"
+           id="myText"
+           value="{{c.name}}">{{c.name}</input>
+  
+    <button  value="{{c.name}}" type="button" 
+            onclick="myFunction()">
+     Eliminar
+  </button>
+  
+    <p id="demo">Hola</p>
+  
+    <script>
+        let name=   "{{c.name}}" 
+        function myFunction() {
+             var name =document.getElementById("myText").value;
+                                                    
+             document.getElementById("demo").innerHTML = name;
+                                 
+                Swal.fire({
+                                        title: '¿Estás seguro que quiere eliminar este rol? '+   document.getElementById("demo").innerHTML,
+                                        text: "La operación no se podrá deshacer",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Aceptar',
+                                        cancelmButtonText: 'Cancelar',
+                                        inputValue:'{{c.name}}',
+
+                                    }).then((result) => {
+                                        if (result.value) {
+                                          
+                                            window.location.href = "/roles/eliminar_rol/"+   document.getElementById("demo").innerHTML;
+                                            Swal.fire("Eliminado correctamente",{
+                                                icon: "success",
+                                            });
+                                        } else {
+                                            swal.fire("Recuperar");
+                                        }
+                                    });
+        }
+    </script>
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+
+funciona al tocar cambia
+
+
+***
+  <!-- Eliminar-->
+                                <td>               
+                                    {% comment %} <a href="/roles/eliminar_rol/{{c.name}}"  onclick="confirmarEliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>  {% endcomment %}
+                                    <p id="demo">Rol->{{c.name}}</p>
+                                    <button id="boton" type="button"  class="btn btn-danger btnEliminacion"
+                                                onclick="confirmarEliminacion()" >
+                                        Eliminar
+                                    </button>
+{% comment %} <script>
+  var name =document.getElementById("boton").value;
+             document.getElementById("myText").innerHTML = name;  
+</script> {% endcomment %}
+                                    <script>
+                                      {% comment %} var name=document.getElementById("boton").value;
+
+                                      document.getElementById("boton").innerHTML = name; {% endcomment %}
+                                                                      
+                                       function confirmarEliminacion() {
+                                         document.getElementById("demo").innerHTML = "cambio ";
+                                        Swal.fire({
+                                        title: '¿Estás seguro que quiere eliminar este rol '+rol+'?',
+                                        text: "La operación no se podrá deshacer",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Aceptar',
+                                        cancelmButtonText: 'Cancelar',
+                                      
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            
+                                            
+                                             window.location.href = "/roles/eliminar_rol/{{c.name}}",
+                                            Swal.fire({
+                                                title: 'Eliminado correctamente',
+                                                icon: 'success',
+                                                timer: 5000,
+                                            });
+                                        } else {
+                                            swal.fire({
+                                                title:"La eliminación fue cancelada",
+                                                timer: 2000,
+                                            });
+                                        }
+                                    });
+                                }
+                                </script>        
+    
+***

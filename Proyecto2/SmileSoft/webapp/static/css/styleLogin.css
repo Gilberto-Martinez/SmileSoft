@@ -1,0 +1,23 @@
+body {
+	background-image: linear-gradient(to left top, #17a2b8, #82d5e4, #12b3d1, #aae7f6, #20c2e6);
+	height: 100vh;
+	/* background-image: url("img/smile.jpg");
+	background-repeat: no-repeat;*/
+} 
+
+#login .container #login-row #login-column .login-box {
+	margin-top: 120px;
+	max-width: 600px;
+	height: 395px;
+	border: 1px solid #9C9C9C;
+	background-image: linear-gradient(to bottom, #4fd0df, #d5ecf0, #81adb2, #cfd5d5, #ebefef);
+}
+
+#login .container #login-row #login-column .login-box #login-form {
+	padding: 20px;
+}
+
+#login .container #login-row #login-column .login-box #login-form #register-link {
+	margin-top: -85px;
+}
+

@@ -1,0 +1,1 @@
+default_app_config = 'gestion_historial_clinico.apps.GestionHistorialClinicoConfig'

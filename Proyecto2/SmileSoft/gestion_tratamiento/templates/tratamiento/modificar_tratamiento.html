@@ -1,0 +1,51 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} 
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+
+<div class="row">
+   
+  <div class=" col-md-10 offset-md-1" >
+        <div class="card">
+            <br>
+            <center>  <h2> Modificar Tratamiento</h2> </center>
+            <div class="card-body">
+                <form action="" method="post">
+                    {%csrf_token%}
+                    {%if mensaje%}
+                    <div class="alert alert-success" role="alert">
+                    ✅¡Modificación exitosa!
+                    </div>
+                    {%endif%}
+
+                        {{form.as_p}}
+                   
+
+                        <br>
+                        <div class="d-flex justify-content-center">
+                            <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
+                            <input type="submit" value="Modificar y Guardar " class= "btn btn-primary btn-block txt-white" name="_save">
+                            &nbsp;
+                            <input type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
+                        
+                        </div> 
+
+                </form>
+                
+           <div>
+      </div>
+
+    </div>
+</div>
+
+                    <hr>
+                        
+                        <table  align="right" >
+                            <tr>
+                            <td> <a href="/tratamiento/listar_tratamiento/" class="btn btn-info">Ver listado de tratamientos </a> </td>
+                            </tr>
+                        </table>
+{%endblock%}

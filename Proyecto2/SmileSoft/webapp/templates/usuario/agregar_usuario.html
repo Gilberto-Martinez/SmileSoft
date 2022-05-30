@@ -1,0 +1,94 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+
+{%if form.errors%}
+<div class="alert alert-danger" role="alert">
+   Existe un error. Por favor verifique nuevamente
+  </div>
+
+{%endif%}
+    
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3">
+                <div class="card">
+                    <br>
+                    <center><h2> Crear Usuario</h2></center>  
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {%csrf_token%}
+                            {%if mensaje%}
+                            <div class="alert alert-success" role="alert">
+                                  ✅ Usuario registrado exitosamente
+                            </div>
+                            {%endif%}
+                          
+                           <small class="form-text text-muted"> 
+                               
+                                ✏️ Ejemplo :<b> jperez </b>
+                           </small>                        
+
+                            <b>
+                            {{form.as_p}} 
+                            <b>
+
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                {% comment %} <div class="d-flex justify-content-end">--> para poner en una esquina     {% endcomment %}
+                                <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
+                                <input type="submit" onclick="guardar()" value="Guardar" class= "btn btn-primary btn-block txt-white">
+                                 {% comment %} <script>
+                                          function guardar() {
+                                          
+                                              Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardado exitosamente',
+                                      })
+                                          }
+                                      </script> {% endcomment %}
+                                &nbsp;
+                                {% comment %} <input href="/sesion/agregar_usuario/" type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
+                              <button id="cancel" name="cancel" class="btn btn-default" value="1">Cancel</button> {% endcomment %}
+                                  <a href="/listar_usuario/" id="cancel" name="cancel"class= "btn btn-secondary btn-block txt-white">Cancelar</a>
+                          
+                                </div>
+                        </form>
+                         {% comment %} {{mensaje}}  {% endcomment %}
+                   <div>
+              </div>
+
+            </div>
+        </div>
+<hr>
+        <table  align="right" >
+            <tr>
+            <td>
+              <a href="/agregar_usuario/" class="btn btn-success">
+                <i class="bi-person-plus-fill"></i>
+                Agregar otro usuario
+              </a>
+            </td>
+            </tr>
+             <div class="container mt-3 text-center">
+                                 <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
+                               </div>
+      </table>
+      
+      <table  align="left" >
+        <tr>
+        <td>
+          <a href="/listar_usuario/" class="btn btn-info">
+            <i class="bi-view-list"></i>
+            Ver listado de los usuarios
+          </a>
+        </td>
+        </tr>
+  </table>
+
+
+
+{%endblock%}

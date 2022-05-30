@@ -1,0 +1,105 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+
+{%if form.errors%}
+<div class="alert alert-danger" role="alert">
+   Existe un error. Por favor verifique nuevamente
+  </div>
+
+{%endif%}
+    
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3">
+                <div class="card">
+                    <br>
+                    <center> 
+            
+                        <h2 <i class="bi bi-person-check-fill"> Usuarios </i> </h2>
+                     </center>
+
+                   
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {%csrf_token%}
+                                                      
+                            <b>
+                            {{form}}
+                            </b>
+
+                        <table>
+                            <table class="table table-striped table-hover">       
+                                <thead> 
+                                    <tr>
+                                            <th >Nro</th>
+                                            <th>Usuario</th>
+                                            <th colspan="3">Estado</th>
+                                          {% comment %}   <th colspan="2">Opciones</th> {% endcomment %}
+                                           
+                                    </tr>
+                                </thead>
+                                   
+                
+                                 <tbody>
+                                    <tr>
+                                            <th> </th>  
+                                            <th> </th>   
+                                            <th style="color:blue;">Activo</th>
+                                            {% comment %} <th>STAFF</th> {% endcomment %}
+                                            <th style="color:blue;">Administrador</th>
+                                            
+                                             
+                                            
+                                    </tr>
+                                        {%for c in listado_usuarios%}
+                                            <tr>
+                                                
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{c.usuario}}</td>
+
+                                                <td class="field-is_active"  > {{c.is_active}}</td>
+                                                {% comment %} <td class="field-is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"> {{c.is_staff}}</td> {% endcomment %}
+                                                <td class="field-is_admin">{{c.is_admin}}</td>
+                                                
+                                                {% comment %} <tr>
+                                                    <td rowspan="1">Estado</td>
+                                                        <td class="field-is_active"><img src="/static/admin/img/icon-yes.svg" alt="True"> {{c.is_active}}</td>
+                                                        <td class="field-is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"> {{c.is_staff}}</td>
+                                                        <td class="field-is_admin">{{c.is_admin}}</td>
+                                                </tr> {% endcomment %}
+{% comment %} 
+                                                <td> <button class="btn btn-success" id="btn">Habilitado</button>  </td>    
+                                                <td><button class="btn btn-danger" id="btn">Deshabilitado</button>    </td>     {% endcomment %}
+                                         
+                                            </tr>  
+                                           
+                                      
+                                        {% endfor %}
+                                        
+                                           
+                                         
+                                    </tbody>    
+                            </table>    
+                            
+                        </table>
+                   <div>
+              </div>
+    
+        <hr>
+        <div class="container mt-3 text-left">
+                                 <a href="http://127.0.0.1:8000/base/" data-toggle="tooltip" title="Vuelve al inicio"> 🔼 Inicio</a>
+                               </div>
+            
+            <table  align="right" >
+                <tr>
+                <td> <a href="/sesion/listar_usuario/" class="btn btn-info">Ver listado de los usuarios </a> </td>
+                </tr>
+        </table>
+
+
+
+{%endblock%}

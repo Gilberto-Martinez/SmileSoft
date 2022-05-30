@@ -1,0 +1,71 @@
+|Recarga la pagina en automatico
+
+    <div class="starter-template">
+      <h1>Tu usuario ha sido creado con exito</h1>
+      <p class="lead">Si la página no es redirigida en 5 segundos pulsa <a href="">aquí</a></p>
+   </div>
+
+<script>
+   setTimeout(function(){ 
+       window.location.replace(" ");
+   }, 5000);
+</script>
+
+
+
+
+|
+<script>
+    function eliminar_usuario() {
+        Swal.fire({
+            title: '¿Estás seguro que quiere eliminar este usuario?' + {{ c.usuario }} +'',
+                text: 'La operación no se podrá deshacer',
+                    icon: 'warning',
+                        showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Aceptar',
+                                        cancelmButtonText: 'Cancelar',
+                                               
+                                         }).then((result) => {
+
+                                            if (result.value) {
+
+                                                window.location.href = "/sesion/eliminar_usuario/" + {{ usuario }
+                                            } +"/";
+                                            {% comment %} windows.location.href = "/eliminar_usuario/" + usuario + "/" {% endcomment %}
+                                            {% comment %} window.location.reload()-- > Esta linea devuelve en la misma pagina {% endcomment %}
+                                        }
+                                            })
+                                            
+
+
+                                        }
+</script>
+
+
+<script>
+    function confirmarEliminacion() {
+        Swal.fire({
+            title: '¿Estás seguro que quiere eliminar este usuario?',
+            text: "La operación no se podrá deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelmButtonText: 'Cancelar',
+            timer: 5000,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $(this).parent().remove()
+                swal("Eliminado correctamente", {
+                    icon: "success",
+                });
+            } else {
+                swal("Recuperar");
+            }
+        });
+    }
+
+</script> {% endcomment %}

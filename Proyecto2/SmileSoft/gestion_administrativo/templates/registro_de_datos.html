@@ -1,0 +1,86 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+    <!-- <style type="text/css">
+        #pantalla{
+            display: none;
+        }
+    </style> -->
+
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+            <div class="card">
+                <br>
+                <center>  
+                    <h2>
+                        <i class="bi bi-person-bounding-box"> Registro de Persona</i>
+                    </h2> 
+                </center>  
+                <div class="card-body">
+                    <!--Se usa el metodo post porque de lo contrario en la barra se verian los datos-->      
+                    {% comment %} <form action="/sesion/usuario_crud/" method="POST"> {% endcomment %}
+                    <form action="" method="POST">
+                        <table>  
+                            {% csrf_token %}               
+                            {% comment %} {{form}}      {% endcomment %}
+                            {% comment %} <form class= "message"> {% endcomment %}
+                            {{form.as_p}}  
+                            {% comment %} <span class=estiloError> ⚠️ Importante ⚠️</span> {% endcomment %}
+                            <div class="alert alert-success" role="alert">
+                                {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                            <li>
+                                                {% if message.tags %}
+                                                    class="{{ message.tags }}"
+                                                {% endif %}>
+                                                {{ message }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>    
+                                {% endif %}
+                            </div>
+                            {% comment %} 
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div> 
+                            {% endcomment %}
+
+                            {{mensaje}}                  
+                        </table>
+                    </form>
+                    <!-- <button class="btn btn-info" onclick="mostrar_funcionario();">Agregar como funcionario</button>
+                    <div id="pantalla">
+                        <br>
+                        <a class="btn btn-info" href="javascript:void(0);" onclick="ocultar_funcionario();">No agregar</a>
+                        <div class="form-group">
+                            <label for="{{form2.cargos.name}}">{{form2.cargos.label}}</label>
+                            {{form2.cargos}}
+                        </div>
+                    </div> -->
+                    <!-- <script type="text/javascript">
+                        function mostrar_funcionario(){
+                            document.getElementById('pantalla').style.display = 'block';
+                        }
+                        function ocultar_funcionario(){
+                            document.getElementById('pantalla').style.display = 'none';
+                        }
+                    </script> -->
+                    <!--OPCION GUARDAR-->
+                    {% comment %} <button class="btn btn-info">Guardar Datos</button> {% endcomment %}
+                    <br>
+                    <br>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
+                        <input type="submit" value="Guardar Registro " class= "btn btn-primary txt-white" name="_save"></imput>
+                    </div>
+                <div>
+            </div>
+        </div>
+    </div>
+{%endblock%}

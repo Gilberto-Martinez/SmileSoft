@@ -1,0 +1,196 @@
+/* #AQUI TODOS LOS ESTILOS DE LAS PAGINAS  */
+body{
+    /*color de fondo*/
+    background: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+}
+header{
+    margin-top: 30px; 
+}
+
+header .nav{
+    min-height: 80px;
+    overflow: hidden;
+    background: rgb(245, 240, 240);
+}
+/* Logo */
+header .logo a,
+header .logo samp,
+header .logo p{
+    font-size: 16px;
+    display: inline-block;
+    margin: 0;
+}
+
+header .logo .nombre{
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: black;
+}
+
+header .logo .icono{
+    color: #bfbfbf;
+}
+header .logo p{
+    color: #777777;
+}
+/* Menu de navegacion */
+header .menu{
+    padding: 0;
+}
+
+header .menu a{
+    display: block;
+    padding: 0 30px;
+    text-decoration: none;
+    color: #f2f2f2;
+}
+
+header .menu a div span{
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+header .menu .c-1 {background: #1aaf7e;}
+header .menu .c-2 {background: #108d63;}
+header .menu .c-3 {background: #0c7754;}
+
+header .menu .c-1:hover {background: #3fdda8;}
+header .menu .c-2:hover {background: #2ca77e;}
+header .menu .c-3:hover {background: #319775;}
+
+/* Slider */
+
+.slider{
+    margin-bottom: 40px;
+}
+.slider .col{
+    padding: 0;
+}
+
+
+/* footer*/
+.redes-sociales{
+    padding: 40px 0;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.redes-sociales .icono{
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+    line-height: 80px;
+    color: #fff;
+    text-align: center;
+    background: #108d63;
+    display: inline-block;
+    margin: 0px 20px;
+    text-decoration: none;
+    border-radius: 80px;
+    transition: all .3s ease;
+}
+.redes-sociales .icono:hover{
+    background: #1aaf7e;
+}
+.redes-sociales .copyright{
+    padding: 20PX 0;
+}
+
+.redes-sociales .copyright samp P{
+    font-family: 'Open Sans', sans-serif;
+}
+/*---MEDIAQUERIES--- */
+/* Dispositivo xl */
+@media screen and (max-width:1199px){}
+
+/* Dispositivo lg */
+@media screen and (max-width:991px){
+    .logo {
+        height: 76px;
+    }
+    .menu {
+        min-height: 76px;
+    }
+    .menu a {
+        width: 100%;
+    }
+    .menu a div{
+        width: 100%;
+    }
+
+    .modal .modal-dialog{
+        width: 90%;
+    }
+    .modal .modal-dialog .modal-content img{
+        width: 100%;
+    }
+}
+
+/* Dispositivo md */
+@media screen and (max-width:767px){}
+
+/* Dispositivo sm */
+@media screen and (max-width:575px){
+    header{
+        margin-top: 0;
+    }
+    header .logo .nombre,
+    header .logo p {
+        font-size: 13px;
+    }
+    header .menu a{
+        font-size: 14px;
+    }
+}
+/* Parrafos, color azul*/
+div p {
+    color: rgb(2, 0, 8);
+  }
+
+/* #para los mensajes debajo de los campos */
+.caption {
+    font-size: 20px;
+    color: rgb(18, 4, 95); 
+    text-align: center;
+    background-color: #df0909;
+    width: 230px;
+  }
+  
+  div:where(.outer) p {
+    color: orange;
+  }
+
+  /*Validaciones estilo*/
+  
+  select[multiple] {
+    background:none;
+    width:auto;
+    height:auto;
+    padding:0;
+    margin:0;
+    border-width: 2px;
+    border-style: inset;
+    -moz-appearance: menulist;
+    -webkit-appearance: menulist;
+    appearance: menulist;
+  }
+
+  strong {
+    /* font-weight: bold; */
+    font-weight: bold;
+    /* background-color: rgb(0, 195, 255); */
+  }
+
+  
+input:invalid {
+  border: 2px dashed red;
+}
+/* 
+input:invalid:required {
+  background-image: linear-gradient(to right, rgb(252, 252, 252), rgb(80, 243, 255));
+} */
+
+input:valid {
+  border: 2px solid black;
+}

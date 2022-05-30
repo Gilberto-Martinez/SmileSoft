@@ -1,0 +1,1 @@
+default_app_config = 'agregar_mas.apps.AgregarMasConfig'

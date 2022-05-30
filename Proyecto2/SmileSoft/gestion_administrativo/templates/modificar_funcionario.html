@@ -1,0 +1,95 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+
+<div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>
+            <center>  <h2>Modificar Funcionario</h2> </center>    
+                  <!-- Tooltip. -->
+                <div class="container mt-3 text-center">
+                    <small> <b>   ¡ Ingrese los datos del funcionario ! </small>
+                </div>
+            
+            <div class="card-body">
+                <form method="POST">
+                    {%csrf_token%}
+                    <div style="margin: 20px;">
+                        <table>
+                            <div class="form-group">
+                                <label for="{{form2.nombre.name}}">{{form2.nombre.label}}</label>
+                                {{form2.nombre}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form2.apellido.name}}">{{form2.apellido.label}}</label>
+                                {{form2.apellido}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form2.numero_documento.name}}">{{form2.numero_documento.label}}</label>
+                                {{form2.numero_documento}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form2.direccion.name}}">{{form2.direccion.label}}</label>
+                                {{form2.direccion}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form2.telefono.name}}">{{form2.telefono.label}}</label>
+                                {{form2.telefono}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form2.correo_electronico.name}}">{{form2.correo_electronico.label}}</label>
+                                {{form2.correo_electronico}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form2.fecha_nacimiento.name}}">{{form2.fecha_nacimiento.label}}</label>
+                                {{form2.fecha_nacimiento}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form2.sexo.name}}">{{form2.sexo.label}}</label>
+                                {{form2.sexo}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.cargos.name}}">{{form.cargos.label}}</label>
+                                {{form.cargos}}
+                            </div> 
+                            <!-- {{form2.as_p}} -->
+                            <!-- {{form.as_p}} -->
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
+                        <a href="/administrativo/listar_funcionario/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
+                    </div>
+                    <hr>
+                    <table  align="right" >
+                        <tr>
+                            <td> 
+                                <a href="/administrativo/agregar_funcionario/" class="btn btn-success">Agregar otro funcionario +</a> 
+                            </td>
+                        </tr>
+                        <div class="container mt-3 text-center">
+                            <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
+                        </div>
+                    </table>
+                
+                    <table  align="left" >
+                        <tr>
+                            <td> 
+                                <a href="/administrativo/listar_funcionario/" class="btn btn-info">Ver listado de funcionarios </a> 
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+</div>
+{%endblock%}

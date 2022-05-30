@@ -1,0 +1,154 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+
+<div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>
+            <center>  <h2>Agregar Paciente</h2> </center>    
+                  <!-- Tooltip. -->
+                <div class="container mt-3 text-center">
+                        <i class="bi bi-person-plus"> ¡ Ingrese los datos del paciente ! </i>
+                </div>
+            
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <!-- {%if mensaje%}
+                    <div class="alert alert-success" role="alert">
+                          ✅ Paciente registrado exitosamente
+                    </div>
+                    {%endif%} -->
+                    <div style="margin: 20px;" >
+                        <table>
+                            <div class="form-group">
+                                <b><label for="{{form2.nombre.name}}">{{form2.nombre.label}}</label></b>
+                                {{form2.nombre}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form2.apellido.name}}">{{form2.apellido.label}}</label></b>
+                                {{form2.apellido}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form2.numero_documento.name}}">{{form2.numero_documento.label}}</label></b>
+                                {{form2.numero_documento}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form2.direccion.name}}">{{form2.direccion.label}}</label></b>
+                                {{form2.direccion}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form2.telefono.name}}">{{form2.telefono.label}}</label></b>
+                                {{form2.telefono}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form2.correo_electronico.name}}">{{form2.correo_electronico.label}}</label></b>
+                                {{form2.correo_electronico}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form2.fecha_nacimiento.name}}">{{form2.fecha_nacimiento.label}}</label></b>
+                                {{form2.fecha_nacimiento}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form2.sexo.name}}">{{form2.sexo.label}}</label></b>
+                                {{form2.sexo}}
+                            </div>
+                            <br>
+                            <hr>
+                            <center><h4 style="font:italic;">Ingrese su antecedente clinico</h4></center>
+                            <div class="form-group">
+                                <b><label for="{{form.grupo_sanguineo.name}}">{{form.grupo_sanguineo.label}}</label></b>
+                                {{form.grupo_sanguineo}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.enfermedad_base.name}}">{{form.enfermedad_base.label}}</label></b>
+                                {{form.enfermedad_base}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.alergia.name}}">{{form.alergia.label}}</label></b>
+                                {{form.alergia}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.tolerancia_anestecia.name}}">{{form.tolerancia_anestecia.label}}</label></b>
+                                {{form.tolerancia_anestecia}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.frecuencia_higiene_bucal.name}}">{{form.frecuencia_higiene_bucal.label}}</label></b>
+                                {{form.frecuencia_higiene_bucal}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.medicamento.name}}">{{form.medicamento.label}}</label></b>
+                                {{form.medicamento}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.cirugias.name}}">{{form.cirugias.label}}</label></b>
+                                {{form.cirugias}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.caries.name}}">{{form.caries.label}}</label></b>
+                                {{form.caries}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <b><label for="{{form.afeccion_cronica_familiar.name}}">{{form.afeccion_cronica_familiar.label}}</label></b>
+                                {{form.afeccion_cronica_familiar}}
+                            </div>
+                            <br>
+ 
+                         </table>
+                    </div>  
+
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary" type="submit" style="margin: 10px;">
+                            <i class="bi-save"></i>
+                            Guardar
+                        </button>
+                        <a href="/administrativo/listar_paciente/" class="btn btn-danger" style="margin: 10px;">
+                            <i class="bi-x-circle"></i>
+                            Cancelar
+                        </a>
+                    </div>
+                    <hr>
+                    <table  align="right" >
+                        <tr>
+                            <td> 
+                                <a href="/administrativo/agregar_paciente/" class="btn btn-success">
+                                    <i class="bi-person-plus-fill"></i>
+                                    Agregar otro paciente
+                                </a> 
+                            </td>
+                        </tr>
+                        <div class="container mt-3 text-center">
+                            <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
+                        </div>
+                    </table>
+                
+                    <table  align="left" >
+                        <tr>
+                            <td> 
+                                <a href="/administrativo/listar_paciente/" class="btn btn-info">
+                                    <i class="bi-view-list"></i>
+                                    Ver listado de pacientes
+                                </a> 
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+</div>
+{%endblock%}

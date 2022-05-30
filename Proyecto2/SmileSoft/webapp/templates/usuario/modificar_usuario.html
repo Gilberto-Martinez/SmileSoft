@@ -1,0 +1,82 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+
+<div class="row">
+   
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>
+            <center>  <h2> Modificar Usuario</h2> </center>
+            <div class="card-body">
+                <form action="" method="post">
+                    {%csrf_token%}
+
+                    {%if mensaje%}
+                    <div class="alert alert-success" role="alert">
+                    ✅ ¡Modificación exitosa!
+                    </div>
+                    {%endif%}
+
+                   
+                    
+                     
+                    {% if messages %}
+                        <ul class="messages">
+                          
+                            {% for message in messages %}
+                            <li class="list-group-item list-group-item-warning col-12 col-md-6 offset-md-3">
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} ❌Error:
+                                {% comment %} {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT> {% endcomment %}
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                {{ message }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        <!--Formulario de modificaciones-->    
+                      <b>
+                        {{form.as_p}}
+                     
+                    </b>  
+                    
+                        <!--Opciones-->
+                        <div class="d-flex justify-content-center">
+                            <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
+                            <input type="submit" value="Guardar " class= "btn btn-primary btn-block txt-white" name="_save">
+                            &nbsp;
+                            <input type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
+                        
+                        </div>    
+                </form>
+             
+           <div>
+      </div>
+
+    </div>
+</div>
+           
+
+                    <hr>
+                        
+                        <table  align="right" >
+                               <div class="container mt-3 text-left">
+                                 <a href="http://127.0.0.1:8000/base/" data-toggle="tooltip" title="Vuelve al inicio"> 🔼 Inicio</a>
+                               </div>
+                            <tr>
+                            <td> <a href="/sesion/listar_usuario/" class="btn btn-info">Ver listado de los usuarios </a> </td>
+                            </tr>
+                         </table>
+
+
+{%endblock%}
+
+
+

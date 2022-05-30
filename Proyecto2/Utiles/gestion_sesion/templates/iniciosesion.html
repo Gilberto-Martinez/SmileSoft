@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es"></html>
+  <head>
+    <meta charset="utf-8">
+    <title>Autenticación de Usuario</title>
+    <link rel="stylesheet" href= "{% static 'estilo.css'%}">
+</head>
+<body>
+    <div class="form">
+          <h4>SMILESOFT</h4>
+          <form class="login-form">
+            <form action ="/iniciosesion" method= "post">
+          <label> Usuario: </label>
+            <input type="text" name="usuario" placeholder="&#128100; Ingresar un nombre de usuario"/>
+          <label> Contraseña: </label>
+            <input type="password" name="pass1" placeholder="&#128274; Ingresar la contraseña"/>
+              <label> Confirmar contraseña: </label>
+            <input type="password" name ="pass2" placeholder="&#128274; Confirmación de contraseña"/>
+            <br>
+            <button>Iniciar Sesión</button>
+            <br>
+          <br>
+          <center>
+            <p><a href="#">¿Olvidaste tu contraseña?</a></p> 
+            <br>
+            <p><a href="//127.0.0.1:8000/administrativo/registro_personas"ht>¿Ya tienes una cuenta?. Regístrate</a></p> 
+            {% comment %} <br> gestion_administrativo\registro_de_datos.html {% endcomment %}
+            <br>
+            </center>
+            <p class="message"> Gracias por visitar el Sistema de SmileSoft </p>
+          </form>
+        </div>
+
+    </div>
+  </body>
+</html>

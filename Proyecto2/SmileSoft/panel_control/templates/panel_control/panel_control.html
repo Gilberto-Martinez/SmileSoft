@@ -1,0 +1,96 @@
+{%extends 'panel_control/base.html'%}  
+{%load static%}
+
+
+{%block slider%}
+<!--Slider-======================================BLOQUE DEl CARROUSEL========================================================-->
+      <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="{% static 'img/modelo1.jpg' %}"  class="d-block w-100" alt="..." width="550" height="400">
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'img/tiempo.jpg' %}"  class="d-block w-100" alt="..." width="550" height="400">
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'img/fondo3.jpg' %}" class="d-block w-100" alt="..." width="550" height="400">
+            </div>
+            <div class="carousel-item ">
+              <img src="{% static 'img/odontologia.jpg' %}"  class="d-block w-100" alt="..." width="550" height="400">
+            </div>
+          </div> 
+      </div>
+{% endblock %}
+
+{%block content %}
+ <br>  
+      <main>
+        <!--Contenido -->
+        <div class="container">
+          <div class="row contenedor">
+            <div class="col">
+              <h2 class="titulo">
+                Odontología
+                <br>
+              </h2>
+              <div class="row projects justify-content-center">
+                <div class="content-project col-12 col-lg-4 col-md-4">
+                  <a href="" data-toggle="modal" data-target="#modal">
+                    <img src="{% static 'img/cuidadodental.jpg' %}" class="w-75 mx-auto d-block" alt="cuidadodental">
+                  </a>
+                </div>
+                <br>
+                <div class="content-project col-12 col-lg-8 col-md-8">
+                  <h5 class="title-project">
+                    Cuidado & Prevención Bucal </h5>
+                  <p>En la odontología prevenir es curar.
+                    <br>
+                     Un diagnóstico a tiempo te ayudará a evitar patologías bucodentales más graves en el futuro.
+                     <br>
+                     <br>
+                     <FONT COLOR="blue"> <b> Beneficios de hacerse una limpieza dental </b> </FONT>
+                     <br>
+                     <br>
+                     ° Mantiene los dientes protegidos frente a enfermedades bucales. ...
+                     <br>
+                     ° Evitamos o eliminamos el mal aliento. ...
+                     <br>
+                     ° Luce una sonrisa más radiante...
+                    </p>
+                </div>
+    
+                <div class="content-project col-12 col-lg-4 col-md-4">
+                  <a href="" data-toggle="modal" data-target="#modal">
+                    <img src="{% static 'img/elemento1.jpg' %}" class="w-75 mx-auto d-block" alt="cuidadodental">
+                  </a>
+                </div>
+                <div class="content-project col-12 col-lg-8 col-md-8">
+                  <h5 class="title-project">Servicios & Tratamientos</h5>
+                  <br>
+                 <ol>
+                  <FONT COLOR="blue"> <b> Servicios </b> </FONT>
+                   
+                    <li>  Colocación de protesis </li>
+                    <li> Colocación de frenos</li>
+                      <li> Restauraciones estéticas</li>
+                        <li> Limpieza de sarros</li>
+                          <li> Profilaxis</li>
+                            <li> Blanqueamiento con placa</li>
+                   </li>
+                   <FONT COLOR="blue"> <b> Tratamientos </b> </FONT>
+                
+                    <li> Elminación de caries</li>
+                    <li> Tratamiento Conducto </li>
+                 </ol>
+                    
+                    <a href="/tratamiento/listar_tratamiento/" class="btn link-project">
+                       <FONT COLOR="navy">Mas Información </FONT>
+                    </a>
+                </div>
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+{% endblock %}
