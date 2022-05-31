@@ -6,6 +6,7 @@ from gestion_historial_clinico.models import HistorialClinico
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import *
 # from agregar_mas.models impo
+from gestion_tratamiento.models import Tratamiento
 
 # Create your models here.
 class Persona(models.Model):
@@ -233,7 +234,34 @@ class Paciente(models.Model):
 #     class Meta:
 #         verbose_name_plural = 'Insumos'
 #         db_table = 'Insumo'
+#######################################################################
+#TRATAMIENTO ASIGNADO
 
+########################PRUEBA#########################################
+
+class PacienteTratamientoAsignado(models.Model):
+    paciente = models.ForeignKey(
+        Paciente, 
+        on_delete=models.CASCADE, 
+        blank=True, null=True
+    )
+
+    nombre_tratamiento = models.ManyToManyField(
+        Tratamiento,
+        #on_delete=models.CASCADE,
+        blank=True,
+        #null=True
+    )
+
+    class Meta:
+        db_table = 'PacienteTratamientoAsignado'
+        verbose_name = 'Tratamieto Asignado al Paciente'
+        verbose_name = 'Tratamietos del Paciente'
+#####################################################################
+
+
+
+###########################################################################
 class Proveedor(models.Model):
     ruc = models.CharField(max_length=12, null=False, blank= False, primary_key=True,)
     nombre = models.CharField(max_length=40, null=False, blank= False)

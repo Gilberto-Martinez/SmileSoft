@@ -1,0 +1,83 @@
+{%extends 'panel_control/base.html'%}
+
+{% block content %}
+<div class="card">
+	<div class="card-body">
+		<center>  <h2>	 <i class="bi-person-lines-fill">Listado de Pacientes</i></h2> </center>    
+
+
+<table  align="right" >
+    <tr>
+    <td> 
+		<a href="/administrativo/agregar_paciente/" class="btn btn-success">
+			<i class="bi-person-plus-fill"></i>
+			Agregar un paciente
+		</a> 
+	</td>
+    </tr>
+</table>
+<br>
+<br>
+<br>
+
+<table class="table table-striped table-hover">
+	<thead style="border: 1cm;">
+		<tr>
+			<th>Número</th>
+			<th>N° de Documento</th>
+			<th>Nombre y apellido</th>
+			<!-- <th>Dirección</th>
+			<th>Teléfono</th>
+			<th>Correo electrónico</th>
+			<th>Fecha de nacimiento</th> -->
+			<th>Acciones</th>
+		</tr>
+		
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for paciente in object_list %}
+		<tr>
+			<td >{{forloop.counter}}</td>
+			<td>{{ paciente.numero_documento }}</td>
+			<td>{{ paciente.numero_documento.nombre }} {{paciente.numero_documento.apellido}}</td>
+			<!-- <td>{{ paciente.numero_documento.direccion }}</td>
+			<td>{{ paciente.numero_documento.telefono }}</td>
+			<td>{{ paciente.numero_documento.correo_electronico }}</td>
+			<td>{{ paciente.numero_documento.fecha_nacimiento }}</td> -->
+			<td>
+				<a class="btn btn-primary" href="/administrativo/asignar_tratamiento/">
+					<i class="bi-pencil-square"></i>
+					Asignar Tratamiento
+				</a>
+			</td>
+		</tr>
+		{% endfor %}
+		
+		{% else %}
+		<h1>No hay registros de pacientes</h1>
+		{% endif %}
+
+		{% if messages %}
+                        <ul class="messages">
+                          
+                            {% for message in messages %}
+                            <li>
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
+                                
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                {{ message }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+	</tbody>
+</table> 
+
+	</div>
+</div>
+
+{% endblock%}

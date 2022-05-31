@@ -27,6 +27,9 @@ class PacienteList(ListView):
     model = Paciente
     template_name = 'listar_paciente.html'
 
+class PacienteList2(ListView):
+    model = Paciente
+    template_name = 'listar_paciente2.html'
 
 class EspecialistaSaludList(ListView):
     model = EspecialistaSalud
@@ -554,3 +557,27 @@ class CargoDelete(DeleteView):
     model = Cargo
     template_name = 'eliminar_cargo.html'
     success_url = reverse_lazy('listar_cargo')
+
+
+################################################################################
+################################################################################
+def asignar_tratamiento (request):
+    
+    data= {
+        'form' : PacienteAsignadoForm()
+    }
+    
+    if request.method== "POST":
+        formulario= PacienteAsignadoForm(data = request.POST, files= request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data["mensaje"]="Tratamiento asignado correctamente"
+            messages.success(request, (
+                'Agregado correctamente!'))
+            print('aquiiiiiiiiiiiiii ENTRAAAAA')
+        else:
+            data["form"]=formulario
+            print('NO ENTRAAAAA')
+            
+    return render(request,"asignar_tratamiento.html",data)
+
