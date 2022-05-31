@@ -56,6 +56,83 @@
                                 {{form.sexo}}
                             </div>
                             <br>
+                            <!-- Modificar Funcionario -->
+                            <div>
+                                <input type="button" id="boton_funcionario" value="+ Agregar como funcionario" onclick="mostrar_ocultar_funcionario()">
+                                </input>
+                            </div>
+                            <br>
+                            <div id="funcionario" style="display: none;">
+                                <div class="form-group">
+                                    <label for="{{form2.cargos.name}}">{{form2.cargos.label}}</label>
+                                    {{form2.cargos}}
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- Agregar Paciente -->
+                            <div>
+                                <input type="button" id="boton_paciente" value="+ Agregar como paciente" onclick="mostrar_ocultar_paciente();"></input>
+                            </div>
+                            <br>
+                            <div id="paciente" style="display: none;">
+                                <div class="form-group">
+                                    <label for="{{form3.grupo_sanguineo.name}}">{{form3.grupo_sanguineo.label}}</label>
+                                    {{form3.grupo_sanguineo}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.enfermedad_base.name}}">{{form3.enfermedad_base.label}}</label>
+                                    {{form3.enfermedad_base}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.alergia.name}}">{{form3.alergia.label}}</label>
+                                    {{form3.alergia}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.intolerancia_anestecia.name}}">{{form3.intolerancia_anestecia.label}}</label>
+                                    {{form3.intolerancia_anestecia}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.frecuencia_higiene_bucal.name}}">{{form3.frecuencia_higiene_bucal.label}}</label>
+                                    {{form3.frecuencia_higiene_bucal}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.medicamento.name}}">{{form3.medicamento.label}}</label>
+                                    {{form3.medicamento}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.cirugias.name}}">{{form3.cirugias.label}}</label>
+                                    {{form3.cirugias}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.caries.name}}">{{form3.caries.label}}</label>
+                                    {{form3.caries}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form3.afeccion_cronica_familiar.name}}">{{form3.afeccion_cronica_familiar.label}}</label>
+                                    {{form3.afeccion_cronica_familiar}}
+                                </div>
+                                <br>
+                            </div>
+                            <hr>
+                            <!-- Agregar Especialista de Salud -->
+                            <div>
+                                <input type="button" id="boton_especialista_salud" value="+ Agregar como especialista de salud" onclick="mostrar_ocultar_especialista();"></input>
+                            </div>
+                            <br>
+                            <div id="especialista_salud" style="display: none;">
+                                <div class="form-group">
+                                    <label for="{{form4.cargos.name}}">{{form4.cargos.label}}</label>
+                                    {{form4.trabajos_realizados}}
+                                </div>
+                            </div> 
                         </table>
                     </div>
 
@@ -63,11 +140,70 @@
                         <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
                         <a href="/administrativo/listar_persona/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
                     </div>
+
+                    <!-------------Bloque Javascript -------------------->
+                    <script type="text/javascript">
+                        // Funcionario
+                        function mostrar_funcionario(){
+                            document.getElementById('funcionario').style.display = 'block';
+                        }
+                        function ocultar_funcionario(){
+                            document.getElementById('funcionario').style.display = 'none';
+                        }
+                        function mostrar_ocultar_funcionario(){
+                            var funcionario = document.getElementById('funcionario');
+                            if(funcionario.style.display == 'none'){
+                                mostrar_funcionario()
+                                document.getElementById('boton_funcionario').value = 'Ocultar';
+                            }
+                            else{
+                                ocultar_funcionario()
+                                document.getElementById('boton_funcionario').value = '+ Agregar como funcionario';
+                            }
+                        }
+                        // Paciente
+                        function mostrar_paciente(){
+                            document.getElementById('paciente').style.display = 'block';
+                        }
+                        function ocultar_paciente(){
+                            document.getElementById('paciente').style.display = 'none';
+                        }
+                        function mostrar_ocultar_paciente(){
+                            var paciente = document.getElementById('paciente');
+                            if(paciente.style.display == 'none'){
+                                mostrar_paciente()
+                                document.getElementById('boton_paciente').value = 'Ocultar';
+                            }
+                            else{
+                                ocultar_paciente()
+                                document.getElementById('boton_paciente').value = '+ Agregar como paciente';
+                            }
+                        }
+                        // Especialista de salud
+                        function mostrar_especialista_salud(){
+                            document.getElementById('especialista_salud').style.display = 'block';
+                        }
+                        function ocultar_especialista_salud(){
+                            document.getElementById('especialista_salud').style.display = 'none';
+                        }
+                        function mostrar_ocultar_especialista(){
+                            var especialista_salud = document.getElementById('especialista_salud');
+                            if(especialista_salud.style.display == 'none'){
+                                mostrar_especialista_salud()
+                                document.getElementById('boton_especialista_salud').value = 'Ocultar';
+                            }
+                            else{
+                                ocultar_especialista_salud()
+                                document.getElementById('boton_especialista_salud').value = '+ Agregar como especialista de salud';
+                            }
+                        }
+                    </script>
+                    <!------------ Fin de Bloque Javascript -------------->
                     <hr>
                     <table  align="right" >
                         <tr>
                             <td> 
-                                <a href="/administrativo/agregar_peresona/" class="btn btn-success">Agregar a otra persona +</a> 
+                                <a href="/administrativo/agregar_persona/" class="btn btn-success">Agregar a otra persona +</a> 
                             </td>
                         </tr>
                         <div class="container mt-3 text-center">

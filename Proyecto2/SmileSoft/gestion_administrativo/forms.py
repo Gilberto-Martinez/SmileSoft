@@ -30,8 +30,8 @@ class PersonaForm(forms.ModelForm):
    
                                       
    class Meta:
-        model = Persona
-        fields = ['nombre', 
+         model = Persona
+         fields = ['nombre', 
                   'apellido', 
                   'numero_documento', 
                   'direccion',
@@ -40,6 +40,11 @@ class PersonaForm(forms.ModelForm):
                   'fecha_nacimiento',
                   'sexo',
                 ]
+         # widgets = {
+         #             'es_funcionario': HiddenInput(attrs={'required':False}),
+         #             'es_paciente': HiddenInput(attrs={'required':False}),
+         #             'es_especialista_salud': HiddenInput(attrs={'required':False}),
+         # }
 
    def clean_numero_documento(self):
       numero_documento= self.cleaned_data["numero_documento"]
@@ -71,10 +76,7 @@ class FuncionarioForm(forms.ModelForm):
               'class': 'form-select2',
               'style': 'width: 30px',
               'multiple': 'multiple'}),
-               #  'numero_documento': HiddenInput(attrs={'required': False})
-            'es_funcionario': HiddenInput(attrs={'required':False}),
-            'es_paciente': HiddenInput(attrs={'required':False}),
-            'es_personal_salud': HiddenInput(attrs={'required':False}),
+               #  'numero_documento': HiddenInput(attrs={'required': False}
                }
       # InlineForeignKeyField(Cargo)
             
