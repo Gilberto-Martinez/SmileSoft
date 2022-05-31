@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.views.generic import ListView,CreateView, TemplateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
+from django.core.exceptions import ObjectDoesNotExist
 
 ############################ LISTADOS ###############################################
 class PersonaList(ListView):
@@ -71,24 +72,27 @@ class PersonaCreate(CreateView):
         form4 = self.fourth_form_class(request.POST)
         if form.is_valid():
             if form2.is_valid():
-                persona = form.save(commit=False)
-                persona.es_funcionario = True
-                persona.save()
+                # persona = form.save(commit=False)
+                # persona.es_funcionario = True
+                # persona.save()
+                persona = form.save()
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
                 form2.save_m2m()
             if form3.is_valid():
-                persona = form.save(commit=False)
-                persona.es_paciente = True
-                persona.save()
+                # persona = form.save(commit=False)
+                # persona.es_paciente = True
+                # persona.save()
+                persona = form.save()
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = persona
                 paciente.save()
             if form4.is_valid():
-                persona = form.save(commit=False)
-                persona.es_especialista_salud = True
-                persona.save()
+                # persona = form.save(commit=False)
+                # persona.es_especialista_salud = True
+                # persona.save()
+                persona = form.save()
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
@@ -272,10 +276,12 @@ class PersonaUpdate(UpdateView):
     model = Persona
     second_model = Funcionario
     third_model = Paciente
+    fourt_model = EspecialistaSalud
     template_name = 'modificar_persona.html'
     form_class = PersonaUpdateForm
     second_form_class = FuncionarioForm
     third_form_class = PacienteForm
+    fourt_form_class = EspecialistaSaludForm
     success_url = reverse_lazy('listar_persona')
 
     def get_context_data(self, **kwargs):
@@ -284,20 +290,29 @@ class PersonaUpdate(UpdateView):
         persona = self.model.objects.get(numero_documento=pk)
         if 'form' not in context:
             context['form'] = self.form_class()
-        if persona.es_funcionario is True:
+        try:
             funcionario = self.second_model.objects.get(numero_documento=persona.numero_documento)
+        except ObjectDoesNotExist:# Si funcionario con ese numero de documento no existe cargara un formulario de funcioanrio sin datos
+            context['form2'] = self.second_form_class()
+        else: # Si funcionario con ese numero de documento existe cargara los datos del funcionario extraidos se la base de datos al contexto
             if 'form2' not in context:
                 context['form2'] = self.second_form_class(instance=funcionario)
-        else:
-            if 'form2' not in context:
-                context['form2'] = self.second_form_class()
-        if persona.es_paciente is True:
+
+        try:
             paciente = self.third_model.objects.get(numero_documento=persona.numero_documento)
+        except ObjectDoesNotExist:
+            context['form3'] = self.third_form_class()
+        else:
             if 'form3' not in context:
                 context['form3'] = self.third_form_class(instance=paciente)
+
+        try:
+            especialista_salud = self.fourt_model.objects.get(numero_documento=persona.numero_documento)
+        except ObjectDoesNotExist:
+            context['form4'] = self.fourt_form_class()
         else:
-            if 'form3' not in context:
-                context['form3'] = self.third_form_class()
+            if 'form4' not in context:
+                context['form4'] = self.fourt_form_class(instance=especialista_salud)
         context['numero_documento'] = pk
         return context
 
@@ -306,20 +321,42 @@ class PersonaUpdate(UpdateView):
         id_pers = kwargs['pk']
         persona = self.model.objects.get(numero_documento=id_pers)
         form = self.form_class(request.POST, instance=persona)
-        if persona.es_funcionario is True:
+        try:
             funcionario = self.second_model.objects.get(numero_documento=persona.numero_documento)
-            form2 = self.second_form_class(request.POST, instance=funcionario)
-        else:
+        except ObjectDoesNotExist:# Si funcionario no existe mostrara el formulario de Funcionario Vacio
             form2 = self.second_form_class(request.POST)
-        if persona.es_funcionario is True:
+        else: # Si funcionario existe mostrará los datos del funcionario extraidos de la base de datos en el formulario
+            form2 = self.second_form_class(request.POST, instance=funcionario)
+
+        try:
             paciente = self.third_model.objects.get(numero_documento=persona.numero_documento)
+        except ObjectDoesNotExist:
+            form3 = self.third_form_class(request.POST)
+        else:
             form3 = self.third_form_class(request.POST, instance=paciente)
+
+        try:
+            especialista_salud = self.fourt_model.objects.get(numero_documento=persona.numero_documento)
+        except ObjectDoesNotExist:
+            form4 = self.fourt_form_class(request.POST)
+        else:
+            form4 = self.fourt_form_class(request.POST, instance=especialista_salud)
+
         if form.is_valid():
-            form.save()
+            persona = form.save()
             if form2.is_valid():
-                form2.save()
-            if form2.is_valid():
-                form3.save()
+                funcionario = form2.save(commit=False)
+                funcionario.numero_documento = persona
+                funcionario.save()
+                form2.save_m2m()
+            if form3.is_valid():
+                paciente = form3.save(commit=False)
+                paciente.numero_documento = persona
+                paciente.save()
+            if form4.is_valid(): # Aun falta implementar
+                especialista_salud = form4.save(commit=False)
+                especialista_salud.numero_documento = persona
+                especialista_salud.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())

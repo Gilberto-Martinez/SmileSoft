@@ -119,9 +119,20 @@
                                     <label for="{{form3.afeccion_cronica_familiar.name}}">{{form3.afeccion_cronica_familiar.label}}</label>
                                     {{form3.afeccion_cronica_familiar}}
                                 </div>
-                        <br>
-                    </div> 
-
+                                <br>
+                            </div>
+                            <hr>
+                            <!-- Agregar Especialista de Salud -->
+                            <div>
+                                <input type="button" id="boton_especialista_salud" value="+ Agregar como especialista de salud" onclick="mostrar_ocultar_especialista();"></input>
+                            </div>
+                            <br>
+                            <div id="especialista_salud" style="display: none;">
+                                <div class="form-group">
+                                    <label for="{{form4.cargos.name}}">{{form4.cargos.label}}</label>
+                                    {{form4.trabajos_realizados}}
+                                </div>
+                            </div> 
                         </table>
                     </div>
 
@@ -166,6 +177,24 @@
                             else{
                                 ocultar_paciente()
                                 document.getElementById('boton_paciente').value = '+ Agregar como paciente';
+                            }
+                        }
+                        // Especialista de salud
+                        function mostrar_especialista_salud(){
+                            document.getElementById('especialista_salud').style.display = 'block';
+                        }
+                        function ocultar_especialista_salud(){
+                            document.getElementById('especialista_salud').style.display = 'none';
+                        }
+                        function mostrar_ocultar_especialista(){
+                            var especialista_salud = document.getElementById('especialista_salud');
+                            if(especialista_salud.style.display == 'none'){
+                                mostrar_especialista_salud()
+                                document.getElementById('boton_especialista_salud').value = 'Ocultar';
+                            }
+                            else{
+                                ocultar_especialista_salud()
+                                document.getElementById('boton_especialista_salud').value = '+ Agregar como especialista de salud';
                             }
                         }
                     </script>
