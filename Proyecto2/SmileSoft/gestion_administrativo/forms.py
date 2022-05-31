@@ -8,6 +8,7 @@ from django.forms import HiddenInput
 from django.forms.models import InlineForeignKeyField
 # from betterforms.multiform import MultiModelForm
 #from django.core.mail import EmailMessage
+from gestion_administrativo.models import Paciente
 
 class PersonaForm(forms.ModelForm):
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
@@ -269,3 +270,54 @@ class CargoForm(forms.ModelForm):
                  'nombre',
                  'salario',
                ]
+
+##############################################################################################
+#PARA ASIGNAR TRATAMIENTO
+
+
+from django import forms
+
+
+from webapp.models import Usuario
+from .models import *
+from django.utils.translation import gettext_lazy as _
+
+
+# class AsignarTratamientoForm(forms.ModelForm):
+    
+#     class Meta:
+#         #proxy = True
+#         #   ordering = ['-created']
+#         model = TratamientoRealizado
+#         fields = '__all__'
+#         # fields = [
+#         #     'name',
+#         #     'user_permissions',
+#         # ]
+#         widgets = {
+#             'nombre_tratamiento': forms.CheckboxSelectMultiple(attrs={
+#                 'class': 'form-select2',
+#                 'style': 'width: 100px',
+#                 'multiple': 'multiple'
+#             }), }
+
+class PacienteAsignadoForm(forms.ModelForm):
+   # cargos= forms.MultiValueField(fields= 'cargos' ,widget = forms.TextInput (attrs = {'class': 'form-control',}))
+   # cargo = forms.ComboField(fields='cargos')
+   # numero_documento= forms.CharField(label='Número de documento', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su documento',}))
+   class Meta:
+      model = PacienteTratamientoAsignado
+      fields = [
+               'paciente',
+               'nombre_tratamiento',
+                ]
+      widgets = {
+          'nombre_tratamiento': forms.CheckboxSelectMultiple(attrs={
+              'class': 'form-select2',
+              'style': 'width: 30px',
+              'multiple': 'multiple'}),
+               #  'numero_documento': HiddenInput(attrs={'required': False})
+
+               }
+ 
+

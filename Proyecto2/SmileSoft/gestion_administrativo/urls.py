@@ -29,4 +29,5 @@ urlpatterns = [
             path('eliminar_cargo/<str:pk>', CargoDelete.as_view(),  name="eliminar_cargo"),
             path('correcto', SuccessView.as_view(),  name="correcto"),
             path('mensaje_error/', SuccessError.as_view(),  name="mensaje_error"),
+            path('asignar_tratamiento/', asignar_tratamiento, name="asignar_tratamiento"),
 ]

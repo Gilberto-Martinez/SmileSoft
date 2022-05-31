@@ -6,12 +6,14 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from .forms import *
 from django.contrib import messages
-from django.views.generic import ListView,CreateView, TemplateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ObjectDoesNotExist
 
 ############################ LISTADOS ###############################################
+
+
 class PersonaList(ListView):
     model = Persona
     template_name = 'listar_persona.html'
@@ -26,6 +28,9 @@ class PacienteList(ListView):
     model = Paciente
     template_name = 'listar_paciente.html'
 
+class PacienteList2(ListView):
+    model = Paciente
+    template_name = 'listar_paciente2.html'
 
 class EspecialistaSaludList(ListView):
     model = EspecialistaSalud
@@ -42,6 +47,8 @@ class CargoList(ListView):
     template_name = 'listar_cargo.html'
 
 ########################### INSERCION #################################################
+
+
 class PersonaCreate(CreateView):
     model = Persona
     template_name = 'agregar_persona.html'
@@ -66,8 +73,9 @@ class PersonaCreate(CreateView):
     @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = self.form_class(request.POST) # self.form_class(request.POST)
-        form2 = self.second_form_class(request.POST) # self.second_form_class(request.POST)
+        form = self.form_class(request.POST)  # self.form_class(request.POST)
+        # self.second_form_class(request.POST)
+        form2 = self.second_form_class(request.POST)
         form3 = self.third_form_class(request.POST)
         form4 = self.fourth_form_class(request.POST)
         if form.is_valid():
@@ -88,6 +96,8 @@ class PersonaCreate(CreateView):
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = persona
                 paciente.save()
+                messages.success(
+                    request, " ✅Se ha agregado  correctamente")
             if form4.is_valid():
                 # persona = form.save(commit=False)
                 # persona.es_especialista_salud = True
@@ -132,12 +142,13 @@ class FuncionarioCreate(CreateView):
             funcionario.numero_documento = persona
             funcionario.save()
             form.save_m2m()
-            messages.success(request,"Funcionario agregado")
+            messages.success(request, "Funcionario agregado")
             return HttpResponseRedirect(self.success_url)
         else:
-            messages.error(request,"No funciona")
+            messages.error(request, "No funciona")
             print('NO ENTRAAAAA')
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
+
 
 class EspecialistaSaludCreate(CreateView):
     model = EspecialistaSalud
@@ -147,7 +158,8 @@ class EspecialistaSaludCreate(CreateView):
     form_class = EspecialistaSaludForm
 
     def get_context_data(self, **kwargs):
-        context = super(EspecialistaSaludCreate, self).get_context_data(**kwargs)
+        context = super(EspecialistaSaludCreate,
+                        self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
@@ -162,7 +174,7 @@ class EspecialistaSaludCreate(CreateView):
         data = {
             'form': EspecialistaSaludForm(),
             'form2': PersonaForm()
-            }
+        }
         if form.is_valid() and form2.is_valid():
             especialista_salud = form.save(commit=False)
             especialista_salud.numero_documento = form2.save()
@@ -191,7 +203,7 @@ class ProveedorCreate(CreateView):
         form = self.form_class(request.POST)
         data = {
             'form': ProveedorForm()
-            }
+        }
         if form.is_valid():
             form.save()
             # data['mensaje'] = "Agregado correctamente"
@@ -200,8 +212,7 @@ class ProveedorCreate(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-
-class  CargoCreate(CreateView):
+class CargoCreate(CreateView):
     model = Cargo
     template_name = 'agregar_cargo.html'
     form_class = CargoForm
@@ -231,8 +242,10 @@ class  CargoCreate(CreateView):
 class SuccessView(TemplateView):
     template_name = 'success.html'
 
+
 class SuccessError(TemplateView):
     template_name = 'mostrar_mensaje_error.html'
+
 
 class PacienteCreate(CreateView):
     model = Paciente
@@ -252,26 +265,31 @@ class PacienteCreate(CreateView):
     @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = PacienteForm(request.POST) #self.form_class
-        form2 = PersonaForm(request.POST)#self.second_form_class
+        form = PacienteForm(request.POST)  # self.form_class
+        form2 = PersonaForm(request.POST)  # self.second_form_class
         data = {
             'form': PacienteForm(),
             'form2': PersonaForm()
-            }
+        }
         if form.is_valid() and form2.is_valid():
             paciente = form.save(commit=False)
             paciente.numero_documento = form2.save()
             paciente.save()
+            messages.success(
+                request, " ✅Se ha agregado  correctamente")
             # messages.success(request,"Paciente agregado")
 
             data['mensaje'] = "Agregado correctamente"
             return HttpResponseRedirect(self.success_url)
         else:
             print('NO ENTRA en form')
-            messages.error(request,"Ha ocurrido un error, vuelva a intentarlo")
+            messages.error(
+                request, "Ha ocurrido un error, vuelva a intentarlo")
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 ############################### ACTUALIZACIONES #############################
+
+
 class PersonaUpdate(UpdateView):
     model = Persona
     second_model = Funcionario
@@ -286,8 +304,9 @@ class PersonaUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(PersonaUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk',0)
+        pk = self.kwargs.get('pk', 0)
         persona = self.model.objects.get(numero_documento=pk)
+        
         if 'form' not in context:
             context['form'] = self.form_class()
         try:
@@ -361,6 +380,7 @@ class PersonaUpdate(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
+
 class FuncionarioUpdate(UpdateView):
     model = Funcionario
     second_model = Persona
@@ -371,9 +391,10 @@ class FuncionarioUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(FuncionarioUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk',0)
+        pk = self.kwargs.get('pk', 0)
         funcionario = self.model.objects.get(id_funcionario=pk)
-        persona = self.second_model.objects.get(numero_documento=funcionario.numero_documento)
+        persona = self.second_model.objects.get(
+            numero_documento=funcionario.numero_documento)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'form2' not in context:
@@ -385,7 +406,8 @@ class FuncionarioUpdate(UpdateView):
         self.object = self.get_object
         id_func = kwargs['pk']
         funcionario = self.model.objects.get(id_funcionario=id_func)
-        persona = self.second_model.objects.get(numero_documento=funcionario.numero_documento)
+        persona = self.second_model.objects.get(
+            numero_documento=funcionario.numero_documento)
         form = self.form_class(request.POST, instance=funcionario)
         form2 = self.second_form_class(request.POST, instance=persona)
         if form.is_valid() and form2.is_valid():
@@ -394,9 +416,10 @@ class FuncionarioUpdate(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
-            
+
     def get(self, request, *args, **kwargs) -> HttpResponse:
         return super().get(request, *args, **kwargs)
+
 
 class EspecialistaSaludUpdate(UpdateView):
     model = EspecialistaSalud
@@ -408,10 +431,12 @@ class EspecialistaSaludUpdate(UpdateView):
     error_url = reverse_lazy('mensaje_error')
 
     def get_context_data(self, **kwargs):
-        context = super(EspecialistaSaludUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk',0)
+        context = super(EspecialistaSaludUpdate,
+                        self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk', 0)
         especialista_salud = self.model.objects.get(id_especialista_salud=pk)
-        persona = self.second_model.objects.get(numero_documento=especialista_salud.numero_documento)
+        persona = self.second_model.objects.get(
+            numero_documento=especialista_salud.numero_documento)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'form2' not in context:
@@ -422,8 +447,10 @@ class EspecialistaSaludUpdate(UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         id_especialista = kwargs['pk']
-        especialista_salud = self.model.objects.get(id_especialista_salud=id_especialista)
-        persona = self.second_model.objects.get(numero_documento=especialista_salud.numero_documento)
+        especialista_salud = self.model.objects.get(
+            id_especialista_salud=id_especialista)
+        persona = self.second_model.objects.get(
+            numero_documento=especialista_salud.numero_documento)
         form = self.form_class(request.POST, instance=especialista_salud)
         form2 = self.second_form_class(request.POST, instance=persona)
         if form.is_valid() and form2.is_valid():
@@ -438,6 +465,7 @@ class EspecialistaSaludUpdate(UpdateView):
             print('No entraaaaaaaaaaa')
             return HttpResponseRedirect(self.error_url)
 
+
 class PacienteUpdate(UpdateView):
     model = Paciente
     second_model = Persona
@@ -448,9 +476,10 @@ class PacienteUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(PacienteUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk',0)
+        pk = self.kwargs.get('pk', 0)
         paciente = self.model.objects.get(id_paciente=pk)
-        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+        persona = self.second_model.objects.get(
+            numero_documento=paciente.numero_documento)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'form2' not in context:
@@ -462,7 +491,8 @@ class PacienteUpdate(UpdateView):
         self.object = self.get_object
         id_pac = kwargs['pk']
         paciente = self.model.objects.get(id_paciente=id_pac)
-        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+        persona = self.second_model.objects.get(
+            numero_documento=paciente.numero_documento)
         form = self.form_class(request.POST, instance=paciente)
         form2 = self.second_form_class(request.POST, instance=persona)
         if form.is_valid() and form2.is_valid():
@@ -472,6 +502,7 @@ class PacienteUpdate(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
+
 class ProveedorUpdate(UpdateView):
     model = Proveedor
     template_name = 'modificar_proveedor.html'
@@ -480,7 +511,7 @@ class ProveedorUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProveedorUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk',0)
+        pk = self.kwargs.get('pk', 0)
         if 'form' not in context:
             context['form'] = self.form_class()
         context['ruc'] = pk
@@ -506,7 +537,7 @@ class CargoUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CargoUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk',0)
+        pk = self.kwargs.get('pk', 0)
         if 'form' not in context:
             context['form'] = self.form_class()
         context['nombre'] = pk
@@ -554,15 +585,18 @@ class PersonaDelete(DeleteView):
     template_name = 'eliminar_persona.html'
     success_url = reverse_lazy('listar_persona')
 
+
 class FuncionarioDelete(DeleteView):
     model = Funcionario
     template_name = 'eliminar_funcionario.html'
     success_url = reverse_lazy('listar_funcionario')
 
+
 class EspecialistaSaludDelete(DeleteView):
     model = EspecialistaSalud
     template_name = 'eliminar_especialista_salud.html'
     success_url = reverse_lazy('listar_especialista_salud')
+
 
 class PacienteDelete(DeleteView):
     model = Paciente
@@ -580,3 +614,27 @@ class CargoDelete(DeleteView):
     model = Cargo
     template_name = 'eliminar_cargo.html'
     success_url = reverse_lazy('listar_cargo')
+
+
+################################################################################
+################################################################################
+def asignar_tratamiento (request):
+    
+    data= {
+        'form' : PacienteAsignadoForm()
+    }
+    
+    if request.method== "POST":
+        formulario= PacienteAsignadoForm(data = request.POST, files= request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data["mensaje"]="Tratamiento asignado correctamente"
+            messages.success(request, (
+                'Agregado correctamente!'))
+            print('aquiiiiiiiiiiiiii ENTRAAAAA')
+        else:
+            data["form"]=formulario
+            print('NO ENTRAAAAA')
+            
+    return render(request,"asignar_tratamiento.html",data)
+

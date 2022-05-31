@@ -10,7 +10,21 @@
                 </div>
             <div class="card-body">
                 <form method="POST">
-                    {%csrf_token%}
+                    {%csrf_token%}{% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li>
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
+                                
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                {{ message }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
                     <div style="margin: 20px;" >
                         <table>
                             <div class="form-group">

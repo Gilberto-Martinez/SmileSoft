@@ -70,17 +70,17 @@
                                 
                         </div>
                         <div id="register-link" class="text-right">
-                            {% comment %} <a href="/registrologin/" class="text-black">Registrarse Aquí</a> {% endcomment %}
+                            {% comment %} <a href="/sesion/registrologin/" class="text-black">Registrarse Aquí</a> {% endcomment %}
                               <a href="/registropaciente/" class="text-black">Registrarse Aquí</a>
                         </div>
                          <br>
-                         <div id="recuperar" class="text-center">
-                            <a href="/recuperar_pass/" class="text-black">¿Olvidaste tu contraseña?</a>
+                         {% comment %} <div id="recuperar" class="text-center">
+                            <a href="/sesion/recuperar_pass/" class="text-black">¿Olvidaste tu contraseña?</a>
                         </div>
 
                           <div id="enviarcorreo" class="text-center">
-                            <a href="/enviarcorreo/" class="text-black">enviar un correo</a>
-                        </div>
+                            <a href="/sesion/enviarcorreo/" class="text-black">enviar un correo</a>
+                        </div> {% endcomment %}
 
                        <br>
                            {% csrf_token %}
@@ -106,25 +106,6 @@
     </div>
     
 </div>
-{% comment %} <h2>Login</h2>
-  
-    <form method="post" action="/base/" >
-      {% csrf_token %}
-      <table>
-        {{ form.as_p }}
-        <tr>
-          <td>&nbsp;</td>
-          <td><input type="submit" value="Submit"></td>
-        </tr>                
-      </table>
-      <div>
-                        {% for message in messages %}
-                        <h3> {{message}}  </h3>
-                        {% endfor %}
-                </div>
-    </form> {% endcomment %}
-
-
         
            <!--===CDN Separate Popper and Bootstrap JS ===-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
