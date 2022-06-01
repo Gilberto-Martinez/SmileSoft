@@ -618,23 +618,66 @@ class CargoDelete(DeleteView):
 
 ################################################################################
 ################################################################################
-def asignar_tratamiento (request):
-    
+def asignar_tratamiento (request, numero_documento):
+    # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
     data= {
-        'form' : PacienteAsignadoForm()
+        'form' : PacienteAsignadoForm(),
+        'object' : Persona.objects.get(numero_documento=numero_documento)
     }
-    
+    persona = Persona.objects.get(numero_documento=numero_documento)
     if request.method== "POST":
         formulario= PacienteAsignadoForm(data = request.POST, files= request.FILES)
         if formulario.is_valid():
-            formulario.save()
+            paciente = Paciente.objects.get(numero_documento=numero_documento)
+            tratamientos = formulario.save(commit=False)
+            tratamientos.paciente = paciente
+            tratamientos.save()
+            formulario.save_m2m()
             data["mensaje"]="Tratamiento asignado correctamente"
             messages.success(request, (
                 'Agregado correctamente!'))
-            print('aquiiiiiiiiiiiiii ENTRAAAAA')
+            # return HttpResponseRedirect(success_url)
         else:
             data["form"]=formulario
+            data['object']=persona
             print('NO ENTRAAAAA')
             
     return render(request,"asignar_tratamiento.html",data)
+
+# class TratamientoAsignadoCreate(CreateView):
+#     model = PacienteTratamientoAsignado
+#     second_model = Persona
+#     template_name = 'asignar_tratamiento.html'
+#     form_class = PacienteAsignadoForm
+#     second_form_class = PersonaTratamientoForm
+#     success_url = reverse_lazy('listar_paciente2')
+
+#     def get_context_data(self, **kwargs):
+#         context = super(TratamientoAsignadoCreate, self).get_context_data(**kwargs)
+#         num = self.kwargs.get('numero_documento', 0)
+#         persona = self.second_model.objects.get(numero_documento=num)
+#         if 'form' not in context:
+#             context['form'] = self.form_class(self.request.GET)
+#         if 'object' not in context:
+#             context['object'] = self.second_model(self.request.GET, instance=persona)
+#         context['numero_documento'] = num
+#         return context
+
+#     @method_decorator(csrf_protect)
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object
+#         num = kwargs['numero_documento']
+#         form = self.form_class(request.POST)
+#         persona = self.second_model.objects.get(numero_documento=num)
+#         object = self.second_model(request.POST, instance=persona)
+#         if form.is_valid():
+#             paciente = Paciente.objects.get(numero_documento=num)
+#             tratamientos = form.save(commit=False)
+#             tratamientos.paciente = paciente
+#             tratamientos.save()
+#             form.save_m2m()
+#             return HttpResponseRedirect(self.success_url)
+#         else:
+#             return self.render_to_response(self.get_context_data(form=form, object=object))
+
 
