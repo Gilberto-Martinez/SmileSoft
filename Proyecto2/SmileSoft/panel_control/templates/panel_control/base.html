@@ -41,57 +41,67 @@
              <div class="alert alert-light align-items-center justify-content-between" role="alert">
                {% if messages %}
                         <ul class="messages">
-                        
                              {% for message in messages %}
                             <li>
                                 {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %} 
-                                 
                                 {% endif %}
                                 {{ message }}
                             </li>
                             {% endfor %}
                         </ul>
-                        
                         {% endif %}
                </div>          
-               <!--Inicio de SESION PANEL-->
-            <div 
-              class="col-md-12 col-lg logo d-flex align-items-center justify-content-center justify-content-lg-start ">
-              <!-- {% comment %} al colocar el mouse da click <a class="nombre" href="/login"> {% endcomment %} -->
-                 <a class="nombre" >
-                  <i class="bi bi-person-check-fill" > <FONT COLOR="blue"> {{user.usuario}}</FONT> </i>
             
-              </a>
-              <samp class="icono icon-dot"></samp>
+            {% comment %} <div class="col-md-12 col-lg logo d-flex align-items-center justify-content-center justify-content-lg-start "> {% endcomment %}
+              <!-- {% comment %} al colocar el mouse da click <a class="nombre" href="/login"> {% endcomment %} -->
+                 {% comment %} <a class="nombre" >
+                  <i class="bi bi-person-check-fill" > <FONT COLOR="blue"> {{user.usuario}}</FONT> </i>
+                 </a> {% endcomment %}
+              {% comment %} <samp class="icono icon-dot">  </samp>
               <p> 
                 <li><a class="dropdown-item" href="/modificar_password/">  <FONT COLOR="blue"></FONT> </a></li>
               </p>
-            </div>
-            <!-- Menu de navegación -->
-            <nav class="col-md-12 col-lg-auto menu d-flex align-items-stretch flex-wrap flex-sm-nowrap">
-                
-              <div 
-              class="col-md-12 col-lg logo d-flex align-items-center justify-content-center justify-content-lg-start ">
-                  <samp class="icono icon-dot"></samp>
-              <p> 
-                <li><a class="dropdown-item" href="/modificar_password/">  <FONT COLOR="blue">Modificar Contraseña</FONT></a></li>
-                                  </p>
-              <a class="nombre" href="/cerrar_sesion"> <i class="bi bi-arrow-bar-left">Cerrar sesión</i>
-                
-               {% comment %} <img src="{% static 'img/apagar.png' %}"  width="20" height="20"> {% endcomment %}
-              </a>
-          
-            
-            </div>
-              {% comment %} <a href="/contact/" class="c-3 d-flex align-items-center bg-primary">
-                <div class="d-flex flex-column text-center">
-                  <span>Usuario</span>
-                  
-                </div>
-              </a> {% endcomment %}
-            </nav>
-          </div>
+            </div> {% endcomment %}
 
+            <!--Inicio de SESION PANEL-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+                      <div class="col-md-12 col-lg logo d-flex align-items-center justify-content-center justify-content-lg-start ">
+                          {% comment %} al colocar el mouse da click <a class="nombre" href="sesion/login"> {% endcomment %}
+                            <a class="nombre">
+                              <i class="bi bi-person-check-fill "> <FONT COLOR="blue">{{user.usuario}}</FONT>
+                              </i>
+                              </a> 
+                              <font COLOR="white">  _________________________________________________________________________________________________</font>   
+                                    
+                                  {% comment %} <img src="{% static 'img/config.png' %}" width="25px" alt="logo"> {% endcomment %}
+                          <!-- Barra de inicio de sesion-->
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <!--con ml-auto debe mudarse a la derecha-->
+                              <ul class="navbar-nav ml-auto mb-3 mb-lg-0"> 
+                                    <!--Opcion Configuración-->
+                                    <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="roles" id="navbarDropdown"
+                                      role="button" data-bs-toggle="dropdown" aria-expanded="false">       
+                                              <FONT  COLOR="blue">    
+                                                <img src="{% static 'img/config.png' %}" width="25px" alt="logo"> 
+                                                Configuración 
+                                              </FONT> 
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                              <!--Opcion de Configuración -->
+                                              <li><a class="dropdown-item" href="/sesion/modificar_password/">  <FONT COLOR="black"> Modificar/ Contraseña</FONT> </a></li>
+                                              <div class="dropdown-divider"></div>
+                                              <li><a class="dropdown-item" href="/administrativo/modificar_persona/{{user.numero_documento}}"> <font color="black">Modificar/ Datos personales </font></a></li></a>
+                                              <div class="dropdown-divider"></div>
+                                              <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
+                                            </ul>
+                                          </li>
+                                    </font>
+                      </div>
+                    {% comment %} <a class="nombre" href="/sesion/cerrar_sesion">  <font style="font-style: italic;" COLOR="black"> Cerrar sesión </font> <i class="bi bi-x-square"></i></a> {% endcomment %}
+                    <a class="nombre" href="/cerrar_sesion">  <font style="font-style: italic;" COLOR="black"> Cerrar sesión </font></a>
+              
+            </nav>
 
       <!--======================================BARRA NAVBAR=======================================================-->
   
