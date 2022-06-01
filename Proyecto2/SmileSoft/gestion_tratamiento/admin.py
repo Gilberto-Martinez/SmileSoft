@@ -5,3 +5,4 @@ from .models import *
 
 admin.site.register(Tratamiento)
 # admin.site.register(Categoria)
+

@@ -28,7 +28,7 @@ class AdminPersona(admin.ModelAdmin):
         }),
     )
 
-    list_display = ['numero_documento',"nombre", "apellido",]
+    list_display = ['numero_documento',"nombre", "apellido","es_funcionario","es_paciente", "es_especialista_salud"]
     # list_filter = ['numero_documento']
     search_fields = ["numero_documento","nombre","apellido",]
     ordering = ["nombre","apellido",]
@@ -164,3 +164,4 @@ admin.site.register(Proveedor)
 admin.site.register(Paciente)#, AdminPaciente)
 admin.site.register(EspecialistaSalud, AdminEspecialistaSalud)
 # admin.site.register(Insumo)
+admin.site.register(PacienteTratamientoAsignado)

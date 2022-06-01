@@ -139,7 +139,7 @@ class FormPacienteCreate(CreateView):
             messages.success(request, "Paciente agregado")
             #data['mensaje'] = "Agregado correctamente"
             # return HttpResponseRedirect(self.success_url)
-            return redirect("/registrologinpaciente/%s" % (persona.numero_documento))
+            return redirect("/registrologinpaciente/%s" %(persona.numero_documento))
             # return render(request, "inicio/login.html")
             # return render(request, "usuario/agregar_usuario.html")
         else:

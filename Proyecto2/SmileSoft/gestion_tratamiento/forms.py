@@ -23,6 +23,7 @@ from django.contrib.auth.forms import PasswordResetForm
 
 
 
+
 #---------------------------------------------------------------------------------------- FORMULARIOS DEL CRUD DE USUARIO------------------------------------------------------------------------------------#
 class TratamientoForm(forms.ModelForm):
     nombre_tratamiento = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del trataniento'}))

@@ -6,6 +6,7 @@ from gestion_historial_clinico.models import HistorialClinico
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import *
 # from agregar_mas.models impo
+from gestion_tratamiento.models import Tratamiento
 
 # Create your models here.
 class Persona(models.Model):
@@ -22,7 +23,7 @@ class Persona(models.Model):
     sexo = models.CharField(max_length=12, choices=SEXOS, verbose_name='Sexo')
     
     es_funcionario = models.BooleanField(verbose_name='Funcionario', default=False)
-    es_personal_salud = models.BooleanField(verbose_name='Personal de salud', default=False)
+    es_especialista_salud = models.BooleanField(verbose_name='Especialista de salud', default=False)
     es_paciente =models.BooleanField(verbose_name='Paciente', default=False)
     #es_proveedor = models.BooleanField(verbose_name='Proveedor', default=False)
 
@@ -233,7 +234,34 @@ class Paciente(models.Model):
 #     class Meta:
 #         verbose_name_plural = 'Insumos'
 #         db_table = 'Insumo'
+#######################################################################
+#TRATAMIENTO ASIGNADO
 
+########################PRUEBA#########################################
+
+class PacienteTratamientoAsignado(models.Model):
+    paciente = models.ForeignKey(
+        Paciente, 
+        on_delete=models.CASCADE, 
+        blank=True, null=True
+    )
+
+    nombre_tratamiento = models.ManyToManyField(
+        Tratamiento,
+        #on_delete=models.CASCADE,
+        blank=True,
+        #null=True
+    )
+
+    class Meta:
+        db_table = 'PacienteTratamientoAsignado'
+        verbose_name = 'Tratamieto Asignado al Paciente'
+        verbose_name = 'Tratamietos del Paciente'
+#####################################################################
+
+
+
+###########################################################################
 class Proveedor(models.Model):
     ruc = models.CharField(max_length=12, null=False, blank= False, primary_key=True,)
     nombre = models.CharField(max_length=40, null=False, blank= False)
