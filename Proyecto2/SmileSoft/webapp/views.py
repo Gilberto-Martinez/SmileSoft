@@ -63,7 +63,6 @@ from gestion_administrativo.models import Paciente, Persona
 #------------------------------------------------------------------------------------------------------#
 # Vista de Login
 
-
 def inicio_login(request):
     if request.method == 'POST':
         user = authenticate(
@@ -85,7 +84,6 @@ def inicio_login(request):
     return render(request, "inicio/login.html")
 
 # Vista de Cerrar sesión
-
 
 def cerrar_sesion(request):
     logout(request)
@@ -185,8 +183,7 @@ def registrologin(request, cedula):
 #------------------------------------------------------------------------------------------------------#
 # ***Views de Crear Usuario***
 
-
-@permission_required('webapp.agregar_usuario')
+@permission_required('webapp.agregar_usuario', login_url="/error/",)
 def agregar_usuario(request):
     data = {
         'form': UsuarioForm()
@@ -213,9 +210,10 @@ def agregar_usuario(request):
 #     return render (request,"usuario/listar_usuario.html",data)
 # funciona
 
-
 # -----------------------------------------------------------------------------------------------
 # ***Vista que Lista y busca--Funciona****
+
+@permission_required('webapp.listar_usuario', login_url="/error/")
 def listar_usuario(request):
 
     busqueda = request.POST.get("q")
@@ -233,11 +231,12 @@ def listar_usuario(request):
 
     return render(request, "usuario/listar_usuario.html", {'listado_usuarios': listado_usuarios})
 
-
 # -----------------------------------------------------------------------------------------------
 
 # ***Vista de Modificar Usuario
 
+
+@permission_required('webapp.modificar_usuario', login_url="/error/",)
 def modificar_usuario(request, usuario):
     usuario = Usuario.objects.get(usuario=usuario)
 
@@ -250,10 +249,11 @@ def modificar_usuario(request, usuario):
         if formulario.is_valid():
 
             formulario.save()
-            data['mensaje'] = "Modificado correctamente"
+            data["form"] = formulario
+            messages.success(request, " ✅Cambio realizado")
 
         else:
-            messages.error(request, "Contraseñas no coinciden")
+            messages.error(request, "Algo ha salido Mal ⚠️")
 
             # El return HttpResponse envia a otra pagina, he indica que se ha modificado la contraseña
             # return HttpResponse('"Modificado correctamente"')
@@ -299,6 +299,7 @@ class UsuarioView(LoginMixin, View):
 
 # -----------------------------------------------------------------------------------------------
 # ***Vista de Eliminar Usuario
+@permission_required('webapp.eliminar_usuario', login_url="/error/",)
 def eliminar_usuario(request, usuario):
     try:
         usuarios = Usuario.objects.get(usuario=usuario)
@@ -311,17 +312,16 @@ def eliminar_usuario(request, usuario):
         return render(request, "usuario/listar_usuario.html", {'listado_usuarios': listado_usuarios})
         # return redirect(to="listar_usuario")
     except Usuario.DoesNotExist:
-        # message.error(request, "El usuario que quiere eliminar ya no existe")
+        message.error(request, "El usuario que quiere eliminar ya no existe")
         raise Http404(
             "No se puede eliminar el Usuario indicado. Dado que ya se Elimino")
 
+# # ***Vista del Estado de Usuarios
+# def estado_usuario(request):
 
-# ***Vista del Estado de Usuarios
-def estado_usuario(request):
+#     listado_usuarios = Usuario.objects.all()
 
-    listado_usuarios = Usuario.objects.all()
-
-    return render(request, "usuario/estado_usuario.html", {'listado_usuarios': listado_usuarios})
+#     return render(request, "usuario/estado_usuario.html", {'listado_usuarios': listado_usuarios})
 
 
 # Vista de Reset de PASSWORD mediante el correo

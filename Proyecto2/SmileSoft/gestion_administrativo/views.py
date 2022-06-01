@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
+# Permisos
+from django.contrib.auth.decorators import permission_required
 
 ############################ LISTADOS ###############################################
 
@@ -17,10 +19,22 @@ class PersonaList(ListView):
     model = Persona
     template_name = 'listar_persona.html'
 
+    @method_decorator(permission_required('gestion_administrativo.view_persona', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(PersonaList, self).dispatch(*args, **kwargs)
+
 
 class FuncionarioList(ListView):
     model = Funcionario
     template_name = 'listar_funcionario.html'
+
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_funcionario'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 
 class PacienteList(ListView):
@@ -280,6 +294,7 @@ class PacienteCreate(CreateView):
 
 
 class PersonaUpdate(UpdateView):
+
     model = Persona
     second_model = Funcionario
     template_name = 'modificar_persona.html'
@@ -441,6 +456,53 @@ class PacienteUpdate(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
+
+#  <----------------Exclusivo de Configuracion/ Paciente-------------------------------->
+
+def editar_persona(request, numero_documento):
+
+    numero_documento = Persona.objects.get(numero_documento=numero_documento)
+
+    data = {
+        'form': PersonaUpdateForm(instance=numero_documento)
+    }
+    if request.method == 'POST':
+        formulario = PersonaForm(
+            data=request.POST, instance=numero_documento, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data["form"] = formulario
+            messages.success(request, " ✅Se ha realizado su cambio")
+            print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
+
+        else:
+            messages.error(request, "No se ha realizado su cambio")
+            print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
+
+    return render(request, "editar_persona.html", data)
+
+###
+def editar_antecedente(request, numero_documento):
+    persona = Paciente.objects.get(numero_documento=numero_documento)
+    data = {
+        'form': PacienteForm(instance=persona)
+    }
+    if request.method == 'POST':
+        formulario = PacienteForm(
+            data=request.POST, instance=persona, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!", data)
+            data["form"] = formulario
+            messages.success(request, " ✅Se ha realizado su cambio")
+            return render(request, "panel_control/cambio_exitoso.html")
+        else:
+            messages.error(request, "No se ha realizado su cambio")
+            print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
+
+    return render(request, "editar_antecedente.html", data)
+###
+#  <--------------------------------------------------------------------->
 
 
 class ProveedorUpdate(UpdateView):

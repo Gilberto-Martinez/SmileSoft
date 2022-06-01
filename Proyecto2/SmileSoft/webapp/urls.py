@@ -14,7 +14,7 @@ urlpatterns = [
            path('modificar_usuario/<usuario>/', modificar_usuario, name="modificar_usuario"),
            path('listar_usuario/', listar_usuario, name="listar_usuario"),
            path('eliminar_usuario/<usuario>/', eliminar_usuario, name="eliminar_usuario"),
-           path('estado_usuario/', estado_usuario, name="estado_usuario"),
+        #    path('estado_usuario/', estado_usuario, name="estado_usuario"),
            path('modificar_password/', UsuarioView.as_view(), name='modificar_password'),
 
           # Urls de Inicio
