@@ -31,6 +31,10 @@ class PersonaList(ListView):
 class FuncionarioList(ListView):
     model = Funcionario
     template_name = 'listar_funcionario.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_funcionario', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(FuncionarioList, self).dispatch(*args, **kwargs)
 
     # def get(self, request, **kwargs):
     #     # verificamos permisos
@@ -44,24 +48,83 @@ class FuncionarioList(ListView):
 class PacienteList(ListView):
     model = Paciente
     template_name = 'listar_paciente.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(PacienteList, self).dispatch(*args, **kwargs)
+
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 class PacienteList2(ListView):
     model = Paciente
     template_name = 'listar_paciente2.html'
+    
+    def get(self, request, **kwargs):
+        # verificamos permisos
+        if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
+            return render(request, "panel_control/error.html")
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
 class EspecialistaSaludList(ListView):
     model = EspecialistaSalud
     template_name = 'listar_especialista_salud.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_especialista_salud', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(EspecialistaSaludList, self).dispatch(*args, **kwargs)
+
+    
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_especialista_salud'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 
 class ProveedorList(ListView):
     model = Proveedor
     template_name = 'listar_proveedor.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_proveedor', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(ProveedorList, self).dispatch(*args, **kwargs)
+
+    
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_proveedor'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 
 class CargoList(ListView):
     model = Cargo
     template_name = 'listar_cargo.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_cargo', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(CargoList, self).dispatch(*args, **kwargs)
+
+    
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_cargo'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 ########################### INSERCION #################################################
 
