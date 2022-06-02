@@ -69,28 +69,22 @@ def listar_roles(request):
 
 @permission_required('gestion_roles.modificar_rol', login_url="/panel_control/error/",)
 def modificar_rol(request, name):
-    name = Group.objects.get(name=name)
+    grupo = Group.objects.get(name=name)
 
     data = {
-        'form': RolUpdateForm(instance=name)
+        'form': RolUpdateForm(instance=grupo)
     }
     if request.method == 'POST':
         formulario = RolForm(
-            data=request.POST, instance=name, files=request.FILES)
+            data=request.POST, instance=grupo, files=request.FILES)
         if formulario.is_valid():
-
             formulario.save()
-
+            # formulario.save_m2m()
             messages.success(request, "Modificado")
-            print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
-
             data['mensaje'] = "Modificado correctamente"
-
         else:
             messages.error(
                 request, "Algo ha salido Mal, por favor verifique nuevamente")
-            print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
-
     return render(request, "roles/modificar_rol.html", data)
 
 

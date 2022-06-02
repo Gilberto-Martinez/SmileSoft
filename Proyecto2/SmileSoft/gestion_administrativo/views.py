@@ -65,13 +65,13 @@ class PacienteList2(ListView):
     model = Paciente
     template_name = 'listar_paciente2.html'
     
-    def get(self, request, **kwargs):
-        # verificamos permisos
-        if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
-            return render(request, "panel_control/error.html")
-        self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 class EspecialistaSaludList(ListView):
     model = EspecialistaSalud

@@ -251,6 +251,7 @@ def modificar_usuario(request, usuario):
         if formulario.is_valid():
 
             formulario.save()
+            formulario.save_m2m()
             data["form"] = formulario
             messages.success(request, " ✅Cambio realizado")
 
