@@ -61,6 +61,8 @@ class PersonaForm(forms.ModelForm):
     #     respuesta =request.HttpRequest()
     #     messages.error(respuesta, "Ya existe el numero de cedula ingresado" )      
 
+
+
 class FuncionarioForm(forms.ModelForm):
    # cargos= forms.ModelMultipleChoiceField(queryset=Cargo.objects.all(),widget = forms.SelectMultiple (attrs = {'class': 'form-control',}))
    # cargo = forms.ComboField(fields='cargos')

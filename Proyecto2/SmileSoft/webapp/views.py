@@ -5,7 +5,6 @@ from pickle import FALSE, TRUE
 import re
 from ssl import ALERT_DESCRIPTION_CERTIFICATE_UNOBTAINABLE
 from tkinter.tix import Form
-from urllib.request import Request
 from winreg import QueryValue
 from xml.dom import UserDataHandler
 from django import dispatch
@@ -24,7 +23,7 @@ from django.contrib.postgres.search import SearchQuery, SearchVector
 from django.db.models import Q
 
 # Estos import son para modificar contraseña
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import update_session_auth_hash
@@ -40,7 +39,7 @@ from django.contrib.auth import login, logout, authenticate
 from .mixins import LoginMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
 # from webapp.forms import ResetPasswordForm
-from .forms import UsuarioLoginForm
+from .forms import UsuarioLoginForm, PersonaInvitadaForm
 from django.template.loader import render_to_string
 import SmileSoft.settings as setting
 
@@ -58,13 +57,16 @@ from django.views.generic import CreateView
 from django.contrib.auth.models import Group
 from gestion_administrativo.forms import PacienteForm, PersonaForm
 from gestion_administrativo.models import Paciente, Persona
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_protect
 
 '''Inicio de Sesion'''
 #------------------------------------------------------------------------------------------------------#
 # Vista de Login
 
 
-def inicio_login(request):
+def  inicio_login(request):
     if request.method == 'POST':
         user = authenticate(
             username=request.POST['usuario'],
@@ -106,50 +108,79 @@ def cerrar_sesion(request):
 
 #------------------------------------------------------------------------------------------------------#
 # Formulario de Registro de Paciente
+class MensajeView(TemplateView):
+    template_name= 'inicio/mensaje_redireccion.html'
 
-class FormPacienteCreate(CreateView):
-    model = Paciente
-    template_name = 'inicio/registropaciente.html'
-    second_model = Persona
-    form_class = PacienteForm
-    second_form_class = PersonaForm
-    success_url = reverse_lazy('registrologinpaciente')
+class UsuarioConfirmacionView(TemplateView):
+    template_name= "inicio/confirmacion_usuario.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(FormPacienteCreate, self).get_context_data(**kwargs)
-        if 'form' not in context:
-            context['form'] = PacienteForm(self.request.GET)
-        if 'form2' not in context:
-            context['form2'] = PersonaForm(self.request.GET)
-        return context
 
-    @method_decorator(csrf_protect)
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        form = PacienteForm(request.POST)  # self.form_class(request.POST)
-        form2 = PersonaForm(request.POST)
+def mostrar_mensaje_confirmacion(self,): #cedula):
+    return render(request, "inicio/mensaje_confirmacion.html",)# cedula)
 
-        if form.is_valid() and form2.is_valid():
-            paciente = form.save(commit=False)
-            persona = form2.save()
-            paciente.numero_documento = persona
-            paciente.save()
 
-            # cedula = form2.numero_documento
-            # print('Cedulaaaaaaaaaaaaaaaaaaaaaaaaaa:',cedula)
+def consultar_cedula(request):
+    data = {
+            'form': ConsultaInvitadoForm()
+    }
+    if request.method == 'POST':
+        form = ConsultaInvitadoForm(data=request.POST)
+        if form.is_valid():
+            invitado = form.save(commit=False)
+            cedula = invitado.numero_documento
+            try: # Verificar si esta registrado como paciente 
+                paciente = Paciente.objects.get(numero_documento=cedula)
+            except ObjectDoesNotExist:# Si no se encuentra registrado como paciente
+                return redirect("/mensaje/")
+            else:#Si se encuentra registrado como paciente
+                try: # Verificar si cuenta con un usuario
+                    usuario = Usuario.objects.get(numero_documento=cedula)
+                except ObjectDoesNotExist:# Si no cuenta con un usuario
+                    # return redirect("/mensaje_confirmacion/%s" %(cedula))
+                    return redirect("/mensaje_confirmacion/")
+                else:# Si ya cuenta con un usuario
+                    return redirect("/confirmacion_usuario/")
 
-            messages.success(request, "Paciente agregado")
-            #data['mensaje'] = "Agregado correctamente"
-            # return HttpResponseRedirect(self.success_url)
-            return redirect("/registrologinpaciente/%s" %(persona.numero_documento))
-            # return render(request, "inicio/login.html")
-            # return render(request, "usuario/agregar_usuario.html")
-        else:
-            print('**********NO ENTRA***********')
-            messages.error(
-                request, "El Paciente NO fue agregado, intentelo nuevamente")
-            return render(request, "inicio/login.html")
-            # return self.render_to_response(self.get_context_data(form=form)) """
+    return render(request, "inicio/consultar_documento.html", data)
+
+def generar_usuario_paciente(self, cedula):
+    persona = Persona.objects.get(numero_documento=cedula)
+    nombre = persona.nombre
+    apellido = persona.apellido
+    inicial = nombre[0:1].lower()
+    apellido = apellido.lower()
+    nombre_usuario = inicial+apellido
+    password = User.objects.make_random_password()
+    usuario = Usuario.objects.create_user(nombre_usuario, password, cedula)
+    email = persona.correo_electronico
+
+
+# class FormInvitadoCreate(CreateView):
+#     model = Persona
+#     template_name = 'inicio/registro_invitado.html'
+#     form_class = PersonaInvitadaForm
+#     success_url = reverse_lazy('')
+
+#     def get_context_data(self, **kwargs):
+#         context = super(FormInvitadoCreate, self).get_context_data(**kwargs)
+#         if 'form' not in context:
+#             context['form'] = PersonaInvitadaForm(self.request.GET)
+#         return context
+
+#     @method_decorator(csrf_protect)
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object
+#         form = self.form_class(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Registrado correctamente")
+#             return redirect("/registrologinpaciente/")
+#             # return redirect("/registrologinpaciente/%s" %(persona.numero_documento))
+#         else:
+#             print('**********NO ENTRA***********')
+#             messages.error(
+#                 request, "No se registro correctamente, intentelo nuevamente")
+#             return render(request, "inicio/login.html")
 
 
 #------------------------------------------------------------------------------------------------------#

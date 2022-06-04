@@ -5,9 +5,6 @@ from .views import *
 #para el reseteo de PASS
 from django.contrib.auth import views as auth_views
 
-
-
-
 urlpatterns = [
            # Urls USUARIO
            path('agregar_usuario/', agregar_usuario, name="agregar_usuario"),
@@ -25,10 +22,16 @@ urlpatterns = [
           #Url de registrar USUARIO paciente
           path('registrologinpaciente/<str:cedula>', registrologin,
                     name='registrologinpaciente'),
+          path('consultar_documento/', consultar_cedula,name='consultar_documento'),
+          path('mensaje/', MensajeView.as_view(),name='mostrar_mensaje'),
+          # path('mensaje_confirmacion/<str:cedula>', mostrar_mensaje_confirmacion,name='mostrar_mensaje_confirmacion'),
+          path('mensaje_confirmacion/', mostrar_mensaje_confirmacion,name='mostrar_mensaje_confirmacion'),
+          path('confirmacion_usuario/', UsuarioConfirmacionView.as_view(),name='confirmacion_usuario'),
+          path('generar_usuario_paciente/<str:cedula>', generar_usuario_paciente,name='generar_usuario_paciente'),
 
-          #  path('registropaciente/', registropaciente, name='registropaciente'),
-          path('registropaciente/', FormPacienteCreate.as_view(),
-                    name="registropaciente"),
+          #  path('registropaciente/', registropaciente, name='registropaciente'), 
+        #   path('registro/', FormInvitadoCreate.as_view(),
+        #             name="registro_invitado"),
 
 
 
