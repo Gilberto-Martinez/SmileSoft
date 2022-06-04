@@ -1,0 +1,87 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{%block content%}
+
+{%if form.errors%}
+<div class="alert alert-danger" role="alert">
+   Existe un error. Por favor verifique nuevamente
+  </div>
+
+{%endif%}
+<!--Para comprobar si el usuario tiene algún permiso para esa app
+-->
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>                 
+            <center><h4 style="font:;">Ingrese su antecedente clinico</h4></center>
+        </div>
+ <br>
+           <form method="POST">
+                            {%csrf_token%}
+                            {%if menssage%}
+                            <div class="alert alert-success" role="alert">
+                                  ✅ Modificado Correctamente
+                            </div>
+                            {%endif%}
+         <!--2 CARD-->
+        
+                            <div class="form-group">
+                                <label for="{{form.grupo_sanguineo.name}}">{{form.grupo_sanguineo.label}}</label>
+                                {{form.grupo_sanguineo}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.enfermedad_base.name}}">{{form.enfermedad_base.label}}</label>
+                                {{form.enfermedad_base}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.alergia.name}}">{{form.alergia.label}}</label>
+                                {{form.alergia}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.intolerancia_anestecia.name}}">{{form.intolerancia_anestecia.label}}</label>
+                                {{form.intolerancia_anestecia}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.frecuencia_higiene_bucal.name}}">{{form.frecuencia_higiene_bucal.label}}</label>
+                                {{form.frecuencia_higiene_bucal}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.medicamento.name}}">{{form.medicamento.label}}</label>
+                                {{form.medicamento}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.cirugias.name}}">{{form.cirugias.label}}</label>
+                                {{form.cirugias}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.caries.name}}">{{form.caries.label}}</label>
+                                {{form.caries}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.afeccion_cronica_familiar.name}}">{{form.afeccion_cronica_familiar.label}}</label>
+                                {{form.afeccion_cronica_familiar}}
+                            </div>
+                            <br>
+                
+        <br>
+        <hr>
+             <div class="d-flex justify-content-center">
+                        <button class="btn btn-success" type="submit" style="margin: 10px;">Guardar</button>
+                        <a href=" /administrativo/editar_antecedente/{{user.numero_documento}} " class="btn btn-danger" style="margin: 10px;">Cancelar</a>
+                    </div>
+                </div>
+            </form>
+{%endblock%}

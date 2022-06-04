@@ -9,7 +9,12 @@ from django.contrib import messages
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
+
+# Permisos
+from django.contrib.auth.decorators import permission_required
+
 from django.core.exceptions import ObjectDoesNotExist
+
 
 ############################ LISTADOS ###############################################
 
@@ -18,33 +23,108 @@ class PersonaList(ListView):
     model = Persona
     template_name = 'listar_persona.html'
 
+    @method_decorator(permission_required('gestion_administrativo.view_persona', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(PersonaList, self).dispatch(*args, **kwargs)
+
 
 class FuncionarioList(ListView):
     model = Funcionario
     template_name = 'listar_funcionario.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_funcionario', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(FuncionarioList, self).dispatch(*args, **kwargs)
+
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_funcionario'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 
 class PacienteList(ListView):
     model = Paciente
     template_name = 'listar_paciente.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(PacienteList, self).dispatch(*args, **kwargs)
+
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 class PacienteList2(ListView):
     model = Paciente
     template_name = 'listar_paciente2.html'
+    
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 class EspecialistaSaludList(ListView):
     model = EspecialistaSalud
     template_name = 'listar_especialista_salud.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_especialista_salud', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(EspecialistaSaludList, self).dispatch(*args, **kwargs)
+
+    
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_especialista_salud'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 
 class ProveedorList(ListView):
     model = Proveedor
     template_name = 'listar_proveedor.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_proveedor', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(ProveedorList, self).dispatch(*args, **kwargs)
+
+    
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_proveedor'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 
 class CargoList(ListView):
     model = Cargo
     template_name = 'listar_cargo.html'
+    
+    @method_decorator(permission_required('gestion_administrativo.view_cargo', login_url="/panel_control/error/"))
+    def dispatch(self, *args, **kwargs):
+        return super(CargoList, self).dispatch(*args, **kwargs)
+
+    
+    # def get(self, request, **kwargs):
+    #     # verificamos permisos
+    #     if not self.request.user.has_perm('gestion_administrativo.view_cargo'):
+    #         return render(request, "panel_control/error.html")
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
 
 ########################### INSERCION #################################################
 
@@ -291,6 +371,7 @@ class PacienteCreate(CreateView):
 
 
 class PersonaUpdate(UpdateView):
+
     model = Persona
     second_model = Funcionario
     third_model = Paciente
@@ -502,6 +583,53 @@ class PacienteUpdate(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
+#  <----------------Exclusivo de Configuracion/ Paciente-------------------------------->
+
+def editar_persona(request, numero_documento):
+
+    numero_documento = Persona.objects.get(numero_documento=numero_documento)
+
+    data = {
+        'form': PersonaUpdateForm(instance=numero_documento)
+    }
+    if request.method == 'POST':
+        formulario = PersonaForm(
+            data=request.POST, instance=numero_documento, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data["form"] = formulario
+            messages.success(request, " ✅Se ha realizado su cambio")
+            print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
+
+        else:
+            messages.error(request, "No se ha realizado su cambio")
+            print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
+
+    return render(request, "editar_persona.html", data)
+
+###
+def editar_antecedente(request, numero_documento):
+    persona = Paciente.objects.get(numero_documento=numero_documento)
+    data = {
+        'form': PacienteForm(instance=persona)
+    }
+    if request.method == 'POST':
+        formulario = PacienteForm(
+            data=request.POST, instance=persona, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!", data)
+            data["form"] = formulario
+            messages.success(request, " ✅Se ha realizado su cambio")
+            return render(request, "panel_control/cambio_exitoso.html")
+        else:
+            messages.error(request, "No se ha realizado su cambio")
+            print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
+
+    return render(request, "editar_antecedente.html", data)
+###
+#  <--------------------------------------------------------------------->
+
 
 class ProveedorUpdate(UpdateView):
     model = Proveedor
@@ -618,23 +746,66 @@ class CargoDelete(DeleteView):
 
 ################################################################################
 ################################################################################
-def asignar_tratamiento (request):
-    
+def asignar_tratamiento (request, numero_documento):
+    # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
     data= {
-        'form' : PacienteAsignadoForm()
+        'form' : PacienteAsignadoForm(),
+        'object' : Persona.objects.get(numero_documento=numero_documento)
     }
-    
+    persona = Persona.objects.get(numero_documento=numero_documento)
     if request.method== "POST":
         formulario= PacienteAsignadoForm(data = request.POST, files= request.FILES)
         if formulario.is_valid():
-            formulario.save()
+            paciente = Paciente.objects.get(numero_documento=numero_documento)
+            tratamientos = formulario.save(commit=False)
+            tratamientos.paciente = paciente
+            tratamientos.save()
+            formulario.save_m2m()
             data["mensaje"]="Tratamiento asignado correctamente"
             messages.success(request, (
                 'Agregado correctamente!'))
-            print('aquiiiiiiiiiiiiii ENTRAAAAA')
+            # return HttpResponseRedirect(success_url)
         else:
             data["form"]=formulario
+            data['object']=persona
             print('NO ENTRAAAAA')
             
     return render(request,"asignar_tratamiento.html",data)
+
+# class TratamientoAsignadoCreate(CreateView):
+#     model = PacienteTratamientoAsignado
+#     second_model = Persona
+#     template_name = 'asignar_tratamiento.html'
+#     form_class = PacienteAsignadoForm
+#     second_form_class = PersonaTratamientoForm
+#     success_url = reverse_lazy('listar_paciente2')
+
+#     def get_context_data(self, **kwargs):
+#         context = super(TratamientoAsignadoCreate, self).get_context_data(**kwargs)
+#         num = self.kwargs.get('numero_documento', 0)
+#         persona = self.second_model.objects.get(numero_documento=num)
+#         if 'form' not in context:
+#             context['form'] = self.form_class(self.request.GET)
+#         if 'object' not in context:
+#             context['object'] = self.second_model(self.request.GET, instance=persona)
+#         context['numero_documento'] = num
+#         return context
+
+#     @method_decorator(csrf_protect)
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object
+#         num = kwargs['numero_documento']
+#         form = self.form_class(request.POST)
+#         persona = self.second_model.objects.get(numero_documento=num)
+#         object = self.second_model(request.POST, instance=persona)
+#         if form.is_valid():
+#             paciente = Paciente.objects.get(numero_documento=num)
+#             tratamientos = form.save(commit=False)
+#             tratamientos.paciente = paciente
+#             tratamientos.save()
+#             form.save_m2m()
+#             return HttpResponseRedirect(self.success_url)
+#         else:
+#             return self.render_to_response(self.get_context_data(form=form, object=object))
+
 

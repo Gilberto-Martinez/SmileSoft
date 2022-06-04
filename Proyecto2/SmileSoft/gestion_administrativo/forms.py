@@ -1,14 +1,21 @@
 #from _typeshed import Self
+from cProfile import label
+from multiprocessing.sharedctypes import Value
+from pickle import TRUE
 from re import VERBOSE
+from tkinter import Widget
+from tkinter.font import BOLD
 from django import forms
 from django.contrib import messages
 from .models import *
 from webapp.models import *
 from django.forms import HiddenInput
-from django.forms.models import InlineForeignKeyField
-# from betterforms.multiform import MultiModelForm
 #from django.core.mail import EmailMessage
 from gestion_administrativo.models import Paciente
+from django import forms
+from webapp.models import Usuario
+from .models import *
+from django.utils.translation import gettext_lazy as _
 
 class PersonaForm(forms.ModelForm):
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
@@ -82,6 +89,18 @@ class FuncionarioForm(forms.ModelForm):
                }
       # InlineForeignKeyField(Cargo)
             
+
+class PersonaTratamientoForm(forms.ModelForm):
+   nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'readonly':'True'}))
+   apellido= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'readonly':'True'}))
+   class Meta:
+         model = Persona
+         fields = ['nombre',
+                  'apellido', 
+                ]
+         # widgets = {
+         # 'nombre':forms.TextInput (attrs = {'class': 'form-control', 'readonly':'True'})
+         #       }
 
 
 class PersonaUpdateForm(forms.ModelForm):
@@ -276,15 +295,6 @@ class CargoForm(forms.ModelForm):
 ##############################################################################################
 #PARA ASIGNAR TRATAMIENTO
 
-
-from django import forms
-
-
-from webapp.models import Usuario
-from .models import *
-from django.utils.translation import gettext_lazy as _
-
-
 # class AsignarTratamientoForm(forms.ModelForm):
     
 #     class Meta:
@@ -304,13 +314,10 @@ from django.utils.translation import gettext_lazy as _
 #             }), }
 
 class PacienteAsignadoForm(forms.ModelForm):
-   # cargos= forms.MultiValueField(fields= 'cargos' ,widget = forms.TextInput (attrs = {'class': 'form-control',}))
-   # cargo = forms.ComboField(fields='cargos')
-   # numero_documento= forms.CharField(label='Número de documento', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su documento',}))
    class Meta:
       model = PacienteTratamientoAsignado
       fields = [
-               'paciente',
+               #'paciente',
                'nombre_tratamiento',
                 ]
       widgets = {
@@ -321,5 +328,6 @@ class PacienteAsignadoForm(forms.ModelForm):
                #  'numero_documento': HiddenInput(attrs={'required': False})
 
                }
+      # label = 'Nombre de los tratamientos'
  
 

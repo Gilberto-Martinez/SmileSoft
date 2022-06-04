@@ -14,3 +14,9 @@ def gestion_administrativo(request):
 def gestion_tratamiento(request):
     return render(request, "panel_control/gestion_tratamiento.html")
 
+
+def error(request):
+    return render(request, "panel_control/error.html")
+
+def cambio_exitoso(request):
+    return render(request, "panel_control/cambio_exitoso.html")

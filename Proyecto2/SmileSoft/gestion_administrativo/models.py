@@ -251,6 +251,7 @@ class PacienteTratamientoAsignado(models.Model):
         #on_delete=models.CASCADE,
         blank=True,
         #null=True
+        verbose_name='Nombre de los tratamientos'
     )
 
     class Meta:

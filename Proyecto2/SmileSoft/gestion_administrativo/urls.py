@@ -5,6 +5,10 @@ from .views import *
 urlpatterns = [
             path('agregar_persona/', PersonaCreate.as_view(), name="agregar_persona"),
             path('agregar_paciente/', PacienteCreate.as_view(),  name="agregar_paciente"),
+            path('editar_antecedente/<str:numero_documento>/',
+                editar_antecedente, name="editar_antecedente"),
+            # path('editar_antecedente/<str:numero_documento>',
+            #     AntecedenteUpdate.as_view(),  name="editar_antecedente"),
             path('agregar_funcionario/', FuncionarioCreate.as_view(),  name="agregar_funcionario"),
             path('agregar_especialista_salud/', EspecialistaSaludCreate.as_view(),  name="agregar_especialista_salud"),
             path('agregar_proveedor/', ProveedorCreate.as_view(),  name="agregar_proveedor"),
@@ -16,6 +20,8 @@ urlpatterns = [
             path('listar_proveedor/', ProveedorList.as_view(),  name="listar_proveedor"),
             path('listar_cargo/', CargoList.as_view(),  name="listar_cargo"),
             path('modificar_persona/<str:pk>', PersonaUpdate.as_view(),  name="modificar_persona"),
+            path('editar_persona/<numero_documento>/',
+                editar_persona, name="editar_persona"),
             path('modificar_funcionario/<int:pk>', FuncionarioUpdate.as_view(),  name="modificar_funcionario"),
             path('modificar_especialista_salud/<int:pk>', EspecialistaSaludUpdate.as_view(),  name="modificar_especialista_salud"),
             path('modificar_paciente/<int:pk>', PacienteUpdate.as_view(),  name="modificar_paciente"),
@@ -29,5 +35,6 @@ urlpatterns = [
             path('eliminar_cargo/<str:pk>', CargoDelete.as_view(),  name="eliminar_cargo"),
             path('correcto', SuccessView.as_view(),  name="correcto"),
             path('mensaje_error/', SuccessError.as_view(),  name="mensaje_error"),
-            path('asignar_tratamiento/', asignar_tratamiento, name="asignar_tratamiento"),
+            path('asignar_tratamiento/<str:numero_documento>', asignar_tratamiento, name="asignar_tratamiento"),
+            # path('asignar_tratamiento/', TratamientoAsignadoCreate.as_view(), name="asignar_tratamiento"),
 ]
