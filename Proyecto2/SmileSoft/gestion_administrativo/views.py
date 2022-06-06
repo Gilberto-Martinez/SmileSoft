@@ -345,8 +345,8 @@ class PacienteCreate(CreateView):
     @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = PacienteForm(request.POST)  # self.form_class
-        form2 = PersonaForm(request.POST)  # self.second_form_class
+        form = self.form_class(request.POST)  # self.form_class
+        form2 = self.second_form_class(request.POST)  # self.second_form_class
         data = {
             'form': PacienteForm(),
             'form2': PersonaForm()
