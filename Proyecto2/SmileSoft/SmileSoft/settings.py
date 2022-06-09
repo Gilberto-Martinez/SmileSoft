@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     #'betterforms',
+    'SmileSoft',
     'webapp',
     'panel_control',
     'agregar_mas',
@@ -141,5 +142,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
 AUTH_USER_MODEL = 'webapp.Usuario'
-# AUTH_GROUP_MODEL = 'gestion_roles.Rol'
+
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_USE_TLS = True
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'ga.mc2266@fpuna.edu.py'
+
+EMAIL_HOST_PASSWORD = 'Nairdapol.22'

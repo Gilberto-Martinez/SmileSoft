@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Verificación</title>
+        <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!--===CDN Bootstrap CSS, Animate===-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+        <!--css una libreria-->
+        <link rel="stylesheet" href="css/bootstrap.min.js" crossorigin="anonymous">
+
+        {% load static %}
+        <!--== CSS, de la Plantilla de Inicio===-->
+        <link rel="stylesheet" href="{% static 'css/styleLogin.css' %}">
+    </head>
+ 
+
+    <body>
+   
+        <!--Inicio de Sesion bloque-->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!------ Propios del estilo de la plantilla encontrada---------->
+
+        <!-- <h2 class="text-center text-gray pt-5">  SmileSoft </h2> -->
+        <div align="center">
+            <br>
+            <br>
+            <br>
+            <h5 class="text-center text-gray pt-5">SmileSoft</h5>
+            <img src="{% static 'img/favicon.png' %}" width="120px" alt="logo">
+        </div>
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-5">
+                        <!-- <table> -->
+                        <h3 class="text-center text-Gray"><i>Confirmación de Registro</i> </h3>
+                        <div class="row justify-content-center align-items-center">
+                            <!-- <div class="col-md-10"> -->
+                            <p class="text-justify">
+                                <i>
+                                    Usted se encuentra registrado como paciente,
+                                    pero no tiene una cuenta de usuario, ¿desea solicitarlo?
+                                </i>
+                            </p>
+                            <!-- </div> -->
+                        </div>
+                        <div>
+                            <div align="center" > 
+                                <a style="width: 50px;" href="/generar_usuario_paciente/{{cedula}}" class="btn btn-success"> Si </a>
+                                <!-- <a style="width: 50px;" href="#" class="btn btn-success"> Si </a> -->
+                                <a href="/login/" class="btn btn-danger">No</a>
+                            </div>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+
+           <!--===CDN Separate Popper and Bootstrap JS ===-->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    </body>
+</html>

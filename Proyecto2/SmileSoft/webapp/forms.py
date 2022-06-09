@@ -21,6 +21,7 @@ from django.utils.translation import gettext as _, ngettext
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.forms import HiddenInput
+from gestion_administrativo.models import Persona
 
 #---------------------------------------------------------------------------------------- FORMULARIO DE INICIO SESION------------------------------------------------------------------------------------#
 
@@ -292,4 +293,48 @@ class PasswordUsuarioForm(forms.Form):
                 usuario.save()
             return usuario
         
-  
+
+class ConsultaInvitadoForm(forms.Form):
+    numero_documento = forms.CharField(
+                                        label='N° Cedula de Identidad', 
+                                        widget = forms.TextInput (
+                                                                    attrs = {
+                                                                        'class': 'form-control', 
+                                                                        'placeholder': 'Ingrese su número de cedula de identidad',
+                                                                    }
+                                                                )
+                                        )
+
+    def clean_numero_documento(self):
+        data = self.cleaned_data['numero_documento']
+        return data
+    # class Meta:
+    #     model = Persona
+    #     fields = ['numero_documento',]
+
+class PersonaInvitadaForm(forms.ModelForm):
+   nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
+   apellido= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su apellido'}))
+   numero_documento= forms.CharField(label='N° documento', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su documento',}))
+   telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
+   correo_electronico = forms.EmailField(label='Correo electrónico', widget = forms.EmailInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su correo electronico'}))
+
+   class Meta:
+         model = Persona
+         fields = ['nombre', 
+                  'apellido', 
+                  'numero_documento', 
+                  'telefono',
+                  'correo_electronico',
+                ]
+
+   def clean_numero_documento(self):
+      numero_documento= self.cleaned_data["numero_documento"]
+      if Persona.objects.filter(numero_documento=numero_documento).exists():
+         print ("Ya existe el numero de cedula ingresado")
+         #messages.error(request, 'Ya existe el numero de cedula ingresado')
+            # self.error_cedula()
+      return numero_documento
+
+   def get_numero_documento(self):
+      return self.numero_documento

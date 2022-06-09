@@ -16,7 +16,7 @@ class Persona(models.Model):
     direccion = models.CharField(max_length=40,  verbose_name='Dirección')
     telefono = models.CharField(max_length=20,  verbose_name='Telefono')
     correo_electronico = models.EmailField(max_length=35,  verbose_name='Correo electrónico')
-    fecha_nacimiento = models.DateField(null=True,  verbose_name='Fecha de nacimiento')
+    fecha_nacimiento = models.DateField( verbose_name='Fecha de nacimiento')
     F = 'Femenino'
     M = 'Masculino'
     SEXOS = ((F, 'Femenino'), (M, 'Masculino'))

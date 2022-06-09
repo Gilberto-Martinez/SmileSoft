@@ -24,6 +24,35 @@ class ManejadorUsuario(BaseUserManager):
         usuario_nuevo.save(using=self._db)
         return usuario_nuevo
 
+    def create_user(self, password, numero_documento):
+        if not password:
+            raise ValueError('Debe ingresar una contraseña')
+        if not numero_documento:
+            raise ValueError('Debe ingresar un numero de documento')
+        persona = Persona.objects.get(numero_documento=numero_documento)
+        nombre = persona.nombre
+        nombre = nombre.strip()
+        apellido = persona.apellido
+        apellido = apellido.strip()
+        inicial = nombre[0:1].lower()
+        apellido = apellido.lower()
+        posicion = apellido.find(" ")
+        if posicion != -1:
+            apellido = apellido[0:posicion]
+        nombre_usuario = inicial+apellido
+        print('*---------------------------------*')
+        print('Usuario: ', nombre_usuario)
+        print('Contraseña: ',password)
+        # usuario = Usuario.normalize_username(nombre_usuario)
+        usuario_nuevo = self.model(usuario = str(nombre_usuario))
+        # usuario_nuevo = Usuario.save(self,commit=False)
+        # usuario_nuevo = self.model(numero_documento = persona)
+        usuario_nuevo.usuario = nombre_usuario
+        usuario_nuevo.numero_documento = persona
+        usuario_nuevo.set_password(password)
+        usuario_nuevo.save(using=self._db)
+        return usuario_nuevo
+
     # Crea y guarda a un super-usuario
     def create_superuser(self, usuario, password):
         usuario_nuevo = self.create_user(usuario, password)
