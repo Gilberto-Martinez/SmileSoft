@@ -22,12 +22,14 @@ urlpatterns = [
           #Url de registrar USUARIO paciente
           path('registrologinpaciente/<str:cedula>', registrologin,
                     name='registrologinpaciente'),
-          path('consultar_documento/', consultar_cedula,name='consultar_documento'),
+          # path('consultar_documento/', consultar_cedula,name='consultar_documento'),
+          path('consultar_documento/', CedulaConsultaView.as_view(),name='consultar_documento'),
           path('mensaje/', MensajeView.as_view(),name='mostrar_mensaje'),
-          # path('mensaje_confirmacion/<str:cedula>', mostrar_mensaje_confirmacion,name='mostrar_mensaje_confirmacion'),
-          path('mensaje_confirmacion/', mostrar_mensaje_confirmacion,name='mostrar_mensaje_confirmacion'),
+          path('mensaje_confirmacion/<str:cedula>', mostrar_mensaje_confirmacion,name='mostrar_mensaje_confirmacion'),
+          # path('mensaje_confirmacion/<str:cedula>', Mensaje_confirmacion.as_view(),name='mostrar_mensaje_confirmacion'),
           path('confirmacion_usuario/', UsuarioConfirmacionView.as_view(),name='confirmacion_usuario'),
           path('generar_usuario_paciente/<str:cedula>', generar_usuario_paciente,name='generar_usuario_paciente'),
+          # path('mensaje_envio_correo/', MensajeCorreoView.as_view(),name='mensaje_envio_correo'),
 
           #  path('registropaciente/', registropaciente, name='registropaciente'), 
         #   path('registro/', FormInvitadoCreate.as_view(),

@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from http.client import HTTPResponse
 from msilib.schema import Class
 from multiprocessing import context
@@ -113,9 +114,46 @@ class MensajeView(TemplateView):
 class UsuarioConfirmacionView(TemplateView):
     template_name= "inicio/confirmacion_usuario.html"
 
+class Mensaje_confirmacion(TemplateView):
+    template_name= "inicio/mensaje_confirmacion.html"
 
-def mostrar_mensaje_confirmacion(self,): #cedula):
-    return render(request, "inicio/mensaje_confirmacion.html",)# cedula)
+def mostrar_mensaje_confirmacion(request, cedula):
+    context ={'cedula':cedula}
+    return render(request, "inicio/mensaje_confirmacion.html", context)
+
+class CedulaConsultaView(TemplateView):
+    template_name = "inicio/consultar_documento.html"
+    form_class = ConsultaInvitadoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CedulaConsultaView, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        return context
+
+    @method_decorator(csrf_protect)
+    def post(self, request, *args, **kwargs):
+        # self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # invitado = form.numero_documento
+            cedula = form.cleaned_data['numero_documento']
+            try: # Comprueba si esta registrado como paciente
+                # print("cedula: ",cedula)
+                paciente = Paciente.objects.get(numero_documento=cedula)
+            except ObjectDoesNotExist: # Si no es paciente muestra el siguiente mensaje
+                # respuesta = "No existe"
+                return redirect("/mensaje")
+            else: # Si es un paciente, comprueba si tiene un usuario
+                try: 
+                    usuario = Usuario.objects.get(numero_documento=cedula)
+                except ObjectDoesNotExist: # Si no tiene un usuario pregunta si quiere generarlo
+                    return redirect("/mensaje_confirmacion/%s" %(cedula))
+                else: # Si el paciente ya tiene un usuario pregunta si quiere iniciar sesion
+                    return redirect("/confirmacion_usuario/")
+        else:
+            print("No es validooooooooooooo")
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 def consultar_cedula(request):
@@ -127,31 +165,34 @@ def consultar_cedula(request):
         if form.is_valid():
             invitado = form.save(commit=False)
             cedula = invitado.numero_documento
-            try: # Verificar si esta registrado como paciente 
-                paciente = Paciente.objects.get(numero_documento=cedula)
-            except ObjectDoesNotExist:# Si no se encuentra registrado como paciente
-                return redirect("/mensaje/")
-            else:#Si se encuentra registrado como paciente
-                try: # Verificar si cuenta con un usuario
-                    usuario = Usuario.objects.get(numero_documento=cedula)
-                except ObjectDoesNotExist:# Si no cuenta con un usuario
-                    # return redirect("/mensaje_confirmacion/%s" %(cedula))
-                    return redirect("/mensaje_confirmacion/")
-                else:# Si ya cuenta con un usuario
-                    return redirect("/confirmacion_usuario/")
+            persona = Persona.objects.get(numero_documento=cedula)
+            try:
+                print("cedula: ",cedula)
+                persona = Persona.objects.get(numero_documento=cedula)
+            except ObjectDoesNotExist:
+                respuesta = "No existe"
+            
+            print("Persona: ", persona)
+
+            if persona is NULL:
+                return redirect("/mensaje")
 
     return render(request, "inicio/consultar_documento.html", data)
 
-def generar_usuario_paciente(self, cedula):
+def generar_usuario_paciente(request, cedula):
     persona = Persona.objects.get(numero_documento=cedula)
-    nombre = persona.nombre
-    apellido = persona.apellido
-    inicial = nombre[0:1].lower()
-    apellido = apellido.lower()
-    nombre_usuario = inicial+apellido
-    password = User.objects.make_random_password()
-    usuario = Usuario.objects.create_user(nombre_usuario, password, cedula)
+    password = Usuario.objects.make_random_password()
+    print('contraseña: ',password)
+    usuario = Usuario.objects.create_user(password, cedula)
+    grupo = Group.objects.get(name='Paciente')
+    grupo.user_set.add(usuario)
     email = persona.correo_electronico
+    context ={'cedula':cedula}
+
+    if usuario:
+        pass
+
+    return render(request, "inicio/mensaje_envio_correo.html", context)
 
 
 # class FormInvitadoCreate(CreateView):
