@@ -294,7 +294,7 @@ class PasswordUsuarioForm(forms.Form):
             return usuario
         
 
-class ConsultaInvitadoForm(forms.ModelForm):
+class ConsultaInvitadoForm(forms.Form):
     numero_documento = forms.CharField(
                                         label='N° Cedula de Identidad', 
                                         widget = forms.TextInput (
@@ -305,9 +305,12 @@ class ConsultaInvitadoForm(forms.ModelForm):
                                                                 )
                                         )
 
-    class Meta:
-        model = Persona
-        fields = ['numero_documento',]
+    def clean_numero_documento(self):
+        data = self.cleaned_data['numero_documento']
+        return data
+    # class Meta:
+    #     model = Persona
+    #     fields = ['numero_documento',]
 
 class PersonaInvitadaForm(forms.ModelForm):
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
