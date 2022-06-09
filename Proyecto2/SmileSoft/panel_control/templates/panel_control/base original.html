@@ -32,6 +32,7 @@
 
   <header>
     <!--Barra de inicio-->
+
     <div class="container">
           <!-- Logo Nombre y Menu -->
           {% comment %} <div class="nav row rounded-top align-items-center justify-content-between bg-transparent text-dark"> {% endcomment %}
@@ -56,40 +57,76 @@
                             <a class="nombre">
                               <i class="bi bi-person-check-fill "> <FONT COLOR="blue">{{user.usuario}}</FONT></i>
                               </a> 
-                              <font COLOR="white">_________________________________________________________________________________________________________</font>   
-                    
-                               <a class="cerrar" href="/cerrar_sesion"> <img src="{% static 'img/apagar.png' %}" width="25px" alt="logo">  </a>
+                              <font COLOR="white">_____________________________________________________________________________________________</font>   
+                                    
+                                  {% comment %} <img src="{% static 'img/config.png' %}" width="25px" alt="logo"> {% endcomment %}
+                          <!-- Barra de inicio de sesion-->
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <!--con ml-auto debe mudarse a la derecha-->
+                              <ul class="navbar-nav ml-auto mb-3 mb-lg-0"> 
+                                    <!--Opcion Configuración-->
+                                    <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="roles" id="navbarDropdown"
+                                      role="button" data-bs-toggle="dropdown" aria-expanded="false">       
+                                              <FONT  COLOR="blue">    
+                                                <img src="{% static 'img/config.png' %}" width="25px" alt="logo"> 
+                                                Configuración 
+                                              </FONT> 
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                              <!--Opcion de Configuración -->
+                                              <li><a class="dropdown-item" href="/modificar_password/">  <FONT COLOR="black"> Modificar/ Contraseña</FONT> </a></li>
+                                              <div class="dropdown-divider"></div>
+                                              <li><a class="dropdown-item" href="/administrativo/editar_persona/{{user.numero_documento}}"> <font color="black">Modificar/ Datos personales </font></a></li></a>
+                                              <div class="dropdown-divider"></div>
+                                              <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
+                                              <div class="dropdown-divider"></div>
+                                              <li> <a class="nombre" href="/cerrar_sesion">  <font style="font-style: italic;" COLOR="black"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
+                                          
+                                            </ul>
+                                          </li>
+                                    </font>
                       </div>
+                    {% comment %} <a class="nombre" href="/sesion/cerrar_sesion">  <font style="font-style: italic;" COLOR="black"> Cerrar sesión </font> <i class="bi bi-x-square"></i></a> {% endcomment %}
+                    {% comment %} <a class="nombre" href="/cerrar_sesion">  <font style="font-style: italic;" COLOR="black"> Cerrar sesión </font></a>
+               {% endcomment %}
             </nav>
 
       <!--======================================BARRA NAVBAR=======================================================-->
 
       <center> 
-           <a class="nav-link" class="c-1 d-flex align-items-center" aria-current="page" href=" /panel_control/inicio/">
-                            <FONT COLOR="black" style="font-size: 2rem" >ＳｍｉｌｅＳｏｆｔ</FONT> <img src="{% static 'img/favicon.png' %}" width="100px" alt="logo">
-                          </a>
+        <h1 style="font-size: 2rem">
+          ＳｍｉｌｅＳｏｆｔ
+        </h1>
       </center> 
+
       <!--Barra 2-> Opciones de Navegacion-->     
-      
-        <nav class="navbar bg-light navbar-expand-sm navbar-default">
-            <div id="main-menu" class="main-menu">
+    <nav class="nav bg-light">
+
+            <div class="container-lg">
+                {% comment %} <a class="navbar-brand" href=" "> {% endcomment %}
+                  <FONT  SIZE=6 COLOR="black">Bienvenido </FONT>
+                </a>
+                    <!--PARA EL IMG DEL logo-->
+                <img src="{% static 'img/favicon.png' %}" width="100px" alt="logo">
+                    
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"> Menú</span>
+                        <span class="navbar-toggler-icon">Menu</span>
                   </button>
               <!-- Menu de navegación -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!--con ml-auto debe mudarse a la derecha-->
                    <ul class="navbar-nav me-auto mb-2 mb-lg-0"> 
                       <!--Opcion 1-->
-                        {% comment %} <li class="nav-item active">
+                        <li class="nav-item active">
                           <a class="nav-link" class="c-1 d-flex align-items-center" aria-current="page" href=" /panel_control/inicio/">
                             <FONT COLOR="blue">Inicio </FONT>
                           </a>
-                        </li> {% endcomment %}
+                        </li>
                         <!--Opcion 2-->
                         <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="roles" id="navbarDropdown"
-                          role="button" COLOR="black" data-bs-toggle="dropdown" aria-expanded="false">
+                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Roles
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -193,28 +230,7 @@
                       <li class="nav-item">
                         <a class="nav-link" href="#">Pagos</a>
                     </li>
-
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="configuración " id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Configuración </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <!--Opcion 5.1 -->
-                          <li><a class="dropdown-item" href="/modificar_password/">  <FONT COLOR="black"> Modificar/ Contraseña</FONT> </a></li>
-                                              <div class="dropdown-divider"></div>
-                                              <li><a class="dropdown-item" href="/administrativo/editar_persona/{{user.numero_documento}}"> <font color="black">Modificar/ Datos personales </font></a></li></a>
-                                              <div class="dropdown-divider"></div>
-                                              <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
-                                                <div class="dropdown-divider"></div>
-                                              <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: italic;" COLOR="black"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
-                                          
-                                            </ul>
-                    </li>
                 </ul>
-
-
-
           </div>
     </nav>
 
@@ -230,6 +246,7 @@
 
     
         <!--fin -->
+   
 <!--Contenido-->
  <br>  
  {%block content%}
