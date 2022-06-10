@@ -4,6 +4,8 @@
 
 {%load static%}
 
+{{object}}
+
 {%block content%}
      {%if perms.webapp.change_usuario%} 
 <div class="row">
@@ -31,18 +33,45 @@
                         </ul>
                         {% endif %}
 
-                        <!--Formulario de modificaciones-->    
-                      <b>
-                        {{form.as_p}}
-                     
-                    </b>  
+                        <!--Formulario de modificaciones-->
+                        <b>
+                            <div class="form-group">
+                                <label for="{{form.usuario.name}}">{{form.usuario.label}}</label>
+                                {{form.usuario}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.numero_documento.name}}">{{form.numero_documento.label}}</label>
+                                {{form.numero_documento}}
+                            </div>
+                            <br>
+                            <a href="/cambiar_password_usuario/{{object.usuario}}" class="btn btn-outline-info">
+                                <i class="bi bi-key"></i>
+                                Cambiar contraseña
+                            </a>
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.groups.name}}">{{form.groups.label}}</label>
+                                {{form.groups}}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="{{form.is_active.name}}">{{form.is_active.label}}</label>
+                                {{form.is_active}}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{form.is_admin.name}}">{{form.is_admin.label}}</label>
+                                {{form.is_admin}}
+                            </div>
+                        </b>
 
                         <!--Opciones-->
                         <div class="d-flex justify-content-center">
                             <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
                             <input type="submit" value="Guardar " class= "btn btn-primary btn-block txt-white" name="_save">
                             &nbsp;
-                            <input type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
+                            <a href="/listar_usuario/" class= "btn btn-secondary btn-block txt-white">Cancelar</a>
                         
                         </div>    
                 </form>

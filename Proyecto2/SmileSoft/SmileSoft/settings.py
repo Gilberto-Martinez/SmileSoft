@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     #'betterforms',
-    'SmileSoft',
+    # 'SmileSoft',
     'webapp',
     'panel_control',
     'agregar_mas',
@@ -146,8 +147,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'webapp.Usuario'
+# STATICFILES_DIRS = ( os.path.join(BASE_DIR, 'static'),)
 
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+AUTH_USER_MODEL = 'webapp.Usuario'
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -158,6 +162,6 @@ EMAIL_USE_TLS = True
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'ga.mc2266@fpuna.edu.py'
+EMAIL_HOST_USER = ''
 
-EMAIL_HOST_PASSWORD = 'Nairdapol.22'
+EMAIL_HOST_PASSWORD = ''
