@@ -39,7 +39,6 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import login, logout, authenticate
 from .mixins import LoginMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
-# from webapp.forms import ResetPasswordForm
 from .forms import UsuarioLoginForm, PersonaInvitadaForm
 from django.template.loader import render_to_string
 import SmileSoft.settings as setting
@@ -61,6 +60,7 @@ from gestion_administrativo.models import Paciente, Persona
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
+# from googlevoice.util import input
 
 '''Inicio de Sesion'''
 #------------------------------------------------------------------------------------------------------#
@@ -316,15 +316,15 @@ def modificar_usuario(request, usuario):
     usuario = Usuario.objects.get(usuario=usuario)
 
     data = {
-        'form': UsuarioUpdateForm(instance=usuario)
+        'form': UsuarioUpdateForm(instance=usuario),
+        'object':Usuario.objects.get(usuario=usuario)
     }
     if request.method == 'POST':
-        formulario = UsuarioForm(
+        formulario = UsuarioUpdateForm(
             data=request.POST, instance=usuario, files=request.FILES)
         if formulario.is_valid():
-
             formulario.save()
-            formulario.save_m2m()
+            formulario._save_m2m()
             data["form"] = formulario
             messages.success(request, " ✅Cambio realizado")
 
@@ -339,6 +339,29 @@ def modificar_usuario(request, usuario):
 #             #se vuelve a cargar, dado que se actuliza arriba y debe volver a guardar
     return render(request, "usuario/modificar_usuario.html", data)
 
+def cambiar_password_usuario(request, usuario):
+    usuario2 = Usuario.objects.get(usuario=usuario)
+    data = {
+        'form': UsuarioPassworUpdateForm(instance=usuario2),
+        'object':usuario2
+    }
+    if request.method == 'POST':
+        formulario = UsuarioPassworUpdateForm(
+            data=request.POST, instance=usuario2, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            formulario._save_m2m()
+            data["form"] = formulario
+            messages.success(request, " ✅ Contraseña modificada")
+            return redirect("/modificar_usuario/%s" %(usuario))
+        else:
+            messages.error(request, "Algo ha salido Mal ⚠️")
+            # El return HttpResponse envia a otra pagina, he indica que se ha modificado la contraseña
+            # return HttpResponse('"Modificado correctamente"')
+        # data["form"] = formulario
+        # print("pasa por aca y no toma el cambio!!!!!!!!!!!!!!!!!!!!!", formulario)
+#             #se vuelve a cargar, dado que se actuliza arriba y debe volver a guardar
+    return render(request, "usuario/cambiar_password_usuario.html", data)
 
 # -----------------------------------------------------------------------------------------------
 # Vista de Modificar su propia contraseña
@@ -428,3 +451,4 @@ class ResetPasswordView(FormView):
 #         return redirect("enviarcorreo.html")
 
 #     return render(request, "inicio/enviarcorreo.html")
+
