@@ -20,10 +20,10 @@ from django.views.generic import ListView, CreateView, TemplateView, UpdateView,
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
-
+from django.contrib.auth.decorators import permission_required
 
 # ***Vista de Agregar Rol
-
+@permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
 def agregar_tratamiento (request):
     
     data= {
@@ -47,6 +47,8 @@ def agregar_tratamiento (request):
 # -----------------------------------------------------------------------------------------------
 # ***Vista de listar Tratamiento
 
+
+# @permission_required('gestion_tratamiento.listar_tratamiento', login_url="/panel_control/error/",)
 def listar_tratamiento(request):
     
     busqueda=request.POST.get("q")
@@ -64,6 +66,8 @@ def listar_tratamiento(request):
 
 # ***Vista de Modificar Rol
 
+
+@permission_required('gestion_tratamiento.modificar_tratamiento', login_url="/panel_control/error/",)
 def modificar_tratamiento(request, nombre_tratamiento):
     nombre_tratamiento = Tratamiento.objects.get(nombre_tratamiento=nombre_tratamiento)
 
@@ -91,6 +95,7 @@ def modificar_tratamiento(request, nombre_tratamiento):
 
 # -----------------------------------------------------------------------------------------------
 # ***Vista de Eliminar Tratamiento
+@permission_required('gestion_tratamiento.eliminar_tratamiento', login_url="/panel_control/error/",)
 def eliminar_tratamiento(request, nombre_tratamiento):
     try:
         tratamiento = Tratamiento.objects.get(nombre_tratamiento=nombre_tratamiento)

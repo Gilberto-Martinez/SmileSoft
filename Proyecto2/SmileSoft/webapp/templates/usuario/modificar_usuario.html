@@ -5,7 +5,7 @@
 {%load static%}
 
 {%block content%}
-
+     {%if perms.webapp.change_usuario%} 
 <div class="row">
    
     <div class="col-12 col-md-6 offset-md-3">
@@ -53,7 +53,13 @@
     </div>
 </div>
            
-
+ {% else%}
+<h2 class="titulo text-center">
+                  No tiene permisos para ingresar a esta sección
+                 
+                  
+              </h2>
+{%endif%}
                     <hr>
                         
                         <table  align="right" >

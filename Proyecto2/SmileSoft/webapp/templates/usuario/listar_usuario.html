@@ -15,7 +15,7 @@
 
 
 {%block content%}
-
+{%if perms.webapp.view_usuario%}
 <div class="card">
     <div class="card-body">
         <center> 
@@ -26,10 +26,12 @@
      <table  align="right" >
             <tr>
             <td>
+                {%if perms.webapp.add_usuario%}
                 <a href="/agregar_usuario/" class="btn btn-success">
                     <i class="bi-person-plus-fill"></i>
                     Agregar un usuario
                 </a>
+                {%endif%}
             </td>
             </tr>
       </table>
@@ -83,15 +85,19 @@
                             {{busqueda}}
                              <!--OPCIONES Modificar y Eliminar-->
                             <td>
+                                {%if perms.webapp.change_usuario%} 
                                 <a href="/modificar_usuario/{{c.usuario}}" class="btn btn-primary">
                                     <i class="bi-pencil-square"></i>
                                     Modificar
                                 </a>
+                                {%endif%}
+                                   {%if perms.webapp.delete_usuario%} 
                                 <!-- Eliminar-->                
                                  <a href="/eliminar_usuario/{{c.usuario}}" class="btn btn-danger btnEliminacion">
                                     <i class="bi-trash-fill" ></i>
                                     Eliminar
                                 </a> 
+                                  {%endif%}
                             </td>
                 </form>
             </div>
@@ -122,7 +128,7 @@
     </div>
 </div>
 
-
+ {% endif %}
 {%endblock%}
 <!--este funciona NO BORRAR-->
 {% comment %} <script>

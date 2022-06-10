@@ -17,7 +17,7 @@
 
 {%endblock%} 
 
-
+ {%if perms.gestion_tratamiento.delete_tratamiento%}
 <div class="modal-dialog modals-default">
     <div class="modal-content">
         <div class="modal-header">
@@ -281,3 +281,4 @@ funciona al tocar cambia
                                 </script>        
     
 ***
+{%endif%}

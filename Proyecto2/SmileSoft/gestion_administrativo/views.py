@@ -90,9 +90,9 @@ class EspecialistaSaludList(ListView):
     model = EspecialistaSalud
     template_name = 'listar_especialista_salud.html'
     
-    @method_decorator(permission_required('gestion_administrativo.view_especialista_salud', login_url="/panel_control/error/"))
-    def dispatch(self, *args, **kwargs):
-        return super(EspecialistaSaludList, self).dispatch(*args, **kwargs)
+    # @method_decorator(permission_required('gestion_administrativo.view_especialista_salud', login_url="/panel_control/error/"))
+    # def dispatch(self, *args, **kwargs):
+    #     return super(EspecialistaSaludList, self).dispatch(*args, **kwargs)
 
     
     def get(self, request, **kwargs):
@@ -623,6 +623,7 @@ def editar_persona(request, numero_documento):
     return render(request, "editar_persona.html", data)
 
 ###
+# @permission_required('gestion_administrativo.editar_antecedente', login_url="/panel_control/error/",)
 def editar_antecedente(request, numero_documento):
     persona = Paciente.objects.get(numero_documento=numero_documento)
     data = {
@@ -761,6 +762,7 @@ class CargoDelete(DeleteView):
 
 ################################################################################
 ################################################################################
+@permission_required('gestion_administrativo.add_pacientetratamientoasignado', login_url="/panel_control/error/",)
 def asignar_tratamiento (request, numero_documento):
     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
     data= {

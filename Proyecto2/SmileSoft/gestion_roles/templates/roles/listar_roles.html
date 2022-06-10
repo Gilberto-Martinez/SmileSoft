@@ -10,6 +10,7 @@
 
 <!--Cuadro de DIALOGO DE ELIMINAR-->
 {%block content%}
+     {%if perms.gestion_roles.view_rol%} 
 <div class="card">
     <div class="card-body">
         <center> 
@@ -19,10 +20,12 @@
      <table  align="right" >
             <tr>
             <td> 
+                  {%if perms.gestion_roles.add_rol%} 
                 <a href="/roles/agregar_roles/" class="btn btn-success">
                     <i class="bi-plus-circle"></i>
                     Agregar un rol 
                 </a>
+                {%endif%}
             </td>
             </tr>
       </table>
@@ -71,15 +74,20 @@
                             {{busqueda}}
                              <!--OPCIONES Modificar y Eliminar-->
                             <td>
+                                {%if perms.gestion_roles.change_rol%} 
                                 <a href="/roles/modificar_rol/{{c.name}}" class="btn btn-primary">
                                     <i class="bi-pencil-square"></i>
                                     Modificar
                                 </a>
-                                <!-- Eliminar-->                
+                                {%endif%}
+                                <!-- Eliminar-->    
+                                {%if perms.gestion_roles.delete_rol%}             
+
                                 <a href="/roles/eliminar_rol/{{c.name}}" class="btn btn-danger btnEliminacion">
                                     <i class="bi-trash-fill" ></i>
                                     Eliminar
                                 </a> 
+                                {%endif%}
                             </td>
                                                    
                        
@@ -116,7 +124,7 @@
    
     </div>
 </div>
-
+  {% endif %}
 
 {%endblock%}
 <!--este funciona NO BORRAR-->

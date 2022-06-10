@@ -9,7 +9,7 @@ header{
 }
 
 header .nav{
-    min-height: 80px;
+    min-height: 100px;
     overflow: hidden;
     background: rgb(245, 240, 240);
 }

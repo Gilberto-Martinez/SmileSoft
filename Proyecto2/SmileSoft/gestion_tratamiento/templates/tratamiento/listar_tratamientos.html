@@ -16,6 +16,7 @@
 
 {%block content%}
 
+{%if perms.gestion_tratamiento.view_tratamiento%}  
 <div class="card">
     <div class="card-body">
         <center> 
@@ -56,7 +57,7 @@
                     <tr>
                             <th>Nro Tratamiento</th>
                             <th>Nombre </th>
-                           <th>Precio</th>  -->
+                           <th>Precio</th>  
                             <th colspan="2">Acciones </th>
                     </tr>
                 </thead>
@@ -69,21 +70,20 @@
                             <td>{{c.precio}}</td> 
                             {{busqueda}}
                              <!--OPCIONES Modificar y Eliminar-->
-                            <td><a href="/tratamiento/modificar_tratamiento/{{c.nombre_tratamiento}}" class="btn btn-primary">
-                                     <i class="bi-pencil-square"></i>
-                                Modificar</a>
-               <!-- Eliminar-->                
-                                 <a href="/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}" class="btn btn-danger btnEliminacion">
-                                       <i class="bi-trash-fill" ></i> 
-                                    Eliminar</a> 
-                            </td>
-                                                   
-                       
-                </form>
-            </div>
-
-                    </td>
-
+                                {%if perms.gestion_tratamiento.change_tratamiento%} 
+                                        <td><a href="/tratamiento/modificar_tratamiento/{{c.nombre_tratamiento}}" class="btn btn-primary">
+                                                <i class="bi-pencil-square"></i>
+                                            Modificar</a>
+                                  {%endif%}
+                        <!-- Eliminar-->      
+                        
+                                {%if perms.gestion_tratamiento.delete_tratamiento%}          
+                                            <a href="/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}" class="btn btn-danger btnEliminacion">
+                                                <i class="bi-trash-fill" ></i> 
+                                                Eliminar</a> 
+                                        </td>
+                                {%endif%}
+                                    
                         </tr>
                         {% endfor %}
                       
@@ -112,7 +112,7 @@
    
     </div>
 </div>
-
+{%endif%}
 
 {%endblock%}
 <!--este funciona NO BORRAR-->

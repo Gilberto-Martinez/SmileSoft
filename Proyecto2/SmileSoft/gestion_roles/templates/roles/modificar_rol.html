@@ -7,7 +7,7 @@
 {%block content%}
 
 <div class="row">
-   
+   {%if perms.gestion_roles.change_rol%} 
   <div class=" col-md-10 offset-md-1" >
         <div class="card">
             <br>
@@ -40,7 +40,13 @@
 
     </div>
 </div>
-
+ {% else%}
+<h2 class="titulo text-center">
+                  No tiene permisos para ingresar a esta sección
+                 
+                  
+              </h2>
+{%endif%}
                     <hr>
                         
                         <table  align="right" >

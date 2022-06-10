@@ -9,10 +9,12 @@
 <table  align="right" >
     <tr>
     <td> 
+		{%if perms.gestion_administrativo.add_paciente%}
 		<a href="/administrativo/agregar_paciente/" class="btn btn-success">
 			<i class="bi-person-plus-fill"></i>
 			Agregar un paciente
 		</a> 
+		{%endif%}
 	</td>
     </tr>
 </table>
@@ -46,10 +48,12 @@
 			<td>{{ paciente.numero_documento.correo_electronico }}</td>
 			<td>{{ paciente.numero_documento.fecha_nacimiento }}</td> -->
 			<td>
+				{%if perms.gestion_administrativo.add_pacientetratamientoasignadoe%}
 				<a class="btn btn-primary" href="/administrativo/asignar_tratamiento/{{ paciente.numero_documento }}">
 					<i class="bi-pencil-square"></i>
 					Asignar Tratamiento
 				</a>
+				{%endif%}
 			</td>
 		</tr>
 		{% endfor %}

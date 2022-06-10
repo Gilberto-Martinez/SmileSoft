@@ -1,6 +1,7 @@
 {%extends 'panel_control/base.html'%}
 
 {% block content %}
+{%if perms.gestion_administrativo.view_funcionario%}
 <div class="card">
 	<div class="card-body">
 		<center>  <h2> <i class="bi-file-earmark-medical"></>Listado de Especialistas de salud</i></h2> </center>
@@ -8,10 +9,12 @@
 <table  align="right" >
     <tr>
     <td>
+		{%if perms.gestion_administrativo.add_especialista_salud%}
 		<a href="/administrativo/agregar_especialista_salud/" class="btn btn-success">
 			<i class="bi-person-plus-fill"></i>
 			Agregar un especialista de salud
 		</a>
+		{%endif%}
 	</td>
     </tr>
 </table>
@@ -37,14 +40,18 @@
 			<td>{{ especialista.numero_documento.nombre }} {{especialista.numero_documento.apellido}}</td>
 			<td>{{ especialista.numero_documento.direccion }}</td>
 			<td>
+				{%if perms.gestion_administrativo.change_especialista_salud%}
 				<a class="btn btn-primary" href="/administrativo/modificar_especialista_salud/{{especialista.id_especialista_salud}}">
 					<i class="bi-pencil-square"></i>
 					Editar
 				</a>
+				{%endif%}
+				{%if perms.gestion_administrativo.delete_especialista_salud%}
 				<a class="btn btn-danger" href="/administrativo/eliminar_especialista_salud/{{especialista.id_especialista_salud}}">
 					<i class="bi-trash-fill" ></i>
 					Eliminar
 				</a>
+				{%endif%}
 			</td>
 		</tr>
 		{% endfor %}
@@ -56,5 +63,5 @@
 </table> 
 	</div>
 </div>
-
+{% endif %}
 {% endblock%}

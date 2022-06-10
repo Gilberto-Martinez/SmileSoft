@@ -36,6 +36,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
+   
     # 'admin_interface',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,6 +55,8 @@ INSTALLED_APPS = [
     'gestion_tratamiento',
     'gestion_historial_clinico',
         # 'colorfield',
+    #para los iconos
+  
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'
