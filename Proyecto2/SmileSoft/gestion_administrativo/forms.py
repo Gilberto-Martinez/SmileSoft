@@ -31,9 +31,9 @@ class PersonaForm(forms.ModelForm):
             (F, 'Femenino'),
             (M, 'Masculino')
    ]
-   sexo = forms.ChoiceField(choices=SEXOS, widget = forms.Select (attrs = {'class': 'form-control',}))
+   sexo = forms.ChoiceField(choices=SEXOS, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
    # fecha_nacimiento = forms.DateField(label='Fecha de nacimiento', widget=forms.NumberInput(attrs={'type': 'date'}))
-   fecha_nacimiento = forms.DateField(label='Fecha de nacimiento', widget=forms.DateInput(attrs={'type': 'date'}))
+   fecha_nacimiento = forms.DateField(label='Fecha de nacimiento', widget=forms.DateInput(attrs={'readonly':'true' ,'type': 'date'}))
    
                                       
    class Meta:

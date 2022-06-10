@@ -5,7 +5,7 @@
 {%load static%}
 
 {%block content%}
-
+{%if perms.webapp.add_usuario%}
 {%if form.errors%}
 <div class="alert alert-danger" role="alert">
    Existe un error. Por favor verifique nuevamente
@@ -77,7 +77,13 @@
                                  <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
                                </div>
       </table>
-      
+ {% else%}
+<h2 class="titulo text-center">
+                  No tiene permisos para ingresar a esta sección
+                 
+                  
+              </h2>
+{%endif%}     
       <table  align="left" >
         <tr>
         <td>

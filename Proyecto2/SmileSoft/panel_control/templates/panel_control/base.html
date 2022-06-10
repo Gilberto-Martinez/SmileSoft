@@ -20,7 +20,7 @@
 
     <!--Solo style usar como estilo-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" >
-
+    <link href="{% static 'fontawesome_free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <!-- Bootstrap JavaScript -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <!-- jQuery -->
@@ -71,7 +71,8 @@
       </center> 
       <!--Barra 2-> Opciones de Navegacion-->     
       
-        <nav class="navbar bg-light navbar-expand-sm navbar-default">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
             <div id="main-menu" class="main-menu">
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"> Menú</span>
@@ -79,146 +80,214 @@
               <!-- Menu de navegación -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!--con ml-auto debe mudarse a la derecha-->
-                   <ul class="navbar-nav me-auto mb-2 mb-lg-0"> 
-                      <!--Opcion 1-->
-                        {% comment %} <li class="nav-item active">
-                          <a class="nav-link" class="c-1 d-flex align-items-center" aria-current="page" href=" /panel_control/inicio/">
-                            <FONT COLOR="blue">Inicio </FONT>
-                          </a>
-                        </li> {% endcomment %}
-                        <!--Opcion 2-->
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="roles" id="navbarDropdown"
-                          role="button" COLOR="black" data-bs-toggle="dropdown" aria-expanded="false">
-                            Roles
-                          </a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <!--Opcion 4.1 -->
-                            <li><a class="dropdown-item" href="/roles/agregar_roles/">• Agregar Roles</li></a>
-                            <div class="dropdown-divider"></div>
-                            <li><a class="dropdown-item" href="/roles/listar_roles/">• Listar Roles</li></a>
-                          </ul>
-                        </li>
-                    
-                        <!--Opcion 3 SOLO PARA USER Administrador, crear usuario-->
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
-                          data-bs-toggle="dropdown" aria-expanded="false">
-                            Usuarios
-                          </a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                                  <!--Opcion 3 SOLO PARA USER ADMIN, crear usuario-->
-                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                    Registro de Usuarios
-                                  </strong>
-                                  <div class="dropdown-divider"></div>
-                                  <li class="dropdown-menu-right" aria-labelledby="navbarDropdown"></li>
-                                    
-                                  <a class="dropdown-item" href="/agregar_usuario/" > • Agregar usuario</a>
-                                  <a class="dropdown-item" href="/listar_usuario/"> • Lista de usuario</a>  
-                            </ul>
-                        </li>
-            
-                      <!--Opcion 4-->
-                       <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Administrativo</a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/administrativo/listar_persona/">Registrar Datos Personales</a></li>
-                            <div class="dropdown-divider"></div>
-                            <!--Opcion 4.1 -->
-                            <li><a class="dropdown-item" href="/administrativo/listar_paciente/"> • Paciente </a></li>
-                            <!--Opcion 4.2 TODOS-->
-                            <li><a class="dropdown-item" href="/administrativo/listar_funcionario/"> • Funcionario</a></li>
-                            <li><a class="dropdown-item" href="/administrativo/listar_especialista_salud/"> • Especialista de Salud</a></li>
-                            <li><a class="dropdown-item" href="/administrativo/listar_proveedor/"> • Proveedores</a></li>
-                            <div class="dropdown-divider"></div>
-                            <li><a class="dropdown-item" href="/administrativo/listar_cargo/"> • Cargos</a></li>
-                          </ul>
-                      </li>
-                      <!--Opcion 5-->
-         <!--Opcion 5-->
-         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="tratamiento" id="navbarDropdown"
-          role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Tratamiento</a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <!--Opcion 5.1 -->
-            <li><a class="dropdown-item" href="/tratamiento/agregar_tratamiento/">• Agregar Tratamientos</li></a>
-                <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/tratamiento/listar_tratamiento/">• Listar Tratamientos</li></a>
-                <div class="dropdown-divider"></div>
-             <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
-                <div class="dropdown-divider"></div>  -->
-            <li><a class="dropdown-item" href="/tratamiento/listar_paciente2">• Asignar Tratamientos a pacientes</li></a>
-                <div class="dropdown-divider"></div>
-          </ul>
-        </li>
-                        <!--Opcion 6 Para paciente-->
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">Agendamiento</a>
-                      </li>
-                        <!--Opcion 7 solo el Administrador-->
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Historial Clínico</a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <!--Opcion 7.1 -->
-                            <li><a class="dropdown-item" href="#">Tratamientos Realizados</li>
-                            <!--Opcion 7.2 -->
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Antecedente Clínico Personal</a></li>
-                            <!--Opcion 7.3 -->
-                            <li><a class="dropdown-item" href="#">Antecedente Clínico Familiar</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Asignar un Tratamiento</a></li>
-                          </ul>
-                      </li>
-                        <!--Opcion 8-->
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">Precios</a>
-                      </li>
-                       <!--Opcion 9-->
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">Insumos</a>
-                      </li>
-
-                      <!--Opcion 10-->
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Cobros</a>
-                    </li>
-                      <!--Opcion 11-->
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Pagos</a>
-                    </li>
-
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="configuración " id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Configuración </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <!--Opcion 5.1 -->
-                          <li><a class="dropdown-item" href="/modificar_password/">  <FONT COLOR="black"> Modificar/ Contraseña</FONT> </a></li>
+                    <ul class="navbar-nav  me-auto mb-2 mb-lg-0"> 
+                                      <!--Configuración-->
+                                      <!--Este modulo tendra acceso a todos los roles-->
+                                      <li class="nav-item dropdown">
+                                          <a class="nav-link dropdown-toggle" href="configuración " id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                           <strong style="color:blue; font-size:16px;" > ⚙️Configuración  </strong> 
+                                          </a>
+                                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                              <!--Opcion-->
+                                              <li><a class="dropdown-item" href="/modificar_password/"> <FONT COLOR="black"> Modificar/ Contraseña</FONT> </a></li>
                                               <div class="dropdown-divider"></div>
                                               <li><a class="dropdown-item" href="/administrativo/editar_persona/{{user.numero_documento}}"> <font color="black">Modificar/ Datos personales </font></a></li></a>
+                                              
                                               <div class="dropdown-divider"></div>
-                                              <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
-                                                <div class="dropdown-divider"></div>
-                                              <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: italic;" COLOR="black"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
-                                          
+                                            
+                                                <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
+                                            
+                                              <div class="dropdown-divider"></div>
+                                                <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: ;" COLOR="blue"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
+                                                              
+                                          </ul>
+                                      </li>
+
+                                      <!--Opcion 1-->
+                                    {% comment %} <li class="nav-item active">
+                                        <a class="nav-link" class="c-1 d-flex align-items-center" aria-current="page" href=" /panel_control/inicio/">
+                                          <FONT COLOR="blue">Inicio </FONT>
+                                        </a>
+                                      </li>  {% endcomment %}
+
+                                    <!--Opcion 2-Roles-->
+                                    {%if perms.group.view_rol%}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="roles" id="navbarDropdown"
+                                            role="button" COLOR="black" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Roles
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                              <!--Opcion 4.1 -->
+                                              {%if perms.gestion_roles.add_rol%}
+                                              <li><a class="dropdown-item" href="/roles/agregar_roles/">• Agregar Roles</li></a>
+                                              {%endif%}
+                                              <!--Opcion 4.2 -->
+                                              {%if perms.gestion_roles.view_rol%}
+                                              <div class="dropdown-divider"></div>
+                                              <li><a class="dropdown-item" href="/roles/listar_roles/">• Listar Roles</li></a>
+                                              {%endif%}  
                                             </ul>
-                    </li>
-                </ul>
+                                          </li>
+                                      {%endif%}
+                                      <!--Opcion 3 Usuario-->
+                                     {%if perms.webapp.view_usuario %} 
+                                      <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Usuarios 
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                                                <!--Opcion 3.0-->
+                                                {% comment %} <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                  Registro de Usuarios
+                                                </strong> {% endcomment %}
+                                                <!--Opcion 3.1-->
+                                              {%if perms.webapp.add_usuario %}
+                                                {% comment %} <div class="dropdown-divider"></div> {% endcomment %}
+                                                <li class="dropdown-menu-right" aria-labelledby="navbarDropdown"></li>
+                                                <a class="dropdown-item" href="/agregar_usuario/" > • Agregar usuario</a>
+                                              {%endif%}
+                                                <!--Opcion 3.2-->
+                                              {%if perms.webapp.view_usuario%}
+                                                <a class="dropdown-item" href="/listar_usuario/"> • Lista de usuario</a> 
+                                              {%endif%} 
+                                        </ul>
+                                      </li>
+                                     {%endif%} 
+            
+                                      <!--Opcion 4 Administrativo-->
+                                      {%if perms.gestion_administrativo.view_persona%}
+                                      <li class="nav-item dropdown">
+                                          <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          Administrativo</a>
+                                          <!--Opcion 4.0-->
+                                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            {%if perms.gestion_administrativo.view_persona%}
+                                            <li><a class="dropdown-item" href="/administrativo/listar_persona/">
+                                              <strong  style="color:blue; font-size:16px;" > • Registrar Datos Personales </strong> </a></li>
+                                            {%endif%}
+                                            <!--Opcion 4.1 -->
+                                            {%if perms.gestion_administrativo.view_paciente%}
+                                            <div class="dropdown-divider"></div>
+                                            <li><a class="dropdown-item" href="/administrativo/listar_paciente/"> • Paciente </a></li>
+                                            {%endif%}
+                                            <!--Opcion 4.2-->
+                                            {%if perms.gestion_administrativo.view_funcionario%}
+                                            <div class="dropdown-divider"></div>
+                                            <li><a class="dropdown-item" href="/administrativo/listar_funcionario/"> • Funcionario</a></li>
+                                            {%endif%}
+                                              <!--Opcion 4.3-->
+                                            {%if perms.gestion_administrativo.view_especialista_salud%}
+                                            <li><a class="dropdown-item" href="/administrativo/listar_especialista_salud/"> • Especialista de Salud</a></li>
+                                            {%endif%}
+                                            <!--Opcion 4.4-->
+                                            {%if perms.gestion_administrativo.view_proveedor%}
+                                            <li><a class="dropdown-item" href="/administrativo/listar_proveedor/"> • Proveedores</a></li>
+                                            {%endif%}
+                                            <!--Opcion 4.5-->
+                                            {%if perms.gestion_administrativo.view_cargo%}
+                                            <div class="dropdown-divider"></div>
+                                            <li><a class="dropdown-item" href="/administrativo/listar_cargo/"> • Cargos</a></li>
+                                            {%endif%}
+                                          </ul>
+                                      </li>
+                                      {% endif %}
+                                          <!--Opcion 5 Tratamiento-->
+                                          {%if perms.gestion_tratamiento.view_tratamiento%}
+                                          <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="tratamiento" id="navbarDropdown"
+                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Tratamiento</a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                              <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                    Registro de Tratamientos
+                                                  </strong>
+                                              <!--Opcion 5.1 -->
+                                                {%if perms.gestion_tratamiento.add_tratamiento%}
+                                                  <li><a class="dropdown-item" href="/tratamiento/agregar_tratamiento/">• Agregar Tratamientos</li></a>
+                                                {%endif%}
+                                              <!--Opcion 5.2 -->
+                                               
+                                                  <li><a class="dropdown-item" href="/tratamiento/listar_tratamiento/">• Listar Tratamientos</li></a>
+                                                  <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
+                                                      <div class="dropdown-divider"></div>  -->
+                                                
+                                            <!--Opcion 5.3 -->
+                                              {%if perms.gestion_adminstrativo.add_pacientetratamientoasignado%}
+                                                <div class="dropdown-divider"></div>
+                                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                    Asignación de Tratamientos a Pacientes 
+                                                  </strong>
+                                                  <li><a class="dropdown-item" href="/tratamiento/listar_paciente2">• Asignar Tratamientos</li></a> 
+                                                {%endif%}
+                                            </ul>
+                                          </li>
+                                          {% endif %}
+                                          <!--Opcion 6 Agendamiento Para paciente-->
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Agendamiento</a>
+                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                              <!--Opcion 6.1 -->
+                                              <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                         Calendario
+                                                          </strong>
+                                              </ul>
+                                        </li>
 
+                                          <!--Opcion 7-->
+                                          <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Historial Clínico</a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                              <!--Opcion 7.1 -->
+                                              <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                          Antecedente Clínico
+                                              </strong>
+                                               {%if perms.gestion_administrativo.change_paciente%}
+                                              <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black"> • Clínico Personal - Familiar</font></a></li></a>
+                                              {%endif%}
+                                              <!--Opcion 7.2 -->
+                                              {% comment %} <li><a class="dropdown-item" href="#">• Clínico Familiar</a></li> {% endcomment %}
+                                              <li><hr class="dropdown-divider"></li>
+                                               <!--Opcion 7.3 -->
+                                              <li><a class="dropdown-item" href="#">
+                                                <strong style="color:blue; font-size:16px;" >• Tratamientos Realizados</li></strong>
+                                              {% comment %} <li><hr class="dropdown-divider"></li>
+                                              <li><a class="dropdown-item" href="#">• Asignar un Tratamiento</a></li> {% endcomment %}
+                                            </ul>
+                                          </li>
+                                                <!---------------------FALTA DESARROLLAR POR ESO SE OCULTA-->
+                                          <!--Opcion 8-->
+                                          
+                                        {% comment %} <li class="nav-item">
+                                            <a class="nav-link" href="#">Precios</a>
+                                        </li>
+                                        <!--Opcion 9-->
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Insumos</a>
+                                        </li>
 
+                                        <!--Opcion 10-->
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="#">Cobros</a>
+                                      </li>
+                                        <!--Opcion 11-->
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="#">Pagos</a>
+                                      </li>  {% endcomment %}
 
+                    </ul>            
+                  </div>
+            </div>
           </div>
-    </nav>
+        </nav>
 
-
+      </div>
  </header> 
 <br>
       <!--fin de Barra de Navegacion-->

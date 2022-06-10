@@ -1,6 +1,7 @@
 {%extends 'panel_control/base.html'%}
 
 {% block content %}
+{%if perms.gestion_administrativo.view_proveedor%}
 <div class="card">
 	<div class="card-body">
 		<center>  <h2> <i class="bi-truck">Listado de Proveedores</i></h2> </center>
@@ -8,10 +9,12 @@
 <table  align="right" >
     <tr>
     <td> 
+		{%if perms.gestion_administrativo.add_proveedor%}
 		<a href="/administrativo/agregar_proveedor/" class="btn btn-success">
 			<i class="bi-person-plus-fill"></i>
 			Agregar un proveedor 
 		</a> 
+		{%endif%}
 	</td>
     </tr>
 </table>
@@ -42,14 +45,18 @@
 			<td>{{ proveedor.correo_electronico }}</td>
 			<!-- <td>{{ proveedor.producto }}</td> -->
 			<td>
+				{%if perms.gestion_administrativo.change_proveedor%}
 				<a class="btn btn-primary" href="/administrativo/modificar_proveedor/{{proveedor.ruc}}">
 					<i class="bi-pencil-square"></i>
 					Editar
 				</a>
+				{%endif%}
+				{%if perms.gestion_administrativo.delete_proveedor%}
 				<a class="btn btn-danger" href="/administrativo/eliminar_proveedor/{{proveedor.ruc}}">
 					<i class="bi-trash-fill" ></i>
 					Eliminar
 				</a>
+				{%endif%}
 				</a>
 				
 			</td>
@@ -63,5 +70,5 @@
 </table> 
 	</div>
 </div>
-
+{%endif%}
 {% endblock%}

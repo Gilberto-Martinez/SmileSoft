@@ -1,16 +1,19 @@
 {%extends 'panel_control/base.html'%}
 
 {% block content %}
+{%if perms.gestion_administrativo.view_persona%}
 <div class="card">
 	<div class="card-body">
 		<center>  <h2> <i class="bi bi-people-fill">Listado de Personas</i></h2> </center>    
 		<table  align="right" >
 			<tr>
 			<td> 
+				{%if perms.gestion_administrativo.add_persona%}
 				<a href="/administrativo/agregar_persona/" class="btn btn-success">
 					<i class="bi-person-plus-fill"></i>
 					Agregar una persona
 				</a> 
+				{%endif%}
 			</td>
 			</tr>
 		</table>
@@ -42,14 +45,18 @@
 					<td>{{ persona.es_personal_salud }}</td>
 					<td>{{ persona.es_paciente }}</td> -->
 					<td>
+						{%if perms.gestion_administrativo.change_persona%}
 						<a class="btn btn-primary" href="/administrativo/modificar_persona/{{persona.numero_documento}}">
 							<i class="bi-pencil-square"></i>
 							Editar
 						</a>
+						{%endif%}
+						{%if perms.gestion_administrativo.delete_persona%}
 						<a class="btn btn-danger" href="/administrativo/eliminar_persona/{{persona.numero_documento}}">
 							<i class="bi-trash-fill" ></i>
 							Eliminar
 						</a>
+						{%endif%}
 					</td>
 				</tr>
 				{% endfor %}
@@ -61,5 +68,5 @@
 		</table> 
 	</div>
 </div>
-
+{%endif%}
 {% endblock%}

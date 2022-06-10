@@ -257,7 +257,7 @@ def registrologin(request, cedula):
 # ***Views de Crear Usuario***
 
 
-@permission_required('webapp.agregar_usuario', login_url="/panel_control/error/",)
+# @permission_required('webapp.agregar_usuario', login_url="/panel_control/error/",)
 def agregar_usuario(request):
     data = {
         'form': UsuarioForm()
@@ -288,7 +288,7 @@ def agregar_usuario(request):
 # ***Vista que Lista y busca--Funciona****
 
 
-@permission_required('webapp.listar_usuario', login_url="/panel_control/error/")
+# @permission_required('webapp.listar_usuario', login_url="/panel_control/error/")
 def listar_usuario(request):
 
     busqueda = request.POST.get("q")
@@ -311,7 +311,7 @@ def listar_usuario(request):
 # ***Vista de Modificar Usuario
 
 
-@permission_required('webapp.modificar_usuario', login_url="/panel_control/error/",)
+# @permission_required('webapp.modificar_usuario', login_url="/panel_control/error/",)
 def modificar_usuario(request, usuario):
     usuario = Usuario.objects.get(usuario=usuario)
 
@@ -398,7 +398,7 @@ class UsuarioView(LoginMixin, View):
 
 # -----------------------------------------------------------------------------------------------
 # ***Vista de Eliminar Usuario
-@permission_required('webapp.eliminar_usuario', login_url="/panel_control/error/",)
+# @permission_required('webapp.eliminar_usuario', login_url="/panel_control/error/",)
 def eliminar_usuario(request, usuario):
     try:
         usuarios = Usuario.objects.get(usuario=usuario)

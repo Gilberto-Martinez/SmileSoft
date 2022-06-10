@@ -5,7 +5,7 @@
 {%load static%}
 
 {%block content%}
-
+  {%if perms.gestion_tratamiento.change_tratamiento%} 
 <div class="row">
    
   <div class=" col-md-10 offset-md-1" >
@@ -40,7 +40,13 @@
 
     </div>
 </div>
-
+{% else%}
+<h2 class="titulo text-center">
+                  No tiene permisos para ingresar a esta sección
+                 
+                  
+              </h2>
+{%endif%}
                     <hr>
                         
                         <table  align="right" >
