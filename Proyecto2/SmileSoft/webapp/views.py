@@ -39,7 +39,7 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import login, logout, authenticate
 from .mixins import LoginMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
-from .forms import UsuarioLoginForm, PersonaInvitadaForm
+from .forms import UsuarioLoginForm
 from django.template.loader import render_to_string
 import SmileSoft.settings as setting
 

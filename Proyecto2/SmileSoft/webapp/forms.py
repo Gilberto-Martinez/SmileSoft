@@ -27,13 +27,10 @@ from gestion_administrativo.models import Persona
 
 
 class UsuarioLoginForm(UserCreationForm):
-    # email = forms.EmailField(required=True)
     class Meta:
         model = Usuario
         fields = (
             "usuario",
-            # "numero_documento",
-            # "email",
             "password1",
         )
         widgets = {
@@ -49,42 +46,30 @@ class UsuarioLoginForm(UserCreationForm):
     #     return user
 
 
-
 #---------------------------------------------------------------------------------------- FORMULARIOS DEL CRUD DE USUARIO------------------------------------------------------------------------------------#
 class UsuarioForm(forms.ModelForm):
     usuario = forms.CharField(max_length=15,
-                            #   help_text='<small>✏️ Ejemplo: jperez  ',
-                              # error_messages={'required': 'El usuario no puede estar en blanco',
-                              #                 'max_length': 'El usuario puede tener hasta 15 caracteres'},
-
-                              widget=forms.TextInput(attrs={'required': True, 'class': 'form-control', 'placeholder': 'Ingrese su usuario'}))
+                              widget=forms.TextInput(
+                                                    attrs={
+                                                            'required': True,
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese su usuario'
+                                                        }
+                                                    )
+                            )
     password1 = forms.CharField(label= "Contraseña",min_length=6 , max_length=25 ,widget=forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese su contraseña'}), strip=False)
     password2 = forms.CharField(label="Confirmación de contraseña", min_length=6, max_length=25,help_text='<small> Para verificar, introduzca la misma contraseña anterior.</small>', widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Confirmación de contraseña'}), strip=False)
 
-   #  cargo_Elegir= forms.ModelMultipleChoiceField(
-   #     widget = forms.CheckboxSelectMultiple,
-   #      queryset = Group.objects.all(),
-   #       initial = 0
-   #       )
-
-    # estado =forms.ModelMultipleChoiceField(
-    #   widget = forms.CheckboxSelectMultiple,
-    #    queryset = AbstractBaseUser.objects.all(),
-    #     initial = 0
-
     class Meta:
         proxy = True
-      #   ordering = ['-created']
         model = Usuario
-       # fields= '__all__'
         fields = [
             'usuario',
             'password1',
             'password2',
             'numero_documento',
             'groups',
-            # 'user_permissions',
             'is_active',
             'is_admin',
         ]
@@ -103,15 +88,6 @@ class UsuarioForm(forms.ModelForm):
                                                 'required': 'required'
                                             }
                                             ),
-
-            # 'user_permissions': CheckboxSelectMultiple(attrs={
-            #     'class': 'form-select2',
-
-            #     'style': 'width: 50%',
-            #     'multiple': 'multiple'
-            # }),
-
-
         }
 
         error_messages = {
@@ -119,8 +95,8 @@ class UsuarioForm(forms.ModelForm):
                 'max_length': ("Ha Superado la longitud. Ingrese nuevamente el usuario. Por Favor'"),
             },
         }
-        
-        
+
+
     def clean_password2(self):
             # Check that the two password entries match
             password1 = self.cleaned_data.get("password1")
@@ -128,7 +104,7 @@ class UsuarioForm(forms.ModelForm):
             if password1 and password2 and password1 != password2:
                 raise ValidationError(" ❌ Contraseñas no coinciden")
             return password2
-        
+
     def save(self, commit=True):
             # Save the provided password in hashed format
             usuario = super().save(commit=False)
@@ -139,178 +115,59 @@ class UsuarioForm(forms.ModelForm):
 
 class UsuarioUpdateForm(forms.ModelForm):
     usuario = forms.CharField(max_length=15,
-                            #   help_text='<small>✏️ Ejemplo: jperez  ',
-                              # error_messages={'required': 'El usuario no puede estar en blanco',
-                              #                 'max_length': 'El usuario puede tener hasta 15 caracteres'},
-
-                              widget=forms.TextInput(attrs={'required': True, 'class': 'form-control', 'placeholder': 'Ingrese su usuario', 'readonly':True}))
-    # password1 = forms.CharField(label= "Contraseña",min_length=6 , max_length=25 ,widget=forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese su contraseña'}), strip=False)
-    # password2 = forms.CharField(label="Confirmación de contraseña", min_length=6, max_length=25,help_text='<small> Para verificar, introduzca la misma contraseña anterior.</small>', widget=forms.PasswordInput(
-    #     attrs={'class': 'form-control', 'placeholder': 'Confirmación de contraseña'}), strip=False)
+                              widget=forms.TextInput(attrs={
+                                                            'required': True,
+                                                            'class':'form-control',
+                                                            'placeholder': 'Ingrese su usuario',
+                                                            'readonly':True
+                                                            }
+                                                    )
+                            )
     numero_documento = forms.CharField(label='N° documento', widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Ingrese su documento', 'readonly': 'True'}))
-   #  cargo_Elegir= forms.ModelMultipleChoiceField(
-   #     widget = forms.CheckboxSelectMultiple,
-   #      queryset = Group.objects.all(),
-   #       initial = 0
-   #       )
-
-    # estado =forms.ModelMultipleChoiceField(
-    #   widget = forms.CheckboxSelectMultiple,
-    #    queryset = AbstractBaseUser.objects.all(),
-    #     initial = 0
 
     class Meta:
         proxy = True
-      #   ordering = ['-created']
         model = Usuario
-       # fields= '__all__'
         fields = [
             'usuario',
-            # 'password1',
-            # 'password2',
             'numero_documento',
             'groups',
-            # 'user_permissions',
             'is_active',
             'is_admin',
         ]
-
         widgets = {
             'groups': forms.CheckboxSelectMultiple(attrs={
                 'class': 'form-select2',
                 'style': 'width: 20px',
                 'multiple': 'multiple'}),
-
-            # 'password1': forms.PasswordInput(render_value=True,
-
-            #                                 attrs={
-            #                                     'class': 'from-control',
-            #                                     'placeholder': 'Password ingrese',
-            #                                     'required': 'required'
-            #                                 }
-            #                                 ),
-            
-            # 'numero_documento': CheckboxInput(attrs={
-            #                                             'readonly':'True'
-            #                                         }),
-                                                    
-           
-            
-
-            # 'user_permissions': CheckboxSelectMultiple(attrs={
-            #     'class': 'form-select2',
-
-            #     'style': 'width: 50%',
-            #     'multiple': 'multiple'
-            # }),
-
-            # 'error_messages' = {
-            #     'usuario': {
-            #         'max_length': ("Ha Superado la longitud. Ingrese nuevamente el usuario. Por Favor'"),
-            #     },
-            # }
-
         }
-
-        
-        
-    # def clean_password2(self):
-    #         # Check that the two password entries match
-    #         password1 = self.cleaned_data.get("password1")
-    #         password2 = self.cleaned_data.get("password2")
-    #         if password1 and password2 and password1 != password2:
-    #             raise ValidationError(" ❌ Contraseñas no coinciden")
-    #         return password2
-        
-    # def save(self, commit=True):
-    #         # Save the provided password in hashed format
-    #         usuario = super().save(commit=False)
-    #         usuario.set_password(self.cleaned_data["password1"])
-    #         if commit:
-    #             usuario.save()
-    #         return usuario
 
 
 class UsuarioPassworUpdateForm(forms.ModelForm):
-    usuario = forms.CharField(max_length=15,
-                              widget=forms.TextInput(attrs={
-                                                        'required': True, 
-                                                        'class': 'form-control', 
-                                                        'placeholder': 
-                                                        'Ingrese su usuario', 
-                                                        'readonly':True}))
     password1 = forms.CharField(label= "Contraseña",min_length=6 , max_length=25 ,widget=forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese su contraseña'}), strip=False)
     password2 = forms.CharField(label="Confirmación de contraseña", min_length=6, max_length=25,help_text='<small> Para verificar, introduzca la misma contraseña anterior.</small>', widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Confirmación de contraseña'}), strip=False)
-    # numero_documento = forms.CharField(label='N° documento', widget=forms.TextInput(
-    #     attrs={'class': 'form-control', 'placeholder': 'Ingrese su documento', 'readonly': 'True'}))
-   #  cargo_Elegir= forms.ModelMultipleChoiceField(
-   #     widget = forms.CheckboxSelectMultiple,
-   #      queryset = Group.objects.all(),
-   #       initial = 0
-   #       )
-
-    # estado =forms.ModelMultipleChoiceField(
-    #   widget = forms.CheckboxSelectMultiple,
-    #    queryset = AbstractBaseUser.objects.all(),
-    #     initial = 0
 
     class Meta:
         proxy = True
-      #   ordering = ['-created']
         model = Usuario
-       # fields= '__all__'
         fields = [
-            'usuario',
             'password1',
             'password2',
-            # 'numero_documento',
-            # 'groups',
-            # 'user_permissions',
-            # 'is_active',
-            # 'is_admin',
         ]
 
         widgets = {
-        #     'groups': forms.CheckboxSelectMultiple(attrs={
-        #         'class': 'form-select2',
-        #         'style': 'width: 20px',
-        #         'multiple': 'multiple'}),
-
-            'password1': forms.PasswordInput(render_value=True,
-
-                                            attrs={
-                                                'class': 'from-control',
-                                                'placeholder': 'Password ingrese',
-                                                'required': 'required'
-                                            }
+            'password1': forms.PasswordInput(
+                                                render_value=True,
+                                                attrs={
+                                                        'class': 'from-control',
+                                                        'placeholder': 'Password ingrese',
+                                                        'required': 'required',
+                                                    }
                                             ),
-            
-            # 'numero_documento': CheckboxInput(attrs={
-            #                                             'readonly':'True'
-            #                                         }),
-                                                    
-           
-            
-
-            # 'user_permissions': CheckboxSelectMultiple(attrs={
-            #     'class': 'form-select2',
-
-            #     'style': 'width: 50%',
-            #     'multiple': 'multiple'
-            # }),
-
-            # 'error_messages' = {
-            #     'usuario': {
-            #         'max_length': ("Ha Superado la longitud. Ingrese nuevamente el usuario. Por Favor'"),
-            #     },
-            # }
-
         }
 
-        
-        
     def clean_password2(self):
             # Check that the two password entries match
             password1 = self.cleaned_data.get("password1")
@@ -404,33 +261,4 @@ class ConsultaInvitadoForm(forms.Form):
     def clean_numero_documento(self):
         data = self.cleaned_data['numero_documento']
         return data
-    # class Meta:
-    #     model = Persona
-    #     fields = ['numero_documento',]
 
-class PersonaInvitadaForm(forms.ModelForm):
-   nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
-   apellido= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su apellido'}))
-   numero_documento= forms.CharField(label='N° documento', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su documento',}))
-   telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
-   correo_electronico = forms.EmailField(label='Correo electrónico', widget = forms.EmailInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su correo electronico'}))
-
-   class Meta:
-         model = Persona
-         fields = ['nombre', 
-                  'apellido', 
-                  'numero_documento', 
-                  'telefono',
-                  'correo_electronico',
-                ]
-
-   def clean_numero_documento(self):
-      numero_documento= self.cleaned_data["numero_documento"]
-      if Persona.objects.filter(numero_documento=numero_documento).exists():
-         print ("Ya existe el numero de cedula ingresado")
-         #messages.error(request, 'Ya existe el numero de cedula ingresado')
-            # self.error_cedula()
-      return numero_documento
-
-   def get_numero_documento(self):
-      return self.numero_documento
