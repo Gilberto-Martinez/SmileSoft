@@ -11,13 +11,13 @@ def send_mail():
         mailServer.starttls()
         print(mailServer.ehlo())
         # mailServer.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-        mailServer.login('psmilesoft@gmail.com', 'PSmilesoft+')
+        mailServer.login('smilesoftteam@gmail.com', 'AIzaSyAsAtTpGYP02DkbUyHLYUXjIDyiISn7FAY')
         print('Conectado..')
 
         # Construimos el mensaje simple
         mensaje = MIMEText("""Este es el mensaje
         de las narices""")
-        mensaje['From']="psmilesoft@gmail.com"
+        mensaje['From']="smilesoftteam@gmail.com"
         mensaje['To']="martinez@gmail.com"
         mensaje['Subject']="Tienes un correo"
     except Exception as e:

@@ -60,6 +60,7 @@ from gestion_administrativo.models import Paciente, Persona
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
+from .gmail import enviar_correo
 # from googlevoice.util import input
 
 '''Inicio de Sesion'''
@@ -111,8 +112,12 @@ def cerrar_sesion(request):
 class MensajeView(TemplateView):
     template_name= 'inicio/mensaje_redireccion.html'
 
-class UsuarioConfirmacionView(TemplateView):
-    template_name= "inicio/confirmacion_usuario.html"
+# class UsuarioConfirmacionView(TemplateView):
+#     template_name= "inicio/confirmacion_usuario.html"
+
+def mostrar_confirmacion_usuario(request, cedula):
+    context ={'cedula':cedula}
+    return render(request, "inicio/confirmacion_usuario.html", context)
 
 class Mensaje_confirmacion(TemplateView):
     template_name= "inicio/mensaje_confirmacion.html"
@@ -150,7 +155,7 @@ class CedulaConsultaView(TemplateView):
                 except ObjectDoesNotExist: # Si no tiene un usuario pregunta si quiere generarlo
                     return redirect("/mensaje_confirmacion/%s" %(cedula))
                 else: # Si el paciente ya tiene un usuario pregunta si quiere iniciar sesion
-                    return redirect("/confirmacion_usuario/")
+                    return redirect("/confirmacion_usuario/%s" %(cedula))
         else:
             print("No es validooooooooooooo")
             return self.render_to_response(self.get_context_data(form=form))
@@ -190,8 +195,24 @@ def generar_usuario_paciente(request, cedula):
     context ={'cedula':cedula}
 
     if usuario:
-        pass
+        nombre_usuario = usuario.usuario
+        enviar_correo(email,nombre_usuario,password)
 
+    return render(request, "inicio/mensaje_envio_correo.html", context)
+
+def generar_password(request, cedula):
+    persona = Persona.objects.get(numero_documento=cedula)
+    password = Usuario.objects.make_random_password()
+    print('contraseña: ',password)
+    usuario = Usuario.objects.create_user(password, cedula)
+    grupo = Group.objects.get(name='Paciente')
+    grupo.user_set.add(usuario)
+    email = persona.correo_electronico
+    context ={'cedula':cedula}
+
+    if usuario:
+        pass    
+        
     return render(request, "inicio/mensaje_envio_correo.html", context)
 
 

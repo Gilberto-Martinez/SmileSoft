@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'gestion_administrativo',
     'gestion_tratamiento',
     'gestion_historial_clinico',
-        # 'colorfield',
+    # 'colorfield',
     #para los iconos
   
 ]
