@@ -245,6 +245,47 @@ class FuncionarioCreate(CreateView):
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 
+# class EspecialistaSaludCreate(CreateView):
+#     model = EspecialistaSalud
+#     template_name = 'agregar_especialista_salud.html'
+#     second_form_class = PersonaForm
+#     success_url = reverse_lazy('listar_especialista_salud')
+#     form_class = EspecialistaSaludForm
+
+#     def get_context_data(self, **kwargs):
+#         context = super(EspecialistaSaludCreate,
+#                         self).get_context_data(**kwargs)
+#         if 'form' not in context:
+#             context['form'] = self.form_class(self.request.GET)
+#         if 'form2' not in context:
+#             context['form2'] = self.second_form_class(self.request.GET)
+#         return context
+
+#     @method_decorator(csrf_protect)
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object
+#         # form = EspecialistaSaludForm(request.POST)
+#         # form2 = PersonaForm(request.POST)
+#         # # data = {
+#         # #     'form': EspecialistaSaludForm(),
+#         # #     'form2': PersonaForm()
+#         # # }
+#         form = self.form_class(request.POST)
+#         form2 = self.second_form_class(request.POST)
+        
+#         if form.is_valid() and form2.is_valid():
+#             especialista_salud = form.save(commit=False)
+#             persona = form2.save()
+#             especialista_salud.numero_documento = persona
+#             especialista_salud.save()
+#             form.save_m2m()
+#             messages.success(request, " ✅ Agregado correctamente")
+#             print('ENTRAAAAA')
+#             return HttpResponseRedirect(self.success_url)
+#         else:
+#             print('NO ENTRAAAAA')
+#             return self.render_to_response(self.get_context_data(form=form, form2=form2))
+
 class EspecialistaSaludCreate(CreateView):
     model = EspecialistaSalud
     template_name = 'agregar_especialista_salud.html'
@@ -274,7 +315,8 @@ class EspecialistaSaludCreate(CreateView):
             especialista_salud = form.save(commit=False)
             especialista_salud.numero_documento = form2.save()
             especialista_salud.save()
-            data['mensaje'] = "Agregado correctamente"
+            form.save_m2m()
+            messages.success(request, " ✅ Agregado correctamente")
             return HttpResponseRedirect(self.success_url)
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
@@ -301,6 +343,7 @@ class ProveedorCreate(CreateView):
         }
         if form.is_valid():
             form.save()
+            messages.success(request, " ✅ Proveedor agregado correctamente")
             # data['mensaje'] = "Agregado correctamente"
             return HttpResponseRedirect(self.success_url)
         else:
@@ -328,6 +371,7 @@ class CargoCreate(CreateView):
         #     }
         if form.is_valid():
             form.save()
+            messages.success(request, " ✅ Cargo Agregado correctamente")
             # data['mensaje'] = "Agregado correctamente"
             return HttpResponseRedirect(self.success_url)
         else:
@@ -459,20 +503,25 @@ class PersonaUpdate(UpdateView):
 
         if form.is_valid():
             persona = form.save()
+            
             if form2.is_valid():
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
                 form2.save_m2m()
+               
             if form3.is_valid():
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = persona
                 paciente.save()
+               
             if form4.is_valid(): # Aun falta implementar
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
+            messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
+        
         else:
             return HttpResponseRedirect(self.get_success_url())
 
@@ -509,6 +558,7 @@ class FuncionarioUpdate(UpdateView):
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
+            messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
@@ -552,6 +602,7 @@ class EspecialistaSaludUpdate(UpdateView):
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
+            messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         else:
             if not form.is_valid():
@@ -668,6 +719,7 @@ class ProveedorUpdate(UpdateView):
         form = self.form_class(request.POST, instance=proveedor)
         if form.is_valid():
             form.save()
+            messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
@@ -694,6 +746,7 @@ class CargoUpdate(UpdateView):
         form = self.form_class(request.POST, instance=cargo)
         if form.is_valid():
             form.save()
+            messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())

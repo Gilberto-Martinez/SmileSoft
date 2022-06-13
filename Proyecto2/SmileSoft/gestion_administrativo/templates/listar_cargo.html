@@ -2,69 +2,70 @@
 
 {% block content %}
 {%if perms.gestion_administrativo.view_cargo%}
-<div class="card">
-    <div class="card-body">
-        <center>  <h2><i class="bi-clipboard-check">Listado de Cargos</i></h2> </center>
-        <table  align="right">
-            <tr>
-            <td> 
-                {%if perms.gestion_administrativo.add_cargo%}
-                <a href="/administrativo/agregar_cargo/" class="btn btn-success">
-                    <i class="bi-file-earmark-plus"></i>
-                    Agregar un cargo
-                </a>
-                {%endif%}
-            </td>
-            </tr>
-        </table>
-        <br>
-        <table>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Nro</th>
-                        <th>Nombre del cargo</th>
-                        <th>Salario</th>
-                        <th>Acciones</th>
-                    </tr>
-                    
-                </thead>
-                <tbody>
-                    {% if object_list %}
-                    {% for cargo in object_list %}
-                    <tr>
-                        <td >{{forloop.counter}}</td>
-                        <td>{{ cargo.nombre }}</td>
-                        <td>{{ cargo.salario }}</td>
-                        <td>
-                             {%if perms.gestion_administrativo.change_cargo%}
-                            <a class="btn btn-primary" href="/administrativo/modificar_cargo/{{cargo.nombre}}">
-                                <i class="bi-pencil-square"></i>
-                                Editar
-                            </a>
-                            {%endif%}
-                            
-                            {%if perms.gestion_administrativo.delete_cargo%}
-                            <a class="btn btn-danger" href="/administrativo/eliminar_cargo/{{cargo.nombre}}">
-                                <i class="bi-trash-fill" ></i>
-                                Eliminar
-                            </a>
-                            {%endif%}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    
-                    {% else %}
-                        <h1>No hay registros de cargos</h1>
-                    {% endif %}
-                </tbody>
-            </table> 
-        </table>
-    </div>
-   
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <center>  <h2><i class="bi-clipboard-check">Listado de Cargos</i></h2> </center>
+            <table  align="right">
+                <tr>
+                <td> 
+                    {%if perms.gestion_administrativo.add_cargo%}
+                    <a href="/administrativo/agregar_cargo/" class="btn btn-success">
+                        <i class="bi-file-earmark-plus"></i>
+                        Agregar un cargo
+                    </a>
+                    {%endif%}
+                </td>
+                </tr>
+            </table>
+            <br>
+            <table>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nro</th>
+                            <th>Nombre del cargo</th>
+                            <th>Salario</th>
+                            <th>Acciones</th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        {% if object_list %}
+                        {% for cargo in object_list %}
+                        <tr>
+                            <td >{{forloop.counter}}</td>
+                            <td>{{ cargo.nombre }}</td>
+                            <td>{{ cargo.salario }}</td>
+                            <td>
+                                {%if perms.gestion_administrativo.change_cargo%}
+                                <a class="btn btn-primary" href="/administrativo/modificar_cargo/{{cargo.nombre}}">
+                                    <i class="bi-pencil-square"></i>
+                                    Editar
+                                </a>
+                                {%endif%}
+                                
+                                {%if perms.gestion_administrativo.delete_cargo%}
+                                <a class="btn btn-danger" href="/administrativo/eliminar_cargo/{{cargo.nombre}}">
+                                    <i class="bi-trash-fill" ></i>
+                                    Eliminar
+                                </a>
+                                {%endif%}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        
+                        {% else %}
+                            <h1>No hay registros de cargos</h1>
+                        {% endif %}
+                    </tbody>
+                </table> 
+            </table>
+        </div>
     
+        
+    </div>
 </div>
-
 
 {% endif %}
 

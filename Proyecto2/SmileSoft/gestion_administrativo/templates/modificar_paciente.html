@@ -14,6 +14,7 @@
             <div class="card-body">
                 <form method="POST">
                     {% csrf_token %}
+
                     <div style="margin: 20px;" >
                         <table>
                             <div class="form-group">
@@ -113,27 +114,32 @@
                         <!-- <input href="/administrativo/agregar_antecedente_clinico/ " type="submit" value="Agregar antecedente clinico" style="margin: 10px;" class= "btn btn-primary btn-block txt-white"> -->
                         <a href="/administrativo/listar_paciente/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
                     </div>
-                    <hr>
+                   
                     <table  align="right" >
                         <tr>
                             <td> 
                                 <a href="/administrativo/agregar_paciente/" class="btn btn-success">Agregar otro paciente +</a> 
                             </td>
                         </tr>
-                        <div class="container mt-3 text-center">
-                            <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
-                        </div>
+                      <div class="container mt-3 text-center">
+                                <a href=" /panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> <i class="bi bi-house-door"></i>Inicio</a>
+                            </div>
+                          
                     </table>
-                
+               
                     <table  align="left" >
                         <tr>
                             <td> 
                                 <a href="/administrativo/listar_paciente/" class="btn btn-info">Ver listado de pacientes </a> 
                             </td>
                         </tr>
+                 
                     </table>
+                    
                 </form>
+                <br>
             </div>
+             <br>
         </div>
 </div>
 {%endblock%}

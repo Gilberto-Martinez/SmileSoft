@@ -14,6 +14,20 @@
             <div class="card-body">
                 <form method="POST">
                     {%csrf_token%}
+                    {% if messages %}
+						<ul class="messages">
+							{% for message in messages %}
+									<li>
+										{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+										{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+					
+										{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+										{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+										{{ message }}
+									</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
                     <div style="margin: 20px;">
                         <table>
                             <div class="form-group">
@@ -69,16 +83,18 @@
                         <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
                         <a href="/administrativo/listar_especialista_salud/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
                     </div>
-                    <hr>
+                  
                     <table  align="right" >
                         <tr>
                             <td> 
                                 <a href="/administrativo/agregar_especialista_salud/" class="btn btn-success">Agregar otro especialista de salud +</a> 
                             </td>
                         </tr>
+                       
                         <div class="container mt-3 text-center">
-                            <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
+                                <a href=" /panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> <i class="bi bi-house-door"></i>Inicio</a>
                         </div>
+                         <br>
                     </table>
                 
                     <table  align="left" >
@@ -89,7 +105,10 @@
                         </tr>
                     </table>
                 </form>
+                 <br>
             </div>
+             <br>
         </div>
+         <br>
 </div>
 {%endblock%}

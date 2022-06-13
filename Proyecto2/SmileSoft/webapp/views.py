@@ -266,7 +266,7 @@ def agregar_usuario(request):
         formulario = UsuarioForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "Agregado")
+            # messages.success(request, "Agregado")
             data["mensaje"] = "Registrado correctamente"
         else:
             data["form"] = formulario

@@ -5,6 +5,8 @@
 {%load static%}
 
 {%block content%}
+<div class="container">
+<main>
 {%if perms.webapp.add_usuario%}
 {%if form.errors%}
 <div class="alert alert-danger" role="alert">
@@ -17,7 +19,7 @@
             <div class="col-12 col-md-6 offset-md-3">
                 <div class="card">
                     <br>
-                    <center><h2> Crear Usuario</h2></center>  
+                    <center><h2> Agregar Usuario</h2></center>  
                     <div class="card-body">
                         <form action="" method="post">
                             {%csrf_token%}
@@ -32,12 +34,12 @@
                                 ✏️ Ejemplo :<b> jperez </b>
                            </small>                        
 
-                            <b>
+                           
                             {{form.as_p}} 
-                            <b>
+                            
 
                             <br>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-center">  
                                 {% comment %} <div class="d-flex justify-content-end">--> para poner en una esquina     {% endcomment %}
                                 <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
                                 <input type="submit" onclick="guardar()" value="Guardar" class= "btn btn-primary btn-block txt-white">
@@ -53,7 +55,7 @@
                                 &nbsp;
                                 {% comment %} <input href="/sesion/agregar_usuario/" type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
                               <button id="cancel" name="cancel" class="btn btn-default" value="1">Cancel</button> {% endcomment %}
-                                  <a href="/listar_usuario/" id="cancel" name="cancel"class= "btn btn-secondary btn-block txt-white">Cancelar</a>
+                                  <a href="/listar_usuario/" id="cancel" name="cancel" class= "btn btn-secondary btn-block txt-white">Cancelar</a>
                           
                                 </div>
                         </form>
@@ -66,16 +68,16 @@
 <hr>
         <table  align="right" >
             <tr>
-            <td>
-              <a href="/agregar_usuario/" class="btn btn-success">
-                <i class="bi-person-plus-fill"></i>
-                Agregar otro usuario
-              </a>
-            </td>
+              <td>
+                <a href="/agregar_usuario/" class="btn btn-success">
+                  <i class="bi-person-plus-fill"></i>
+                  Agregar otro usuario
+                </a>
+              </td>
             </tr>
-             <div class="container mt-3 text-center">
-                                 <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
-                               </div>
+            <div class="container mt-3 text-center">
+              <a href=" /panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> <i class="bi bi-house-door"></i>Inicio</a>
+            </div>
       </table>
  {% else%}
 <h2 class="titulo text-center">
@@ -95,6 +97,6 @@
         </tr>
   </table>
 
-
-
+</main>
+</div>
 {%endblock%}

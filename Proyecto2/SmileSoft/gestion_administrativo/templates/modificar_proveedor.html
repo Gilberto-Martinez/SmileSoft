@@ -2,6 +2,7 @@
 
 {%block content%}
 
+{%if perms.gestion_administrativo.change_proveedor%}
 <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <br>
@@ -14,6 +15,20 @@
             <div class="card-body">
                 <form method="POST">
                     {% csrf_token %}
+                      {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li>
+                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                    {{ message }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
                     <div style="margin: 20px;" >
                         <table>
                             <div class="form-group">
@@ -40,7 +55,7 @@
                                 <label for="{{form.correo_electronico.name}}">{{form.correo_electronico.label}}</label>
                                 {{form.correo_electronico}}
                             </div>
-                            <br>
+                           
                             <!-- <div class="form-group">
                                 <label for="{{form.producto.name}}">{{form.producto.label}}</label>
                                 {{form.producto}}
@@ -54,14 +69,10 @@
                         <a href="/administrativo/listar_proveedor/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
                     </div>
                     <table  align="right" >
-                        <tr>
-                            <td> 
-                                <a href="/administrativo/agregar_proveedor/" class="btn btn-success">Agregar otro proveedor +</a> 
-                            </td>
-                        </tr>
-                        <div class="container mt-3 text-center">
-                            <a href="http://127.0.0.1:8000/base/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
-                        </div>
+                      
+                         <div class="container mt-3 text-center">
+                                    <a href=" /panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> <i class="bi bi-house-door"></i>Inicio</a>
+                                </div>
                     </table>
                 
                     <table  align="left" >
@@ -69,11 +80,15 @@
                             <td> 
                                 <a href="/administrativo/listar_proveedor/" class="btn btn-info">Ver listado de proveedores </a> 
                             </td>
+                            
                         </tr>
+                        
                     </table>
-
+                    <br>
                 </form>
+                <br>
             </div>
         </div>
 </div>
+{%endif%}
 {%endblock%}
