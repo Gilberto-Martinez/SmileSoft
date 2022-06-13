@@ -60,7 +60,7 @@ from gestion_administrativo.models import Paciente, Persona
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
-from enviar_correo.gmail import enviar_correo
+from .gmail import enviar_correo
 # from googlevoice.util import input
 
 '''Inicio de Sesion'''
@@ -195,12 +195,10 @@ def generar_usuario_paciente(request, cedula):
     context ={'cedula':cedula}
 
     if usuario:
-        pass
+        nombre_usuario = usuario.usuario
+        enviar_correo(email,nombre_usuario,password)
 
     return render(request, "inicio/mensaje_envio_correo.html", context)
-
-def enviar_correo(request):
-    enviar_correo()
 
 def generar_password(request, cedula):
     persona = Persona.objects.get(numero_documento=cedula)
@@ -213,8 +211,8 @@ def generar_password(request, cedula):
     context ={'cedula':cedula}
 
     if usuario:
-        pass
-
+        pass    
+        
     return render(request, "inicio/mensaje_envio_correo.html", context)
 
 
