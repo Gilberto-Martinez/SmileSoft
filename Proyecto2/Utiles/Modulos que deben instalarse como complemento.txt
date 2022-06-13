@@ -1,0 +1,6 @@
+Para conexion con base de datos postgresql
+-pip install psycopg2
+
+Para utlizar api de gmail para envio de correos
+-pip install google-auth-oauthlib
+-pip install google-api-python-client
