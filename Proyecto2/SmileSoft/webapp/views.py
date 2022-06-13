@@ -197,8 +197,7 @@ def generar_usuario_paciente(request, cedula):
     if usuario:
         nombre_usuario = usuario.usuario
         enviar_correo(email,nombre_usuario,password)
-
-    return render(request, "inicio/mensaje_envio_correo.html", context)
+        return render(request, "inicio/mensaje_envio_correo.html", context)
 
 def generar_password(request, cedula):
     persona = Persona.objects.get(numero_documento=cedula)
