@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # data = open(json_data,'r')
 
 # CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'static', "json/trchatbot.json")
-CLIENT_SECRET_FILE = "json/trchatbot.json"
+CLIENT_SECRET_FILE = "trchatbot.json"
 API_NAME = "gmail"
 API_VERSION = "v1"
 SCOPES = ["https://mail.google.com/"]
