@@ -28,8 +28,10 @@ urlpatterns = [
             path('mensaje/', MensajeView.as_view(),name='mostrar_mensaje'),
             path('mensaje_confirmacion/<str:cedula>', mostrar_mensaje_confirmacion,name='mostrar_mensaje_confirmacion'),
             # path('mensaje_confirmacion/<str:cedula>', Mensaje_confirmacion.as_view(),name='mostrar_mensaje_confirmacion'),
-            path('confirmacion_usuario/', UsuarioConfirmacionView.as_view(),name='confirmacion_usuario'),
+            path('confirmacion_usuario/<str:cedula>', mostrar_confirmacion_usuario,name='confirmacion_usuario'),
             path('generar_usuario_paciente/<str:cedula>', generar_usuario_paciente,name='generar_usuario_paciente'),
+            path('generar_password/<str:cedula>', generar_password,name='generar_password'),
+            path('enviar_correo/', enviar_correo,name='enviar_correo'),
             # path('mensaje_envio_correo/', MensajeCorreoView.as_view(),name='mensaje_envio_correo'),
 
             #  path('registropaciente/', registropaciente, name='registropaciente'), 
