@@ -23,49 +23,64 @@
   
     </head>
  
-
     <body>
-   
         <!--Inicio de Sesion bloque-->
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <!------ Propios del estilo de la plantilla encontrada---------->
 
-        <!-- <h2 class="text-center text-gray pt-5">  SmileSoft </h2> -->
-        <div align="center">
-            <br>
-            <br>
-            <br>
-            <h2 class="text-center text-gray pt-5">SmileSoft</h2>
-            <img src="{% static 'img/favicon.png' %}" width="120px" alt="logo">
-        </div>
+        <h2 class="text-center text-gray pt-5">  SmileSoft </h2>
+        <div align="center"><img src="{% static 'img/favicon.png' %}" width="120px" alt="logo"></div>
         <div class="container">
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-5">
+                    <form action="" method="post">
+                        {% csrf_token %}
                         <!-- <table> -->
-                        <h3 class="text-center text-Gray"><i>¡Atención!</i> </h3>
+                        <h4 class="text-center text-Gray"><i>Verificación de usuario</i> </h4>
                         <div class="row justify-content-center align-items-center">
+                            <!-- <div class="col-md-10"> -->
                             <p class="text-justify">
                                 <i>
-                                    Usted ya cuenta con un usuario. ¿Desea iniciar sesión?
+                                    Primero verificaremos si cuenta con un usuario,
+                                    por favor ingrese su número de cédula de identidad:
                                 </i>
                             </p>
+                            <!-- </div> -->
                         </div>
-                        <div>
-                            <div align="center" > 
-                                <a href="/login/" class="btn btn-primary " style="width: 70px">OK</a>
-                                
-                            </div>
-                            <br>
-                            <div align="center">
-                                ¿No recuerda su contraseña?
-                                <a href="/password_reset/{{cedula}}" class="btn btn-link">Solicítelo aqui</a>
+                        <br>
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <b><label for="{{form.numero_documento.name}}">{{form.numero_documento.label}}</label></b>
+                            {{form.numero_documento}}
+                        </div>
+                        <br>
+                        <div class="form-group" >
+                            <!-- {% csrf_token %} -->
+                            <div align="center"> 
+                                <button style="height: 50px" type="submit" class="btn btn-primary">Buscar</button>
                             </div>
                         </div>
+                        <br>
+                        <br>
+                        <br>
+                        {% csrf_token %}
+                        <div class="alert alert-success" role="alert">
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                                        {{ message }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- </table> -->
+                    </form>
                 </div>
             </div>
         </div>
+        <!-- </div> -->
 
            <!--===CDN Separate Popper and Bootstrap JS ===-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
