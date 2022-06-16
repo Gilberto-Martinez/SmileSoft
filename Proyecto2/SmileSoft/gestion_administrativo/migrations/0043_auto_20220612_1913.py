@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='persona',
             name='fecha_nacimiento',
-            field=models.DateField(default=1, verbose_name='Fecha de nacimiento'),
+            field=models.DateField(verbose_name='Fecha de nacimiento'),
             preserve_default=False,
         ),
     ]

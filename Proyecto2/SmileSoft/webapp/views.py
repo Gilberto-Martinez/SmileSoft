@@ -60,13 +60,13 @@ from gestion_administrativo.models import Paciente, Persona
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
-from .gmail import enviar_correo
-# from googlevoice.util import input
+import webapp.gmail
+from webapp.gmail import enviar_correo, enviar_link_reseteo
+from django.contrib.auth.tokens import default_token_generator
 
 '''Inicio de Sesion'''
 #------------------------------------------------------------------------------------------------------#
 # Vista de Login
-
 
 def inicio_login(request):
     if request.method == 'POST':
@@ -89,21 +89,12 @@ def inicio_login(request):
     return render(request, "inicio/login.html")
 
 # Vista de Cerrar sesión
-
 def cerrar_sesion(request):
     logout(request)
     messages.info(
         request, f"✔ Tu sesión se ha cerrado correctamente")
     return redirect("/login/")
 
-# def inicio_prueba(request):
-
-#     return render(request, "inicio/inicio_prueba.html")
-
-
-# def prueba(request):
-
-#     return render(request, "prueba.html")
 
 #----------------------------------------------------PACIENTE--------------------------------------------------#
 
@@ -112,24 +103,42 @@ def cerrar_sesion(request):
 class MensajeView(TemplateView):
     template_name= 'inicio/mensaje_redireccion.html'
 
-# class UsuarioConfirmacionView(TemplateView):
-#     template_name= "inicio/confirmacion_usuario.html"
+
+class MensajeView2(TemplateView):
+    template_name= 'inicio/mensaje_redireccion2.html'
+
 
 def mostrar_confirmacion_usuario(request, cedula):
     context ={'cedula':cedula}
     return render(request, "inicio/confirmacion_usuario.html", context)
 
+def resetear_password(request, cedula):
+    persona = Persona.objects.get(numero_documento=cedula)
+    email = persona.correo_electronico
+    password = Usuario.objects.make_random_password()
+    usuario = Usuario.objects.cambiar_password( password, cedula)
+    nombre_usuario = usuario.usuario
+    enviar_link_reseteo(email, nombre_usuario,password)
+    return redirect('/password_reset_done/')
+
+
+class PasswordResetDoneView(TemplateView):
+    template_name= "inicio/password_reset_done.html"
+
+
 class Mensaje_confirmacion(TemplateView):
     template_name= "inicio/mensaje_confirmacion.html"
+
 
 def mostrar_mensaje_confirmacion(request, cedula):
     context ={'cedula':cedula}
     return render(request, "inicio/mensaje_confirmacion.html", context)
 
+
 class CedulaConsultaView(TemplateView):
     template_name = "inicio/consultar_documento.html"
     form_class = ConsultaInvitadoForm
-
+    
     def get_context_data(self, **kwargs):
         context = super(CedulaConsultaView, self).get_context_data(**kwargs)
         if 'form' not in context:
@@ -138,16 +147,13 @@ class CedulaConsultaView(TemplateView):
 
     @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
-        # self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():
             # invitado = form.numero_documento
             cedula = form.cleaned_data['numero_documento']
             try: # Comprueba si esta registrado como paciente
-                # print("cedula: ",cedula)
                 paciente = Paciente.objects.get(numero_documento=cedula)
             except ObjectDoesNotExist: # Si no es paciente muestra el siguiente mensaje
-                # respuesta = "No existe"
                 return redirect("/mensaje")
             else: # Si es un paciente, comprueba si tiene un usuario
                 try: 
@@ -161,28 +167,37 @@ class CedulaConsultaView(TemplateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-def consultar_cedula(request):
-    data = {
-            'form': ConsultaInvitadoForm()
-    }
-    if request.method == 'POST':
-        form = ConsultaInvitadoForm(data=request.POST)
+class CedulaConsultaView2(TemplateView):
+    """ Solicita la Cedula de identidad de la persona y consulta en la base de datos
+        si cuenta con un usuario.
+        * Si no cuenta con un usuario muestra un mensaje informativo
+        Si comprueba que cuenta con un usuario restablece su contraseña y se lo envia
+        por correo electronico
+    """
+    template_name = "inicio/consultar_documento2.html"
+    form_class = ConsultaInvitadoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CedulaConsultaView2, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        return context
+
+    @method_decorator(csrf_protect)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
         if form.is_valid():
-            invitado = form.save(commit=False)
-            cedula = invitado.numero_documento
-            persona = Persona.objects.get(numero_documento=cedula)
-            try:
-                print("cedula: ",cedula)
-                persona = Persona.objects.get(numero_documento=cedula)
-            except ObjectDoesNotExist:
-                respuesta = "No existe"
-            
-            print("Persona: ", persona)
+            cedula = form.cleaned_data['numero_documento']
+            try: # Comprueba si esta registrado como paciente
+                usuario = Usuario.objects.get(numero_documento=cedula)
+            except ObjectDoesNotExist: # Si no cuenta con un usuario muestra el siguiente mensaje
+                return redirect("/mensaje_respuesta")
+            else: # Si tiene un usuario
+                return redirect("/password_reset/%s" %(cedula))
+        else:
+            print("No es validooooooooooooo")
+            return self.render_to_response(self.get_context_data(form=form))
 
-            if persona is NULL:
-                return redirect("/mensaje")
-
-    return render(request, "inicio/consultar_documento.html", data)
 
 def generar_usuario_paciente(request, cedula):
     persona = Persona.objects.get(numero_documento=cedula)
@@ -203,44 +218,11 @@ def generar_password(request, cedula):
     persona = Persona.objects.get(numero_documento=cedula)
     password = Usuario.objects.make_random_password()
     print('contraseña: ',password)
-    usuario = Usuario.objects.create_user(password, cedula)
-    grupo = Group.objects.get(name='Paciente')
-    grupo.user_set.add(usuario)
+    usuario = Usuario.objects.cambiar_password(password, cedula)
     email = persona.correo_electronico
     context ={'cedula':cedula}
-
     if usuario:
-        pass    
-        
-    return render(request, "inicio/mensaje_envio_correo.html", context)
-
-
-# class FormInvitadoCreate(CreateView):
-#     model = Persona
-#     template_name = 'inicio/registro_invitado.html'
-#     form_class = PersonaInvitadaForm
-#     success_url = reverse_lazy('')
-
-#     def get_context_data(self, **kwargs):
-#         context = super(FormInvitadoCreate, self).get_context_data(**kwargs)
-#         if 'form' not in context:
-#             context['form'] = PersonaInvitadaForm(self.request.GET)
-#         return context
-
-#     @method_decorator(csrf_protect)
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object
-#         form = self.form_class(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Registrado correctamente")
-#             return redirect("/registrologinpaciente/")
-#             # return redirect("/registrologinpaciente/%s" %(persona.numero_documento))
-#         else:
-#             print('**********NO ENTRA***********')
-#             messages.error(
-#                 request, "No se registro correctamente, intentelo nuevamente")
-#             return render(request, "inicio/login.html")
+        return render(request, "inicio/mensaje_envio_correo.html", context)
 
 
 #------------------------------------------------------------------------------------------------------#
@@ -454,21 +436,3 @@ class ResetPasswordView(FormView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
-
-# def enviarcorreo(request):
-#     if request.method == "POST":
-#         subject = request.POST['asunto']
-#         message = request.POST['mensaje'] + \
-#             "|Remitente" + request.POST['correo']
-
-#         email_from = settings.EMAIL_HOST_USER
-
-#         recipient_list = ["psmilesoft@gmail.com"]
-
-#         send_mail(subject, message, email_from, recipient_list)
-#         print("entra aqui")
-#         return redirect("enviarcorreo.html")
-
-#     return render(request, "inicio/enviarcorreo.html")
-
