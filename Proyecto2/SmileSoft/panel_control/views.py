@@ -20,3 +20,31 @@ def error(request):
 
 def cambio_exitoso(request):
     return render(request, "panel_control/cambio_exitoso.html")
+
+# /* Paginas de inicio para el INVITADO*/
+def registrese(request):
+    return render(request, "panel_control/registrarse.html")
+
+def invitado(request):
+    return render (request, "panel_control/invitado.html")
+
+def contacto(request):
+    return render (request, "panel_control/contacto.html")
+
+def ortodoncia(request):
+    return render(request, "panel_control/ortodoncia.html")
+
+
+def corona_dental(request):
+    return render(request, "panel_control/corona_dental.html")
+
+
+def blanqueamiento(request):
+    return render(request, "panel_control/blanqueamiento.html")
+
+def extracciones(request):
+    return render(request, "panel_control/extracciones.html")
+
+
+
+
