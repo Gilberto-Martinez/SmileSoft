@@ -17,7 +17,7 @@ from django.utils.decorators import method_decorator
 
 from gestion_administrativo.views import PacienteList2
 from gestion_administrativo.views import *
-
+from django.views.generic import ListView,CreateView, TemplateView, UpdateView, DeleteView
 urlpatterns = [
             path('listar_tratamiento/', listar_tratamiento, name="listar_tratamiento"),
             path('eliminar_tratamiento/<nombre_tratamiento>/', eliminar_tratamiento, name="eliminar_tratamiento"),
@@ -25,4 +25,5 @@ urlpatterns = [
             path('modificar_tratamiento/<nombre_tratamiento>/', modificar_tratamiento, name="modificar_tratamiento"),          
             path('listar_paciente2/', PacienteList2.as_view(),  name="listar_paciente2"),
             # path('asignar_tratamiento/', asignar_tratamiento, name="asignar_tratamiento"),
+            path('tratamientos_asignados/<int:pk>', DetalleTratamientosAsignados.as_view(), name="tratamientos_asignados"),
 ]

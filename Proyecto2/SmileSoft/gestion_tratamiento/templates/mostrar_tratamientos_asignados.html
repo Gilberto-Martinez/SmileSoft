@@ -1,0 +1,31 @@
+{%extends 'panel_control/base.html'%}
+
+{%load static%}
+
+<!-- {{object}}
+{{object2}} -->
+
+{%block content%}
+<div class=" col-md-10 offset-md-1" >
+    <div class="card">
+        <br>
+        <center>  <h2> Tratamientos del Paciente</h2> </center>
+        <div class="card-body">
+            <form action="" method="post">
+                {%csrf_token%}
+                    {{form.as_p}}
+
+                    <div class="d-flex justify-content-center">
+                        <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
+                        <!-- <input type="submit" value="Modificar y Guardar " class= "btn btn-primary btn-block txt-white" name="_save"> -->
+                        &nbsp;
+                        <input type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
+                    
+                    </div> 
+                   
+            </form>
+            
+       <div>
+    </div>
+</div>
+{%endblock%}

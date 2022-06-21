@@ -3,7 +3,6 @@ from django.db.models.deletion import PROTECT
 from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import default
 from gestion_historial_clinico.models import HistorialClinico
-from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import *
 # from agregar_mas.models impo
 from gestion_tratamiento.models import Tratamiento
@@ -198,7 +197,13 @@ class Paciente(models.Model):
             (ABN, 'AB RH-'),
     ]
     grupo_sanguineo = models.CharField(max_length=100,choices=GRUPOS , verbose_name='Grupo sanguíneo',null= True,)
+    tratamientos = models.ManyToManyField(
+                                             Tratamiento, 
+                                             through='PacienteTratamientoAsignado',
+                                             related_name='paciente_set'
+                                         )
     # farmacos = []
+
     
     class Meta:
         verbose_name = ("paciente")
@@ -209,60 +214,30 @@ class Paciente(models.Model):
     def __str__(self):
         return str(self.numero_documento)
 
-
-# class TratamientoRealizado(models.Model):
-#     codigo_tratamiento = models.ForeignKey(
-#         Tratamiento, 
-#         on_delete=models.CASCADE, 
-#         blank=True, null=True
-#     )
-
-#     numero_documento= models.ForeignKey(
-#         Paciente,
-#         on_delete=models.CASCADE,
-#         blank=True,
-#         null=True
-#     )
-#     numero_ficha = models.ForeignKey(HistorialClinico,verbose_name='Número de ficha',on_delete=models.PROTECT, null= True)
-
-# class Insumo(models.Model):
-#     codigo = models.CharField(max_length=20, primary_key=True, verbose_name='Código')
-#     nombre = models.CharField(max_length=30, blank=False, null=False)
-#     precio = models.PositiveIntegerField(null=True, blank=True)
-#     fecha_vencimiento = models.DateField()
-
-#     class Meta:
-#         verbose_name_plural = 'Insumos'
-#         db_table = 'Insumo'
-#######################################################################
 #TRATAMIENTO ASIGNADO
-
-########################PRUEBA#########################################
-
 class PacienteTratamientoAsignado(models.Model):
     paciente = models.ForeignKey(
         Paciente, 
         on_delete=models.CASCADE, 
-        blank=True, null=True
+        blank=True, 
+        null=True,
     )
 
-    nombre_tratamiento = models.ManyToManyField(
+    tratamiento = models.ForeignKey(
         Tratamiento,
-        #on_delete=models.CASCADE,
+        on_delete=models.CASCADE,
         blank=True,
-        #null=True
-        verbose_name='Nombre de los tratamientos'
+        null=True,
+        verbose_name='Tratamientos ConsulDent'
     )
 
     class Meta:
         db_table = 'PacienteTratamientoAsignado'
-        verbose_name = 'Tratamiento Asignado al Paciente'
-        verbose_name = 'Tratamientos del Paciente'
+        verbose_name = 'Tratamieto Asignado al Paciente'
+        verbose_name = 'Tratamietos del Paciente'
+
 #####################################################################
 
-
-
-###########################################################################
 class Proveedor(models.Model):
     ruc = models.CharField(max_length=12, null=False, blank= False, primary_key=True,)
     nombre = models.CharField(max_length=40, null=False, blank= False)

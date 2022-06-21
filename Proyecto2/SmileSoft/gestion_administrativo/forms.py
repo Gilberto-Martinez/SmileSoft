@@ -312,22 +312,21 @@ class CargoForm(forms.ModelForm):
 #                 'style': 'width: 100px',
 #                 'multiple': 'multiple'
 #             }), }
-
 class PacienteAsignadoForm(forms.ModelForm):
    class Meta:
-      model = PacienteTratamientoAsignado
+      model = Paciente
       fields = [
-               #'paciente',
-               'nombre_tratamiento',
+               'tratamientos',
                 ]
       widgets = {
-          'nombre_tratamiento': forms.CheckboxSelectMultiple(attrs={
+          'tratamientos': forms.CheckboxSelectMultiple(attrs={
               'class': 'form-select2',
               'style': 'width: 30px',
               'multiple': 'multiple'}),
-               #  'numero_documento': HiddenInput(attrs={'required': False})
-
+               #  'numero_documento': HiddenInput(attrs={'required': False}
                }
+      # InlineForeignKeyField(Cargo)
+   
       # label = 'Nombre de los tratamientos'
  
 

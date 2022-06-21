@@ -816,32 +816,35 @@ class CargoDelete(DeleteView):
 ################################################################################
 ################################################################################
 @permission_required('gestion_administrativo.add_pacientetratamientoasignado', login_url="/panel_control/error/",)
+
+################################################################################
+################################################################################
 def asignar_tratamiento (request, numero_documento):
     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
+    paciente = Paciente.objects.get(numero_documento=numero_documento)
     data= {
-        'form' : PacienteAsignadoForm(),
+        'form' : PacienteAsignadoForm(instance=paciente),
         'object' : Persona.objects.get(numero_documento=numero_documento)
     }
     persona = Persona.objects.get(numero_documento=numero_documento)
     if request.method== "POST":
-        formulario= PacienteAsignadoForm(data = request.POST, files= request.FILES)
-        if formulario.is_valid():
-            paciente = Paciente.objects.get(numero_documento=numero_documento)
-            tratamientos = formulario.save(commit=False)
-            tratamientos.paciente = paciente
-            tratamientos.save()
-            formulario.save_m2m()
+        form= PacienteAsignadoForm(data = request.POST, instance=paciente,files= request.FILES)
+        if form.is_valid():
+            form.save()
+            # form.save_m2m()
             data["mensaje"]="Tratamiento asignado correctamente"
             messages.success(request, (
                 'Agregado correctamente!'))
             # return HttpResponseRedirect(success_url)
         else:
-            data["form"]=formulario
+            data["form"]=form
             data['object']=persona
             print('NO ENTRAAAAA')
             
     return render(request,"asignar_tratamiento.html",data)
 
+
+    
 # class TratamientoAsignadoCreate(CreateView):
 #     model = PacienteTratamientoAsignado
 #     second_model = Persona
@@ -878,4 +881,43 @@ def asignar_tratamiento (request, numero_documento):
 #         else:
 #             return self.render_to_response(self.get_context_data(form=form, object=object))
 
+class TratamientoAsignadoUpdate(UpdateView):
+    model = Paciente
+    second_model = Persona
+    template_name = 'asignar_tratamiento.html'
+    form_class = PacienteAsignadoForm
+    second_form_class = PersonaUpdateForm
+    success_url = reverse_lazy('listar_paciente')
+# def asignar_tratamiento (request, numero_documento):
+#     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
+#     paciente = Paciente.objects.get(numero_documento=numero_documento)
+#     data= {
+#         'form' : PacienteAsignadoForm(instance=paciente),
+#         'object' : Persona.objects.get(numero_documento=numero_documento)
+#     }
+    def get_context_data(self, **kwargs):
+        context = super(TratamientoAsignadoUpdate, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk', 0)
+        paciente = self.model.objects.get(id_paciente=pk)
+        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
 
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(instance=persona)
+        context['id_paciente'] = pk
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        id_pac = kwargs['pk']
+        paciente = self.model.objects.get(id_paciente=id_pac)
+        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+        form = self.form_class(request.POST, instance=paciente)
+        form2 = self.second_form_class(request.POST, instance=persona)
+        if form.is_valid():
+            form.save()
+            #form2.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return HttpResponseRedirect(self.get_success_url())

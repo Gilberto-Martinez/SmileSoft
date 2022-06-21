@@ -21,6 +21,7 @@ from django.utils.translation import gettext as _, ngettext
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordResetForm
 
+from gestion_administrativo.models import PacienteTratamientoAsignado
 
 
 
@@ -57,3 +58,20 @@ class TratamientoUpdateForm(forms.ModelForm):
             'descripcion_tratamiento',
             'precio',
         ]
+
+class PacienteTratamientoAsignadoForm(forms.ModelForm):
+    #nombre_tratamiento = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del trataniento'}))
+    #descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'}))
+    #precio = forms.IntegerField(
+     #                                              label='Precio', 
+      #                                             widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del tratamiento'}))
+    #descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'} ))
+    class Meta:
+        model = PacienteTratamientoAsignado
+        fields= '__all__'
+        # fields = [
+        #     'codigo_tratamiento',
+        #     'nombre_tratamiento',
+        #     'descripcion_tratamiento',
+        #     'precio',
+        # ]
