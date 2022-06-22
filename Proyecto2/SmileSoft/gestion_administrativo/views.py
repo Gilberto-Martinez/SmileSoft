@@ -844,47 +844,53 @@ def asignar_tratamiento (request, numero_documento):
     return render(request,"asignar_tratamiento.html",data)
 
 
-    
-# class TratamientoAsignadoCreate(CreateView):
-#     model = PacienteTratamientoAsignado
-#     second_model = Persona
-#     template_name = 'asignar_tratamiento.html'
-#     form_class = PacienteAsignadoForm
-#     second_form_class = PersonaTratamientoForm
-#     success_url = reverse_lazy('listar_paciente2')
+############################################################################################################3
+class TratamientoAsignadoCreate(CreateView):
+    model = Paciente
+    second_model = Persona
+    template_name = 'asignar_tratamiento.html'
+    form_class = PacienteAsignadoForm
+    second_form_class = PersonaUpdateForm
+    success_url = reverse_lazy('listar_paciente')
+# def asignar_tratamiento (request, numero_documento):
+#     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
+#     paciente = Paciente.objects.get(numero_documento=numero_documento)
+#     data= {
+#         'form' : PacienteAsignadoForm(instance=paciente),
+#         'object' : Persona.objects.get(numero_documento=numero_documento)
+#     }
+    def get_context_data(self, **kwargs):
+        context = super(TratamientoAsignadoCreate, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk', 0)
+        paciente = self.model.objects.get(id_paciente=pk)
+        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
 
-#     def get_context_data(self, **kwargs):
-#         context = super(TratamientoAsignadoCreate, self).get_context_data(**kwargs)
-#         num = self.kwargs.get('numero_documento', 0)
-#         persona = self.second_model.objects.get(numero_documento=num)
-#         if 'form' not in context:
-#             context['form'] = self.form_class(self.request.GET)
-#         if 'object' not in context:
-#             context['object'] = self.second_model(self.request.GET, instance=persona)
-#         context['numero_documento'] = num
-#         return context
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(instance=persona)
+        context['id_paciente'] = pk
+        return context
 
-#     @method_decorator(csrf_protect)
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object
-#         num = kwargs['numero_documento']
-#         form = self.form_class(request.POST)
-#         persona = self.second_model.objects.get(numero_documento=num)
-#         object = self.second_model(request.POST, instance=persona)
-#         if form.is_valid():
-#             paciente = Paciente.objects.get(numero_documento=num)
-#             tratamientos = form.save(commit=False)
-#             tratamientos.paciente = paciente
-#             tratamientos.save()
-#             form.save_m2m()
-#             return HttpResponseRedirect(self.success_url)
-#         else:
-#             return self.render_to_response(self.get_context_data(form=form, object=object))
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        id_pac = kwargs['pk']
+        paciente = self.model.objects.get(id_paciente=id_pac)
+        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+        form = self.form_class(request.POST, instance=paciente)
+        form2 = self.second_form_class(request.POST, instance=persona)
+        if form.is_valid():
+            form.save()
+            #form2.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return HttpResponseRedirect(self.get_success_url())
+
 
 class TratamientoAsignadoUpdate(UpdateView):
     model = Paciente
     second_model = Persona
-    template_name = 'asignar_tratamiento.html'
+    template_name = 'modificar_tratamiento_asignado.html'
     form_class = PacienteAsignadoForm
     second_form_class = PersonaUpdateForm
     success_url = reverse_lazy('listar_paciente')
