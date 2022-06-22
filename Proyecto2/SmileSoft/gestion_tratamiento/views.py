@@ -22,6 +22,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import permission_required
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, DetailView
+from gestion_administrativo.models import PacienteTratamientoAsignado
+from gestion_administrativo.forms import *
 
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
