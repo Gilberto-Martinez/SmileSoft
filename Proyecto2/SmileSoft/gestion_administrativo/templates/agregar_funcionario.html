@@ -25,6 +25,13 @@
                                 {{form2.apellido}}
                             </div>
                             <br>
+                            {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                        <li{% if message.error %} class="{{ message.error }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                             <div class="form-group">
                                 <label for="{{form2.numero_documento.name}}">{{form2.numero_documento.label}}</label>
                                 {{form2.numero_documento}}
@@ -59,9 +66,6 @@
                                 <label for="{{form.cargos.name}}">{{form.cargos.label}}</label>
                                 {{form.cargos}}
                             </div>
-
-                            <!-- {{form2.as_p}}
-                            {{form.as_p}} -->
                         </table>
                     </div>
 

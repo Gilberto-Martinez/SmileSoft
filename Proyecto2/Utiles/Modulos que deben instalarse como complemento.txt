@@ -1,6 +1,9 @@
 Para conexion con base de datos postgresql
--pip install psycopg2
+    pip install psycopg2
 
 Para utlizar api de gmail para envio de correos
--pip install google-auth-oauthlib
--pip install google-api-python-client
+    pip install google-auth-oauthlib
+    pip install google-api-python-client
+
+PARA REALIZAR CALCULO DE EDAD Y VALIDAR QUE FUNCIONARIO SEA MAYOR DE EDAD
+    pip install python-dateutil

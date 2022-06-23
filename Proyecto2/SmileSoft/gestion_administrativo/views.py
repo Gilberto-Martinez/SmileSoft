@@ -126,7 +126,11 @@ class ProveedorList(ListView):
 class CargoList(ListView):
     model = Cargo
     template_name = 'listar_cargo.html'
-    
+
+class EspecialidadList(ListView):
+    model = Especialidad
+    template_name = 'listar_especialidad.html'
+
     # @method_decorator(permission_required('gestion_administrativo.view_cargo', login_url="/panel_control/error/"))
     # def dispatch(self, *args, **kwargs):
     #     return super(CargoList, self).dispatch(*args, **kwargs)
@@ -142,7 +146,6 @@ class CargoList(ListView):
 
 
 ########################### INSERCION #################################################
-
 
 class PersonaCreate(CreateView):
     model = Persona
@@ -168,42 +171,32 @@ class PersonaCreate(CreateView):
     @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = self.form_class(request.POST)  # self.form_class(request.POST)
-        # self.second_form_class(request.POST)
+        form = self.form_class(request.POST)
         form2 = self.second_form_class(request.POST)
         form3 = self.third_form_class(request.POST)
         form4 = self.fourth_form_class(request.POST)
         if form.is_valid():
-            if form2.is_valid():
-                # persona = form.save(commit=False)
-                # persona.es_funcionario = True
-                # persona.save()
-                persona = form.save()
+            persona = form.save()
+            if form2.is_valid(): # Si Formulario de Funcionario es valido
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
                 form2.save_m2m()
             if form3.is_valid():
-                # persona = form.save(commit=False)
-                # persona.es_paciente = True
-                # persona.save()
-                persona = form.save()
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = persona
                 paciente.save()
-                messages.success(
-                    request, " ✅Se ha agregado  correctamente")
+                # messages.success(
+                #     request, " ✅Se ha agregado  correctamente")
             if form4.is_valid():
-                # persona = form.save(commit=False)
-                # persona.es_especialista_salud = True
-                # persona.save()
-                persona = form.save()
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
+                form4.save_m2m()
             return HttpResponseRedirect(self.success_url)
         else:
-            # messages.error('No ha ingresado los datos correctamente')
+            print("No entraaaaaaaaaaaaaaaaaaa")
+            messages.error('No ha ingresado los datos correctamente')
             return self.render_to_response(self.get_context_data(form=form, form2=form2, form3=form3, form4=form4))
 
 
@@ -237,10 +230,13 @@ class FuncionarioCreate(CreateView):
             funcionario.numero_documento = persona
             funcionario.save()
             form.save_m2m()
-            messages.success(request, "Funcionario agregado")
+            messages.success(request,"Funcionario agregado correctamente")
             return HttpResponseRedirect(self.success_url)
         else:
-            messages.error(request, "No funciona")
+            if form2.evento == "Cedula ya existe":
+                messages.error(request, form2.mensaje_error)
+            if form2.evento == "Menor de Edad":
+                messages.error(request, form2.mensaje_error)
             print('NO ENTRAAAAA')
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
@@ -294,8 +290,7 @@ class EspecialistaSaludCreate(CreateView):
     form_class = EspecialistaSaludForm
 
     def get_context_data(self, **kwargs):
-        context = super(EspecialistaSaludCreate,
-                        self).get_context_data(**kwargs)
+        context = super(EspecialistaSaludCreate,self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
@@ -305,12 +300,8 @@ class EspecialistaSaludCreate(CreateView):
     @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = EspecialistaSaludForm(request.POST)
-        form2 = PersonaForm(request.POST)
-        data = {
-            'form': EspecialistaSaludForm(),
-            'form2': PersonaForm()
-        }
+        form = self.form_class(request.POST)
+        form2 = self.second_form_class(request.POST)
         if form.is_valid() and form2.is_valid():
             especialista_salud = form.save(commit=False)
             especialista_salud.numero_documento = form2.save()
@@ -319,6 +310,11 @@ class EspecialistaSaludCreate(CreateView):
             messages.success(request, " ✅ Agregado correctamente")
             return HttpResponseRedirect(self.success_url)
         else:
+            if not form.is_valid():
+                print("no funciona especialista")
+            if not form2.is_valid():
+                print("no funciona persona")
+            print("No entraaaaaaaaaaaaaaaaa")
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 
@@ -377,6 +373,29 @@ class CargoCreate(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
+class EspecialidadCreate(CreateView):
+    model = Especialidad
+    template_name = 'agregar_especialidad.html'
+    form_class = EspecialidadForm
+    success_url = reverse_lazy('listar_especialidad')
+
+    def get_context_data(self, **kwargs):
+        context = super(EspecialidadCreate, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        return context
+
+    @method_decorator(csrf_protect)
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, " ✅ Especialidad Agregada correctamente")
+            return HttpResponseRedirect(self.success_url)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
 
 class SuccessView(TemplateView):
     template_name = 'success.html'
@@ -430,7 +449,6 @@ class PacienteCreate(CreateView):
 
 
 class PersonaUpdate(UpdateView):
-
     model = Persona
     second_model = Funcionario
     third_model = Paciente
@@ -503,22 +521,20 @@ class PersonaUpdate(UpdateView):
 
         if form.is_valid():
             persona = form.save()
-            
             if form2.is_valid():
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
                 form2.save_m2m()
-               
             if form3.is_valid():
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = persona
                 paciente.save()
-               
             if form4.is_valid(): # Aun falta implementar
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
+                form4.save_m2m()
             messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         
@@ -538,8 +554,7 @@ class FuncionarioUpdate(UpdateView):
         context = super(FuncionarioUpdate, self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk', 0)
         funcionario = self.model.objects.get(id_funcionario=pk)
-        persona = self.second_model.objects.get(
-            numero_documento=funcionario.numero_documento)
+        persona = self.second_model.objects.get(numero_documento=funcionario.numero_documento)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'form2' not in context:
@@ -551,8 +566,7 @@ class FuncionarioUpdate(UpdateView):
         self.object = self.get_object
         id_func = kwargs['pk']
         funcionario = self.model.objects.get(id_funcionario=id_func)
-        persona = self.second_model.objects.get(
-            numero_documento=funcionario.numero_documento)
+        persona = self.second_model.objects.get(numero_documento=funcionario.numero_documento)
         form = self.form_class(request.POST, instance=funcionario)
         form2 = self.second_form_class(request.POST, instance=persona)
         if form.is_valid() and form2.is_valid():
@@ -561,7 +575,12 @@ class FuncionarioUpdate(UpdateView):
             messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return HttpResponseRedirect(self.get_success_url())
+            if form2.evento == "Cedula ya existe":
+                messages.error(request, form2.mensaje_error)
+            if form2.evento == "Menor de Edad":
+                messages.error(request, form2.mensaje_error)
+            print('NO ENTRAAAAA')
+            return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
     def get(self, request, *args, **kwargs) -> HttpResponse:
         return super().get(request, *args, **kwargs)
@@ -581,8 +600,7 @@ class EspecialistaSaludUpdate(UpdateView):
                         self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk', 0)
         especialista_salud = self.model.objects.get(id_especialista_salud=pk)
-        persona = self.second_model.objects.get(
-            numero_documento=especialista_salud.numero_documento)
+        persona = self.second_model.objects.get(numero_documento=especialista_salud.numero_documento)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'form2' not in context:
@@ -592,11 +610,9 @@ class EspecialistaSaludUpdate(UpdateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        id_especialista = kwargs['pk']
-        especialista_salud = self.model.objects.get(
-            id_especialista_salud=id_especialista)
-        persona = self.second_model.objects.get(
-            numero_documento=especialista_salud.numero_documento)
+        id_esp = kwargs['pk']
+        especialista_salud = self.model.objects.get(id_especialista_salud=id_esp)
+        persona = self.second_model.objects.get(numero_documento=especialista_salud.numero_documento)
         form = self.form_class(request.POST, instance=especialista_salud)
         form2 = self.second_form_class(request.POST, instance=persona)
         if form.is_valid() and form2.is_valid():
@@ -605,12 +621,12 @@ class EspecialistaSaludUpdate(UpdateView):
             messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         else:
-            if not form.is_valid():
-                print('form no es valido')
-            if not form2.is_valid():
-                print('form2 no es valido')
-            print('No entraaaaaaaaaaa')
-            return HttpResponseRedirect(self.error_url)
+            if form2.evento == "Cedula ya existe":
+                messages.error(request, form2.mensaje_error)
+            if form2.evento == "Menor de Edad":
+                messages.error(request, form2.mensaje_error)
+            print('NO ENTRAAAAA')
+            return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 
 class PacienteUpdate(UpdateView):
@@ -618,7 +634,7 @@ class PacienteUpdate(UpdateView):
     second_model = Persona
     template_name = 'modificar_paciente.html'
     form_class = PacienteForm
-    second_form_class = PersonaUpdateForm
+    second_form_class = PersonaPacienteUpdateForm
     success_url = reverse_lazy('listar_paciente')
 
     def get_context_data(self, **kwargs):
@@ -647,20 +663,22 @@ class PacienteUpdate(UpdateView):
             form2.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return HttpResponseRedirect(self.get_success_url())
+            if form2.evento == "Cedula ya existe":
+                messages.error(request, form2.mensaje_error)
+            print('NO ENTRAAAAA')
+            return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 #  <----------------Exclusivo de Configuracion/ Paciente-------------------------------->
 
 def editar_persona(request, numero_documento):
-
-    numero_documento = Persona.objects.get(numero_documento=numero_documento)
-
+    persona = Persona.objects.get(numero_documento=numero_documento)
     data = {
-        'form': PersonaUpdateForm(instance=numero_documento)
+        'form': PersonaConfigUpdateForm(instance=persona),
+        'persona':persona
     }
     if request.method == 'POST':
-        formulario = PersonaForm(
-            data=request.POST, instance=numero_documento, files=request.FILES)
+        formulario = PersonaConfigUpdateForm(
+            data=request.POST, instance=persona, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
             data["form"] = formulario
@@ -678,10 +696,10 @@ def editar_persona(request, numero_documento):
 def editar_antecedente(request, numero_documento):
     persona = Paciente.objects.get(numero_documento=numero_documento)
     data = {
-        'form': PacienteForm(instance=persona)
+        'form': PacienteConfigUpdateForm(instance=persona)
     }
     if request.method == 'POST':
-        formulario = PacienteForm(
+        formulario = PacienteConfigUpdateForm(
             data=request.POST, instance=persona, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
@@ -751,6 +769,32 @@ class CargoUpdate(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
+class EspecialidadUpdate(UpdateView):
+    model = Especialidad
+    template_name = 'modificar_especialidad.html'
+    form_class = EspecialidadForm
+    success_url = reverse_lazy('listar_especialidad')
+
+    def get_context_data(self, **kwargs):
+        context = super(EspecialidadUpdate, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk', 0)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        context['id_especialidad'] = pk
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        id_esp = kwargs['pk']
+        especialidad = self.model.objects.get(id_especialidad=id_esp)
+        form = self.form_class(request.POST, instance=especialidad)
+        if form.is_valid():
+            form.save()
+            messages.success(request, " ✅ Modificado correctamente")
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return HttpResponseRedirect(self.get_success_url())
+
 
 # def modificar_funcionario(request, numero_documento):
 #     persona = Persona.objects.get(numero_documento=numero_documento)
@@ -812,6 +856,10 @@ class CargoDelete(DeleteView):
     template_name = 'eliminar_cargo.html'
     success_url = reverse_lazy('listar_cargo')
 
+class EspecialidadDelete(DeleteView):
+    model = Especialidad
+    template_name = 'eliminar_especialidad.html'
+    success_url = reverse_lazy('listar_especialidad')
 
 ################################################################################
 ################################################################################
