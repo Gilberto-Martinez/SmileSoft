@@ -63,7 +63,9 @@ class Funcionario(models.Model):
                                             )
     cargos = models.ManyToManyField(Cargo, 
                                     through='FuncionarioCargo',
-                                    related_name='funcionario_set')
+                                    related_name='funcionario_set',
+                                    null=True,
+                                    blank=True)
 
     class Meta:
         # ordering = ['nombre']
@@ -104,8 +106,6 @@ class Categoria(models.Model):
                                             on_delete=models.CASCADE,
                                             verbose_name='Código de tratamiento'
                                         )
-
-    
     class Meta:
         verbose_name = ("Categoria")
         verbose_name_plural = ("Categorias")
@@ -113,6 +113,18 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.detalle_tratamiento
+
+class Especialidad(models.Model):
+    id_especialidad = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=25, null=False, blank=False)
+
+    class Meta:
+        verbose_name = ("Especialidad")
+        verbose_name_plural = ("Especialidades")
+        db_table = 'Especialidad'
+
+    def __str__(self):
+        return self.nombre
 
 class EspecialistaSalud(models.Model):
     id_especialista_salud = models.AutoField(primary_key=True)
@@ -125,6 +137,11 @@ class EspecialistaSalud(models.Model):
                                                 # verbose_name='Cedula de identidad'
                                             )
     trabajos_realizados = models.ManyToManyField(Categoria, through='TrabajoRealizado')
+    especialidades = models.ManyToManyField(Especialidad, 
+                                    through='EspecialistaEspecialidades',
+                                    related_name='especialista_set',
+                                    null=True,
+                                    blank=True)
 
     class Meta:
         verbose_name = 'Especialista de salud'
@@ -133,6 +150,24 @@ class EspecialistaSalud(models.Model):
 
     def __str__(self):
         return str(self.numero_documento)
+
+class EspecialistaEspecialidades(models.Model):
+    especialista_salud = models.ForeignKey(
+        EspecialistaSalud,
+        on_delete=models.PROTECT,
+        blank=True, null=True
+    )
+    especialidad = models.ForeignKey(
+        Especialidad,
+        on_delete=models.PROTECT,
+        blank=True, null=True
+    )
+
+    class Meta:
+        verbose_name = ("Especialdad de especialista")
+        verbose_name_plural = ("Especialidades de especialistas")
+        db_table = 'EspecialistaEspecialidades'
+
 
 class TrabajoRealizado(models.Model):
     especialista_salud = models.ForeignKey(

@@ -62,7 +62,6 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 import webapp.gmail
 from webapp.gmail import enviar_correo, enviar_link_reseteo
-from django.contrib.auth.tokens import default_token_generator
 
 '''Inicio de Sesion'''
 #------------------------------------------------------------------------------------------------------#
@@ -136,6 +135,11 @@ def mostrar_mensaje_confirmacion(request, cedula):
 
 
 class CedulaConsultaView(TemplateView):
+    """
+    Clase en la que se solicita el numero de documento de la persona
+    en la pagina de login, para verificar si es paciente.
+    En el metodo post se realiza tales verificaciones.
+    """
     template_name = "inicio/consultar_documento.html"
     form_class = ConsultaInvitadoForm
     
