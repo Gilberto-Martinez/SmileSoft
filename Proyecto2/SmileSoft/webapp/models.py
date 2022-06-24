@@ -36,22 +36,50 @@ class ManejadorUsuario(BaseUserManager):
         apellido = apellido.strip()
         inicial = nombre[0:1].lower()
         apellido = apellido.lower()
-        posicion = apellido.find(" ")
-        if posicion != -1:
+        posicion = apellido.find(" ") # Busca un espacio en el apellido (entre el primer y segundo apellido), retorna -1 si no encuentra espacios
+        if posicion != -1: # Si el apellido tiene un espacio
             apellido = apellido[0:posicion]
         nombre_usuario = inicial+apellido
-        print('*---------------------------------*')
-        print('Usuario: ', nombre_usuario)
-        print('Contraseña: ',password)
-        # usuario = Usuario.normalize_username(nombre_usuario)
+        try:
+            usuario_buscado = Usuario.objects.get(usuario=nombre_usuario) # Obtiene de la base de datos si ya existe el usuario
+        except Usuario.DoesNotExist:# Si el usuario no existe no realiza ninguna acción
+            pass
+        else: # Si el usuario existe entra a un bucle while
+            existe = True
+            contador = 1
+            nombre_usu_original = nombre_usuario
+            while existe is True:# Mientras el usuario ya exista
+                nombre_usuario = nombre_usu_original+str(contador) # le contatena un numero
+                try:
+                    usuario_buscado = Usuario.objects.get(usuario=nombre_usuario) # Busca en la base de datos el nuevo nombre de usuario contatenado
+                except Usuario.DoesNotExist:# Si el usuario buscado no existe entonces mantiene el ultimo nombre de usuario generado
+                    nombre_usuario = nombre_usuario
+                    existe = False
+                else:
+                    contador = contador + 1
         usuario_nuevo = self.model(usuario = str(nombre_usuario))
-        # usuario_nuevo = Usuario.save(self,commit=False)
-        # usuario_nuevo = self.model(numero_documento = persona)
         usuario_nuevo.usuario = nombre_usuario
         usuario_nuevo.numero_documento = persona
         usuario_nuevo.set_password(password)
         usuario_nuevo.save(using=self._db)
+        print('*---------------------------------*')
+        print('Usuario: ', nombre_usuario)
+        print('Contraseña: ',password)
         return usuario_nuevo
+
+    def cambiar_password(self, password, numero_documento):
+        if not password:
+            raise ValueError('Debe ingresar una contraseña')
+        if not numero_documento:
+            raise ValueError('Debe ingresar un numero de documento')
+        usuario = Usuario.objects.get(numero_documento=numero_documento)
+        nombre_usuario = usuario.usuario
+        print('*---------------------------------*')
+        print('Usuario: ', nombre_usuario)
+        print('Contraseña: ',password)
+        usuario.set_password(password)
+        usuario.save(using=self._db)
+        return usuario
 
     # Crea y guarda a un super-usuario
     def create_superuser(self, usuario, password):

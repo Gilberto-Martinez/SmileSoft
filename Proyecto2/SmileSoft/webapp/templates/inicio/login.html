@@ -67,6 +67,22 @@
                             {% comment %} action="{% url 'django.contrib.auth.views.login' %}" {% endcomment %}
                             <form id="login-form" class="form-signin" action="" method="post">
                                 {% csrf_token %}
+                                <label for="usuario" class="text-Gray"> Usuario:</label><br>
+                                <input type="text" name="usuario" id="usuario" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                {% csrf_token %}
+                                <label for="password1" class="text-Gray">Contraseña:</label><br>
+                                <input type="password" name="password1" id="password1" class="form-control">
+                            </div>
+                            <div class="form-group" >
+                                {% csrf_token %}
+                                <label for="remember-me" class="text-Gray">
+                                    <span>Recordar</span>
+                                    <span>
+                                        <input id="remember-me" name="remember-me" type="checkbox"></input>
+                                    </span>
+                                </label>
                                 <br>
 
                                 <h3 class="text-center text-Gray">¡Bienvenido!</h3>
@@ -95,30 +111,22 @@
                                 ¿Aún no tiene un usuario? 
                                 <a href="/consultar_documento/" class="btn btn-link">Crear una cuenta Aquí</a>
                             </div>
-                            <a href="/enviar_correo" class="btn btn-link"></a>
-                            <br>
-                            {% comment %} <div id="recuperar" class="text-center">
-                                <a href="/sesion/recuperar_pass/" class="text-black">¿Olvidaste tu contraseña?</a>
+                            <div id="recuperar" class="text-center">
+                                <a href="/recuperar_password/" class="btn btn-link">¿Olvidaste tu contraseña?</a>
                             </div>
-
-
-                                <div id="enviarcorreo" class="text-center">
-                                    <a href="/sesion/enviarcorreo/" class="text-black">enviar un correo</a>
-                                </div> {% endcomment %}
-                                <br>
-                            {% csrf_token %}
-                                <div class="alert alert-success" role="alert">
-                                    <ul class="messages">
-                                        {% for message in messages %}
-                                            <li{% if message.tags %}
-                                                class="{{ message.tags }}"{% endif %}>
-                                                    {{ message }}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </form>
-                        </div>
+                            <br>
+                           {% csrf_token %}
+                            <div class="alert alert-success" role="alert">
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                        <li{% if message.tags %}
+                                            class="{{ message.tags }}"{% endif %}>
+                                                {{ message }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

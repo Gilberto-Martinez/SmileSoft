@@ -1,9 +1,14 @@
 from django import views
-from django.urls import path
+from django.urls import path, re_path
 # from django.urls.resolvers import URLPattern
 from .views import *
 #para el reseteo de PASS
 from django.contrib.auth import views as auth_views
+# from django.contrib.auth.views import (PasswordResetView, 
+#                                       PasswordResetDoneView, 
+#                                       PasswordResetConfirmView, 
+#                                       PasswordResetCompleteView)
+from .gmail import enviar_link_reseteo
 
 urlpatterns = [
             # Urls USUARIO
@@ -19,19 +24,30 @@ urlpatterns = [
             path('login/', inicio_login, name='iniciologin'),
             path('', inicio_login, name='iniciologin'),
             path('cerrar_sesion/', cerrar_sesion, name='cerrar_sesion'),
+
+            # re_path(r'^reset/(?P<uidb64>[0-9A-Z_\-]+)/(?P<token>.+)/$', PasswordResetConfirmView.as_view(), {'template_name':'inicio/password_reset_confirm.html'}, name='password_reset_confirm'),
+            # path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), {'template_name':'inicio/password_reset_confirm.html'}, name='password_reset_confirm'),
+            # re_path(r'^reset/password_reset', PasswordResetView.as_view(), {'template_name':'inicio/envio_correo_password.html','email_template':'inicio/password_reset_email.html'}, name='password_reset'),
+            path('password_reset/<str:cedula>', resetear_password, name='password_reset'),
+            path('recuperar_password/', CedulaConsultaView2.as_view(), name='recuperar_password'),
+            path('password_reset_done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+
+            # re_path(r'^reset/done', PasswordResetCompleteView.as_view(), {'template_name':'inicio/password_reset_complete.html'}, name='password_reset_complete'),
             #----------------------------------------------------------------
             #Url de registrar USUARIO paciente
             path('registrologinpaciente/<str:cedula>', registrologin,
                     name='registrologinpaciente'),
             # path('consultar_documento/', consultar_cedula,name='consultar_documento'),
             path('consultar_documento/', CedulaConsultaView.as_view(),name='consultar_documento'),
-            path('mensaje/', MensajeView.as_view(),name='mostrar_mensaje'),
+            path('mensaje/', MensajeView.as_view(),name='mensaje'),
+            path('mensaje_respuesta/', MensajeView2.as_view(),name='mensaje_respuesta'),
             path('mensaje_confirmacion/<str:cedula>', mostrar_mensaje_confirmacion,name='mostrar_mensaje_confirmacion'),
             # path('mensaje_confirmacion/<str:cedula>', Mensaje_confirmacion.as_view(),name='mostrar_mensaje_confirmacion'),
             path('confirmacion_usuario/<str:cedula>', mostrar_confirmacion_usuario,name='confirmacion_usuario'),
             path('generar_usuario_paciente/<str:cedula>', generar_usuario_paciente,name='generar_usuario_paciente'),
             path('generar_password/<str:cedula>', generar_password,name='generar_password'),
             path('enviar_correo/', enviar_correo,name='enviar_correo'),
+            path('enviar_correo_reset/', enviar_link_reseteo,name='enviar_correo_reset'),
             # path('mensaje_envio_correo/', MensajeCorreoView.as_view(),name='mensaje_envio_correo'),
 
             #  path('registropaciente/', registropaciente, name='registropaciente'), 

@@ -52,16 +52,18 @@
                             </ul>
                     {% endif %}
               </div> 
-        
+
                           <!--Inicio de SESION PANEL-->
-                    
             <nav class="navbar navbar-expand-sm bg-transparent navbar-transparent justify-content-end logo ">
-              {% comment %} <button class="btn btn-success ml-auto mr-1">Bienvenido</button> {% endcomment %}
-              <i class="bi bi-person-check-fill "> <a class="navbar-brand nombre" > Bienvenido  <FONT COLOR="blue">{{user.usuario}}</FONT></a></i>
+              <i class="bi bi-person-check-fill "> 
+                <a class="navbar-brand nombre" > 
+                  Bienvenido  <FONT COLOR="blue">{{user.usuario}}</FONT>
+                </a>
+              </i>
                 <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
                     <ul class="navbar-nav text-right">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#"></a>
+                          <a class="nav-link" href="#"></a>
                         </li>
                         
                         <li class="nav-item active">
@@ -74,10 +76,11 @@
             </nav>
 
             <!--======================================BARRA NAVBAR=======================================================-->
-   
+
             <center> 
                 <a class="nav-link" class="c-1 d-flex align-items-center" aria-current="page" href=" /panel_control/inicio/"  data-toggle="tooltip" title="Página principal">
-                                  <FONT COLOR="black" style="font-size: 1.8rem" >ＳｍｉｌｅＳｏｆｔ</FONT> <img src="{% static 'img/favicon.png' %}" width="90px" alt="logo">
+                                  <FONT COLOR="black" style="font-size: 1.8rem" >ＳｍｉｌｅＳｏｆｔ</FONT> 
+                                  <img src="{% static 'img/favicon.png' %}" width="90px" alt="logo">
                                 </a>
             </center> 
             
@@ -109,7 +112,7 @@
                                                     <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
                                                 
                                                   <div class="dropdown-divider"></div>
-                                                    <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: ;" COLOR="blue"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
+                                                    <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: oblique;" COLOR="blue"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
                                                                   
                                               </ul>
                                           </li>
@@ -202,6 +205,10 @@
                                                 <div class="dropdown-divider"></div>
                                                 <li><a class="dropdown-item" href="/administrativo/listar_cargo/"> • Cargos</a></li>
                                                 {%endif%}
+                                                <!--Opcion 4.6-->
+                                                {%if perms.gestion_administrativo.view_especialidad%}
+                                                <li><a class="dropdown-item" href="/administrativo/listar_especialidad/"> • Especialidades</a></li>
+                                                {%endif%}
                                               </ul>
                                           </li>
                                           {% endif %}
@@ -231,7 +238,7 @@
                                                       <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                         Asignación de Tratamientos a Pacientes 
                                                       </strong>
-                                                      <li><a class="dropdown-item" href="/tratamiento/listar_paciente2">• Asignar Tratamientos</li></a> 
+                                                      <li><a class="dropdown-item" href="/tratamiento/listar_paciente2">• Seleccionar Paciente</li></a> 
                                                     {%endif%}
                                                 </ul>
                                               </li>
@@ -405,8 +412,5 @@
        
       Swal.fire('Bienvenido a SmileSoft')
     </script> {% endcomment %}
-
-
 </body>
-
 </html>
