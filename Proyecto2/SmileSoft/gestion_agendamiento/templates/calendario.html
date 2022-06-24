@@ -1,0 +1,47 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+
+{% block javascripts%}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     
+
+{%endblock%}
+<!--Cuadro de DIALOGO DE ELIMINAR-->
+
+
+
+{%block content%}
+  
+
+{%if perms.webapp.view_usuario%}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                    <center> 
+                        
+                        <h2 <i class="bi bi-calendar"></i> Agendamiento | Citas</i> </h2>
+                    </center>
+                <!--fILA de la funcion Agregar usuario-->
+                <table  align="right" >
+                        <tr>
+                        <td>
+                            {%if perms.gestion_agendamiento.add_cita%}
+                            <a href="/agendamiento/agregar_cita/" class="btn btn-success">
+                                <i class="bi-person-plus-fill"></i>
+                                Agregar una cita
+                            </a>
+                            {%endif%}
+                        </td>
+                        </tr>
+                </table>
+
+            </div>
+        </div>
+            
+    </div>
+    {% endif %}
+{%endblock%}

@@ -38,13 +38,16 @@ urlpatterns = [
     
     #App WebApp alias gestion de sesion
    # path('sesion/', include(('webapp.urls','sesion'),)),
-   path('', include(('webapp.urls', 'sesion'),)),
+    path('', include(('webapp.urls', 'sesion'),)),
    
-   #App Roles
-   path('roles/', include(('gestion_roles.urls', 'roles'),)),
+    #App Roles
+    path('roles/', include(('gestion_roles.urls', 'roles'),)),
 
     #App Tratamiento
-   path('tratamiento/', include(('gestion_tratamiento.urls', 'tratamiento'),)),
+    path('tratamiento/', include(('gestion_tratamiento.urls', 'tratamiento'),)),
+   
+    #App Agendamiento
+    path('agendamiento/', include(('gestion_agendamiento.urls', 'agendamiento'),)),
 
   # path('accounts/', include ('django.contrib.auth.urls')),
    
