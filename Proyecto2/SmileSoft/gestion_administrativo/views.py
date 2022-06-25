@@ -408,7 +408,7 @@ class SuccessError(TemplateView):
 class PacienteCreate(CreateView):
     model = Paciente
     template_name = 'agregar_paciente.html'
-    second_form_class = PersonaForm
+    second_form_class = PersonaPacienteForm
     success_url = reverse_lazy('listar_paciente')
     form_class = PacienteForm
 
@@ -470,7 +470,8 @@ class PersonaUpdate(UpdateView):
         try:
             funcionario = self.second_model.objects.get(numero_documento=persona.numero_documento)
         except ObjectDoesNotExist:# Si funcionario con ese numero de documento no existe cargara un formulario de funcioanrio sin datos
-            context['form2'] = self.second_form_class()
+            if 'form2' not in context:
+                context['form2'] = self.second_form_class()
         else: # Si funcionario con ese numero de documento existe cargara los datos del funcionario extraidos se la base de datos al contexto
             if 'form2' not in context:
                 context['form2'] = self.second_form_class(instance=funcionario)
@@ -478,7 +479,8 @@ class PersonaUpdate(UpdateView):
         try:
             paciente = self.third_model.objects.get(numero_documento=persona.numero_documento)
         except ObjectDoesNotExist:
-            context['form3'] = self.third_form_class()
+            if 'form3' not in context:
+                context['form3'] = self.third_form_class()
         else:
             if 'form3' not in context:
                 context['form3'] = self.third_form_class(instance=paciente)
@@ -486,7 +488,8 @@ class PersonaUpdate(UpdateView):
         try:
             especialista_salud = self.fourt_model.objects.get(numero_documento=persona.numero_documento)
         except ObjectDoesNotExist:
-            context['form4'] = self.fourt_form_class()
+            if 'form4' not in context:
+                context['form4'] = self.fourt_form_class()
         else:
             if 'form4' not in context:
                 context['form4'] = self.fourt_form_class(instance=especialista_salud)
@@ -521,16 +524,16 @@ class PersonaUpdate(UpdateView):
 
         if form.is_valid():
             persona = form.save()
-            if form2.is_valid():
+            if form2.is_valid():# Si el formulario de Funcionario es válido
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
                 form2.save_m2m()
-            if form3.is_valid():
+            if form3.is_valid(): # Si el formulario de Paciente es válido
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = persona
                 paciente.save()
-            if form4.is_valid(): # Aun falta implementar
+            if form4.is_valid(): # Si el formulario de Epecialista de salud es válido
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
@@ -539,7 +542,7 @@ class PersonaUpdate(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
         
         else:
-            return HttpResponseRedirect(self.get_success_url())
+            return self.render_to_response(self.get_context_data(form=form, form2=form2, form3=form3, form4=form4))
 
 
 class FuncionarioUpdate(UpdateView):
@@ -899,7 +902,7 @@ class TratamientoAsignadoCreate(CreateView):
     template_name = 'asignar_tratamiento.html'
     form_class = PacienteAsignadoForm
     second_form_class = PersonaUpdateForm
-    success_url = reverse_lazy('listar_paciente')
+    success_url = reverse_lazy('listar_paciente2')
 # def asignar_tratamiento (request, numero_documento):
 #     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
 #     paciente = Paciente.objects.get(numero_documento=numero_documento)

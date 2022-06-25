@@ -26,10 +26,6 @@
 			<th>Número</th>
 			<th>N° de Documento</th>
 			<th>Nombre y apellido</th>
-			<!-- <th>Dirección</th>
-			<th>Teléfono</th>
-			<th>Correo electrónico</th>
-			<th>Fecha de nacimiento</th> -->
 			<th>Acciones</th>
 		</tr>
 		
@@ -42,13 +38,13 @@
 			<td>{{ paciente.numero_documento }}</td>
 			<td>{{ paciente.numero_documento.nombre }} {{paciente.numero_documento.apellido}}</td>
 			<td>
-				<a class="btn btn-primary" href="/administrativo/asignar_tratamiento/{{ paciente.id_paciente }}">
+				<!-- <a class="btn btn-primary" href="/administrativo/asignar_tratamiento/{{ paciente.id_paciente }}">
 					<i class="bi-pencil-square"></i>
 					Asignar Tratamiento
-				</a>
+				</a> -->
 				<a class="btn btn-primary" href="/administrativo/modificar_tratamiento_asignado/{{ paciente.id_paciente }}">
 					<i class="bi-pencil-square"></i>
-					Mod. Trat. Asig.
+					Asignar Tratamientos
 				</a>
 				<a class="btn btn-info" href="/tratamiento/tratamientos_asignados/{{ paciente.id_paciente }}">
 					<i class="bi-eye-fill"></i>

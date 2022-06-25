@@ -135,7 +135,7 @@ class EspecialistaSalud(models.Model):
                                                 on_delete=models.PROTECT,
                                                 # verbose_name='Cedula de identidad'
                                             )
-    trabajos_realizados = models.ManyToManyField(Categoria, through='TrabajoRealizado')
+    # trabajos_realizados = models.ManyToManyField(Categoria, through='TrabajoRealizado')
     especialidades = models.ManyToManyField(Especialidad, 
                                     through='EspecialistaEspecialidades',
                                     related_name='especialista_set',

@@ -257,96 +257,9 @@
                                             </li>
 
                                               <!--Opcion 7-->
-                                              <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Historial Clínico</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 7.1 -->
-                                                
-                                                  {%if perms.gestion_administrativo.change_paciente%}
-                                                    <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                              Antecedente Clínico
-                                                  </strong>
-                                                  <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> 
-                                                    <font color="black"> • Clínico Personal - Familiar</font></a></li>
-                                                  <li><hr class="dropdown-divider"></li>
-                                                  {%endif%}
-                                                  <!--Opcion 7.2 -->
-                                                  {% comment %} <li><a class="dropdown-item" href="#">• Clínico Familiar</a></li> {% endcomment %}
-                                                  
-                                                  <!--Opcion 7.3 -->
-                                                  <li>
-                                                    <strong class="dropdown-header"  style="color:blue; font-size:16px;" > Tratamientos Realizados</li></strong>
-                                                  {% comment %} <li><hr class="dropdown-divider"></li>
-                                                  <li><a class="dropdown-item" href="#">• Asignar un Tratamiento</a></li> {% endcomment %}
-                                                </ul>
-                                              </li>
-                                                    <!---------------------FALTA DESARROLLAR POR ESO SE OCULTA-->
-                                              <!--Opcion 8-->
-                                                 <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                              Facturación</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 8.1 -->
-                                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                        Emitir factura
-                                                              </strong>
-                                                   <li><a class="dropdown-item" href="#"> 
-                                                        <font color="black">• Factura</font></a></li>
-                                                   <!--Opcion 8.2 -->
-                                                 
-                                                     
-                                                  </ul>
-                                            </li>
-                                          
-
-                                            <!--Opcion 9-->
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Cobros</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 9.1 -->
-                                                  <li><a class="dropdown-item" href="#"> 
-                                                    <font color="black">  • Servicios brindados a Cuotas y Contado</font></a>
-                                                  </li>
-
-                                                </ul>
-                                            </li>
+                                              
                                             <!--Opcion 10-->
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Pagos</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 6.1 -->
-                                                  <li><a class="dropdown-item" href="#"> 
-                                                    <font color="black">  • Pago a Proveedores </font></a>
-                                                  </li>
-
-                                                </ul>
-                                            </li>
-                                             <!--Opcion 11-->
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Inventario</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 6.1 -->
-                                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                     Insumos
-                                                  </strong>
-                                                  <li><a class="dropdown-item" href="#"> 
-                                                    <font color="black">  • Agregar Insumos </font></a>
-                                                  </li>
-                                                  <li><a class="dropdown-item" href="#"> 
-                                                    <font color="black">  • Lista de Insumos </font></a>
-                                                  </li>
-
-                                                </ul>
-                                            </li>
+                                            
 
                         </ul>            
                       </div>
