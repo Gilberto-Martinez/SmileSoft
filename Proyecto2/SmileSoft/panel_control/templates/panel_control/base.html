@@ -142,7 +142,7 @@
                                                   <li><a class="dropdown-item" href="/roles/listar_roles/">• Listar Roles</li></a>
                                                   {%endif%}  
                                                 </ul>
-                                              </li>
+                                            </li>
                                           {%endif%}
                                           <!--Opcion 3 Usuario-->
                                         {%if perms.webapp.view_usuario %} 
@@ -243,9 +243,12 @@
                                                 </ul>
                                               </li>
                                               {% endif %}
+                                           
+                                              <!--EN DESARROLOO**********************************-->
+
                                               <!--Opcion 6 Agendamiento Para paciente-->
                                             <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                                                <a class="nav-link dropdown-toggle" href="gestion_agendamiento/calendario" id="navbarDropdown"
                                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Agendamiento</a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -253,14 +256,17 @@
                                                   <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                             Calendario
                                                               </strong>
+                                                  <li><a class="dropdown-item" href="/agendamiento/calendario">• Reservar una cita</li></a>
                                                   </ul>
                                             </li>
-
+ <!--COMENTADO POR DESARROLOO**********************************-->
+  <!--FALTA DESARROLLAR POR ESO SE OCULTA-->
                                               <!--Opcion 7-->
                                               <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Historial Clínico</a>
+                                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                 Historial Clínico
+                                                </a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion 7.1 -->
                                                 
@@ -269,26 +275,28 @@
                                                               Antecedente Clínico
                                                   </strong>
                                                   <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> 
-                                                    <font color="black"> • Clínico Personal - Familiar</font></a></li>
+                                                    <font color="black"> • Clínico Personal - Familiar</font></a>
+                                                  </li>
                                                   <li><hr class="dropdown-divider"></li>
                                                   {%endif%}
                                                   <!--Opcion 7.2 -->
                                                   {% comment %} <li><a class="dropdown-item" href="#">• Clínico Familiar</a></li> {% endcomment %}
                                                   
                                                   <!--Opcion 7.3 -->
-                                                  <li>
+                                                  
                                                     <strong class="dropdown-header"  style="color:blue; font-size:16px;" > Tratamientos Realizados</li></strong>
                                                   {% comment %} <li><hr class="dropdown-divider"></li>
                                                   <li><a class="dropdown-item" href="#">• Asignar un Tratamiento</a></li> {% endcomment %}
                                                 </ul>
                                               </li>
-                                                    <!---------------------FALTA DESARROLLAR POR ESO SE OCULTA-->
+                                                   
                                               <!--Opcion 8-->
                                                  <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                              Facturación</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                    <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                      Facturación
+                                                    </a>
+                                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion 8.1 -->
                                                   <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                         Emitir factura
