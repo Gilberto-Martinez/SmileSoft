@@ -407,7 +407,16 @@ class PacienteForm(forms.ModelForm):
             (ABN, 'AB RH-'),
     ]
    grupo_sanguineo = forms.ChoiceField(choices=GRUPOS, widget = forms.Select (attrs = {'class': 'form-control',}))
-   enfermedad_base = forms.CharField(label='Enfermedades de base', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Si tiene enfermedades de base especidfique cuales son'}))
+   enfermedad_base = forms.CharField(
+                                       label='Enfermedades de base', 
+                                       widget = forms.Textarea (attrs = {
+                                                                           'class': 'form-control', 
+                                                                           'placeholder': 'Si tiene enfermedades de base especidfique cuales son',
+                                                                           'required': False,
+                                                                           'blank':True
+                                                                        }
+                                                               )
+                                    )
    alergia = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Si tiene alergias especifique cuales son'}))
    afeccion_cronica_familiar = forms.CharField(label='Afección crónica familiar', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Ingrese las afecciones cronicas familiares'}))
    class Meta:

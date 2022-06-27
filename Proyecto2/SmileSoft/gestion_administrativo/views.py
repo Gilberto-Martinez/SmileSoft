@@ -523,22 +523,27 @@ class PersonaUpdate(UpdateView):
             form4 = self.fourt_form_class(request.POST, instance=especialista_salud)
 
         if form.is_valid():
+            print("*-----------------------------*")
+            print("form es valido")
             persona = form.save()
             if form2.is_valid():# Si el formulario de Funcionario es válido
+                print("form2 es valido")
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
                 form2.save_m2m()
             if form3.is_valid(): # Si el formulario de Paciente es válido
+                print("form3 es valido")
                 paciente = form3.save(commit=False)
                 paciente.numero_documento = persona
                 paciente.save()
             if form4.is_valid(): # Si el formulario de Epecialista de salud es válido
+                print("form4 es valido")
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
                 form4.save_m2m()
-            messages.success(request, " ✅ Modificado correctamente")
+            # messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         
         else:
