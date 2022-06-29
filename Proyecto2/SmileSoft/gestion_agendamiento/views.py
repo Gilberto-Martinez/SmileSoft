@@ -29,6 +29,8 @@ def agregar_cita(request):
                 'Agregado correctamente!'))
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
         else:
+            messages.error(request, (
+                'No ha guardado'))
             data["form"] = formulario
             print('NO ENTRAAAAA')
 
