@@ -1,0 +1,56 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+    {%if perms.gestion_inventario_insumos.add_insumo%}
+
+       <div class="container">
+            <div class=" col-md-10 offset-md-1" >
+                    <div class="card">
+                        <br>
+                        <center>  <h2>Agregar Insumo</h2> </center>      
+                            <!-- <form method="POST" id="group_form" novalidate=""> -->
+                    
+                            <form action="" method="post">
+                                {%csrf_token%}
+                                <div style="margin: 20px;" > 
+                                    {%if mensaje%}
+                                        <div class="alert alert-success" role="alert">
+                                            ✅ Insumo agregado correctamente
+                                        </div>
+                                    {%endif%}
+                                            {{form.as_p}} 
+                                                <!-- <table>
+                                                    <div class="form-group">
+                                                        <p>
+                                                        <label for="{{form.descripcion_tratamiento.name}}">{{form.descripcion_tratamiento.label}}</label></p>
+                                                        {{form.descripcion_tratamiento}}
+                                                    </div>
+                                                
+                                                    </Table> -->
+                                </div> 
+                                <!-- <div style="margin: 20px;" ></div> -->
+                                
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
+                                    <a href="/insumo/listar_insumos/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
+                                </div>
+                                <hr>
+                            
+                            </form>
+                    </div>
+                        
+            </div>
+        
+    {% else%}
+        <h2 class="titulo text-center">
+            No tiene permisos para ingresar a esta sección
+        </h2>
+                    
+    {%endif%}                          
+                <table  align="center" >
+                    <tr>
+                    <td> <a href="/insumo/listar_insumo/" class="btn btn-info">Ver listado de insumos </a> </td>
+                    </tr>
+                </table>
+   </div>
+{%endblock%}

@@ -17,8 +17,8 @@ from webapp.models import Usuario
 from .models import *
 from django.utils.translation import gettext_lazy as _
 from datetime import date, datetime
-import dateutil.relativedelta
-from dateutil.relativedelta import relativedelta
+#import dateutil.relativedelta
+#from dateutil.relativedelta import relativedelta
 
 class PersonaForm(forms.ModelForm):
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))

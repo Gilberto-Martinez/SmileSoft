@@ -49,6 +49,9 @@ urlpatterns = [
     #App Agendamiento
     path('agendamiento/', include(('gestion_agendamiento.urls', 'agendamiento'),)),
 
+    #App Inventario de Insumos
+    path('insumo/', include(('gestion_inventario_insumos.urls', 'insumo'),)),
+
   # path('accounts/', include ('django.contrib.auth.urls')),
    
   

@@ -9,7 +9,7 @@
             <div class="card" style="width: 18rem;">
             <img src="/img/eliminado.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-                <p class="card-text">El tratamiento ha sido eliminado.</p>
+                <p class="card-text">El insumo ha sido eliminado.</p>
             </div>
             </div>
 
@@ -17,7 +17,7 @@
 
 {%endblock%} 
 
- {%if perms.gestion_tratamiento.delete_tratamiento%}
+ {%if perms.gestion_inventario_insumos.delete_insumo%}
 <div class="modal-dialog modals-default">
     <div class="modal-content">
         <div class="modal-header">
@@ -38,7 +38,7 @@
   <script>
                                     function confirmarEliminacion(){
                                             Swal.fire({
-                                                title: '¿Estás seguro que quiere tratamiento?',
+                                                title: '¿Estás seguro que quiere insumo?',
                                                 text: 'La operación no se podrá deshacer',
                                                 icon: 'warning',
                                                 showCancelButton: true,
@@ -51,11 +51,11 @@
                                               
                                             }).then((result) => {
                                                     if (result.value) {
-                                                        for(var nombre_tratamiento in listado_tratamientos) {
-                                                            listado_tratamientos[nombre_tratamiento]=c.nombre_tratamiento
+                                                        for(var nombre_insumo in listado_insumos) {
+                                                            listado_insumos[nombre_insumo]=c.nombre_insumo
                                                                           
-                                                            console.log('El tratamiento con índice (usamos su nombre como índice) ' + tratamuento + ' es uno de tus favoritos');
-                                                            window.location.href = "/tratamiento/eliminar_tratamiento/c.nombre_tratamiento"
+                                                            console.log('El insumo con índice (usamos su nombre como índice) ' + tratamuento + ' es uno de tus favoritos');
+                                                            window.location.href = "/insumo/eliminar_insumo/c.nombre_insumo"
                                                        }
                                                         swal.fire("Eliminado correctamente", {
                                                             icon: "success",
@@ -71,7 +71,7 @@
                                     </script> 
 
 <!--funciona con la ventana de 127.0.0.1:8000-->
-  <a href="/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}"  onclick="Eliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>
+  <a href="/insumo/eliminar_insumo/{{c.nombre_insumo}}"  onclick="Eliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>
        
  <script>
 
@@ -91,7 +91,7 @@ function Eliminacion()
 
 ----funciona agregas un imput
                                 
-<label for="domTextElement">TRATAMIENTO</label>
+<label for="domTextElement">INSUMO</label>
   <input type="text" id="domTextElement" > 
   
   <button type="button"  onclick="getValueInput()"> 
@@ -119,12 +119,12 @@ function Eliminacion()
      Eliminar 
   </p>
   
-    Tratamiento
+    Insumo
     <input type="text"
            id="myText"
-           value="{{c.nombre_tratamiento}}">
+           value="{{c.nombre_insumo}}">
   
-    <button  value="{{c.nombre_tratamiento}}" type="button" 
+    <button  value="{{c.nombre_insumo}}" type="button" 
             onclick="myFunction()">
      Eliminar
   </button>
@@ -140,7 +140,7 @@ function Eliminacion()
                                                     document.getElementById("demo").innerHTML = x;
                                  
                 Swal.fire({
-                                        title: '¿Estás seguro que quiere eliminar este tratamiento? '+   document.getElementById("demo").innerHTML,
+                                        title: '¿Estás seguro que quiere eliminar este insumo? '+   document.getElementById("demo").innerHTML,
                                         text: "La operación no se podrá deshacer",
                                         icon: 'warning',
                                         showCancelButton: true,
@@ -148,12 +148,12 @@ function Eliminacion()
                                         cancelButtonColor: '#d33',
                                         confirmButtonText: 'Aceptar',
                                         cancelmButtonText: 'Cancelar',
-                                        inputValue:'{{c.nombre_tratamiento}}',
+                                        inputValue:'{{c.nombre_insumo}}',
 
                                     }).then((result) => {
                                         if (result.value) {
                                           
-                                            window.location.href = "/tratamiento/eliminar_tratamiento/"+   document.getElementById("demo").innerHTML;
+                                            window.location.href = "/insumo/eliminar_insumo/"+   document.getElementById("demo").innerHTML;
                                             Swal.fire("Eliminado correctamente",{
                                                 icon: "success",
                                             });
@@ -180,12 +180,12 @@ funciona para que salude
      Eliminar 
   </p>
   
-    Tratamiento
+    Insumo
     <input type="text"
            id="myText"
-           value="{{c.nombre_tratamiento}}">{{c.nombre_tratamiento}</input>
+           value="{{c.nombre_insumo}}">{{c.nombre_insumo}</input>
   
-    <button  value="{{c.nombre_tratamiento}}" type="button" 
+    <button  value="{{c.nombre_insumo}}" type="button" 
             onclick="myFunction()">
      Eliminar
   </button>
@@ -193,14 +193,14 @@ funciona para que salude
     <p id="demo">Hola</p>
   
     <script>
-        let name=   "{{c.nombre_tratamiento}}" 
+        let name=   "{{c.nombre_insumo}}" 
         function myFunction() {
              var name =document.getElementById("myText").value;
                                                     
              document.getElementById("demo").innerHTML = name;
                                  
                 Swal.fire({
-                                        title: '¿Estás seguro que quiere eliminar este tratamiento? '+   document.getElementById("demo").innerHTML,
+                                        title: '¿Estás seguro que quiere eliminar este insumo? '+   document.getElementById("demo").innerHTML,
                                         text: "La operación no se podrá deshacer",
                                         icon: 'warning',
                                         showCancelButton: true,
@@ -213,7 +213,7 @@ funciona para que salude
                                     }).then((result) => {
                                         if (result.value) {
                                           
-                                            window.location.href = "/tratamiento/eliminar_tratamiento/"+   document.getElementById("demo").innerHTML;
+                                            window.location.href = "/insumo/eliminar_insumo/"+   document.getElementById("demo").innerHTML;
                                             Swal.fire("Eliminado correctamente",{
                                                 icon: "success",
                                             });
@@ -233,8 +233,8 @@ funciona al tocar cambia
 ***
   <!-- Eliminar-->
                                 <td>               
-                                    {% comment %} <a href="/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}"  onclick="confirmarEliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>  {% endcomment %}
-                                    <p id="demo">Tratamiento->{{c.nombre_tratamiento}}</p>
+                                    {% comment %} <a href="/insumo/eliminar_insumo/{{c.nombre_insumo}}"  onclick="confirmarEliminacion()"  class="btn btn-danger btnEliminacion">Eliminar</a>  {% endcomment %}
+                                    <p id="demo">Insumo->{{c.nombre_insumo}}</p>
                                     <button id="boton" type="button"  class="btn btn-danger btnEliminacion"
                                                 onclick="confirmarEliminacion()" >
                                         Eliminar
@@ -251,7 +251,7 @@ funciona al tocar cambia
                                        function confirmarEliminacion() {
                                          document.getElementById("demo").innerHTML = "cambio ";
                                         Swal.fire({
-                                        title: '¿Estás seguro que quiere eliminar este tratamiento '+tratamiento+'?',
+                                        title: '¿Estás seguro que quiere eliminar este insumo '+insumo+'?',
                                         text: "La operación no se podrá deshacer",
                                         icon: 'warning',
                                         showCancelButton: true,
@@ -264,7 +264,7 @@ funciona al tocar cambia
                                         if (result.value) {
                                             
                                             
-                                             window.location.href = "/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}",
+                                             window.location.href = "/insumo/eliminar_insumo/{{c.nombre_insumo}}",
                                             Swal.fire({
                                                 title: 'Eliminado correctamente',
                                                 icon: 'success',
