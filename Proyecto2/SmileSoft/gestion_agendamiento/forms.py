@@ -1,6 +1,6 @@
 from tkinter import Widget
 from tokenize import _all_string_prefixes
-from attr import field
+# from attr import field
 from gestion_administrativo.models import Paciente
 from django import forms
 from webapp.models import Usuario
