@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'SmileSoft.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'smilesoft',
+        'NAME': 'smilesoft_con_correcciones',
 		'USER': 'postgres',
 		'PASSWORD': 'postgres',
 		'HOST': 'localhost',

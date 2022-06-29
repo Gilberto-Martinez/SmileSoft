@@ -65,7 +65,7 @@ class AdminFuncionario(admin.ModelAdmin):
     # list_filter = ['numero_documento']
     list_display_links = ['numero_documento',]
     search_fields = ['numero_documento', ]
-    ordering = ['numero_documento']
+    # ordering = ['numero_documento']
 
 class EspecialistaSaludEspInline(admin.TabularInline):
     model = TrabajoRealizado

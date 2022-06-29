@@ -1,14 +1,18 @@
 {%extends 'panel_control/base.html'%}
 
+{{persona}}
+
 {%block content%}
 
 <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <br>
-            <center>  <h2>Modificar Paciente</h2> </center>    
+            <!-- <center>  <h2>Modificar Paciente</h2> </center>     -->
                   <!-- Tooltip. -->
                 <div class="container mt-3 text-center">
-                        <i class="bi bi-person-plus"> ¡ Ingrese los datos del paciente ! </i>
+                        <h4 class="bi bi-person-plus"> 
+                            Ingrese los datos del paciente {{persona.nombre}} {{persona.apellido}} 
+                        </h4>
                 </div>
             
             <div class="card-body">
@@ -17,48 +21,9 @@
 
                     <div style="margin: 20px;" >
                         <table>
-                            <div class="form-group">
-                                <label for="{{form2.nombre.name}}">{{form2.nombre.label}}</label>
-                                {{form2.nombre}}
                             </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="{{form2.apellido.name}}">{{form2.apellido.label}}</label>
-                                {{form2.apellido}}
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="{{form2.numero_documento.name}}">{{form2.numero_documento.label}}</label>
-                                {{form2.numero_documento}}
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="{{form2.direccion.name}}">{{form2.direccion.label}}</label>
-                                {{form2.direccion}}
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="{{form2.telefono.name}}">{{form2.telefono.label}}</label>
-                                {{form2.telefono}}
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="{{form2.correo_electronico.name}}">{{form2.correo_electronico.label}}</label>
-                                {{form2.correo_electronico}}
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="{{form2.fecha_nacimiento.name}}">{{form2.fecha_nacimiento.label}}</label>
-                                {{form2.fecha_nacimiento}}
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="{{form2.sexo.name}}">{{form2.sexo.label}}</label>
-                                {{form2.sexo}}
-                            </div>
-                            <br>
                             <hr>
-                            <center><h4 style="font:italic;">Ingrese su antecedente clinico</h4></center>
+                            <center><h4 style="font:italic;">Antecedente clinico</h4></center>
                             <div class="form-group">
                                 <label for="{{form.grupo_sanguineo.name}}">{{form.grupo_sanguineo.label}}</label>
                                 {{form.grupo_sanguineo}}
@@ -104,6 +69,7 @@
                                 {{form.afeccion_cronica_familiar}}
                             </div>
                             <br>
+ 
                          </table>
                     </div>
 
@@ -111,15 +77,16 @@
                         <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
                         <!-- <button href="/administrativo/agregar_antecedente_clinico/ " class="btn btn-success" value="Agregar antecedente clinico" style="margin: 10px;">Agregar antecedente clinico</button> -->
                         <!-- <input href="/administrativo/agregar_antecedente_clinico/ " type="submit" value="Agregar antecedente clinico" style="margin: 10px;" class= "btn btn-primary btn-block txt-white"> -->
-                        <a href="/administrativo/listar_paciente/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
+                        <!-- <a href="/administrativo/listar_paciente/" class="btn btn-danger" style="margin: 10px;">Cancelar</a> -->
+                        <input class="btn btn-danger" type = "button" value = "Cancelar" onclick = "history.back ()" style="margin: 10px;">
                     </div>
-                   
+    
                     <table  align="right" >
-                        <tr>
+                        <!-- <tr>
                             <td> 
                                 <a href="/administrativo/agregar_paciente/" class="btn btn-success">Agregar otro paciente +</a> 
                             </td>
-                        </tr>
+                        </tr> -->
                       <div class="container mt-3 text-center">
                                 <a href=" /panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> <i class="bi bi-house-door"></i>Inicio</a>
                             </div>
@@ -129,7 +96,7 @@
                     <table  align="left" >
                         <tr>
                             <td> 
-                                <a href="/administrativo/listar_paciente/" class="btn btn-info">Ver listado de pacientes </a> 
+                                <a href="/administrativo/listar_persona" class="btn btn-info">Ver listado de personas </a> 
                             </td>
                         </tr>
                  
