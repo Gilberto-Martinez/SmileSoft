@@ -14,6 +14,6 @@ urlpatterns = [
             path('listar_paciente2/', PacienteList2.as_view(),  name="listar_paciente2"),
             # path('asignar_tratamiento/', asignar_tratamiento, name="asignar_tratamiento"),
             path('tratamientos_asignados/<int:pk>', DetalleTratamientosAsignados.as_view(), name="tratamientos_asignados"),
-            path('listar_tratamientos_asignados/<int:cedula>', listar_tratamiento_asignado, name="listar_tratamientos_asignados"),
+            path('listar_tratamientos_asignados/<cedula>', listar_tratamiento_asignado, name="listar_tratamientos_asignados"),
 
 ]

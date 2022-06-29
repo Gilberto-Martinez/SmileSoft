@@ -431,7 +431,14 @@ class PacienteForm(forms.ModelForm):
                   'enfermedad_base',
                   'alergia',
                   'afeccion_cronica_familiar',
+                  # 'tratamientos',
                 ]
+         # widgets = {
+         #          'tratamientos': forms.CheckboxSelectMultiple(attrs={
+         #          'class': 'form-select2',
+         #          'style': 'width: 30px',
+         #          'multiple': 'multiple'}),
+         #          }
          # widgets = {
          #        'numero_documento': HiddenInput(attrs={'required': False})
          #       }

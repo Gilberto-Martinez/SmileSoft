@@ -66,20 +66,12 @@ def listar_tratamiento(request):
     return render (request,"tratamiento/listar_tratamientos.html",{'listado_tratamientos':listado_tratamientos})
 
 def listar_tratamiento_asignado(request, cedula):
-
-    paciente = Usuario.objects.get(numero_documento=cedula)
-    
-    busqueda=request.POST.get("q")
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
 
     tratamientos_asignados = []
     for tratamiento in listado_tratamientos:
-        print("----tratamiento: ")
-        # print(tratamiento.codigo_tratamiento)
-        if tratamiento.paciente == paciente:
-            tratamientos_asignados.append(tratamiento.tratamiento)
-            print("*-------------------------------------*")
-            print("tratamiento: "+tratamientos_asignados.nombre_tratamiento)
+        if str(tratamiento.get_paciente()) == str(cedula):
+            tratamientos_asignados.append(tratamiento.get_tratamiento())
 
     return render (request,"tratamiento/listar_tratamientos_asignados.html",{'tratamientos_asignados':tratamientos_asignados})
 

@@ -271,6 +271,13 @@ class PacienteTratamientoAsignado(models.Model):
         verbose_name = 'Tratamieto Asignado al Paciente'
         verbose_name = 'Tratamietos del Paciente'
 
+    def get_tratamiento(self):
+        return str(self.tratamiento)
+
+    def get_paciente(self):
+        return str(self.paciente)
+
+
 #####################################################################
 
 class Proveedor(models.Model):
