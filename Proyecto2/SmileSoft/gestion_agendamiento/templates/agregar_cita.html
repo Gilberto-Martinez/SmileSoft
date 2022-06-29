@@ -36,10 +36,27 @@
                             </div>
                             {%endif%}
                     <div style="margin: 20px;" >
-                     
-                                {{form.as_p}}
-                       
-                            
+                       <div class="form-group">
+                            <label for="paciente">Cédula Paciente </label>
+                            {{form.paciente}} <br>
+                        <div class="form-group">
+                        <br>
+
+                        <div class="form-group">
+                            <label for="tratamiento_solicitado"> Motivo de Consulta</label>
+                                {{form.tratamiento_solicitado}} <br>
+                        </div>
+                        <br>
+
+                            <label for="fecha"> Fecha de la cita</label>
+                            <input type="date" name="fecha"><br>
+                        <br>
+                            <label for="hora"> Hora de la cita</label>
+                                <input type="time" name="hora">
+                          {% comment %} <input type="time" name="hora" min="08:00" max="21:00" step="3600" /> {% endcomment %}
+                         
+                      
+                             
                       
                     </div>
 
