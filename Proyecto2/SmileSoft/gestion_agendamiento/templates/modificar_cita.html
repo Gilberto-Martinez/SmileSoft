@@ -23,7 +23,7 @@
             <div class="card-body">
                 <center> 
                         
-                    <h2 <i class="bi bi-calendar"></i> Agregar Cita</i> </h2>
+                    <h2 <i class="bi bi-calendar"></i> Modificar | Cita</i> </h2>
                 </center>
               
                
@@ -32,16 +32,16 @@
                     {%csrf_token%}
                         {%if mensaje%}
                             <div class="alert alert-success" role="alert">
-                                  ✅ Cita registrada
+                                  ✅ Cita modificada
                             </div>
                             {%endif%}
                     <div style="margin: 20px;" >
+                     
                        <div class="form-group">
                             <label for="paciente">Cédula Paciente </label>
                             {{form.paciente}} <br>
-                        <div class="form-group">
+                       </div>
                         <br>
-
                         <div class="form-group">
                             <label for="tratamiento_solicitado"> Motivo de Consulta</label>
                                 {{form.tratamiento_solicitado}} <br>
@@ -55,9 +55,6 @@
                                <input type="time" id="hora_consulta" name="hora" required >
                           {% comment %} <input type="time" name="hora" min="08:00" max="21:00" step="3600" /> {% endcomment %}
                          </p>
-                      
-                             
-                      
                     </div>
 
                     <div class="d-flex justify-content-center">
