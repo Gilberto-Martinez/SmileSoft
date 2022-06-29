@@ -63,6 +63,7 @@
                         <form id="login-form" class="form-signin" action="" method="post">
                             {% csrf_token %}
                             <h3 class="text-center text-Gray">¡Bienvenido!</h3>
+                              <div align="center">  <img src="{% static 'img/inicio.png' %}"  width="92" height="92"> </div>
                             <div class="form-group">
                                 {% csrf_token %}
                                 <label for="usuario" class="text-Gray"> Usuario:</label><br>
@@ -93,7 +94,7 @@
                             </div>
                             <br>
                            {% csrf_token %}
-                            <div class="alert alert-success" role="alert">
+                            <div class="alert alert-primary" role="alert">
                                 <ul class="messages">
                                     {% for message in messages %}
                                         <li{% if message.tags %}
