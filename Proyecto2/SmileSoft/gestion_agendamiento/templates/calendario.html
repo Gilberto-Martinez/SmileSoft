@@ -36,6 +36,22 @@
                             </a>
                             {%endif%}
                         </td>
+                         <td>
+                                    {%if perms.gestion_agendamiento.change_cita%}
+                                    <a href="/agendamiento/modificar_cita/{{paciente.numero_documento}} " class="btn btn-info">
+                                    <i class="bi-pencil-square"></i>
+                                        Editar cita
+                                    </a>
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    {%if perms..gestion_agendamiento.delete_cita%}
+                                <a class="btn btn-danger" href="/administrativo/eliminar_cita/{{paciente.id_cita}}">
+                                    <i class="bi-trash-fill" ></i>
+                                    Eliminar
+                                </a>
+                                {%endif%}
+                            </td>
                         </tr>
                 </table>
 
@@ -44,4 +60,8 @@
             
     </div>
     {% endif %}
+
+
+
+    
 {%endblock%}

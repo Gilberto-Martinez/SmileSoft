@@ -135,7 +135,7 @@ class EspecialistaSalud(models.Model):
                                                 on_delete=models.PROTECT,
                                                 # verbose_name='Cedula de identidad'
                                             )
-    trabajos_realizados = models.ManyToManyField(Categoria, through='TrabajoRealizado')
+    # trabajos_realizados = models.ManyToManyField(Categoria, through='TrabajoRealizado')
     especialidades = models.ManyToManyField(Especialidad, 
                                     through='EspecialistaEspecialidades',
                                     related_name='especialista_set',
@@ -202,11 +202,11 @@ class Paciente(models.Model):
                                         )
     #TratamientosRealizados = models.ManyToManyField(Tratamiento, through='TratamientoRealizado')
 #    numero_ficha = models.OneToOneField(HistorialClinico,verbose_name='Número de ficha',on_delete=models.PROTECT, default=0)
-    enfermedad_base = models.TextField(max_length=500, verbose_name='Enfermedad de base (*)',null= True,)
-    alergia = models.TextField(max_length=500,  verbose_name='Alergia (*)',null= True)
-    tolerancia_anestecia = models.BooleanField(verbose_name='¿Es tolerante al uso de Anestecia?', null= True)
+    enfermedad_base = models.TextField(max_length=500, verbose_name='Enfermedad de base (*)',null= True,blank=True)
+    alergia = models.TextField(max_length=500,  verbose_name='Alergia (*)',null= True, blank=True)
+    tolerancia_anestecia = models.BooleanField(verbose_name='¿Es tolerante al uso de Anestecia?', null= True, blank=True)
     frecuencia_higiene_bucal = models.PositiveIntegerField(null= True, blank=True)
-    medicamento = models.CharField(max_length=60,  verbose_name='Medicamento/s (*)',null= True,)
+    medicamento = models.CharField(max_length=60,  verbose_name='Medicamento/s (*)',null= True,blank=True)
     cirugias = models.BooleanField(default=False, verbose_name='Cirugías',null= True, blank=True)
     caries = models.BooleanField(default=False, verbose_name='Caries',null= True, blank=True)
     afeccion_cronica_familiar = models.TextField(max_length=500,  verbose_name='Afección crónica familiar',null= True, blank=True)
@@ -270,6 +270,13 @@ class PacienteTratamientoAsignado(models.Model):
         db_table = 'PacienteTratamientoAsignado'
         verbose_name = 'Tratamieto Asignado al Paciente'
         verbose_name = 'Tratamietos del Paciente'
+
+    def get_tratamiento(self):
+        return str(self.tratamiento)
+
+    def get_paciente(self):
+        return str(self.paciente)
+
 
 #####################################################################
 

@@ -67,9 +67,11 @@ class PersonaForm(forms.ModelForm):
       fecha_nacimiento = self.cleaned_data["fecha_nacimiento"]
       print(fecha_nacimiento)
 
+      fecha_nacimiento = str(fecha_nacimiento)
       fecha = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
       edad = relativedelta(datetime.now(), fecha)
       print(f"{edad.years} años, {edad.months} meses y {edad.days} días")
+      edad = edad.years
 
       if edad < 18:
          print ("La persona es menor de edad, no puede ser un funcionario")
@@ -81,9 +83,54 @@ class PersonaForm(forms.ModelForm):
    def get_numero_documento(self):
       return self.numero_documento
 
-    # def error_cedula(self):
-    #     respuesta =request.HttpRequest()
-    #     messages.error(respuesta, "Ya existe el numero de cedula ingresado" )      
+
+class PersonaPacienteForm(forms.ModelForm):
+   nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
+   apellido= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su apellido'}))
+   numero_documento= forms.CharField(label='N° documento', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su documento',}))
+   direccion = forms.CharField(label='Dirección', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su dirección'}))
+   telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
+   correo_electronico = forms.EmailField(label='Correo electrónico', widget = forms.EmailInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su correo electronico'}))
+   F = 'Femenino'
+   M = 'Masculino'
+   SEXOS = [
+            (F, 'Femenino'),
+            (M, 'Masculino')
+   ]
+   sexo = forms.ChoiceField(choices=SEXOS, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
+   fecha_nacimiento = forms.DateField(label='Fecha de nacimiento', widget=forms.DateInput(attrs={'type': 'date'}))
+   mensaje_error = ""
+   evento = ""
+                                      
+   class Meta:
+         model = Persona
+         fields = ['nombre', 
+                  'apellido', 
+                  'numero_documento', 
+                  'direccion',
+                  'telefono',
+                  'correo_electronico',
+                  'fecha_nacimiento',
+                  'sexo',
+                ]
+         # widgets = {
+         #             'es_funcionario': HiddenInput(attrs={'required':False}),
+         #             'es_paciente': HiddenInput(attrs={'required':False}),
+         #             'es_especialista_salud': HiddenInput(attrs={'required':False}),
+         # }
+
+   def clean_numero_documento(self):
+      numero_documento= self.cleaned_data["numero_documento"]
+      if Persona.objects.filter(numero_documento=numero_documento).exists():
+         print ("Ya existe el número de documento ingresado")
+         self.evento = "Cedula ya existe"
+         self.mensaje_error = "Ya existe el número de documento ingresado"
+      return numero_documento
+
+   def get_numero_documento(self):
+      return self.numero_documento
+
+
 
 class FuncionarioForm(forms.ModelForm):
    # nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
@@ -360,7 +407,16 @@ class PacienteForm(forms.ModelForm):
             (ABN, 'AB RH-'),
     ]
    grupo_sanguineo = forms.ChoiceField(choices=GRUPOS, widget = forms.Select (attrs = {'class': 'form-control',}))
-   enfermedad_base = forms.CharField(label='Enfermedades de base', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Si tiene enfermedades de base especidfique cuales son'}))
+   enfermedad_base = forms.CharField(
+                                       label='Enfermedades de base', 
+                                       widget = forms.Textarea (attrs = {
+                                                                           'class': 'form-control', 
+                                                                           'placeholder': 'Si tiene enfermedades de base especidfique cuales son',
+                                                                           'required': False,
+                                                                           'blank':True
+                                                                        }
+                                                               )
+                                    )
    alergia = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Si tiene alergias especifique cuales son'}))
    afeccion_cronica_familiar = forms.CharField(label='Afección crónica familiar', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Ingrese las afecciones cronicas familiares'}))
    class Meta:
@@ -375,7 +431,14 @@ class PacienteForm(forms.ModelForm):
                   'enfermedad_base',
                   'alergia',
                   'afeccion_cronica_familiar',
+                  # 'tratamientos',
                 ]
+         # widgets = {
+         #          'tratamientos': forms.CheckboxSelectMultiple(attrs={
+         #          'class': 'form-select2',
+         #          'style': 'width: 30px',
+         #          'multiple': 'multiple'}),
+         #          }
          # widgets = {
          #        'numero_documento': HiddenInput(attrs={'required': False})
          #       }
