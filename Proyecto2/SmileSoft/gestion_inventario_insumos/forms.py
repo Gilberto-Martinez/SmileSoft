@@ -42,7 +42,7 @@ class InsumoForm(forms.ModelForm):
             'descripcion_insumo',
             'precio',
             'fecha_caducidad',
-            'estado',
+            #'estado',
         ]
 
 class InsumoUpdateForm(forms.ModelForm):
@@ -62,6 +62,6 @@ class InsumoUpdateForm(forms.ModelForm):
             'descripcion_insumo',
             'precio',
             'fecha_caducidad',
-            'estado',
+            #'estado',
         ]
 

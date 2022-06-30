@@ -61,7 +61,7 @@
                                     <th>Nombre </th>
                                     <th>Precio</th>  
                                     <th>Fecha de Caducidad</th> 
-                                    <th>Estado</th> 
+                                    <!-- <th>Estado</th>  -->
                                     {% comment %} <th colspan="2">Acciones </th> {% endcomment %}
                             </tr>
                         </thead>
@@ -73,7 +73,7 @@
                                     <td >{{c.nombre_insumo}}</td>
                                     <td>{{c.precio}}</td> 
                                     <td>{{c.fecha_caducidad}}</td> 
-                                    <td>{{c.estado}}</td> 
+                                    <!-- <td>{{c.estado}}</td>  -->
                                     {{busqueda}}
                                     <!--OPCIONES Modificar y Eliminar-->
                                         {%if perms.gestion_inventario_insumos.change_insumo%} 

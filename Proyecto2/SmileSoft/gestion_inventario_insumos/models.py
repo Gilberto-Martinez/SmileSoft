@@ -13,12 +13,12 @@ class Insumo(models.Model):
 
         
     # especialista = models.ForeignKey(EspecialistaSalud)
-    LOAN_STATUS = (
-        ('Disponible', 'Disponible'),
-        ('Intermedio', 'Intermedio'),
-        ('En Falta', 'En Falta'),
-    )
-    estado = models.CharField(max_length=15, choices=LOAN_STATUS, blank=True, default='Disponible', help_text='Disponibilidad del Insumo')
+    # LOAN_STATUS = (
+    #     ('Disponible', 'Disponible'),
+    #     ('Intermedio', 'Intermedio'),
+    #     ('En Falta', 'En Falta'),
+    # )
+    # estado = models.CharField(max_length=15, choices=LOAN_STATUS, blank=True, default='Disponible', help_text='Disponibilidad del Insumo')
     
     class Meta:
         verbose_name = ("insumo")
