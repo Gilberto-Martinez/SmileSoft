@@ -1,0 +1,136 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--Gestion de Insumos-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+
+{% block javascripts%}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     
+
+{%endblock%}
+
+{%block content%}
+
+{%if perms.gestion_insumo.view_insumo%}  
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <center> 
+                    <h2 <i class="bi bi-list-check"> Lista de Insumos</i> </h2>
+                </center>
+                
+                {%if perms.gestion_inventario_insumos.add_insumo%}  
+                    <table  align="right" >
+                            <tr>
+                            <td> <a href="/insumo/agregar_insumo/" class="btn btn-success">Agregar un insumo +</a> </td>
+                            </tr>
+                    </table>
+                {%endif%}
+
+            <!--end-->
+
+            <!--Barra de Busqueda-->
+        
+                    <form  class="form-inline" method="POST">
+                        {% csrf_token %}
+                    <div class="input-group">
+                            <input type="search" name="q"  class="form-control bg-light border-0 small" placeholder="Buscar nombre insumo" aria-label="search" value="{{request.POST.buscar}}">
+                            <div class="input-group-append">
+                                <button  class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                                <!-- ICONO LUPA -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </form>     
+            <!--end-->
+
+                <!--Inicio de la TABLA DE INSUMOS-->
+                <table>
+                    <!--table striped es para que resalte 1 fila y otra no-->
+                    <!--table-bordered para bordes-->
+                    <table class="table table-striped table-hover">
+                        <thead> 
+                            <tr>
+                                    <th>Nro Insumo</th>
+                                    <th>Nombre </th>
+                                    <th>Precio</th>  
+                                    <th>Fecha de Caducidad</th> 
+                                    <!-- <th>Estado</th>  -->
+                                    {% comment %} <th colspan="2">Acciones </th> {% endcomment %}
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                                {%for c in listado_insumos%}
+                                <tr>
+                                    <td >{{forloop.counter}}</td>
+                                    <td >{{c.nombre_insumo}}</td>
+                                    <td>{{c.precio}}</td> 
+                                    <td>{{c.fecha_caducidad}}</td> 
+                                    <!-- <td>{{c.estado}}</td>  -->
+                                    {{busqueda}}
+                                    <!--OPCIONES Modificar y Eliminar-->
+                                        {%if perms.gestion_inventario_insumos.change_insumo%} 
+                                                <td><a href="/insumo/modificar_insumos/{{c.nombre_insumo}}" class="btn btn-primary">
+                                                        <i class="bi-pencil-square"></i>
+                                                    Modificar</a>
+                                        {%endif%}
+                                <!-- Eliminar-->      
+                                
+                                        {%if perms.gestion_inventario_insumos.delete_insumo%}          
+                                                    <a href="/insumo/eliminar_insumo/{{c.nombre_insumo}}" class="btn btn-danger btnEliminacion">
+                                                        <i class="bi-trash-fill" ></i> 
+                                                        Eliminar</a> 
+                                                </td>
+                                        {%endif%}
+                                            
+                                </tr>
+                                {% endfor %}
+                            
+
+                                {% if messages %}
+                                <ul class="messages">
+                                
+                                    {% for message in messages %}
+                                    <li>
+                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                        <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
+                                        Insumo
+                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                        {{ message }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+
+                        </tbody>
+                    </table>
+                </table>
+            <!--end TABLA-->
+        
+            </div>
+        </div>
+    </div>
+{%endif%}
+
+{%endblock%}
+<!--este funciona NO BORRAR-->
+{% comment %} <script>
+    function cancelar() {
+     
+        Swal.fire({
+  icon: 'warning',
+  title: 'Esta eliminando este insumo',
+ 
+  footer: '<a href="/insumo/eliminar_insumo/{{c.nombre_insumo}}">¡Da click aqui !</a>'
+})
+    }
+</script> {% endcomment %}

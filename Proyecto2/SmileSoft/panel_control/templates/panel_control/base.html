@@ -324,14 +324,46 @@
                                                 </ul>
                                             </li>
                                             <!--Opcion 10-->
-                                            
 
-                        </ul>            
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Pagos</a>
+                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                  <!--Opcion 10.1 -->
+                                                  <li><a class="dropdown-item" href="#"> 
+                                                    <font color="black">  • Pago a Proveedores </font></a>
+                                                  </li>
+
+                                                </ul>
+                                            </li>
+                                             <!--Opcion 11-->
+                                             {%if perms.gestion_inventario_insumos.view_insumo%}
+                                             <li class="nav-item dropdown">
+                                               <a class="nav-link dropdown-toggle" href="insumo" id="navbarDropdown"
+                                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               Insumos</a>
+                                               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                 <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                       Registro de Insumos
+                                                     </strong>
+                                                 <!--Opcion 11.1 -->
+                                                   {%if perms.gestion_inventario_insumos.add_tratamiento%}
+                                                     <li><a class="dropdown-item" href="/insumo/agregar_insumo/">• Agregar Insumos</li></a>
+                                                   {%endif%}
+                                                 <!--Opcion 11.2 -->
+                                                 
+                                                     <li><a class="dropdown-item" href="/insumo/listar_insumo/">• Lista de Insumos</li></a>
+                                                     <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
+                                                         <div class="dropdown-divider"></div>  -->
+                                               </ul>
+                                             </li>
+                                             {% endif %}
+                          </ul>            
                       </div>
                 </div>
               </div>
-            </nav>
-            
+            </nav> 
         <!--fin de Barra de Navegacion-->
  
           <!--Slider======================================BLOQUE DEl CARROUSEL========================================================-->

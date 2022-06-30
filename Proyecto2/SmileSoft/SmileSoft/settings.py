@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'gestion_tratamiento',
     'gestion_historial_clinico',
     'gestion_agendamiento',
+    'gestion_inventario_insumos',
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'
