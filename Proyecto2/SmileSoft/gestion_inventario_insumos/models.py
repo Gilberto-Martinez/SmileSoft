@@ -1,5 +1,5 @@
 from pyexpat import model
-from typing_extensions import Self
+
 from django.db import models
 from gestion_administrativo.models import *
 from gestion_inventario_insumos.models import *
