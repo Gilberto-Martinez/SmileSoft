@@ -99,9 +99,9 @@
                                           <!--Este modulo tendra acceso a todos los roles-->
                                           <li class="nav-item dropdown">
                                               <a class="nav-link dropdown-toggle" href="configuración " id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                              <strong style="color:blue; font-size:14px;">
-                                                <img src="{% static 'img/configuracion.png' %}" width="40px" alt="logo">
-                                              </strong> 
+                                              
+                                                <img src="{% static 'img/configuracion.png' %}" width="38px" alt="logo">
+                                              
                                               </a>
                                               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion-->
@@ -307,6 +307,16 @@
                                                         <font color="black">• Factura</font></a></li>
                                                    <!--Opcion 8.2 -->
                                                  
+                                                    <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                      Pagos
+                                                    </strong>
+                                                        <!--Opcion 10.1 -->
+                                                      <li><a class="dropdown-item" href="#"> 
+                                                        <font color="black">  • Pago a Proveedores </font></a>
+                                                      </li>
+
+                                               
+                                            </li>
                                                      
                                                   </ul>
                                             </li>
@@ -320,31 +330,20 @@
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion 9.1 -->
                                                   <li><a class="dropdown-item" href="#"> 
-                                                    <font color="black">  • Servicios brindados a Cuotas y Contado</font></a>
+                                                    <font color="black">  • Servicios brindados a <br>Cuota | Contado</font></a>
                                                   </li>
 
                                                 </ul>
                                             </li>
                                             <!--Opcion 10-->
 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Pagos</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 10.1 -->
-                                                  <li><a class="dropdown-item" href="#"> 
-                                                    <font color="black">  • Pago a Proveedores </font></a>
-                                                  </li>
-
-                                                </ul>
-                                            </li>
+                                           
                                              <!--Opcion 11-->
                                              {%if perms.gestion_inventario_insumos.view_insumo%}
                                              <li class="nav-item dropdown">
                                                <a class="nav-link dropdown-toggle" href="insumo" id="navbarDropdown"
                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                               Insumos</a>
+                                               Inventario</a>
                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                        Registro de Insumos
