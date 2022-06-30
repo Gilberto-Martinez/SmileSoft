@@ -48,11 +48,12 @@
                         </div>
                         <br>
 
-                            <label for="fecha_consulta"> Fecha de la cita</label>
-                            <input type="date" id="fecha_consulta" name="fecha" required > <br>
+                            <label for="fecha"> Fecha de la cita</label>
+                            <input type="date" name="fecha" required > <br>
+                            {% comment %} <input type="date" name="fecha" min="2022-12-31" max="2022-01-01" step=1 /> {% endcomment %}
                         <br>
                            <p> <label for="hora_consulta"> Hora de la cita</label>
-                               <input type="time" id="hora_consulta" name="hora" required >
+                               <input type="time" name="hora" required >
                           {% comment %} <input type="time" name="hora" min="08:00" max="21:00" step="3600" /> {% endcomment %}
                          </p>
                       
