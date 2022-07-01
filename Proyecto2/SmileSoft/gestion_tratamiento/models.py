@@ -34,3 +34,28 @@ class Tratamiento(models.Model):
     def __str__(self):
         return self.detalle_tratamiento
  """
+
+# Comentado por el momento a espera de analisis
+# class Horario(models.Model):
+#     id_horario = models.AutoField(primary_key=True)
+#     L = 'Lunes'
+#     M = 'Martes'
+#     MI = 'Miércoles'
+#     J = 'Jueves'
+#     V = 'Viernes'
+#     S = 'Sábado'
+#     DIAS = (
+#             (L,'Lunes'),
+#             (M, 'Martes'),
+#             (MI, 'Miércoles'),
+#             (J, 'Jueves'),
+#             (V, 'Viernes'),
+#             (S, 'Sábado'),
+#     )
+#     dia = models.CharField(max_length=9, choices=DIAS, null=False, blank=False, verbose_name='Día')
+#     hora = models.TimeField(auto_now = False, auto_now_add = False,verbose_name='Hora', null=False, blank=False )
+
+#     class Meta:
+#         verbose_name = ("Horario")
+#         verbose_name_plural = ("Horarios")
+#         db_table = 'Horario'

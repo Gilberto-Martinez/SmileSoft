@@ -272,7 +272,7 @@ class PacienteTratamientoAsignado(models.Model):
         verbose_name = 'Tratamietos del Paciente'
 
     def get_tratamiento(self):
-        return str(self.tratamiento)
+        return str(self.tratamiento.codigo_tratamiento)
 
     def get_paciente(self):
         return str(self.paciente)

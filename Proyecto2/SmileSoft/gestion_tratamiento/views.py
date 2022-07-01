@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 # Create your views here.
 from email import quoprimime
@@ -67,13 +67,37 @@ def listar_tratamiento(request):
 
 def listar_tratamiento_asignado(request, cedula):
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
+    persona = Persona.objects.get(numero_documento=cedula)
+    paciente = Paciente.objects.get(numero_documento=cedula)
+    id_paciente = paciente.id_paciente
 
     tratamientos_asignados = []
+    precio_total = 0
+    id_paciente_tratamiento = ''
     for tratamiento in listado_tratamientos:
         if str(tratamiento.get_paciente()) == str(cedula):
-            tratamientos_asignados.append(tratamiento.get_tratamiento())
+            id_paciente_tratamiento = tratamiento.id
+            cod_tratamiento = tratamiento.get_tratamiento()
+            nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
+            precio_total = precio_total + nuevo_tratamieto.precio
+            tratamientos_asignados.append(nuevo_tratamieto)
 
-    return render (request,"tratamiento/listar_tratamientos_asignados.html",{'tratamientos_asignados':tratamientos_asignados})
+    precio_total = '{:,}'.format(precio_total).replace(',','.')
+
+    return render (request,"tratamiento/listar_tratamientos_asignados.html",{
+                                                                            'tratamientos_asignados':tratamientos_asignados,
+                                                                            'persona':persona,
+                                                                            'precio_total':precio_total,
+                                                                            'id_paciente_tratamiento':id_paciente_tratamiento,
+                                                                            'id_paciente':id_paciente
+                                                                            }
+                    )
+
+def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
+    paciente_tratamiento = PacienteTratamientoAsignado.objects.get(id=id_pac_tratamiento)
+    paciente_tratamiento.delete()
+    return redirect('/tratamiento/listar_tratamientos_asignados/%s'%(cedula))
+
 
 # -----------------------------------------------------------------------------------------------
 
