@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 
+from webapp.mixins import LoginMixin
+from django.db.models import Q
 from .forms import *
 # Create your views here.
 from django.contrib import messages
@@ -8,8 +10,21 @@ from django.http import (
     Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
 
 #---------Vista Principal-------
-def calendario(request):
-    return render(request, "calendario.html")
+
+
+class Calendario(LoginMixin, ListView):
+    model = Cita
+    template_name = 'calendar.html'
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(
+            estado=True)
+        return queryset
+    
+# def calendario_vista(request):
+#     return render(request, "calendario.html")
+# def pruebacalendar(request):
+#     return render(request, "calendar.html")
 
 
 #<--Agregar cita-->
@@ -36,11 +51,29 @@ def agregar_cita(request):
 
     return render(request, "agregar_cita.html", data)
 
+#<-Listar cita-->
+def listar_cita(request):
 
+    busqueda = request.POST.get("q")
+    listado_cita = Cita.objects.all()
+
+    if busqueda:
+        listado_cita = Cita.objects.filter(
+            Q(nombre_paciente__icontains=busqueda))
+        print("AQUI ESTA ENTRANDO Y buscando", {
+              'listado_cita': listado_cita})
+    else:
+
+        print("Buscado AQUI",)
+       # return render (request, "usuario/buscar.html")
+
+    return render(request, "listado_citas.html", {
+        'listado_cita': listado_cita})
 #<--Modificar cita-->
 
-def modificar_cita(request, id_cita):
-    paciente = Paciente.objects.get(id_cita=id_cita)
+
+def modificar_cita(request,cedula):
+    paciente = Paciente.objects.get(numero_documento = cedula)
 
     data = {
         'form': CitaForm(instance=paciente)
@@ -66,14 +99,14 @@ def modificar_cita(request, id_cita):
 #<--Eliminar cita-->
 
 
-def eliminar_cita(request, id_cita):
+def eliminar_cita(request, cedula):
     try:
-        citas = Cita.objects.get(id_cita=id_cita)
+        citas = Cita.objects.get(paciente=cedula)
         citas.delete()
 
         messages.success(request, "Eliminado")
 
-    except Usuario.DoesNotExist:
+    except Cita.DoesNotExist:
         # message.error(request, "El usuario que quiere eliminar ya no existe")
         raise Http404(
             "No se puede eliminar la cita indicada. Dado que ya se Elimino")

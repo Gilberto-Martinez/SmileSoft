@@ -20,6 +20,7 @@
 
     <!--Solo style usar como estilo-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" >
+    {% comment %} <link rel="stylesheet" href="{% static 'css/calendar.css' %}"> {% endcomment %}
     <link href="{% static 'fontawesome_free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <!-- Bootstrap JavaScript -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -33,7 +34,7 @@
 <body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <script src="{% static 'js/eliminar.js'%}"></script>
-
+  
   <header>
       <!--Barra de inicio-->
       <div class="container">
@@ -255,11 +256,15 @@
                                                 Agendamiento</a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion 6.1 -->
-                                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                  {% comment %} <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                             Calendario
-                                                              </strong>
-                                                  <li><a class="dropdown-item" href="/agendamiento/calendario">• Reservar una cita</li></a>
-                                                  </ul>
+                                                              </strong> {% endcomment %}
+                                                  {% comment %} <li><a class="dropdown-item" href="/agendamiento/calendario">• Calendario</li></a> {% endcomment %}
+                                                  <li><a class="dropdown-item" href="/agendamiento/calendar">• Reservar una cita</li></a>
+                                                  {%if perms.gestion_agendamiento.view_cita%}
+                                                  <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Citas reservadas</li></a>
+                                                  {% endif %}
+                                                </ul>
                                             </li>
  <!--COMENTADO POR DESARROLOO**********************************-->
   <!--FALTA DESARROLLAR POR ESO SE OCULTA-->

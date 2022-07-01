@@ -54,7 +54,7 @@ urlpatterns = [
 
   # path('accounts/', include ('django.contrib.auth.urls')),
    
-  
+    
     
     # path('sesion/', include(('gestion_sesion.urls','sesion'),)),
     # path('base/', include( ('gestion_sesion.urls','sesion'))),

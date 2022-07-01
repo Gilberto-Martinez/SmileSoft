@@ -1,4 +1,6 @@
 from django.db import models
+from gestion_administrativo.models import Persona
+from webapp.models import Usuario
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Paciente
 # Create your models here.
@@ -6,6 +8,8 @@ from gestion_administrativo.models import Paciente
 class Cita(models.Model):
     id_cita=models.AutoField(primary_key=True)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    nombre_paciente = models.CharField(max_length=40,
+                                      verbose_name='Nombre del Paciente',)
     tratamiento_solicitado=models.OneToOneField(
                                                 Tratamiento,
                                                 max_length=45,
@@ -20,6 +24,7 @@ class Cita(models.Model):
     fecha = models.DateField()
     
     hora = models.TimeField()
+    estado = models.BooleanField('Estado', default=True)
     
     class Meta(object):
         verbose_name_plural = 'Cita'
@@ -27,4 +32,5 @@ class Cita(models.Model):
      
 
     def __str__(self):
-        return str(self.paciente)
+        return f'{self.tratamiento_solicitado}  reservada por {self.paciente}| | {self.nombre_paciente}'
+    
