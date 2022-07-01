@@ -15,5 +15,7 @@ urlpatterns = [
             # path('asignar_tratamiento/', asignar_tratamiento, name="asignar_tratamiento"),
             path('tratamientos_asignados/<int:pk>', DetalleTratamientosAsignados.as_view(), name="tratamientos_asignados"),
             path('listar_tratamientos_asignados/<cedula>', listar_tratamiento_asignado, name="listar_tratamientos_asignados"),
+            path('eliminar_tratamiento_asignado/<id_pac_tratamiento>/<cedula>', eliminar_tratamiento_asignado, name="eliminar_tratamiento_asignado"),
+            
 
 ]

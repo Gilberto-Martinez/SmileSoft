@@ -27,11 +27,31 @@ from gestion_administrativo.models import PacienteTratamientoAsignado
 
 #---------------------------------------------------------------------------------------- FORMULARIOS DEL CRUD DE USUARIO------------------------------------------------------------------------------------#
 class TratamientoForm(forms.ModelForm):
-    nombre_tratamiento = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del trataniento'}))
-    descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'}))
+    nombre_tratamiento = forms.CharField( 
+                                        label='Nombre del tratamiento',
+                                        widget = forms.TextInput (attrs = {
+                                                                            'class': 'form-control', 
+                                                                            'placeholder': 'Ingrese el nombre del trataniento'
+                                                                        }
+                                                                )
+                                        )
+    descripcion_tratamiento = forms.CharField( 
+                                            label='Descripción',
+                                            widget = forms.Textarea (attrs = {
+                                                                                'class': 'form-control', 
+                                                                                'placeholder': 'Breve descripción del tratamiento'
+                                                                            }
+                                                                    )
+                                            )
     precio = forms.IntegerField(
-                                                   label='Precio', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del tratamiento'}))
+                                label='Precio', 
+                               widget = forms.NumberInput(attrs = {
+                                                                    'class': 'form-control', 
+                                                                    'placeholder': 
+                                                                    'Ingrese el precio del tratamiento'
+                                                                }
+                                                        )
+                                )
     class Meta:
         model = Tratamiento
        # fields= '__all__'
@@ -43,12 +63,31 @@ class TratamientoForm(forms.ModelForm):
         ]
 
 class TratamientoUpdateForm(forms.ModelForm):
-    nombre_tratamiento = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del trataniento'}))
-    descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'}))
+    nombre_tratamiento = forms.CharField( 
+                                        label='Nombre del tratamiento',
+                                        widget = forms.TextInput (attrs = {
+                                                                            'class': 'form-control',
+                                                                            'placeholder': 'Ingrese el nombre del trataniento'
+                                                                            }
+                                                                )
+                                        )
+    descripcion_tratamiento = forms.CharField( 
+                                            label='Descripción',
+                                            widget = forms.Textarea (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'placeholder': 'Breve descripción del tratamiento'
+                                                                            }
+                                                                    )
+                                            )
     precio = forms.IntegerField(
-                                                   label='Precio', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del tratamiento'}))
-    descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'} ))
+                                label='Precio', 
+                                widget = forms.NumberInput(attrs = {
+                                                                    'class': 'form-control', 
+                                                                    'placeholder': 'Ingrese el precio del tratamiento'
+                                                                    }
+                                                            )
+                                )
+    # descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'} ))
     class Meta:
         model = Tratamiento
        # fields= '__all__'
