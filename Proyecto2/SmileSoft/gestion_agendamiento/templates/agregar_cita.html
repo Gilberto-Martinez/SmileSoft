@@ -17,7 +17,7 @@
 {%block content%}
   
 
-{%if perms.webapp.view_usuario%}
+{%if perms.gestion_agendamiento.view_cita%}
     <div class="container">
         <div class="card">
             <div class="card-body">
@@ -39,7 +39,12 @@
                        <div class="form-group">
                             <label for="paciente">Cédula Paciente </label>
                             {{form.paciente}} <br>
-                        <div class="form-group">
+                       </div>
+                        <br>
+                          <div class="form-group">
+                            <label for="nombre_paciente">Nombre y Apellido del Paciente </label>
+                            <input type="text" name="nombre_paciente" required=""> <br>
+                       </div>
                         <br>
 
                         <div class="form-group">
@@ -49,14 +54,17 @@
                         <br>
 
                             <label for="fecha"> Fecha de la cita</label>
-                            <input type="date" name="fecha" required > <br>
+                            <input type="date" name="fecha" required="" > <br>
                             {% comment %} <input type="date" name="fecha" min="2022-12-31" max="2022-01-01" step=1 /> {% endcomment %}
                         <br>
                            <p> <label for="hora_consulta"> Hora de la cita</label>
-                               <input type="time" name="hora" required >
+                               <input type="time" name="hora" required ="">
                           {% comment %} <input type="time" name="hora" min="08:00" max="21:00" step="3600" /> {% endcomment %}
                          </p>
-                      
+                        <div class="form-group">
+                            <label for="{{form.estado.name}}">{{form.estado.label}}</label>
+                                {{form.estado}}
+                        </div>
                              
                       
                     </div>

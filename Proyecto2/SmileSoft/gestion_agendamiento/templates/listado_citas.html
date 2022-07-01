@@ -1,0 +1,147 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+
+{% block javascripts%}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     
+
+{%endblock%}
+<!--Cuadro de DIALOGO DE ELIMINAR-->
+
+
+
+{%block content%}
+  
+
+{%if perms.webapp.view_usuario%}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                    <center> 
+                        
+                        <h2 <i class="bi bi-archive"> Citas reservadas</i> </h2>
+                    </center>
+              
+                <table  align="right" >
+                        <tr>
+                        <td>
+                             {%if perms.gestion_agendamiento.add_cita%}
+                                <a href="/agendamiento/agregar_cita/" class="btn btn-success">
+                                    <i class="bi-person-plus-fill"></i>
+                                    Agregar una cita
+                                </a>
+                                {%endif%}
+                        </td>
+                        </tr>
+                </table>
+            
+
+                        <!--Barra de Busqueda-->
+                        <form  class="form-inline" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="search" name="q"  class="form-control bg-light border-0 small" placeholder="Buscar nombre del paciente" aria-label="search" value="{{request.POST.buscar}}" >
+                                <div class="input-group-append">
+                                    <button  class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                                        <!--ICONO LUPA-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--end-->
+
+                        <!--Inicio de la TABLA DE USUARIOS-->
+                        <!-- <div class="col-4 col-md-10 offset-md-1"> -->
+                        <table>
+                            <!--table striped es para que resalte 1 fila y otra no-->
+                            <!--table-bordered para bordes-->
+                            <table class="table table-striped table-hover">       
+                                <thead> 
+                                    <tr>
+                                        <th>Nro</th>
+                                        <th>Nombre </th>
+                                        <th>Cédula</th>
+                                        <th>Fecha de Agendamiento</th>
+                                        <th>Hora de Agendamiento</th>
+                                        {% comment %} <th colspan="2">Acciones </th> {% endcomment %}
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {%for c in listado_cita%}
+
+                                    <tr>
+                                        <td >{{forloop.counter}}</td>
+                                        <td >{{c.nombre_paciente}}</td>
+                                        <td >{{c.paciente }}</td>
+                                        <td >{{c.fecha}}</td>
+                                        <td >{{c.hora}}</td>
+                                        {{busqueda}}
+                                        <!--OPCIONES Modificar y Eliminar-->
+                                        {% comment %} <td>
+                                            {%if perms.gestion_agendamiento.change_cita%}
+                                            <a href="/agendamiento/modificar_cita/{{c.paciente}}" class="btn btn-primary">
+                                                <i class="bi-pencil-square"></i>
+                                                Modificar
+                                            </a>
+                                            {%endif%}
+                                             {%if perms.gestion_agendamiento.delete_cita%}
+                                            <!-- Eliminar-->                
+                                            <a href="/agendamiento/eliminar_cita/{{c.paciente}}" class="btn btn-danger btnEliminacion">
+                                                <i class="bi-trash-fill" ></i>
+                                                Eliminar
+                                            </a> 
+                                            {%endif%}
+                                        </td> {% endcomment %}
+                                    </tr>
+                                    {% endfor %}
+                                 {%if mensaje%}
+                            <div class="alert alert-success" role="alert">
+                                  ✅ Cita registrada
+                            </div>
+                            {%endif%}
+                                    {% if messages %}
+                                        <ul class="messages">
+                                            {% for message in messages %}
+                                                <li>
+                                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                            <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
+                                                           
+                                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                                    {{ message }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </table>
+                        <!--end TABLA-->
+                        <!-- </div> -->
+            </div>
+        </div>
+            
+    </div>
+    {% endif %}
+{%endblock%}
+<!--este funciona NO BORRAR-->
+{% comment %} 
+<script>
+    function cancelar() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Esta eliminando este usuario',
+            footer: '<a href="/eliminar_usuario/{{c.usuario}}">¡Da click aqui !</a>'
+        })
+    }
+</script> 
+{% endcomment %}
