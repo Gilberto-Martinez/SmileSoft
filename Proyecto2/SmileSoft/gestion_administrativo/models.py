@@ -1,10 +1,12 @@
 from django.db import models
 from django.db.models.deletion import PROTECT
-from django.contrib.postgres.fields import ArrayField
+# from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import default
+from datetime import date, datetime
+import dateutil.relativedelta
+from dateutil.relativedelta import relativedelta
 from gestion_historial_clinico.models import HistorialClinico
 from gestion_administrativo.models import *
-# from agregar_mas.models impo
 from gestion_tratamiento.models import Tratamiento
 
 # Create your models here.
@@ -35,6 +37,16 @@ class Persona(models.Model):
     def __str__(self):
         # return self.numero_documento
         return self.numero_documento # self.nombre + ' CI: '+ self.numero_documento
+
+    def obtener_edad(self):
+        fecha_nacimiento = str(self.fecha_nacimiento)
+        fecha = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+        edad = relativedelta(datetime.now(), fecha)
+        # print(f"{edad.years} años, {edad.months} meses y {edad.days} días")
+        edad = edad.years
+
+        return edad
+
 
 
 class Cargo(models.Model):

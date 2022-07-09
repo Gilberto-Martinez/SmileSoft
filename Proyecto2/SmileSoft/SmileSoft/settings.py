@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,6 +54,7 @@ INSTALLED_APPS = [
     'gestion_historial_clinico',
     'gestion_agendamiento',
     'gestion_inventario_insumos',
+    'gestion_cobros',
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'
@@ -144,21 +144,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = ( os.path.join(BASE_DIR, 'static'),)
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 AUTH_USER_MODEL = 'webapp.Usuario'
 
-# Email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-EMAIL_HOST = 'smtp.gmail.com'
-
-EMAIL_USE_TLS = True
-
-EMAIL_PORT = 587
-
-EMAIL_HOST_USER = ''
-
-EMAIL_HOST_PASSWORD = ''

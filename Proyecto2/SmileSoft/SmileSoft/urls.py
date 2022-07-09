@@ -15,10 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls.resolvers import URLPattern
-from webapp import views
 
 urlpatterns = [
 
@@ -52,14 +48,10 @@ urlpatterns = [
     #App Inventario de Insumos
     path('insumo/', include(('gestion_inventario_insumos.urls', 'insumo'),)),
 
-  # path('accounts/', include ('django.contrib.auth.urls')),
-   
-    
-    
+    #App Cobros
+    path('cobros/', include(('gestion_cobros.urls', 'cobros'),)),
+
+    # path('accounts/', include ('django.contrib.auth.urls')),
     # path('sesion/', include(('gestion_sesion.urls','sesion'),)),
     # path('base/', include( ('gestion_sesion.urls','sesion'))),
-    
-     
-    
-    
 ]

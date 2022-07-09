@@ -1,26 +1,10 @@
-from asyncio.windows_events import NULL
-from http.client import HTTPResponse
-from msilib.schema import Class
-from multiprocessing import context
-from pickle import FALSE, TRUE
-import re
-from ssl import ALERT_DESCRIPTION_CERTIFICATE_UNOBTAINABLE
-from tkinter.tix import Form
-from winreg import QueryValue
-from xml.dom import UserDataHandler
-from django import dispatch
-from django.conf import settings
-from django.http.response import HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render, get_list_or_404
-from django.http import HttpResponseRedirect, JsonResponse, request
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from webapp.forms import *
 from .forms import *
 from django.contrib import messages
-from django.http import (
-    Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
+from django.http import Http404
 from django.views.generic.list import ListView
-from django.contrib.postgres.search import SearchQuery, SearchVector
 from django.db.models import Q
 
 # Estos import son para modificar contraseña
@@ -30,25 +14,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import update_session_auth_hash
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from logging import PlaceHolder, raiseExceptions
-from multiprocessing import context
-from turtle import title
 from django.views.generic import View
 from webapp.models import Usuario
-from django.contrib.auth.models import auth
 from django.contrib.auth import login, logout, authenticate
 from .mixins import LoginMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
 from .forms import UsuarioLoginForm
-from django.template.loader import render_to_string
-import SmileSoft.settings as setting
 
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.core.exceptions import PermissionDenied
-from django.http import Http404
 
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
@@ -58,7 +32,6 @@ from django.contrib.auth.models import Group
 from gestion_administrativo.forms import PacienteForm, PersonaForm
 from gestion_administrativo.models import Paciente, Persona
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 import webapp.gmail
 from webapp.gmail import enviar_correo, enviar_link_reseteo
