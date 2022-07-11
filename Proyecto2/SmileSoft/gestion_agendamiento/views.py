@@ -110,3 +110,17 @@ def eliminar_cita(request, cedula):
         # message.error(request, "El usuario que quiere eliminar ya no existe")
         raise Http404(
             "No se puede eliminar la cita indicada. Dado que ya se Elimino")
+
+
+def listar_citapaciente(request):
+    busqueda = request.POST.get("q")
+    paciente_cita= Paciente.objects.all()
+  
+    if busqueda:
+       
+        paciente_cita = Paciente.objects.filter(numero_documento__in=[busqueda])
+        # queryset = queryset.filter(nombre__contains=Q, apellido__contains=Q)
+        # print("AQUI ESTA ENTRANDO", queryset)
+                
+    return render(request, "pacientes_cita.html", {
+        'paciente_cita': paciente_cita})

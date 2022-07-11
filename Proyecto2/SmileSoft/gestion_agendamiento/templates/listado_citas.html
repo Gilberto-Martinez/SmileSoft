@@ -70,57 +70,45 @@
                                         <th>Cédula</th>
                                         <th>Fecha de Agendamiento</th>
                                         <th>Hora de Agendamiento</th>
+                                        <th>Tratamiento Solicitado</th>
                                         {% comment %} <th colspan="2">Acciones </th> {% endcomment %}
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    {%for c in listado_cita%}
+                                    {%if listado_cita%}
+                                        {%for c in listado_cita%}
 
-                                    <tr>
-                                        <td >{{forloop.counter}}</td>
-                                        <td >{{c.nombre_paciente}}</td>
-                                        <td >{{c.paciente }}</td>
-                                        <td >{{c.fecha}}</td>
-                                        <td >{{c.hora}}</td>
-                                        {{busqueda}}
-                                        <!--OPCIONES Modificar y Eliminar-->
-                                        {% comment %} <td>
-                                            {%if perms.gestion_agendamiento.change_cita%}
-                                            <a href="/agendamiento/modificar_cita/{{c.paciente}}" class="btn btn-primary">
-                                                <i class="bi-pencil-square"></i>
-                                                Modificar
-                                            </a>
-                                            {%endif%}
-                                             {%if perms.gestion_agendamiento.delete_cita%}
-                                            <!-- Eliminar-->                
-                                            <a href="/agendamiento/eliminar_cita/{{c.paciente}}" class="btn btn-danger btnEliminacion">
-                                                <i class="bi-trash-fill" ></i>
-                                                Eliminar
-                                            </a> 
-                                            {%endif%}
-                                        </td> {% endcomment %}
-                                    </tr>
-                                    {% endfor %}
-                                 {%if mensaje%}
-                            <div class="alert alert-success" role="alert">
-                                  ✅ Cita registrada
-                            </div>
-                            {%endif%}
-                                    {% if messages %}
-                                        <ul class="messages">
-                                            {% for message in messages %}
-                                                <li>
-                                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
-                                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                                            <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
-                                                           
-                                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
-                                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
-                                                    {{ message }}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
+                                        <tr>
+                                            <td >{{forloop.counter}}</td>
+                                            <td >{{c.nombre_paciente}}</td>
+                                            <td >{{c.paciente }}</td>
+                                            <td >{{c.fecha}}</td>
+                                            <td >{{c.hora}}</td>
+                                            <td >{{c.tratamiento_solicitado}}</td>
+                                            {{busqueda}}
+                                            <!--OPCIONES Modificar y Eliminar-->
+                                            {% comment %} <td>
+                                                {%if perms.gestion_agendamiento.change_cita%}
+                                                <a href="/agendamiento/modificar_cita/{{c.paciente}}" class="btn btn-primary">
+                                                    <i class="bi-pencil-square"></i>
+                                                    Modificar
+                                                </a>
+                                                {%endif%}
+                                                {%if perms.gestion_agendamiento.delete_cita%}
+                                                <!-- Eliminar-->                
+                                                <a href="/agendamiento/eliminar_cita/{{c.paciente}}" class="btn btn-danger btnEliminacion">
+                                                    <i class="bi-trash-fill" ></i>
+                                                    Eliminar
+                                                </a> 
+                                                {%endif%}
+                                            </td> {% endcomment %}
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <br>
+                                        <h2><center>No hay registros del paciente</center> </h2>
+                                        <br>
                                     {% endif %}
                                 </tbody>
                             </table>
