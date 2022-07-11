@@ -260,9 +260,14 @@
                                                             Calendario
                                                               </strong> {% endcomment %}
                                                   {% comment %} <li><a class="dropdown-item" href="/agendamiento/calendario">• Calendario</li></a> {% endcomment %}
-                                                  <li><a class="dropdown-item" href="/agendamiento/calendar">• Reservar una cita</li></a>
+                                                  <li><a class="dropdown-item" href="/agendamiento/calendar"><strong  style="color:blue; font-size:16px;" >
+                                                           • Calendario
+                                                              </strong></li></a>
                                                   {%if perms.gestion_agendamiento.view_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Citas reservadas</li></a>
+                                                  {% endif %}
+                                                    {%if perms.gestion_agendamiento.view_cita%}
+                                                  <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Reservar una cita</li></a>
                                                   {% endif %}
                                                 </ul>
                                             </li>

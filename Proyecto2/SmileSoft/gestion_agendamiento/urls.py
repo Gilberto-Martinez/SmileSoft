@@ -14,4 +14,5 @@ urlpatterns = [
          modificar_cita, name="modificar_cita"),
     path('eliminar_cita/<cedula>',
          eliminar_cita, name="eliminar_cita"),
+    path('pacientes_cita/', listar_citapaciente, name="pacientes_cita"),
 ]
