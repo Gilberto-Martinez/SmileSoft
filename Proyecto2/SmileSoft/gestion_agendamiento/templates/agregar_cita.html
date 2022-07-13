@@ -25,8 +25,8 @@
                         
                     <h2 <i class="bi bi-calendar"></i> Agregar Cita</i> </h2>
                 </center>
-              
-               
+              <br>
+               <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}}</i> </h5></center>
 
                 <form method="POST" id="group_form" novalidate="">
                     {%csrf_token%}
@@ -36,16 +36,16 @@
                             </div>
                             {%endif%}
                     <div style="margin: 20px;" >
-                       <div class="form-group">
+                       <!-- <div class="form-group">
                             <label for="paciente">Cédula Paciente </label>
                             {{form.paciente}} <br>
-                       </div>
+                       </div> -->
                         <br>
-                          <div class="form-group">
+                          <!-- <div class="form-group">
                             <label for="nombre_paciente">Nombre y Apellido del Paciente </label>
                             <input type="text" name="nombre_paciente" required=""> <br>
-                       </div>
-                        <br>
+                       </div> -->
+                        <!-- <br> -->
 
                         <div class="form-group">
                             <label for="tratamiento_solicitado"> Motivo de Consulta</label>
@@ -61,10 +61,10 @@
                                <input type="time" name="hora" required ="">
                           {% comment %} <input type="time" name="hora" min="08:00" max="21:00" step="3600" /> {% endcomment %}
                          </p>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="{{form.estado.name}}">{{form.estado.label}}</label>
                                 {{form.estado}}
-                        </div>
+                        </div> -->
                              
                       
                     </div>

@@ -29,16 +29,22 @@ class Calendario(LoginMixin, ListView):
 
 #<--Agregar cita-->
 
-def agregar_cita(request):
-
+def agregar_cita(request, id_paciente):
+    paciente = Paciente.objects.get(id_paciente=id_paciente)
+    cedula = paciente.numero_documento
+    persona = Persona.objects.get(numero_documento=cedula)
     data = {
-        'form': CitaForm()
+        'form': CitaForm(),
+        'persona':persona
     }
 
     if request.method == "POST":
         formulario = CitaForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
-            formulario.save()
+            cita = formulario.save(commit=False)
+            cita.paciente = paciente
+            cita.save()
+            # formulario.save()
             data["mensaje"] = "Registrado correctamente"
             messages.success(request, (
                 'Agregado correctamente!'))
@@ -56,6 +62,12 @@ def listar_cita(request):
 
     busqueda = request.POST.get("q")
     listado_cita = Cita.objects.all()
+    # pacientes = Paciente.objects.all()
+    listado_paciente = []
+    for list in listado_cita:
+        cedula = list.paciente.numero_documento
+        persona = Persona.objects.get(numero_documento=cedula)
+        listado_paciente.append(persona)
 
     if busqueda:
         listado_cita = Cita.objects.filter(
@@ -68,7 +80,10 @@ def listar_cita(request):
        # return render (request, "usuario/buscar.html")
 
     return render(request, "listado_citas.html", {
-        'listado_cita': listado_cita})
+                                                    'listado_cita': listado_cita,
+                                                    'listado_paciente': listado_paciente
+                                                }
+                )
 #<--Modificar cita-->
 
 

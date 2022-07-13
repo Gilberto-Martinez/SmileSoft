@@ -44,28 +44,28 @@
 
                         <tbody>
                                 {%if tratamientos_asignados%}
-                                {%for tratamiento in tratamientos_asignados%}
-                                <tr>
-                                    <td >{{forloop.counter}}</td>
-                                    <td >{{tratamiento.nombre_tratamiento}}</td>
-                                    <td >{{tratamiento.precio}}</td>
-                                    <!-- Eliminar-->
-                                    {%if perms.gestion_tratamiento.delete_tratamiento%}
-                                        <td>
-                                            <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{persona.numero_documento}}" class="btn btn-danger btnEliminacion">
-                                                <i class="bi-trash" ></i> 
-                                                Eliminar
-                                            </a>
-                                        </td>
-                                        {%endif%}
-                                </tr>
-                                {% endfor %}
-                                <tr>
-                                    <th>Precio Total</th>
-                                    <th></th>
-                                    <th>{{precio_total}} Gs</th>
-                                    <th></th>
-                                </tr>
+                                    {%for tratamiento in tratamientos_asignados%}
+                                        <tr>
+                                            <td >{{forloop.counter}}</td>
+                                            <td >{{tratamiento.nombre_tratamiento}}</td>
+                                            <td >{{tratamiento.precio}}</td>
+                                            <!-- Eliminar-->
+                                            {%if perms.gestion_tratamiento.delete_tratamiento%}
+                                                <td>
+                                                    <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{persona.numero_documento}}" class="btn btn-danger btnEliminacion">
+                                                        <i class="bi-trash" ></i> 
+                                                        Eliminar
+                                                    </a>
+                                                </td>
+                                            {%endif%}
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <th>Precio Total</th>
+                                        <th></th>
+                                        <th>{{precio_total}} Gs</th>
+                                        <th></th>
+                                    </tr>
                                 {%else%}
                                     <br>
                                     <br>

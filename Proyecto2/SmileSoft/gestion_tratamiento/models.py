@@ -19,6 +19,9 @@ class Tratamiento(models.Model):
     def __str__(self):
         return self.nombre_tratamiento
 
+    def get_codigo_tratamiento(self):
+        return str(self.codigo_tratamiento)
+
 """ class Categoria(models.Model):
     codigo_categoria= models.AutoField(primary_key=True, verbose_name='codigo')
     detalle_tratamiento= models.CharField(max_length=40, verbose_name='detalle')

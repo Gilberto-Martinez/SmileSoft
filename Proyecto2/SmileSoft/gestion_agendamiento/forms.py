@@ -10,6 +10,7 @@ from django.contrib.admin import widgets
 
 class CitaForm(forms.ModelForm):
     # fecha: forms.DateField(widget=widgets.AdminDateWidget())
+    # tratamiento_solicitado = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el motivo de la consulta',}))
 
     # fecha = forms.DateField(
     #     label='Fecha', widget=forms.DateInput(attrs={'type': 'date'}))
@@ -19,7 +20,11 @@ class CitaForm(forms.ModelForm):
 
     class Meta:
         model= Cita
-        fields= '__all__'
+        fields= [
+                'tratamiento_solicitado',
+                'fecha',
+                'hora',
+        ]
     
         # widgets = {
         #             'tratamiento_solicitado': forms.Select(attrs={

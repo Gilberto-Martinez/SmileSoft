@@ -9,8 +9,8 @@ class Cita(models.Model):
     id_cita=models.AutoField(primary_key=True)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     nombre_paciente = models.CharField(max_length=40,
-                                      verbose_name='Nombre del Paciente',)
-    tratamiento_solicitado=models.OneToOneField(
+                                      verbose_name='Nombre del Paciente',null=True)
+    tratamiento_solicitado=models.ForeignKey(
                                                 Tratamiento,
                                                 max_length=45,
                                                 null=False,
