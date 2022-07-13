@@ -18,15 +18,41 @@
                                             ✅ Insumo agregado correctamente
                                         </div>
                                     {%endif%}
-                                            {{form.as_p}} 
-                                                <!-- <table>
+                                            <!-- {{form.as_p}}  -->
+                                                <table>
+                                                    <br>
                                                     <div class="form-group">
                                                         <p>
-                                                        <label for="{{form.descripcion_tratamiento.name}}">{{form.descripcion_tratamiento.label}}</label></p>
-                                                        {{form.descripcion_tratamiento}}
+                                                        <label for="{{form.nombre_insumo.name}}">{{form.nombre_insumo.label}}</label></p>
+                                                        {{form.nombre_insumo}}</p>
                                                     </div>
-                                                
-                                                    </Table> -->
+                                                    <br>
+                                                    <div class="form-group">
+                                                        <p>
+                                                        <label for="{{form.descripcion_insumo.name}}">{{form.descripcion_insumo.label}}</label></p>
+                                                        {{form.descripcion_insumo}}</p>
+                                                    </div>
+                                                    <br>
+                                                    <div class="form-group">
+                                                    <p>
+                                                        <label for="{{form.precio.name}}">{{form.precio.label}}</label></p>
+                                                        {{form.precio}} </p>
+                                                    </div>
+                                                    <br>
+                                                    <div class="form-group">
+                                                        <p>
+                                                            <label for="{{form.fecha_caducidad.name}}">{{form.fecha_caducidad.label}}</label></p>
+                                                            {{form.fecha_caducidad}} </p>
+                                                        </div>
+                                                    <br>
+                                                    <div class="form-group">
+                                                        <p>
+                                                            <label for="{{form.cantidad_insumo.name}}">{{form.cantidad_insumo.label}}</label></p>
+                                                            {{form.cantidad_insumo}} </p>
+                                                        </div>
+                                                    <br>
+                                                    </Table>
+
                                 </div> 
                                 <!-- <div style="margin: 20px;" ></div> -->
                                 
