@@ -88,12 +88,12 @@
                     <table  align="right" >
                             <tr>
                             <td>
-                                {%if perms.gestion_agendamiento.add_cita%}
+                                {% comment %} {%if perms.gestion_agendamiento.add_cita%}
                                 <a href="/agendamiento/agregar_cita/" class="btn btn-success">
                                     <i class="bi-person-plus-fill"></i>
                                     Agregar una cita
                                 </a>
-                                {%endif%}
+                                {%endif%} {% endcomment %}
                             </td>
                             <td>
                                         {% comment %} {%if perms.gestion_agendamiento.change_cita%}
