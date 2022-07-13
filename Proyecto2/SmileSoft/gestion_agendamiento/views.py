@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 
 from webapp.mixins import LoginMixin
@@ -53,7 +53,7 @@ def agregar_cita(request, id_paciente):
             messages.success(request, (
                 'Agregado correctamente!'))
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
-            
+            return redirect("/agendamiento/listado_citas/")
         else:
             messages.error(request, (
                 'No ha guardado'))
