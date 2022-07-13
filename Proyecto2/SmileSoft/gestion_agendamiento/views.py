@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 
 from webapp.mixins import LoginMixin
@@ -33,8 +33,8 @@ def agregar_cita(request, id_paciente):
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
-    nombre = persona.nombre
-    apellido = persona.apellido
+    nombre = persona.nombre +' '+ persona.apellido
+    # apellido = persona.apellido
     data = {
         'form': CitaForm(),
         'persona':persona
@@ -46,13 +46,14 @@ def agregar_cita(request, id_paciente):
             cita = formulario.save(commit=False)
             cita.paciente = paciente
             cita.nombre_paciente = nombre
-            cita.apellido = apellido
+            # cita.apellido = apellido
             cita.save()
             # formulario.save()
             data["mensaje"] = "Registrado correctamente"
             messages.success(request, (
                 'Agregado correctamente!'))
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
+            return redirect("/agendamiento/listado_citas/")
         else:
             messages.error(request, (
                 'No ha guardado'))

@@ -42,24 +42,18 @@
 								<td>{{ cobro.fecha }}</td>
                                 <td>{{ cobro.monto_total }}</td>
 								<td>
-									{%if perms.gestion_administrativo.change_especialista_salud%}
-									<a class="btn btn-primary" href="/administrativo/modificar_especialista_salud/{{especialista.id_especialista_salud}}">
-										<i class="bi-pencil-square"></i>
-										Editar
+									<!-- {%if perms.gestion_administrativo.change_especialista_salud%} -->
+									<a class="btn btn-primary" href="#">
+										<i class="bi bi-eye"></i>
+										Ver detalle
 									</a>
-									{%endif%}
-									{%if perms.gestion_administrativo.delete_especialista_salud%}
-									<a class="btn btn-danger" href="/administrativo/eliminar_especialista_salud/{{especialista.id_especialista_salud}}">
-										<i class="bi-trash-fill" ></i>
-										Eliminar
-									</a>
-									{%endif%}
+									<!-- {%endif%} -->
 								</td>
 							</tr>
 							{% endfor %}
 							
 							{% else %}
-							<h1>No hay registros de especialistas de salud</h1>
+							<h1>No hay registros de cobros realizados</h1>
 							{% endif %}
 						</tbody>
 				</table> 

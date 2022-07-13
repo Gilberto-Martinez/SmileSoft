@@ -23,28 +23,31 @@
             <div class="card-body">
                     <center> 
                         
-                        <h2 <i class="bi bi-archive"> Citas reservadas</i> </h2>
+                        <h2 <i class="bi bi-archive"> Citas </i> </h2>
                     </center>
               
                 <table  align="right" >
                         <tr>
                         <td>
-                             {%if perms.gestion_agendamiento.add_cita%}
-                                <a href="/agendamiento/agregar_cita/" class="btn btn-success">
-                                    <i class="bi-person-plus-fill"></i>
-                                    Agregar una cita
+                           
+                            {%if perms.gestion_agendamiento.view_cita%}
+                                <a href="/agendamiento/calendar" class="btn btn-info">
+                                    <i class="bi bi-calendar"></i>
+                                   Ver Calendario <br>
                                 </a>
                                 {%endif%}
                         </td>
                         </tr>
                 </table>
             
-
+<br> <br>
+<br> 
                         <!--Barra de Busqueda-->
                         <form  class="form-inline" method="POST">
                             {% csrf_token %}
                             <div class="input-group">
                                 <input type="search" name="q"  class="form-control bg-light border-0 small" placeholder="Buscar nombre del paciente" aria-label="search" value="{{request.POST.buscar}}" >
+                                <br>
                                 <div class="input-group-append">
                                     <button  class="btn btn-outline-primary my-2 my-sm-0" type="submit">
                                         <!--ICONO LUPA-->
@@ -81,7 +84,7 @@
 
                                         <tr>
                                             <td >{{forloop.counter}}</td>
-                                            <td >{{c.nombre_paciente}} {{c.apellido_paciente}}</td>
+                                            <td >{{c.nombre_paciente}}</td>
                                             <td >{{c.paciente }}</td>
                                             <td >{{c.fecha}}</td>
                                             <td >{{c.hora}}</td>

@@ -242,13 +242,10 @@
                                                         Asignación de Tratamientos a Pacientes 
                                                       </strong>
                                                       <li><a class="dropdown-item" href="/tratamiento/listar_paciente2">• Seleccionar Paciente</li></a> 
-                                                    {%endif%}
+                                                  {%endif%}
                                                 </ul>
                                               </li>
                                               {% endif %}
-                                           
-                                              <!--EN DESARROLOO**********************************-->
-
                                               <!--Opcion 6 Agendamiento Para paciente-->
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="gestion_agendamiento/calendario" id="navbarDropdown"
@@ -256,18 +253,15 @@
                                                 Agendamiento</a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion 6.1 -->
-                                                  {% comment %} <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                            Calendario
-                                                              </strong> {% endcomment %}
-                                                  {% comment %} <li><a class="dropdown-item" href="/agendamiento/calendario">• Calendario</li></a> {% endcomment %}
+      
                                                   <li><a class="dropdown-item" href="/agendamiento/calendar"><strong  style="color:blue; font-size:16px;" >
                                                            • Calendario
                                                               </strong></li></a>
                                                   {%if perms.gestion_agendamiento.view_cita%}
-                                                  <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Citas reservadas</li></a>
+                                                  <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Citas </li></a>
                                                   {% endif %}
                                                     {%if perms.gestion_agendamiento.view_cita%}
-                                                  <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Reservar una cita</li></a>
+                                                  <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Listado | Reservar una cita</li></a>
                                                   {% endif %}
                                                 </ul>
                                             </li>
@@ -282,7 +276,7 @@
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion 7.1 -->
                                                 
-                                                  {%if perms.gestion_administrativo.change_paciente%}
+                                                  <!-- {%if perms.gestion_administrativo.change_paciente%}
                                                     <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                               Antecedente Clínico
                                                   </strong>
@@ -290,7 +284,7 @@
                                                     <font color="black"> • Clínico Personal - Familiar</font></a>
                                                   </li>
                                                   <li><hr class="dropdown-divider"></li>
-                                                  {%endif%}
+                                                  {%endif%} -->
                                                   <!--Opcion 7.2 -->
                                                   {% comment %} <li><a class="dropdown-item" href="#">• Clínico Familiar</a></li> {% endcomment %}
                                                   
