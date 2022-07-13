@@ -10,6 +10,8 @@ class Cita(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     nombre_paciente = models.CharField(max_length=40,
                                       verbose_name='Nombre del Paciente',null=True)
+    apellido_paciente = models.CharField(max_length=40,
+                                      verbose_name='Apellido del Paciente',null=True)
     tratamiento_solicitado=models.ForeignKey(
                                                 Tratamiento,
                                                 max_length=45,

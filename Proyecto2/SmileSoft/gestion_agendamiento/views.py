@@ -33,6 +33,8 @@ def agregar_cita(request, id_paciente):
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
+    nombre = persona.nombre
+    apellido = persona.apellido
     data = {
         'form': CitaForm(),
         'persona':persona
@@ -43,6 +45,8 @@ def agregar_cita(request, id_paciente):
         if formulario.is_valid():
             cita = formulario.save(commit=False)
             cita.paciente = paciente
+            cita.nombre_paciente = nombre
+            cita.apellido = apellido
             cita.save()
             # formulario.save()
             data["mensaje"] = "Registrado correctamente"
@@ -62,12 +66,7 @@ def listar_cita(request):
 
     busqueda = request.POST.get("q")
     listado_cita = Cita.objects.all()
-    # pacientes = Paciente.objects.all()
-    listado_paciente = []
-    for list in listado_cita:
-        cedula = list.paciente.numero_documento
-        persona = Persona.objects.get(numero_documento=cedula)
-        listado_paciente.append(persona)
+
 
     if busqueda:
         listado_cita = Cita.objects.filter(
@@ -81,7 +80,6 @@ def listar_cita(request):
 
     return render(request, "listado_citas.html", {
                                                     'listado_cita': listado_cita,
-                                                    'listado_paciente': listado_paciente
                                                 }
                 )
 #<--Modificar cita-->
