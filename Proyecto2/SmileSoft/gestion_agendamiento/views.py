@@ -105,7 +105,8 @@ def modificar_cita(request,id_cita):
             data["mensaje"] = "Cita Modificada"
             messages.success(request, (
                 'Modificado correctamente!'))
-            print('aquiiiiiiiiiiiiii ENTRAAAAA')
+            return redirect("/agendamiento/listado_citas/")
+         
         else:
             messages.error(
                 request, "Algo ha salido Mal, por favor verifique nuevamente")
