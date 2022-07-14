@@ -1,5 +1,6 @@
 from django.db import models
 from gestion_administrativo.models import *
+from gestion_inventario_insumos.models import Insumo
 
 # Create your models here.
 
@@ -8,6 +9,11 @@ class Tratamiento(models.Model):
     nombre_tratamiento= models.CharField(max_length=100, verbose_name='nombre (*):')
     descripcion_tratamiento= models.TextField(max_length=500, verbose_name='Descripción (*):',null= True,)
     precio=models.IntegerField(verbose_name='precio (*):')
+    insumos = models.ManyToManyField(
+                                    Insumo, 
+                                    through='TratamientoInsumo',
+                                    # related_name='paciente_set'
+    )
     # especialista = models.ForeignKey(EspecialistaSalud)
     
     class Meta:
@@ -22,21 +28,23 @@ class Tratamiento(models.Model):
     def get_codigo_tratamiento(self):
         return str(self.codigo_tratamiento)
 
-""" class Categoria(models.Model):
-    codigo_categoria= models.AutoField(primary_key=True, verbose_name='codigo')
-    detalle_tratamiento= models.CharField(max_length=40, verbose_name='detalle')
-    precio=models.IntegerField()
-    codigo_tratamiento = models.ForeignKey(Tratamiento, null=False, blank=False, on_delete=models.CASCADE)
+class TratamientoInsumo(models.Model):
+    tratamiento = models.ForeignKey(
+                                    Tratamiento,
+                                    on_delete=models.CASCADE,
+                                    null=True,
+                                    blank=True
+    )
+    insumo = models.ForeignKey(
+                                Insumo,
+                                on_delete=models.CASCADE,
+                                null=True,
+                                blank=True
+    )
+    cantidad = models.PositiveIntegerField()
 
-    
     class Meta:
-        verbose_name = ("Categoria")
-        verbose_name_plural = ("Categorias")
-        db_table = 'Categoria'
-
-    def __str__(self):
-        return self.detalle_tratamiento
- """
+        db_table = 'TratamientoInsumo'
 
 # Comentado por el momento a espera de analisis
 # class Horario(models.Model):

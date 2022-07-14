@@ -216,3 +216,68 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 
     return render("tratamiento/mostrar_tratamientos_asignados.html", data)
 
+
+class InsumoAsignado(UpdateView):
+    model = Tratamiento
+    # second_model = Persona
+    template_name = 'modificar_tratamiento_asignado.html'
+    form_class = TratamientoForm
+    # second_form_class = PersonaUpdateForm
+    # success_url = reverse_lazy('listar_paciente')
+    def get_context_data(self, **kwargs):
+        context = super(InsumoAsignado, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk', 0)
+        tratamiento = self.model.objects.get(codigo_tratamiento=pk)
+        # persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+
+        if 'form' not in context:
+            context['form'] = self.form_class(instance=tratamiento)
+        # if 'form2' not in context:
+            # context['form2'] = self.second_form_class(instance=persona)
+        context['codigo_tratamiento'] = pk
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        id_trat = kwargs['pk']
+        tratamiento = self.model.objects.get(codigo_tratamiento=id_trat)
+        cod_tratamiento = tratamiento.codigo_tratamiento
+        # persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+        # cedula = paciente.numero_documento
+        form = self.form_class(request.POST, instance=tratamiento)
+        # form2 = self.second_form_class(request.POST, instance=persona)
+        if form.is_valid():
+            form.save()
+            #form2.save()
+            return redirect("/tratamiento/listar_insumos_asignados/%s"%(cod_tratamiento))
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+
+def listar_insumos_asignado(request, cod_tratamiento):
+    listado_insumos = TratamientoInsumo.objects.all()
+    # persona = Persona.objects.get(numero_documento=cedula)
+    # paciente = Paciente.objects.get(numero_documento=cedula)
+    # id_paciente = paciente.id_paciente
+
+    tratamientos_asignados = []
+    precio_total = 0
+    # id_paciente_tratamiento = ''
+    for insumo in listado_insumos:
+        if str(insumo.get_paciente()) == str(cedula):
+            id_paciente_tratamiento = tratamiento.id
+            cod_tratamiento = tratamiento.get_tratamiento()
+            nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
+            precio_total = precio_total + nuevo_tratamieto.precio
+            tratamientos_asignados.append(nuevo_tratamieto)
+
+    precio_total = '{:,}'.format(precio_total).replace(',','.')
+
+    return render (request,"tratamiento/listar_tratamientos_asignados.html",{
+                                                                            'tratamientos_asignados':tratamientos_asignados,
+                                                                            'persona':persona,
+                                                                            'precio_total':precio_total,
+                                                                            'id_paciente_tratamiento':id_paciente_tratamiento,
+                                                                            'id_paciente':id_paciente
+                                                                            }
+                    )
