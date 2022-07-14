@@ -12,11 +12,11 @@ class CitaForm(forms.ModelForm):
     # fecha: forms.DateField(widget=widgets.AdminDateWidget())
     # tratamiento_solicitado = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el motivo de la consulta',}))
 
-    # fecha = forms.DateField(
-    #     label='Fecha', widget=forms.DateInput(attrs={'type': 'date'}))
+    fecha = forms.DateField(
+        label='Fecha de consulta: ', widget=forms.NumberInput(attrs={'type': 'date'}))
     
-    # hora = forms.DateTimeField(
-    #     widget=forms.DateTimeInput(attrs={'type': 'time'}))
+    hora = forms.TimeField(label='Hora de cita: ',
+        widget=forms.TimeInput(attrs={'type': 'time'}))
 
     class Meta:
         model= Cita

@@ -143,8 +143,9 @@
                 events: [
                     {% for cita in object_list %}
                         {
-                            title: "Cita| {{ cita.tratamiento_solicitado }}",
+                            title: "{{ cita.hora}} hs| {{ cita.tratamiento_solicitado }}",
                             start: '{{ cita.fecha | date:"Y-m-d" }}',
+                        
                            {% comment %}  end: '{{ reserva.fecha_vencimiento | date:"Y-m-d" }}', {% endcomment %}
                         },
                     {% endfor %}
