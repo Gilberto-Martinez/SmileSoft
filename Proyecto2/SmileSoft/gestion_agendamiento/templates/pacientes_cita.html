@@ -62,23 +62,21 @@
                                                                 </a>
                                                               {%endif%}
                                                             </td>
-                                                            <td>
+                                                            {% comment %} <td>
                                                                 {%if perms.gestion_agendamiento.change_cita%}
-                                                                <a href="/agendamiento/modificar_cita/{{c.paciente}}" class="btn btn-primary">
+                                                                <a href="/agendamiento/modificar_cita/{{c.id_paciente}}" class="btn btn-primary">
                                                                     <i class="bi-pencil-square"></i>
-                                                                    Modificar cita
+                                                                    Modificar
                                                                 </a>
                                                                 {%endif%}
-                                                            </td>
-                                                            <td>
                                                                 {%if perms.gestion_agendamiento.delete_cita%}
                                                                 <!-- Eliminar-->                
-                                                                <a href="/agendamiento/eliminar_cita/{{c.paciente}}" class="btn btn-danger btnEliminacion">
+                                                                <a href="/agendamiento/eliminar_cita/{{c.id_paciente}}" class="btn btn-danger btnEliminacion">
                                                                     <i class="bi-trash-fill" ></i>
-                                                                    Eliminar cita
+                                                                    Eliminar
                                                                 </a> 
                                                                 {%endif%}
-                                                            </td>
+                                                            </td>  {% endcomment %}
                                                        </tr>
                                                {% endfor %}
   

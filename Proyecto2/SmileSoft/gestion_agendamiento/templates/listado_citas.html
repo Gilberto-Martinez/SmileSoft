@@ -74,7 +74,7 @@
                                         <th>Fecha de Agendamiento</th>
                                         <th>Hora de Agendamiento</th>
                                         <th>Tratamiento Solicitado</th>
-                                        {% comment %} <th colspan="2">Acciones </th> {% endcomment %}
+                                        <th colspan="2">Acciones </th> 
                                     </tr>
                                 </thead>
 
@@ -91,21 +91,25 @@
                                             <td >{{c.tratamiento_solicitado}}</td>
                                             {{busqueda}}
                                             <!--OPCIONES Modificar y Eliminar-->
-                                            {% comment %} <td>
-                                                {%if perms.gestion_agendamiento.change_cita%}
-                                                <a href="/agendamiento/modificar_cita/{{c.paciente}}" class="btn btn-primary">
-                                                    <i class="bi-pencil-square"></i>
-                                                    Modificar
-                                                </a>
-                                                {%endif%}
-                                                {%if perms.gestion_agendamiento.delete_cita%}
-                                                <!-- Eliminar-->                
-                                                <a href="/agendamiento/eliminar_cita/{{c.paciente}}" class="btn btn-danger btnEliminacion">
-                                                    <i class="bi-trash-fill" ></i>
-                                                    Eliminar
-                                                </a> 
-                                                {%endif%}
-                                            </td> {% endcomment %}
+                                                <td>
+                                                    {%if perms.gestion_agendamiento.change_cita%}
+                                                    <a href="/agendamiento/modificar_cita/{{c.id_cita}}" class="btn btn-primary">
+                                                        <i class="bi-pencil-square"></i>
+                                                        Modificar
+                                                    </a>
+                                                    {%endif%}
+                                              </td>
+
+                                                <td>
+
+                                                    {%if perms.gestion_agendamiento.delete_cita%}
+                                                    <!-- Eliminar-->                
+                                                    <a href="/agendamiento/eliminar_cita/{{c.id_cita}}" class="btn btn-danger btnEliminacion">
+                                                        <i class="bi-trash-fill" ></i>
+                                                        Eliminar
+                                                    </a> 
+                                                    {%endif%}
+                                                </td>  
                                         </tr>
                                         {% endfor %}
                                     {% else %}
@@ -124,15 +128,3 @@
     </div>
     {% endif %}
 {%endblock%}
-<!--este funciona NO BORRAR-->
-{% comment %} 
-<script>
-    function cancelar() {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Esta eliminando este usuario',
-            footer: '<a href="/eliminar_usuario/{{c.usuario}}">¡Da click aqui !</a>'
-        })
-    }
-</script> 
-{% endcomment %}
