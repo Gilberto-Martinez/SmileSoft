@@ -23,7 +23,10 @@
             <div class="card-body">
                 <center> 
                         
-                    <h2 <i class="bi bi-calendar"></i> Modificar | Cita</i> </h2>
+                    <h2 <i class="bi bi-calendar"></i> Modificar | Cita</i> </h2><br>
+                    <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}}</i> </h5></center>
+                    
+
                 </center>
               
                
@@ -36,11 +39,6 @@
                             </div>
                             {%endif%}
                     <div style="margin: 20px;" >
-                     
-                       <div class="form-group">
-                            <label for="paciente">Cédula Paciente </label>
-                            {{form.paciente}} <br>
-                       </div>
                         <br>
                         <div class="form-group">
                             <label for="tratamiento_solicitado"> Motivo de Consulta</label>
@@ -48,13 +46,16 @@
                         </div>
                         <br>
 
-                            <label for="fecha_consulta"> Fecha de la cita</label>
-                            <input type="date" id="fecha_consulta" name="fecha" required > <br>
+                        <div class="form-group">
+                           <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
+                            {{form.fecha}}
+                        </div>
                         <br>
-                           <p> <label for="hora_consulta"> Hora de la cita</label>
-                               <input type="time" id="hora_consulta" name="hora" required >
-                          {% comment %} <input type="time" name="hora" min="08:00" max="21:00" step="3600" /> {% endcomment %}
-                         </p>
+
+                        <div class="form-group">
+                           <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
+                            {{form.hora}}
+                        </div> 
                     </div>
 
                     <div class="d-flex justify-content-center">

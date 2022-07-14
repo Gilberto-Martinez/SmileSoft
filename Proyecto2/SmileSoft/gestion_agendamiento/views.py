@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
+from gestion_administrativo.forms import PersonaPacienteForm
+from gestion_administrativo.forms import PersonaUpdateForm
 
 from webapp.mixins import LoginMixin
 from django.db.models import Q
@@ -86,12 +88,13 @@ def listar_cita(request):
                 )
 #<--Modificar cita-->
 
-
 def modificar_cita(request,id_cita):
     cita = Cita.objects.get(id_cita= id_cita)
-
+    cedula = cita.paciente
+    persona = Persona.objects.get(numero_documento=cedula)
     data = {
-        'form': CitaForm(instance=cita)
+        'form': CitaForm(instance=cita),
+        'persona': persona
     }
 
     if request.method == "POST":
