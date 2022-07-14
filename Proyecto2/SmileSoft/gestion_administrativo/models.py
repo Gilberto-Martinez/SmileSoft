@@ -106,24 +106,24 @@ class FuncionarioCargo(models.Model):
         verbose_name = 'Cargo de empleado'
         verbose_name = 'Cargos de empleado'
 
-class Categoria(models.Model):
-    codigo_categoria= models.AutoField(primary_key=True, verbose_name='codigo')
-    detalle_tratamiento= models.CharField(max_length=40, verbose_name='detalle')
-    precio=models.IntegerField( verbose_name='Precio')
-    codigo_tratamiento = models.ForeignKey(
-                                            Tratamiento, 
-                                            null=False, 
-                                            blank=False, 
-                                            on_delete=models.CASCADE,
-                                            verbose_name='Código de tratamiento'
-                                        )
-    class Meta:
-        verbose_name = ("Categoria")
-        verbose_name_plural = ("Categorias")
-        db_table = 'Categoria'
+# class Categoria(models.Model):
+#     codigo_categoria= models.AutoField(primary_key=True, verbose_name='codigo')
+#     detalle_tratamiento= models.CharField(max_length=40, verbose_name='detalle')
+#     precio=models.IntegerField( verbose_name='Precio')
+#     codigo_tratamiento = models.ForeignKey(
+#                                             Tratamiento, 
+#                                             null=False, 
+#                                             blank=False, 
+#                                             on_delete=models.CASCADE,
+#                                             verbose_name='Código de tratamiento'
+#                                         )
+#     class Meta:
+#         verbose_name = ("Categoria")
+#         verbose_name_plural = ("Categorias")
+#         db_table = 'Categoria'
 
-    def __str__(self):
-        return self.detalle_tratamiento
+#     def __str__(self):
+#         return self.detalle_tratamiento
 
 class Especialidad(models.Model):
     id_especialidad = models.AutoField(primary_key=True)
@@ -180,25 +180,25 @@ class EspecialistaEspecialidades(models.Model):
         db_table = 'EspecialistaEspecialidades'
 
 
-class TrabajoRealizado(models.Model):
-    especialista_salud = models.ForeignKey(
-        EspecialistaSalud, 
-        on_delete=models.PROTECT, 
-        blank=True, null=True
-    )
+# class TrabajoRealizado(models.Model):
+#     especialista_salud = models.ForeignKey(
+#         EspecialistaSalud, 
+#         on_delete=models.PROTECT, 
+#         blank=True, null=True
+#     )
 
-    categoria= models.ForeignKey(
-        Categoria,
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True
-    ) 
+#     categoria= models.ForeignKey(
+#         Categoria,
+#         on_delete=models.PROTECT,
+#         blank=True,
+#         null=True
+#     ) 
 
-    costo_servicio = models.BigIntegerField(null=True, verbose_name='Costo de servicio')
-    class Meta:
-        db_table = 'TrabajoRealizado'
-        verbose_name = 'Trabajo Realizado'
-        verbose_name_plural = 'Trabajos Realizados'
+    # costo_servicio = models.BigIntegerField(null=True, verbose_name='Costo de servicio')
+    # class Meta:
+    #     db_table = 'TrabajoRealizado'
+    #     verbose_name = 'Trabajo Realizado'
+    #     verbose_name_plural = 'Trabajos Realizados'
 
 # class Farmaco(models.Model):
 #     codigo_farmaco = models.CharField(max_length=50)

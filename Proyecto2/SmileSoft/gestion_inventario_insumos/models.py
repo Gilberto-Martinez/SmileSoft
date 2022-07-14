@@ -27,7 +27,7 @@ class Insumo(models.Model):
     codigo_insumo= models.AutoField(primary_key=True, verbose_name='Código de tratamiento (*):')
     nombre_insumo= models.CharField(max_length=100, verbose_name='Nombre (*):')
     descripcion_insumo= models.TextField(max_length=500, verbose_name='Descripción (*):')
-    precio=models.IntegerField(verbose_name='Precio (*):')
+    precio=models.IntegerField(verbose_name='Costo (*):')
     fecha_caducidad = models.DateField(verbose_name='Fecha de nacimiento')
     cantidad_insumo = models.IntegerField(default=0, verbose_name= 'Cantidad (*)')
     #id_inventario = models.ForeignKey(inventario)

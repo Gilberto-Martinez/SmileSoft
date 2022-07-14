@@ -60,7 +60,14 @@ class TratamientoForm(forms.ModelForm):
             'nombre_tratamiento',
             'descripcion_tratamiento',
             'precio',
+            # 'insumos'
         ]
+        # widgets = {
+        #        'insumos': forms.CheckboxSelectMultiple(attrs={
+        #        'class': 'form-select2',
+        #        'style': 'width: 30px',
+        #        'multiple': 'multiple'}),
+        #        }
 
 class TratamientoUpdateForm(forms.ModelForm):
     nombre_tratamiento = forms.CharField( 

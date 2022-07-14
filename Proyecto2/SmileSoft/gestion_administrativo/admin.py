@@ -67,19 +67,19 @@ class AdminFuncionario(admin.ModelAdmin):
     search_fields = ['numero_documento', ]
     # ordering = ['numero_documento']
 
-class EspecialistaSaludEspInline(admin.TabularInline):
-    model = TrabajoRealizado
-    extra = 1
+# class EspecialistaSaludEspInline(admin.TabularInline):
+#     model = TrabajoRealizado
+#     extra = 1
     #autocomplete_fields = ['especialidad',]
 
 class AdminEspecialistaSaludEsp(admin.ModelAdmin):
-    inlines = [EspecialistaSaludEspInline,]
+    # inlines = [EspecialistaSaludEspInline,]
     search_fields = ['categoria']
     #ordering = ['categoria']
 
 
 class AdminEspecialistaSalud(admin.ModelAdmin):
-    inlines = [EspecialistaSaludEspInline,]
+    # inlines = [EspecialistaSaludEspInline,]
     fieldsets = (
         (None, {'fields': ('numero_documento',)}),
     )
@@ -158,7 +158,7 @@ admin.site.site_title = 'SmileSoft'
 
 admin.site.register(Persona, AdminPersona)
 admin.site.register(Cargo, AdminFuncionarioCargo)
-admin.site.register(Categoria, AdminEspecialistaSaludEsp)
+# admin.site.register(Categoria, AdminEspecialistaSaludEsp)
 admin.site.register(Funcionario, AdminFuncionario)
 admin.site.register(Proveedor)
 admin.site.register(Paciente)#, AdminPaciente)
