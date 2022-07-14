@@ -1,5 +1,8 @@
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
+from gestion_administrativo.forms import PersonaPacienteForm
+from gestion_administrativo.forms import PersonaUpdateForm
 
 from webapp.mixins import LoginMixin
 from django.db.models import Q
@@ -85,23 +88,25 @@ def listar_cita(request):
                 )
 #<--Modificar cita-->
 
-
-def modificar_cita(request,cedula):
-    paciente = Paciente.objects.get(numero_documento = cedula)
-
+def modificar_cita(request,id_cita):
+    cita = Cita.objects.get(id_cita= id_cita)
+    cedula = cita.paciente
+    persona = Persona.objects.get(numero_documento=cedula)
     data = {
-        'form': CitaForm(instance=paciente)
+        'form': CitaForm(instance=cita),
+        'persona': persona
     }
 
     if request.method == "POST":
         formulario = CitaForm(
-            data=request.POST, instance=paciente, files=request.FILES)
+            data=request.POST, instance=cita, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
             data["mensaje"] = "Cita Modificada"
             messages.success(request, (
                 'Modificado correctamente!'))
-            print('aquiiiiiiiiiiiiii ENTRAAAAA')
+            return redirect("/agendamiento/listado_citas/")
+         
         else:
             messages.error(
                 request, "Algo ha salido Mal, por favor verifique nuevamente")
@@ -112,18 +117,20 @@ def modificar_cita(request,cedula):
 
 #<--Eliminar cita-->
 
-
-def eliminar_cita(request, cedula):
+def eliminar_cita(request, id_cita):
     try:
-        citas = Cita.objects.get(paciente=cedula)
+        citas = Cita.objects.get(id_cita=id_cita)
         citas.delete()
+        listado_citas = Cita.objects.all()
 
         messages.success(request, "Eliminado")
+        
+        return render(request, "listado_citas.html", {'listado_citas': listado_citas})
 
     except Cita.DoesNotExist:
-        # message.error(request, "El usuario que quiere eliminar ya no existe")
         raise Http404(
             "No se puede eliminar la cita indicada. Dado que ya se Elimino")
+
 
 
 def listar_citapaciente(request):
