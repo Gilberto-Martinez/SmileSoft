@@ -27,15 +27,18 @@ from gestion_administrativo.models import PacienteTratamientoAsignado
 
 #---------------------------------------------------------------------------------------- FORMULARIOS DEL CRUD DE USUARIO------------------------------------------------------------------------------------#
 class InsumoForm(forms.ModelForm):
-    nombre_insumo = forms.CharField(label='Nombre del Insumo', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del insumo'}))
-    descripcion_insumo = forms.CharField(label='Descripción del Insumo', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del insumo'}))
+    nombre_insumo = forms.CharField(label='Nombre del Insumo:', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del insumo'}))
+    descripcion_insumo = forms.CharField(label='Descripción del Insumo:', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del insumo'}))
     precio = forms.IntegerField(
-                                    label='Costo', 
-                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del insumo'}))
+                                    label='Costo:', 
+                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del insumo:'}))
     fecha_caducidad = forms.DateField(label='Fecha de caducidad', widget=forms.DateInput(attrs={'type': 'date'}))
     cantidad_insumo = forms.IntegerField(
-                                                   label='Cantidad del Insumo', 
+                                                   label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
+    unidad = forms.IntegerField(
+                                                   label='Unidad:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del Insumo'}))
     class Meta:
         model = Insumo
        # fields= '__all__'
@@ -45,20 +48,24 @@ class InsumoForm(forms.ModelForm):
             'descripcion_insumo',
             'precio',
             'fecha_caducidad',
-            'cantidad_insumo'
+            'cantidad_insumo',
+            'unidad',
             #'estado',
         ]
 
 class InsumoUpdateForm(forms.ModelForm):
-    nombre_insumo = forms.CharField(label='Nombre del Insumo', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del insumo'}))
-    descripcion_insumo = forms.CharField(label='Descripción del Insumo', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del insumo'}))
+    nombre_insumo = forms.CharField(label='Nombre del Insumo:', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del insumo'}))
+    descripcion_insumo = forms.CharField(label='Descripción del Insumo:', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del insumo'}))
     precio = forms.IntegerField(
-                                                   label='Precio', 
+                                                   label='Costo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del insumo'}))
     fecha_caducidad = forms.DateField(label='Fecha de caducidad', widget=forms.NumberInput(attrs={'type': 'date'}))
     cantidad_insumo = forms.IntegerField(
-                                                   label='Cantidad del Insumo', 
+                                                   label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
+    unidad = forms.IntegerField(
+                                                   label='Unidad:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del insumo'}))
     class Meta:
         model = Insumo
         fields= '__all__'
@@ -70,6 +77,7 @@ class InsumoUpdateForm(forms.ModelForm):
         #     'fecha_caducidad',
         #     'cantidad_insumo'
         #     'estado',
+        #     'unidad',
         # ]
 
     def clean_fecha_caducidad(self):

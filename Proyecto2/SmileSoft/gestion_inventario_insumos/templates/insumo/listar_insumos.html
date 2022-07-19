@@ -61,7 +61,8 @@
                                     <th>Nombre </th>
                                     <th>Costo</th>  
                                     <th>Fecha de Caducidad</th> 
-                                    <th>Cantidad Insumo</th> 
+                                    <th>Cantidad Insumo</th>
+                                    <th>Unidad</th> 
                                     <!-- <th>Estado</th>  -->
                                     {% comment %} <th colspan="2">Acciones </th> {% endcomment %}
                             </tr>
@@ -75,6 +76,7 @@
                                     <td>{{c.precio}}</td> 
                                     <td>{{c.fecha_caducidad}}</td> 
                                     <td>{{c.cantidad_insumo}}</td> 
+                                    <td>{{c.unidad}}</td> 
                                     <!-- <td>{{c.estado}}</td>  -->
                                     {{busqueda}}
                                     <!--OPCIONES Modificar y Eliminar-->
