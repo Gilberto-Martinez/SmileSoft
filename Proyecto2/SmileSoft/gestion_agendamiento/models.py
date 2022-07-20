@@ -1,4 +1,5 @@
 from django.db import models
+from gestion_administrativo.models import *
 from gestion_administrativo.models import Persona
 from webapp.models import Usuario
 from gestion_tratamiento.models import Tratamiento
@@ -20,14 +21,12 @@ class Cita(models.Model):
                                                 on_delete=models.PROTECT,
                                                 verbose_name='Motivo de consulta'
     )
-    # start_time=models.DateField()
-    # end_time=models.DateField()
-    
+   
     fecha = models.DateField()
-    
     hora = models.TimeField()
     estado = models.BooleanField('Estado', default=True)
     
+    # profesional=models.ForeignKey(Especialidad, )
     class Meta(object):
         verbose_name_plural = 'Cita'
         

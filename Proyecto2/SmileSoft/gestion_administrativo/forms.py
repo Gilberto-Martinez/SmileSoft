@@ -33,7 +33,11 @@ class PersonaForm(forms.ModelForm):
             (M, 'Masculino')
    ]
    sexo = forms.ChoiceField(choices=SEXOS, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
-   fecha_nacimiento = forms.DateField(label='Fecha de nacimiento', widget=forms.DateInput(attrs={'type': 'date'}))
+   fecha_nacimiento = forms.DateField(
+        label='Fecha de nacimiento:', widget=forms.NumberInput(attrs={'type': 'date'}))
+   # fecha_nacimiento = forms.DateField(widget=forms.SelectDateWidget(
+   #      years=range(1980, datetime.now().year + 1)
+   #  ))
    mensaje_error = ""
    evento = ""
                                       
