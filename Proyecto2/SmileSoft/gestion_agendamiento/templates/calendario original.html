@@ -76,44 +76,16 @@
 
 
   <!--*********************************************************************************************************-->
-    {% comment %} {%if perms.gestion_agendamiento.view_cita%} {% endcomment %}
+    {%if perms.gestion_agendamiento.view_cita%}
         <div class="container">
             <div class="card">
                 <div class="card-body">
                         <center> 
                             
-                            <h2 <i class="bi bi-calendar"></i> Agendamiento | Citas</i> </h2>
+                            <h2 <i class="bi bi-calendar"></i> Calendario</i> </h2>
                         </center>
                     
-                    <table  align="right" >
-                            <tr>
-                            <td>
-                                {% comment %} {%if perms.gestion_agendamiento.add_cita%}
-                                <a href="/agendamiento/usuario_addCita/{{user.numero_documento}}" class="btn btn-success">
-                                    <i class="bi-person-plus-fill"></i>
-                                    Agregar una cita
-                                </a>
-                                {%endif%}
-                                 {% endcomment %}
-                            </td>
-                            <td>
-                                        {% comment %} {%if perms.gestion_agendamiento.change_cita%}
-                                        <a href="/agendamiento/modificar_cita/{{paciente.numero_documento}} " class="btn btn-info">
-                                        <i class="bi-pencil-square"></i>
-                                            Editar cita
-                                        </a>
-                                        {%endif%} {% endcomment %}
-                                    </td>
-                                    <td>
-                                        {% comment %} {%if perms..gestion_agendamiento.delete_cita%}
-                                    <a class="btn btn-danger" href="/administrativo/eliminar_cita/{{paciente.id_cita}}">
-                                        <i class="bi-trash-fill" ></i>
-                                        Eliminar
-                                    </a>
-                                    {%endif%} {% endcomment %}
-                                </td>
-                            </tr>
-                    </table>
+                    
                 </div>
 
                   <!--Calendario-->
@@ -125,7 +97,7 @@
             </div>
                 
         </div>
-        {% comment %} {% endif %} {% endcomment %}
+        {% endif %}
 
     <!--Script para el Calendario-->
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -135,20 +107,17 @@
    <!--Scrip de los EVENTOS DE LAS CITAS DEL Calendario-->
     <script>
         document.addEventListener('DOMContentLoaded', function(){
-            var calendarEI = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEI,{
-                headerToolbar: {
+            var calendarUI = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarUI,{
+                {% comment %} headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,listYear'
-                },
-                
+                }, {% endcomment %}
                 events: [
                     {% for cita in object_list %}
                         {
-                            title: "{{ cita.hora}} hs| {{ cita.tratamiento_solicitado }}",
+                            title: "Cita| {{ cita.tratamiento_solicitado }}",
                             start: '{{ cita.fecha | date:"Y-m-d" }}',
-                        
                            {% comment %}  end: '{{ reserva.fecha_vencimiento | date:"Y-m-d" }}', {% endcomment %}
                         },
                     {% endfor %}

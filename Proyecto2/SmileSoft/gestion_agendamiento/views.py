@@ -1,9 +1,11 @@
+from ctypes.wintypes import PCHAR
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from gestion_administrativo.forms import PersonaPacienteForm
 from gestion_administrativo.forms import PersonaUpdateForm
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 from webapp.mixins import LoginMixin
 from django.db.models import Q
 from .forms import *
@@ -65,27 +67,88 @@ def agregar_cita(request, id_paciente):
 
     return render(request, "agregar_cita.html", data)
 
-#<-Listar cita-->
-def listar_cita(request):
 
-    busqueda = request.POST.get("q")
-    listado_cita = Cita.objects.all()
+#<--Agregar cita a UN USUARIO
+def addcita_usuario(request, numero_documento):
+    persona = Persona.objects.get(numero_documento=numero_documento)
+    cedula= persona.numero_documento
+    paciente= Paciente.objects.get(numero_documento=cedula)
+    
+    id_paciente=paciente.id_paciente
+    
+    nombre = persona.nombre +' '+ persona.apellido
+    # apellido = persona.apellido
+    print('Esta es la cedula', cedula,'Este es el id del paciente', id_paciente)
+    
+    data = {
+        'form': CitaForm(),
+        'persona':persona,
+        'id_paciente':id_paciente
+    }
 
+    if request.method == "POST":
+        formulario = CitaForm(data=request.POST, files=request.FILES)
+        
+        if formulario.is_valid():
+            cita = formulario.save(commit=False)
+            cita.paciente=paciente
+            cita.nombre_paciente = nombre
+            cita.save()
+            messages.success(request, ( 
+                '✅ Su cita ha sido registrada'))
+        
+            return render(request, "calendario.html")
+        else:
+            messages.error(request, (
+                'No ha guardado'))
+            data["form"] = formulario
+            print('NO ENTRAAAAA')
 
-    if busqueda:
-        listado_cita = Cita.objects.filter(
-            Q(nombre_paciente__icontains=busqueda))
-        print("AQUI ESTA ENTRANDO Y buscando", {
-              'listado_cita': listado_cita})
-    else:
+    return render(request, "usuario_addCita.html", data)
 
-        print("Buscado AQUI",)
-       # return render (request, "usuario/buscar.html")
+#--> Esta es una template de redirección para el calendario
+def calendario_vista(request):
+    return render(request, "calendar.html")
 
-    return render(request, "listado_citas.html", {
-                                                    'listado_cita': listado_cita,
-                                                }
-                )
+#<- Modificar Cita del Usuario iniciado
+def cambiarCita_usuario(request, numero_documento):
+    #--HACER
+    persona = Persona.objects.get(numero_documento=numero_documento)
+    cedula = persona.numero_documento
+    paciente = Paciente.objects.get(numero_documento=cedula)
+
+    id_paciente = paciente.id_paciente
+
+    nombre = persona.nombre + ' ' + persona.apellido
+    # apellido = persona.apellido
+    print('Esta es la cedula', cedula, 'Este es el id del paciente', id_paciente)
+
+    data = {
+        'form': CitaForm(),
+        'persona': persona,
+        'id_paciente': id_paciente
+    }
+
+    if request.method == "POST":
+        formulario = CitaForm(data=request.POST, files=request.FILES)
+
+        if formulario.is_valid():
+            cita = formulario.save(commit=False)
+            cita.paciente = paciente
+            cita.nombre_paciente = nombre
+            cita.save()
+            messages.success(request, (
+                '✅ Su cita ha sido registrada'))
+
+            return render(request, "calendario.html")
+        else:
+            messages.error(request, (
+                'No ha guardado'))
+            data["form"] = formulario
+            print('NO ENTRAAAAA')
+
+    return render(request, "usuario_addCita.html", data)
+
 #<--Modificar cita-->
 
 def modificar_cita(request,id_cita):
@@ -106,13 +169,9 @@ def modificar_cita(request,id_cita):
             messages.success(request, (
                 'Modificado correctamente!'))
             return redirect("/agendamiento/listado_citas/")
-         
         else:
             messages.error(
                 request, "Algo ha salido Mal, por favor verifique nuevamente")
-
-            print('NO ENTRAAAAA')
-
     return render(request, "modificar_cita.html", data)
 
 #<--Eliminar cita-->
@@ -132,7 +191,7 @@ def eliminar_cita(request, id_cita):
             "No se puede eliminar la cita indicada. Dado que ya se Elimino")
 
 
-
+#<--listado de los pacientes para agendar una cita
 def listar_citapaciente(request):
     busqueda = request.POST.get("q")
     paciente_cita= Paciente.objects.all()
@@ -145,3 +204,21 @@ def listar_citapaciente(request):
                 
     return render(request, "pacientes_cita.html", {
         'paciente_cita': paciente_cita})
+
+#<-Listar cita AGENDADA-->
+def listar_cita(request):
+    busqueda = request.POST.get("q")
+    listado_cita = Cita.objects.all()
+
+    if busqueda:
+        listado_cita = Cita.objects.filter(
+            Q(nombre_paciente__icontains=busqueda))
+        print("AQUI ESTA ENTRANDO Y buscando", {
+              'listado_cita': listado_cita})
+    else:
+        print("Buscado AQUI",)
+       # return render (request, "usuario/buscar.html")
+    return render(request, "listado_citas.html", {
+        'listado_cita': listado_cita,
+    }
+    )
