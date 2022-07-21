@@ -21,13 +21,7 @@ class CitaForm(forms.ModelForm):
                 'tratamiento_solicitado',
                 'fecha',
                 'hora',
+                'profesional'
         ]
     
-        # widgets = {
-        #             'tratamiento_solicitado': forms.Select(attrs={
-        #                                                     'class': 'form-select2',
-        #                                                     'style': 'width: auto',
-        #                                                     'multiple': 'multiple'
-        #                                                 }), 
-                
-        #     }
+      
