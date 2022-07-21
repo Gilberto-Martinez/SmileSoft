@@ -52,10 +52,14 @@
                             {% comment %} <input type="date" name="fecha" required="" >  {% endcomment %}
                             <br>
                             {% comment %} <input type="date" name="fecha" min="2022-12-31" max="2022-01-01" step=1 /> {% endcomment %}
-                        <br>
                         <div class="form-group">
                            <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
                             {{form.hora}}
+                        </div> 
+                        <br>
+                        <div class="form-group">
+                          <label for="profesional"> Elegir al Profesional: </label> 
+                            {{form.profesional}}
                         </div> 
                             {% comment %} <p> <label for="hora"> Hora de la cita</label>
                               {{form.hora}}  {% endcomment %}

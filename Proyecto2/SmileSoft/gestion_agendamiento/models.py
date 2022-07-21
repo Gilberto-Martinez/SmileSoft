@@ -26,7 +26,11 @@ class Cita(models.Model):
     hora = models.TimeField()
     estado = models.BooleanField('Estado', default=True)
     
-    # profesional=models.ForeignKey(Especialidad, )
+    profesional=models.ForeignKey(Especialidad, max_length=45,
+                                                null=False,
+                                                blank= False,
+                                                on_delete=models.PROTECT,
+                                                verbose_name='Profesional a elegir')
     class Meta(object):
         verbose_name_plural = 'Cita'
         

@@ -29,7 +29,7 @@
 							<th>Numero de documento</th>
 							<th>Nombre y apellido</th>
 							<th>Direccion</th>
-							<th>Profesional </th>
+							{% comment %} <th>Profesional</th> {% endcomment %}
 							<th>Acciones</th>
 						</tr>
 						
@@ -41,7 +41,7 @@
 								<td>{{ especialista.numero_documento }}</td>
 								<td>{{ especialista.numero_documento.nombre }} {{especialista.numero_documento.apellido}}</td>
 								<td>{{ especialista.numero_documento.direccion }}</td>
-								<td>{{ especialista.especialidad}}</td>
+								{% comment %} <td>{{ especialista.especialidades}}</td> {% endcomment %}
 								<td>
 									{%if perms.gestion_administrativo.change_especialista_salud%}
 									<a class="btn btn-primary" href="/administrativo/modificar_especialista_salud/{{especialista.id_especialista_salud}}">
