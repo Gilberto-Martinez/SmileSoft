@@ -75,7 +75,6 @@ class Funcionario(models.Model):
     cargos = models.ManyToManyField(Cargo, 
                                     through='FuncionarioCargo',
                                     related_name='funcionario_set',
-                                    null=True,
                                     blank=True)
 
     class Meta:
@@ -151,8 +150,8 @@ class EspecialistaSalud(models.Model):
     especialidades = models.ManyToManyField(Especialidad, 
                                     through='EspecialistaEspecialidades',
                                     related_name='especialista_set',
-                                    null=True,
-                                    blank=True)
+                                    blank=True
+                                    )
 
     class Meta:
         verbose_name = 'Especialista de salud'
