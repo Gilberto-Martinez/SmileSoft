@@ -13,7 +13,7 @@ from .forms import *
 from django.contrib import messages
 from django.http import (
     Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
-
+from django.contrib.auth.decorators import permission_required
 # ---------Vista Principal-------
 
 
@@ -130,7 +130,7 @@ def mis_citas_lista(request, numero_documento):
     return render(request, "mis_citas.html", {'mis_citas': mis_citas})
 
 
-
+# @permission_required('gestion_agendamiento.cambiarCita_usuario', login_url="/panel_control/error/",)
 def cambiarCita_usuario(request, id_cita):
 #enproceso
     cita = Cita.objects.get(id_cita=id_cita)
@@ -194,8 +194,6 @@ def modificar_cita(request, id_cita):
     return render(request, "modificar_cita.html", data)
 
 # <--Eliminar cita-->
-
-
 def eliminar_cita(request, id_cita):
     try:
         citas = Cita.objects.get(id_cita=id_cita)
@@ -211,18 +209,15 @@ def eliminar_cita(request, id_cita):
             "No se puede eliminar la cita indicada. Dado que ya se Elimino")
         
 #Eliminar la cita de un usuario
-# class CitaDelete(DeleteView):
-#     model = Cita
-#     template_name = 'eliminar_cita.html'
-#     success_url = reverse_lazy('calendario')
-def deletecita(request,pk):
+def deletecita(request,id_cita):
     try:
-        cita = Cita.objects.get(id_cita = pk)
-        cita.delete()
-        messages.success(request, 'Ha sido eliminada la cita')
-    except:
-        messages.warning(request, 'Ocurrio un error al eliminar')
-    return render(request, 'calendar.html') 
+        citas = Cita.objects.get(id_cita=id_cita)
+        citas.delete()       
+        return render(request, "delete_cita.html")
+    except Cita.DoesNotExist:
+        raise Http404(
+            "No se puede eliminar la cita indicada. Dado que ya se Elimino")
+
 
 # <--listado de los pacientes para agendar una cita
 def listar_citapaciente(request):
@@ -240,8 +235,6 @@ def listar_citapaciente(request):
         'paciente_cita': paciente_cita})
 
 # <-Listar cita AGENDADA-->
-
-
 def listar_cita(request):
     busqueda = request.POST.get("q")
     listado_cita = Cita.objects.all()
