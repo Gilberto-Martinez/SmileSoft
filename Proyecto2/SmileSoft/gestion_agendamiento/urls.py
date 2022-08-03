@@ -25,7 +25,7 @@ urlpatterns = [
     
     # path('eliminar_cita/<int:pk>',
     #      CitaDelete.as_view(),  name="eliminar_paciente"),
-    path('eliminar_cita/<int:pk>', deletecita, name='eliminar_cita'),
+    path('delete_cita/<int:id_cita>', deletecita, name='delete_cita'),
     
     path('mis_citas/<numero_documento>', mis_citas_lista, name="mis_citas"),
     

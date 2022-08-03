@@ -97,13 +97,13 @@
                                  {% endcomment %}
                             </td>
                             <td>
-                                     {%if perms.gestion_agendamiento.change_cita%}
+                                     {% comment %} {%if perms.gestion_agendamiento.change_cita%}
                                         <a href="/agendamiento/usuario_changeCita/{{user.numero_documento}} " class="btn btn-info">
                                         <i class="bi-pencil-square"></i>
                                             Editar cita
                                         </a>
                                         {%endif%} 
-                                    </td>
+                                    </td> {% endcomment %}
                                     <td>
                                         {% comment %} {%if perms..gestion_agendamiento.delete_cita%}
                                     <a class="btn btn-danger" href="/administrativo/eliminar_cita/{{paciente.id_cita}}">
