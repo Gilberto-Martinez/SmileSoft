@@ -66,6 +66,12 @@ def listar_tratamiento(request):
     return render (request,"tratamiento/listar_tratamientos.html",{'listado_tratamientos':listado_tratamientos})
 
 def listar_tratamiento_asignado(request, cedula):
+    """
+    Lista los tratamientos asigandos a un paciente en especifico. Muestra el precio de cada tratamiento.
+    Además de eso la template correspondiente a esta función tiene lo siguiente:
+        - La opción de Agregar mas tratamientos asigandos o eliminarlos.
+        - Permite confirmar los tratamientos a fin de proceder al cobro de las mismas
+    """
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
     persona = Persona.objects.get(numero_documento=cedula)
     paciente = Paciente.objects.get(numero_documento=cedula)

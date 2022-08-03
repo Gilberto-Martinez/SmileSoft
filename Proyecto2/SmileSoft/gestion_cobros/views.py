@@ -59,6 +59,7 @@ def registrar_cobro(request, numero_documento):
                                             detalle_cobro=detalle_cobro_nuevo,
                                             tratamiento = tratamiento_conf
         )
+    confirmar_tratamientos(tratamientos_confirmados)
     return render(request, "confirmar_cobro.html")
 
 def obtener_tratamientos(cedula):
@@ -82,6 +83,19 @@ def obtener_precio_total(cedula):
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             precio_total = precio_total + nuevo_tratamieto.precio
     return precio_total
+
+def confirmar_tratamientos(tratamientos):
+    """ 
+    Cambia el estado de los tratamientos asignados a un paciente de la siguiente manera:
+        Una vez que se haya realizado el registro del cobro de los tratamientos cambia el
+        estados de estos a Confirmado, es decir, estado = Confirmado
+    """
+    for tratamiento in tratamientos:
+        resultado = PacienteTratamientoAsignado.objects.update(
+                                                            paciente = tratamiento.get_paciente(),
+                                                            tratamiento = tratamiento.get_tratamiento,
+                                                            estado = 'Confirmado'
+        )
 
 #---------------------------------------------------------#
 class CobrosListView(ListView):

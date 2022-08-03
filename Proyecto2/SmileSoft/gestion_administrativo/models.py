@@ -276,6 +276,11 @@ class PacienteTratamientoAsignado(models.Model):
         null=True,
         verbose_name='Tratamientos ConsulDent'
     )
+    P = 'Pendiente'
+    R = 'Realizado'
+    C = 'Confirmado'
+    ESTADOS = ((P, 'Pendiente'), (R, 'Realizado'), (C, 'Confirmado'))
+    estado = models.CharField(max_length=12, choices=ESTADOS, default='Pendiente')
 
     class Meta:
         db_table = 'PacienteTratamientoAsignado'
