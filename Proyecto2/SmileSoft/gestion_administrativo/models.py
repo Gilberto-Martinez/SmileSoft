@@ -293,6 +293,9 @@ class PacienteTratamientoAsignado(models.Model):
     def get_paciente(self):
         return str(self.paciente)
 
+    def get_estado(self):
+        return str(self.estado)
+
 
 #####################################################################
 

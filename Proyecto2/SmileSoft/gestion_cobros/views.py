@@ -59,7 +59,7 @@ def registrar_cobro(request, numero_documento):
                                             detalle_cobro=detalle_cobro_nuevo,
                                             tratamiento = tratamiento_conf
         )
-    confirmar_tratamientos(tratamientos_confirmados)
+    confirmar_tratamientos(numero_documento)
     return render(request, "confirmar_cobro.html")
 
 def obtener_tratamientos(cedula):
@@ -84,18 +84,31 @@ def obtener_precio_total(cedula):
             precio_total = precio_total + nuevo_tratamieto.precio
     return precio_total
 
-def confirmar_tratamientos(tratamientos):
+def confirmar_tratamientos(cedula):
     """ 
     Cambia el estado de los tratamientos asignados a un paciente de la siguiente manera:
         Una vez que se haya realizado el registro del cobro de los tratamientos cambia el
         estados de estos a Confirmado, es decir, estado = Confirmado
     """
-    for tratamiento in tratamientos:
-        resultado = PacienteTratamientoAsignado.objects.update(
-                                                            paciente = tratamiento.get_paciente(),
-                                                            tratamiento = tratamiento.get_tratamiento,
-                                                            estado = 'Confirmado'
-        )
+    paciente = Paciente.objects.get(numero_documento=cedula)
+    id_paciente = paciente.id_paciente
+    listado_tratamientos = PacienteTratamientoAsignado.objects.all()
+    # tratamientos_asignados = []
+
+    for tratamiento in listado_tratamientos:
+        if str(tratamiento.get_paciente()) == str(cedula):
+            cod_tratamiento = tratamiento.get_tratamiento()
+            PacienteTratamientoAsignado.objects.filter(paciente = id_paciente,tratamiento = cod_tratamiento,).update(estado = 'Confirmado')
+            print("Se ejecuta")
+            print("Se ejecuta")
+            print("Se ejecuta")
+            print("Se ejecuta")
+            print("Se ejecuta")
+            # resultado = PacienteTratamientoAsignado.objects.update(
+            #                                                 paciente = id_paciente,
+            #                                                 tratamiento = cod_tratamiento,
+            #                                                 estado = 'Confirmado'
+        # )
 
 #---------------------------------------------------------#
 class CobrosListView(ListView):
