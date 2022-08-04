@@ -99,6 +99,32 @@ def listar_tratamiento_asignado(request, cedula):
                                                                             }
                     )
 
+def listar_tratamientos_pendientes(request):
+    tratamientos_conf = PacienteTratamientoAsignado.objects.filter(estado="Confirmado")
+    tratamientos_pendientes = []
+
+    for tratamiento_conf in tratamientos_conf:
+        # id_tratamiento = tratamiento.id
+        paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
+        persona = Persona.objects.get(numero_documento=paciente.numero_documento)
+        numero_documento = persona.numero_documento
+        nombre = persona.nombre
+        apellido = persona.apellido
+        tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_conf.get_tratamiento())
+        nombre_tratamiento = tratamiento.nombre_tratamiento
+        tratamiento_pendiente = {
+                                # 'id':id_tratamiento,
+                                'numero_documento':numero_documento,
+                                'nombre':nombre,
+                                'apellido':apellido,
+                                'nombre_tratamiento':nombre_tratamiento
+                                }
+        tratamientos_pendientes.append(tratamiento_pendiente)
+    return render (request,"tratamiento/listar_tratamientos_pendientes.html",{
+                                                                            'tratamientos_pendientes':tratamientos_pendientes,
+                                                                            }
+                    )
+
 def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
     paciente_tratamiento = PacienteTratamientoAsignado.objects.get(id=id_pac_tratamiento)
     paciente_tratamiento.delete()
@@ -107,7 +133,7 @@ def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
 
 # -----------------------------------------------------------------------------------------------
 
-# ***Vista de Modificar Rol
+# ***Vista de Modificar Tratamiento
 
 
 # @permission_required('gestion_tratamiento.modificar_tratamiento', login_url="/panel_control/error/",)
@@ -287,3 +313,7 @@ def listar_insumos_asignado(request, cod_tratamiento):
                                                                             'id_paciente':id_paciente
                                                                             }
                     )
+
+# ------------- Pantallas de mensajes ------------------------------- #
+class TratamientoConfirm(TemplateView):
+    template_name = 'mostrar_mensaje de confirmacion.html'

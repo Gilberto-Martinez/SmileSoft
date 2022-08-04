@@ -18,6 +18,7 @@ urlpatterns = [
             path('eliminar_tratamiento_asignado/<id_pac_tratamiento>/<cedula>', eliminar_tratamiento_asignado, name="eliminar_tratamiento_asignado"),
             path('agregar_insumo_asignado/<int:pk>', InsumoAsignado.as_view(), name="agregar_insumo_asignado"),
             path('listar_insumos_asignados/<cod_tratamiento>', listar_insumos_asignado, name="listar_insumos_asignado"),
-            
-
+            path('listar_tratamientos_pendientes/', listar_tratamientos_pendientes, name="listar_tratamientos_pendientes"),
+            path('realizar_pregunta/<int:pk>', TratamientoConfirm.as_view(), name="realizar_pregunta"),
+            path('confirmar_tratamientos/', TratamientoConfirm.as_view(), name="confirmar_tratamientos"),
 ]

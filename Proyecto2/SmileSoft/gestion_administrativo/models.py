@@ -260,6 +260,9 @@ class Paciente(models.Model):
     def __str__(self):
         return str(self.numero_documento)
 
+    def get_id(self):
+        return str(self.id_paciente)
+
 #TRATAMIENTO ASIGNADO
 class PacienteTratamientoAsignado(models.Model):
     paciente = models.ForeignKey(
