@@ -172,9 +172,7 @@ def cambiarCita_usuario(request, id_cita):
                 messages.info(
                        request, "⚠️No está permitido modificar otra cita, que no sea la suya")
                 return render(request, "panel_control/error.html")
-            
-               
-                
+        
         else:
                 messages.error(request, (
                     'No ha guardado'))

@@ -109,10 +109,9 @@
                                                   <li><a class="dropdown-item" href="/modificar_password/"> <FONT COLOR="black"> Modificar/ Contraseña</FONT> </a></li>
                                                   <div class="dropdown-divider"></div>
                                                   <li><a class="dropdown-item" href="/administrativo/editar_persona/{{user.numero_documento}}"> <font color="black">Modificar/ Datos personales </font></a></li></a>
-                                                  
-                                                  <div class="dropdown-divider"></div>
-                                                
-                                                    <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
+                                                 
+                                                      <div class="dropdown-divider"></div>
+                                                        <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
                                                 
                                                   <div class="dropdown-divider"></div>
                                                     <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: oblique;" COLOR="blue"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
@@ -261,9 +260,6 @@
                                                     <strong  style="color:blue; font-size:16px;" >
                                                            • Calendario
                                                     </strong></li></a>
-                                                  {% comment %} {%if perms.gestion_agendamiento.view_cita%}
-                                                  <li><a class="dropdown-item" href="/agendamiento/mis_citas/{{user.numero_documento}}">• Mis Citas </li></a>
-                                                  {% endif %}       {% endcomment %}
                                                   {%if perms.gestion_agendamiento.view_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Citas </li></a>
                                                   {% endif %}
