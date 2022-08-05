@@ -136,26 +136,44 @@ def cambiarCita_usuario(request, id_cita):
     cita = Cita.objects.get(id_cita=id_cita)
     cedula = cita.paciente
     persona = Persona.objects.get(numero_documento=cedula)
+    ci_persona= persona.numero_documento
+    ci_user= Usuario.objects.get(numero_documento=ci_persona)
+    nro_documento=ci_user.numero_documento
+    persona_user=ci_user.usuario
+    # user = Usuario.objects.filter(usuario=request.user.usuario)
+    # cedula_user=user.usuario
+            
+   
     nombre = persona.nombre + ' ' + persona.apellido
 
     data = {
         'form': CitaForm(instance=cita),
         'persona': persona,
-        'id_cita': id_cita
+        'id_cita': id_cita,
+        'ci_user':ci_user,
+        'nro_documento': nro_documento,
+        # 'cedula_user':cedula_user
+        
     }
-
     if request.method == "POST":
         formulario = CitaForm(
             data=request.POST, instance= cita,files=request.FILES)
-       
+        
         if formulario.is_valid():
-                 # if request.cita==cita:
-            formulario.save()
+            # user = Usuario.objects.filter(usuario=request.user.usuario)
+            if persona_user == request.user.usuario:
+                print('-------------------AQUI', persona_user,request.user.usuario)
+                formulario.save()
+                messages.success(request, (
+                            '✅ Su cita ha sido modificada'))
                     
-            messages.success(request, (
-                        '✅ Su cita ha sido modificada'))
-                
-            return render(request, "calendario.html")
+                return render(request, "calendario.html")
+            else:
+                messages.info(
+                       request, "⚠️No está permitido modificar otra cita, que no sea la suya")
+                return render(request, "panel_control/error.html")
+            
+               
                 
         else:
                 messages.error(request, (
@@ -211,9 +229,18 @@ def eliminar_cita(request, id_cita):
 #Eliminar la cita de un usuario
 def deletecita(request,id_cita):
     try:
-        citas = Cita.objects.get(id_cita=id_cita)
-        citas.delete()       
-        return render(request, "delete_cita.html")
+       
+        cita = Cita.objects.get(id_cita=id_cita)
+        cedula = cita.paciente
+        persona = Persona.objects.get(numero_documento=cedula)
+        ci = persona.numero_documento
+        ci_user = Usuario.objects.get(numero_documento=ci)
+        if (ci_user == cedula):
+            cita.delete()       
+            return render(request, "delete_cita.html")
+        else:
+            messages.info(request, "⚠️Lamentamos informarle que NO puede eliminar otra cita que no sea la suya")
+            return render(request, "panel_control/error.html")  
     except Cita.DoesNotExist:
         raise Http404(
             "No se puede eliminar la cita indicada. Dado que ya se Elimino")

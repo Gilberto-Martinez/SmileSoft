@@ -15,121 +15,73 @@
 
 
 {%block content%}
-{% comment %} {%if request.cita.id_cita is cita.id_cita%} {% endcomment %}
-{% comment %}   
-{% if request.user%} {% endcomment %}
-{% comment %} {% if user.is_authenticated %} Hello, {{ user.usuario }}.{% endif %} {% endcomment %}
-{% comment %} {{cita}}
-{{id_cita }}
-<br>
-<b>Aqui va el que trae </b>
-var id = ;
-while ({{id_cita}}={{id_cita}}) {     
-  {% endcomment %}
-{% comment %} {% ifequal request.id_cita 'id_cita' %}   {% endcomment %}
-{% comment %} {%if request.id_cita is id_cita %} {% endcomment %}
+
+ {% comment %} var ci_user={{request.user.usuario}}
+    var cedula_paciente= {{persona.numero_documento}}   {% endcomment %}
+{%if ci_user%}
     {%if perms.gestion_agendamiento.change_cita%}
-            <div class="container">
-                <div class="card">
-                    <div class="card-body">
-                        <center> 
-                                
-                            <h2 <i class="bi bi-calendar"></i> Cita</i> </h2>
-                        </center>
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <center> 
+                        <h2 <i class="bi bi-calendar"></i> Cita</i> </h2>
+                    </center>
                     <br>
                     <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}} </i> </h5></center>
 
-                        <form method="POST" id="group_form" novalidate="">
-                           
-                            {%csrf_token%}
-                       
-                            <div style="margin: 20px;" >
-                                <br>
-                               
-                                <div class="form-group">
-                                    <label for="tratamiento_solicitado"> Motivo de Consulta</label>
-                                        {{form.tratamiento_solicitado}} <br>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
-                                    {{form.fecha}}
-                                </div>
-
-                                <br>
-                                <div class="form-group">
-                                <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
-                                    {{form.hora}}
-                                </div> 
+                    <form method="POST" id="group_form" novalidate="">
+                        {%csrf_token%}
+                        <div style="margin: 20px;" >
                             <br>
-                                <div class="form-group">
-                                <label for="profesional"> Elegir al Profesional: </label> 
-                                    {{form.profesional}}
-                                </div>
+                            <div class="form-group">
+                                <label for="tratamiento_solicitado"> Motivo de Consulta</label>
+                                    {{form.tratamiento_solicitado}} <br>
                             </div>
-                            
+                            <br>
+                            <div class="form-group">
+                            <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
+                                {{form.fecha}}
                             </div>
 
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-primary" type="submit" style="margin: 10px;">
-                                    <i class="bi-save"></i>
-                                Modificar y Guardar
-                                </button>
-                               
-                                <a style="margin: 10px;" href="/agendamiento/delete_cita/{{id_cita}}" class="btn btn-danger btnEliminacion">
-                                    <i class="bi-trash-fill" ></i>
-                                    Eliminar
-                                </a>
-                                                             
-                            {% comment %} <a href="/agendamiento/deletecita/{{cita.id_cita}}" class="btn btn-danger btnEliminacion">
-                                                                    <i class="bi-trash-fill" ></i>
-                                                                    Eliminar
-                                                                </a>  {% endcomment %}
-                                {% comment %} <div id="eliminarcita">
-                                    Eliminar</div>
-                                <input type = button onclick = "removea_click ()" value = "remove" />
-                                <script> function removea_click () 
-                                    {document.getElementById ('eliminarcita'). onclick = ""; alert ("eliminado con éxito")} 
-                                </ script>
-                            
-                            </div> {% endcomment %}
-                            {% comment %} <div class="d-flex justify-content-center">
-                                <button class="btn btn-danger btnEliminacion" type="submit" style="margin: 10px;">
+                            <br>
+                            <div class="form-group">
+                            <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
+                                {{form.hora}}
+                            </div> 
+                            <br>
+                            <div class="form-group">
+                            <label for="profesional"> Elegir al Profesional: </label> 
+                                {{form.profesional}}
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-primary" type="submit" style="margin: 10px;">
+                                <i class="bi-save"></i>
+                            Modificar y Guardar
+                            </button>
+                        
+                            <a style="margin: 10px;" href="/agendamiento/delete_cita/{{id_cita}}" class="btn btn-danger btnEliminacion">
                                 <i class="bi-trash-fill" ></i>
                                 Eliminar
-                                </button>
-                            <script>
-                                function cancelar() {
-                                    Swal.fire({
-                                        icon: 'warning',
-                                        title: 'Esta eliminando este usuario',
-                                        footer: '<a href="/eliminar_usuario/{{id_cita}}">¡Da click aqui !</a>'
-                                    })
-                                }
-                            </script> {% endcomment %}
-                            <hr>
-                        
-                        </form>
-
-
-
-                    </div>
+                            </a>
+                    </form>
                 </div>
-                    
-            </div>
-        {% endif %}   
-        </div> 
+            </div> 
+        </div>
     
-    {% comment %} {% else %}
-            <br>
-            <h2>
-                <center>
-                    No tiene permisos para ingresar a esta sección
-                    <img src="{% static 'img/restringir.png' %}" width="100px" alt="logo">
-                </center> 
-            </h2>
-            <br>  {% endcomment %}
-{% comment %}        
-     {% endifequal %}  {% endcomment %}
-     {% comment %} {%endif%}  {% endcomment %}
+   
+    {%endif%} 
+{% else %}
+                <br>
+                <h2>
+                    <center>
+                        No tiene permisos para ingresar a esta sección
+                        <img src="{% static 'img/restringir.png' %}" width="100px" alt="logo">
+                    </center> 
+                </h2>
+                <br>  
+{%endif%}
+
+
 {%endblock%}

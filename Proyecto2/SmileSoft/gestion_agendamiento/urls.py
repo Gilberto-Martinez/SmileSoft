@@ -6,7 +6,7 @@ from .views import *
 urlpatterns = [
 
     path("calendar/", Calendario.as_view(), name="calendario"),
-    path('calendario/', calendario_vista, name="calendario"),
+    path('gracias/', calendario_vista, name="gracias"),
     # path('calendar/', pruebacalendar, name="calendar"),
     path('listado_citas/', listar_cita, name="listado_citas"),
     path('agregar_cita/<int:id_paciente>', agregar_cita, name="agregar_cita"),
