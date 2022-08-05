@@ -18,7 +18,7 @@
 
  {% comment %} var ci_user={{request.user.usuario}}
     var cedula_paciente= {{persona.numero_documento}}   {% endcomment %}
-{%if ci_user%}
+
     {%if perms.gestion_agendamiento.change_cita%}
         <div class="container">
             <div class="card">
@@ -70,18 +70,17 @@
             </div> 
         </div>
     
-   
-    {%endif%} 
-{% else %}
-                <br>
-                <h2>
-                    <center>
-                        No tiene permisos para ingresar a esta sección
-                        <img src="{% static 'img/restringir.png' %}" width="100px" alt="logo">
-                    </center> 
-                </h2>
-                <br>  
-{%endif%}
+
+    {% else %}
+                    <br>
+                    <h2>
+                        <center>
+                            No tiene permisos para ingresar a esta sección
+                            <img src="{% static 'img/restringir.png' %}" width="100px" alt="logo">
+                        </center> 
+                    </h2>
+                    <br>  
+    {%endif%}
 
 
 {%endblock%}
