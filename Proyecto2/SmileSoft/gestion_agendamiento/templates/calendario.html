@@ -17,7 +17,7 @@
 {%block content%}
   
 
-{%if perms.gestion_agendamiento.view_cita%}
+
     <div class="container">
         <div class="card">
             <div class="card-body">
@@ -32,12 +32,12 @@
                         <tr>
                         <td>
                            
-                            {%if perms.gestion_agendamiento.view_cita%}
-                                <a href="/agendamiento/calendar" class="btn btn-info">
-                                    <i class="bi bi-calendar"></i>
-                                   Ver Calendario <br>
-                                </a>
-                                {%endif%}
+                           
+                            <a href="/agendamiento/calendar" class="btn btn-info">
+                                <i class="bi bi-calendar"></i>
+                                Ver Calendario <br>
+                            </a>
+                              
                         </td>
                         </tr>
                 </table>
@@ -45,5 +45,5 @@
         </div>
             
     </div>
-    {% endif %}
+
 {%endblock%}
