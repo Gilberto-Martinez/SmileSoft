@@ -16,8 +16,8 @@
 
 {%block content%}
 
- var ci_user={{request.user.usuario}}
-    var cedula_paciente= {{persona.numero_documento}}  
+ {% comment %} var ci_user={{request.user.usuario}}
+    var cedula_paciente= {{persona.numero_documento}}   {% endcomment %}
 {%if ci_user%}
     {%if perms.gestion_agendamiento.change_cita%}
         <div class="container">
