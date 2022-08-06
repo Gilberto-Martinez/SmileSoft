@@ -265,6 +265,7 @@ class Paciente(models.Model):
 
 #TRATAMIENTO ASIGNADO
 class PacienteTratamientoAsignado(models.Model):
+    id_tratamiento = models.IntegerField(primary_key=True)
     paciente = models.ForeignKey(
         Paciente, 
         on_delete=models.CASCADE, 
@@ -298,6 +299,9 @@ class PacienteTratamientoAsignado(models.Model):
 
     def get_estado(self):
         return str(self.estado)
+
+    def get_id_tratamiento(self):
+        return str(self.id_tratamiento)
 
 
 #####################################################################

@@ -104,7 +104,7 @@ def listar_tratamientos_pendientes(request):
     tratamientos_pendientes = []
 
     for tratamiento_conf in tratamientos_conf:
-        # id_tratamiento = tratamiento.id
+        id_tratamiento = tratamiento_conf.get_id_tratamiento()
         paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
         persona = Persona.objects.get(numero_documento=paciente.numero_documento)
         numero_documento = persona.numero_documento
@@ -113,7 +113,7 @@ def listar_tratamientos_pendientes(request):
         tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_conf.get_tratamiento())
         nombre_tratamiento = tratamiento.nombre_tratamiento
         tratamiento_pendiente = {
-                                # 'id':id_tratamiento,
+                                'id_tratamiento':id_tratamiento,
                                 'numero_documento':numero_documento,
                                 'nombre':nombre,
                                 'apellido':apellido,
@@ -122,6 +122,7 @@ def listar_tratamientos_pendientes(request):
         tratamientos_pendientes.append(tratamiento_pendiente)
     return render (request,"tratamiento/listar_tratamientos_pendientes.html",{
                                                                             'tratamientos_pendientes':tratamientos_pendientes,
+                                                                            # 'id_tratamiento':id_tratamiento
                                                                             }
                     )
 
@@ -286,34 +287,39 @@ class InsumoAsignado(UpdateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-def listar_insumos_asignado(request, cod_tratamiento):
-    listado_insumos = TratamientoInsumo.objects.all()
-    # persona = Persona.objects.get(numero_documento=cedula)
-    # paciente = Paciente.objects.get(numero_documento=cedula)
-    # id_paciente = paciente.id_paciente
+# def listar_insumos_asignado(request, cod_tratamiento):
+#     listado_insumos = TratamientoInsumo.objects.all()
+#     persona = Persona.objects.get(numero_documento=cedula)
+#     paciente = Paciente.objects.get(numero_documento=cedula)
+#     id_paciente = paciente.id_paciente
 
-    tratamientos_asignados = []
-    precio_total = 0
-    # id_paciente_tratamiento = ''
-    for insumo in listado_insumos:
-        if str(insumo.get_paciente()) == str(cedula):
-            id_paciente_tratamiento = tratamiento.id
-            cod_tratamiento = tratamiento.get_tratamiento()
-            nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
-            precio_total = precio_total + nuevo_tratamieto.precio
-            tratamientos_asignados.append(nuevo_tratamieto)
+#     tratamientos_asignados = []
+#     precio_total = 0
+#     id_paciente_tratamiento = ''
+#     for insumo in listado_insumos:
+#         if str(insumo.get_paciente()) == str(cedula):
+#             id_paciente_tratamiento = tratamiento.id
+#             cod_tratamiento = tratamiento.get_tratamiento()
+#             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
+#             precio_total = precio_total + nuevo_tratamieto.precio
+#             tratamientos_asignados.append(nuevo_tratamieto)
 
-    precio_total = '{:,}'.format(precio_total).replace(',','.')
+#     precio_total = '{:,}'.format(precio_total).replace(',','.')
 
-    return render (request,"tratamiento/listar_tratamientos_asignados.html",{
-                                                                            'tratamientos_asignados':tratamientos_asignados,
-                                                                            'persona':persona,
-                                                                            'precio_total':precio_total,
-                                                                            'id_paciente_tratamiento':id_paciente_tratamiento,
-                                                                            'id_paciente':id_paciente
-                                                                            }
-                    )
+#     return render (request,"tratamiento/listar_tratamientos_asignados.html",{
+#                                                                             'tratamientos_asignados':tratamientos_asignados,
+#                                                                             'persona':persona,
+#                                                                             'precio_total':precio_total,
+#                                                                             'id_paciente_tratamiento':id_paciente_tratamiento,
+#                                                                             'id_paciente':id_paciente
+#                                                                             }
+#                     )
+
+
+def confirmar_tratamiento(id_tratamiento):
+    resultado = PacienteTratamientoAsignado.objects.filter(id=id_tratamiento).update(estado='Confirmado')
+    return redirect('/tratamiento/listar_tratamientos_pendientes/')
 
 # ------------- Pantallas de mensajes ------------------------------- #
-class TratamientoConfirm(TemplateView):
-    template_name = 'mostrar_mensaje de confirmacion.html'
+def preguntar_confirmacion(request,id_tratamiento):
+    return render(request, 'mostrar_mensaje_confirmacion.html', {'id_tratamiento':id_tratamiento})
