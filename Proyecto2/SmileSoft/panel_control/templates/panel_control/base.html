@@ -237,14 +237,16 @@
                                                 <!--Opcion 5.3 -->
                                                   {%if perms.gestion_adminstrativo.add_pacientetratamientoasignado%}
                                                     <div class="dropdown-divider"></div>
-                                                      <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                        Asignación de Tratamientos a Pacientes 
-                                                      </strong>
-                                                      <li><a class="dropdown-item" href="/tratamiento/listar_paciente2">• Seleccionar Paciente</li></a> 
+                                                    <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                      Asignación de Tratamientos a Pacientes 
+                                                    </strong>
+                                                    <li>
+                                                      <a class="dropdown-item" href="/tratamiento/listar_paciente2">• Seleccionar Paciente</a>
+                                                    </li> 
                                                   {%endif%}
-                                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                    Tratamientos pendientes
-                                                  </strong>
+                                                  <li>
+                                                    <a class="dropdown-item" href="/tratamiento/listar_tratamientos_pendientes/">• Tratamientos pendientes</a>
+                                                  </li>
                                                 </ul>
                                               </li>
                                               {% endif %}

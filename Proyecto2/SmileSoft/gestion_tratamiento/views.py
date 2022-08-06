@@ -24,6 +24,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, DetailView
 from gestion_administrativo.models import PacienteTratamientoAsignado
 from gestion_administrativo.forms import *
+from gestion_historial_clinico.views import guardar_historial_clinico
 
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
@@ -66,6 +67,12 @@ def listar_tratamiento(request):
     return render (request,"tratamiento/listar_tratamientos.html",{'listado_tratamientos':listado_tratamientos})
 
 def listar_tratamiento_asignado(request, cedula):
+    """
+    Lista los tratamientos asigandos a un paciente en especifico. Muestra el precio de cada tratamiento.
+    Además de eso la template correspondiente a esta función tiene lo siguiente:
+        - La opción de Agregar mas tratamientos asigandos o eliminarlos.
+        - Permite confirmar los tratamientos a fin de proceder al cobro de las mismas
+    """
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
     persona = Persona.objects.get(numero_documento=cedula)
     paciente = Paciente.objects.get(numero_documento=cedula)
@@ -75,7 +82,7 @@ def listar_tratamiento_asignado(request, cedula):
     precio_total = 0
     id_paciente_tratamiento = ''
     for tratamiento in listado_tratamientos:
-        if str(tratamiento.get_paciente()) == str(cedula):
+        if str(tratamiento.get_paciente()) == str(cedula) and tratamiento.get_estado() == 'Pendiente':
             id_paciente_tratamiento = tratamiento.id
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
@@ -93,6 +100,33 @@ def listar_tratamiento_asignado(request, cedula):
                                                                             }
                     )
 
+def listar_tratamientos_pendientes(request):
+    tratamientos_conf = PacienteTratamientoAsignado.objects.filter(estado="Confirmado")
+    tratamientos_pendientes = []
+
+    for tratamiento_conf in tratamientos_conf:
+        id_tratamiento_asig = tratamiento_conf.get_id_tratamiento()
+        paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
+        persona = Persona.objects.get(numero_documento=paciente.numero_documento)
+        numero_documento = persona.numero_documento
+        nombre = persona.nombre
+        apellido = persona.apellido
+        tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_conf.get_tratamiento())
+        nombre_tratamiento = tratamiento.nombre_tratamiento
+        tratamiento_pendiente = {
+                                'id_tratamiento_asig':id_tratamiento_asig,
+                                'numero_documento':numero_documento,
+                                'nombre':nombre,
+                                'apellido':apellido,
+                                'nombre_tratamiento':nombre_tratamiento
+                                }
+        tratamientos_pendientes.append(tratamiento_pendiente)
+    return render (request,"tratamiento/listar_tratamientos_pendientes.html",{
+                                                                            'tratamientos_pendientes':tratamientos_pendientes,
+                                                                            # 'id_tratamiento':id_tratamiento
+                                                                            }
+                    )
+
 def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
     paciente_tratamiento = PacienteTratamientoAsignado.objects.get(id=id_pac_tratamiento)
     paciente_tratamiento.delete()
@@ -101,7 +135,7 @@ def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
 
 # -----------------------------------------------------------------------------------------------
 
-# ***Vista de Modificar Rol
+# ***Vista de Modificar Tratamiento
 
 
 # @permission_required('gestion_tratamiento.modificar_tratamiento', login_url="/panel_control/error/",)
@@ -254,30 +288,43 @@ class InsumoAsignado(UpdateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-def listar_insumos_asignado(request, cod_tratamiento):
-    listado_insumos = TratamientoInsumo.objects.all()
-    # persona = Persona.objects.get(numero_documento=cedula)
-    # paciente = Paciente.objects.get(numero_documento=cedula)
-    # id_paciente = paciente.id_paciente
+# def listar_insumos_asignado(request, cod_tratamiento):
+#     listado_insumos = TratamientoInsumo.objects.all()
+#     persona = Persona.objects.get(numero_documento=cedula)
+#     paciente = Paciente.objects.get(numero_documento=cedula)
+#     id_paciente = paciente.id_paciente
 
-    tratamientos_asignados = []
-    precio_total = 0
-    # id_paciente_tratamiento = ''
-    for insumo in listado_insumos:
-        if str(insumo.get_paciente()) == str(cedula):
-            id_paciente_tratamiento = tratamiento.id
-            cod_tratamiento = tratamiento.get_tratamiento()
-            nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
-            precio_total = precio_total + nuevo_tratamieto.precio
-            tratamientos_asignados.append(nuevo_tratamieto)
+#     tratamientos_asignados = []
+#     precio_total = 0
+#     id_paciente_tratamiento = ''
+#     for insumo in listado_insumos:
+#         if str(insumo.get_paciente()) == str(cedula):
+#             id_paciente_tratamiento = tratamiento.id
+#             cod_tratamiento = tratamiento.get_tratamiento()
+#             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
+#             precio_total = precio_total + nuevo_tratamieto.precio
+#             tratamientos_asignados.append(nuevo_tratamieto)
 
-    precio_total = '{:,}'.format(precio_total).replace(',','.')
+#     precio_total = '{:,}'.format(precio_total).replace(',','.')
 
-    return render (request,"tratamiento/listar_tratamientos_asignados.html",{
-                                                                            'tratamientos_asignados':tratamientos_asignados,
-                                                                            'persona':persona,
-                                                                            'precio_total':precio_total,
-                                                                            'id_paciente_tratamiento':id_paciente_tratamiento,
-                                                                            'id_paciente':id_paciente
-                                                                            }
+#     return render (request,"tratamiento/listar_tratamientos_asignados.html",{
+#                                                                             'tratamientos_asignados':tratamientos_asignados,
+#                                                                             'persona':persona,
+#                                                                             'precio_total':precio_total,
+#                                                                             'id_paciente_tratamiento':id_paciente_tratamiento,
+#                                                                             'id_paciente':id_paciente
+#                                                                             }
+#                     )
+
+
+def confirmar_tratamiento(request, id_tratamiento_asig):
+    resultado = PacienteTratamientoAsignado.objects.filter(id_tratamiento_asig=id_tratamiento_asig).update(estado='Realizado')
+    # guardar_historial_clinico(id_tratamiento_asig)
+    return redirect('/tratamiento/listar_tratamientos_pendientes/')
+
+# ------------- Pantallas de mensajes ------------------------------- #
+def preguntar_confirmacion(request,id_tratamiento_asig):
+    return render(request, 'mostrar_mensaje_confirmacion.html', {
+                                                                'id_tratamiento_asig':id_tratamiento_asig,
+                                                                }
                     )

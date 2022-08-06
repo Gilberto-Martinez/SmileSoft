@@ -1,0 +1,14 @@
+{%extends 'panel_control/base.html'%}
+
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+        {% if id_tratamiento_asig %}
+            <h3>¿Estas seguro confirmar la realización de este tratamiento?</h3>
+            <a class="btn btn-primary" href ="/tratamiento/confirmar_tratamientos/{{id_tratamiento_asig}}">Sí</a>
+            <a class= "btn btn-danger" href="/tratamiento/listar_tratamientos_pendientes/">Cancelar</a>
+        {% endif %}
+    </center>
+</form>
+{% endblock %}
