@@ -823,7 +823,7 @@ def editar_persona(request, numero_documento):
 
     return render(request, "editar_persona.html", data)
 
-###
+
 # @permission_required('gestion_administrativo.editar_antecedente', login_url="/panel_control/error/",)
 def editar_antecedente(request, numero_documento):
     persona = Paciente.objects.get(numero_documento=numero_documento)
@@ -842,6 +842,9 @@ def editar_antecedente(request, numero_documento):
         else:
             messages.error(request, "No se ha realizado su cambio")
             print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
+            
+        
+
 
     return render(request, "editar_antecedente.html", data)
 ###
