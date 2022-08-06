@@ -24,6 +24,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, DetailView
 from gestion_administrativo.models import PacienteTratamientoAsignado
 from gestion_administrativo.forms import *
+from gestion_historial_clinico.views import guardar_historial_clinico
 
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
@@ -104,7 +105,7 @@ def listar_tratamientos_pendientes(request):
     tratamientos_pendientes = []
 
     for tratamiento_conf in tratamientos_conf:
-        id_tratamiento = tratamiento_conf.get_id_tratamiento()
+        id_tratamiento_asig = tratamiento_conf.get_id_tratamiento()
         paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
         persona = Persona.objects.get(numero_documento=paciente.numero_documento)
         numero_documento = persona.numero_documento
@@ -113,7 +114,7 @@ def listar_tratamientos_pendientes(request):
         tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_conf.get_tratamiento())
         nombre_tratamiento = tratamiento.nombre_tratamiento
         tratamiento_pendiente = {
-                                'id_tratamiento':id_tratamiento,
+                                'id_tratamiento_asig':id_tratamiento_asig,
                                 'numero_documento':numero_documento,
                                 'nombre':nombre,
                                 'apellido':apellido,
@@ -316,10 +317,14 @@ class InsumoAsignado(UpdateView):
 #                     )
 
 
-def confirmar_tratamiento(id_tratamiento):
-    resultado = PacienteTratamientoAsignado.objects.filter(id=id_tratamiento).update(estado='Confirmado')
+def confirmar_tratamiento(request, id_tratamiento_asig):
+    resultado = PacienteTratamientoAsignado.objects.filter(id_tratamiento_asig=id_tratamiento_asig).update(estado='Realizado')
+    # guardar_historial_clinico(id_tratamiento_asig)
     return redirect('/tratamiento/listar_tratamientos_pendientes/')
 
 # ------------- Pantallas de mensajes ------------------------------- #
-def preguntar_confirmacion(request,id_tratamiento):
-    return render(request, 'mostrar_mensaje_confirmacion.html', {'id_tratamiento':id_tratamiento})
+def preguntar_confirmacion(request,id_tratamiento_asig):
+    return render(request, 'mostrar_mensaje_confirmacion.html', {
+                                                                'id_tratamiento_asig':id_tratamiento_asig,
+                                                                }
+                    )
