@@ -83,7 +83,7 @@ def listar_tratamiento_asignado(request, cedula):
     id_paciente_tratamiento = ''
     for tratamiento in listado_tratamientos:
         if str(tratamiento.get_paciente()) == str(cedula) and tratamiento.get_estado() == 'Pendiente':
-            id_paciente_tratamiento = tratamiento.id
+            id_paciente_tratamiento = tratamiento.id_tratamiento_asig
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             precio_total = precio_total + nuevo_tratamieto.precio
