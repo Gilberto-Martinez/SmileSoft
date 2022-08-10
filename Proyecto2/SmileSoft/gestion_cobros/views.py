@@ -16,7 +16,7 @@ def cobrar_tratamiento(request, cedula):
     id_paciente_tratamiento = ''
     for tratamiento in listado_tratamientos:
         if str(tratamiento.get_paciente()) == str(cedula):
-            id_paciente_tratamiento = tratamiento.id
+            id_paciente_tratamiento = tratamiento.id_tratamiento_asig
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             precio_total = precio_total + nuevo_tratamieto.precio
