@@ -1,5 +1,5 @@
 from asyncio.windows_events import NULL
-from gestion_historial_clinico.models import HistorialClinico
+from gestion_historial_clinico.models import *
 from gestion_administrativo.models import Paciente, PacienteTratamientoAsignado
 
 

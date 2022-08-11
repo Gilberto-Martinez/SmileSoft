@@ -68,23 +68,6 @@ class PacienteList(ListView):
         self.object_list = self.get_queryset()
         context = self.get_context_data()
         return self.render_to_response(context)
-    
-  
-
-class PacienteList2(ListView):
-    model = Paciente
-    template_name = 'listar_paciente2.html'
-    # @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))
-    # def dispatch(self, *args, **kwargs):
-    #     return super(PacienteList2, self).dispatch(*args, **kwargs)
-
-    def get(self, request, **kwargs):
-        # verificamos permisos
-        if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
-            return render(request, "panel_control/error.html")
-        self.object_list = self.get_queryset()
-        context = self.get_context_data()
-        return self.render_to_response(context)
 
 class EspecialistaSaludList(ListView):
     model = EspecialistaSalud
@@ -752,54 +735,6 @@ def modificar_persona_paciente(request, numero_documento):
 
     return render(request, "modificar_persona_paciente.html", data)
 
-
-# class PersonaPacienteUpdate(UpdateView):
-#     model = Persona
-#     second_model = Paciente
-#     template_name = 'modificar_persona_paciente.html'
-#     form_class = PacienteForm
-#     # second_form_class = PersonaPacienteUpdateForm
-#     # success_url = reverse_lazy('listar_paciente')
-
-#     def get_context_data(self, **kwargs):
-#         context = super(PersonaPacienteUpdate, self).get_context_data(**kwargs)
-#         cedula = self.kwargs.get('pk', 0)
-#         persona = Persona.objects.get(numero_documento=cedula)
-#         try:
-#             paciente = self.second_model.objects.get(numero_documento=cedula)
-#         except ObjectDoesNotExist:
-#             print("No existeeeeeeeeeeeeeeeeeeeeeeeeeeee en get_context")
-#             if 'form' not in context:
-#                 context['form'] = self.form_class()
-#         else:
-#             if 'form' not in context:
-#                 context['form'] = self.form_class(instance=paciente)
-#         context['persona'] = persona
-#         context['pk'] = cedula
-#         return context
-
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object
-#         num_documento = kwargs['pk']
-#         persona = Persona.objects.get(numero_documento=num_documento)
-#         try:
-#             paciente = self.second_model.objects.get(numero_documento=num_documento)
-#         except ObjectDoesNotExist:
-#             print("No existeeeeeeeeeeeeeeeeeeeeeeeeeeee en post")
-#             form = self.form_class(request.POST)
-#         else:
-#             form = self.form_class(request.POST, instance=paciente)
-#         if form.is_valid():
-#             paciente = form.save(commit=True)
-#             paciente.numero_documento = persona
-#             paciente.save()
-#             return redirect("/administrativo/modificar_persona/%s" %(num_documento))
-#         else:
-#             # if form2.evento == "Cedula ya existe":
-#             #     messages.error(request, form2.mensaje_error)
-#             print('NO ENTRAAAAA')
-#             return self.render_to_response(self.get_context_data(form=form, persona=persona))
-
 #  <----------------Exclusivo de Configuracion/ Paciente-------------------------------->
 
 def editar_persona(request, numero_documento):
@@ -847,7 +782,7 @@ def editar_antecedente(request, numero_documento):
 
 
     return render(request, "editar_antecedente.html", data)
-###
+
 #  <--------------------------------------------------------------------->
 
 
@@ -931,30 +866,6 @@ class EspecialidadUpdate(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
 
 
-# def modificar_funcionario(request, numero_documento):
-#     persona = Persona.objects.get(numero_documento=numero_documento)
-#     funcionario = Funcionario.objects.get(numero_documento=persona.numero_documento)
-#     success_url = reverse_lazy('correcto')
-
-#     data = {
-#         'form': PersonaForm(instance=persona),
-#         'form2': FuncionarioForm(instance=funcionario)
-#     }
-#     if request.method == 'POST':
-#         formulario = PersonaForm(
-#             data=request.POST, instance=persona, files=request.FILES)
-#         formulario2 = FuncionarioForm(
-#             data=request.POST, instance=funcionario, files=request.FILES)
-#         if formulario.is_valid() and formulario2.is_valid():
-#             formulario.save()
-#             formulario2.save()
-#             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
-#             data['mensaje'] = "Modificado correctamente"
-#         else:
-#             messages.error(request, "Contraseñas no coinciden")
-#             print("NO modifica")
-#     return HttpResponseRedirect(success_url)
-
 ############################### ELIMINACION ###################################
 class PersonaDelete(DeleteView):
     model = Persona
@@ -998,43 +909,10 @@ class EspecialidadDelete(DeleteView):
 
 ################################################################################
 ################################################################################
-@permission_required('gestion_administrativo.add_pacientetratamientoasignado', login_url="/panel_control/error/",)
+# @permission_required('gestion_administrativo.add_pacientetratamientoasignado', login_url="/panel_control/error/",)
 
-################################################################################
-################################################################################
-def asignar_tratamiento (request, numero_documento):
-    # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
-    paciente = Paciente.objects.get(numero_documento=numero_documento)
-    data= {
-        'form' : PacienteAsignadoForm(instance=paciente),
-        'object' : Persona.objects.get(numero_documento=numero_documento)
-    }
-    persona = Persona.objects.get(numero_documento=numero_documento)
-    if request.method== "POST":
-        form= PacienteAsignadoForm(data = request.POST, instance=paciente,files= request.FILES)
-        if form.is_valid():
-            form.save()
-            # form.save_m2m()
-            data["mensaje"]="Tratamiento asignado correctamente"
-            messages.success(request, (
-                'Agregado correctamente!'))
-            # return HttpResponseRedirect(success_url)
-        else:
-            data["form"]=form
-            data['object']=persona
-            print('NO ENTRAAAAA')
-            
-    return render(request,"asignar_tratamiento.html",data)
-
-
-############################################################################################################3
-class TratamientoAsignadoCreate(CreateView):
-    model = Paciente
-    second_model = Persona
-    template_name = 'asignar_tratamiento.html'
-    form_class = PacienteAsignadoForm
-    second_form_class = PersonaUpdateForm
-    success_url = reverse_lazy('listar_paciente2')
+# ################################################################################
+# ################################################################################
 # def asignar_tratamiento (request, numero_documento):
 #     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
 #     paciente = Paciente.objects.get(numero_documento=numero_documento)
@@ -1042,65 +920,98 @@ class TratamientoAsignadoCreate(CreateView):
 #         'form' : PacienteAsignadoForm(instance=paciente),
 #         'object' : Persona.objects.get(numero_documento=numero_documento)
 #     }
-    def get_context_data(self, **kwargs):
-        context = super(TratamientoAsignadoCreate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk', 0)
-        paciente = self.model.objects.get(id_paciente=pk)
-        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
-
-        if 'form' not in context:
-            context['form'] = self.form_class()
-        if 'form2' not in context:
-            context['form2'] = self.second_form_class(instance=persona)
-        context['id_paciente'] = pk
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        id_pac = kwargs['pk']
-        paciente = self.model.objects.get(id_paciente=id_pac)
-        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
-        form = self.form_class(request.POST, instance=paciente)
-        form2 = self.second_form_class(request.POST, instance=persona)
-        if form.is_valid():
-            form.save()
-            #form2.save()
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return HttpResponseRedirect(self.get_success_url())
+#     persona = Persona.objects.get(numero_documento=numero_documento)
+#     if request.method== "POST":
+#         form= PacienteAsignadoForm(data = request.POST, instance=paciente,files= request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             # form.save_m2m()
+#             data["mensaje"]="Tratamiento asignado correctamente"
+#             messages.success(request, (
+#                 'Agregado correctamente!'))
+#             # return HttpResponseRedirect(success_url)
+#         else:
+#             data["form"]=form
+#             data['object']=persona
+#             print('NO ENTRAAAAA')
+            
+#     return render(request,"asignar_tratamiento.html",data)
 
 
-class TratamientoAsignadoUpdate(UpdateView):
-    model = Paciente
-    second_model = Persona
-    template_name = 'modificar_tratamiento_asignado.html'
-    form_class = PacienteAsignadoForm
-    second_form_class = PersonaUpdateForm
-    # success_url = reverse_lazy('listar_paciente')
-    def get_context_data(self, **kwargs):
-        context = super(TratamientoAsignadoUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk', 0)
-        paciente = self.model.objects.get(id_paciente=pk)
-        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+############################################################################################################3
+# class TratamientoAsignadoCreate(CreateView):
+#     model = Paciente
+#     second_model = Persona
+#     template_name = 'asignar_tratamiento.html'
+#     form_class = PacienteAsignadoForm
+#     second_form_class = PersonaUpdateForm
+#     success_url = reverse_lazy('listar_paciente2')
+# # def asignar_tratamiento (request, numero_documento):
+# #     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
+# #     paciente = Paciente.objects.get(numero_documento=numero_documento)
+# #     data= {
+# #         'form' : PacienteAsignadoForm(instance=paciente),
+# #         'object' : Persona.objects.get(numero_documento=numero_documento)
+# #     }
+#     def get_context_data(self, **kwargs):
+#         context = super(TratamientoAsignadoCreate, self).get_context_data(**kwargs)
+#         pk = self.kwargs.get('pk', 0)
+#         paciente = self.model.objects.get(id_paciente=pk)
+#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
 
-        if 'form' not in context:
-            context['form'] = self.form_class()
-        if 'form2' not in context:
-            context['form2'] = self.second_form_class(instance=persona)
-        context['id_paciente'] = pk
-        return context
+#         if 'form' not in context:
+#             context['form'] = self.form_class()
+#         if 'form2' not in context:
+#             context['form2'] = self.second_form_class(instance=persona)
+#         context['id_paciente'] = pk
+#         return context
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        id_pac = kwargs['pk']
-        paciente = self.model.objects.get(id_paciente=id_pac)
-        persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
-        cedula = paciente.numero_documento
-        form = self.form_class(request.POST, instance=paciente)
-        form2 = self.second_form_class(request.POST, instance=persona)
-        if form.is_valid():
-            form.save()
-            #form2.save()
-            return redirect("/tratamiento/listar_tratamientos_asignados/%s"%(cedula))
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object
+#         id_pac = kwargs['pk']
+#         paciente = self.model.objects.get(id_paciente=id_pac)
+#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+#         form = self.form_class(request.POST, instance=paciente)
+#         form2 = self.second_form_class(request.POST, instance=persona)
+#         if form.is_valid():
+#             form.save()
+#             #form2.save()
+#             return HttpResponseRedirect(self.get_success_url())
+#         else:
+#             return HttpResponseRedirect(self.get_success_url())
+
+
+# class TratamientoAsignadoUpdate(UpdateView):
+#     model = Paciente
+#     second_model = Persona
+#     template_name = 'modificar_tratamiento_asignado.html'
+#     form_class = PacienteAsignadoForm
+#     second_form_class = PersonaUpdateForm
+#     # success_url = reverse_lazy('listar_paciente')
+#     def get_context_data(self, **kwargs):
+#         context = super(TratamientoAsignadoUpdate, self).get_context_data(**kwargs)
+#         pk = self.kwargs.get('pk', 0)
+#         paciente = self.model.objects.get(id_paciente=pk)
+#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+
+#         if 'form' not in context:
+#             context['form'] = self.form_class()
+#         if 'form2' not in context:
+#             context['form2'] = self.second_form_class(instance=persona)
+#         context['id_paciente'] = pk
+#         return context
+
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object
+#         id_pac = kwargs['pk']
+#         paciente = self.model.objects.get(id_paciente=id_pac)
+#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+#         id_paciente = paciente.id_paciente
+#         form = self.form_class(request.POST, instance=paciente)
+#         form2 = self.second_form_class(request.POST, instance=persona)
+#         if form.is_valid():
+#             form.save()
+#             #form2.save()
+#             return redirect("/tratamiento/listar_tratamientos_asignados/%s"%(id_paciente))
+#         else:
+#             return self.render_to_response(self.get_context_data(form=form))

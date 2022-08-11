@@ -43,4 +43,4 @@ admin.site.site_header = 'Bienvenido a Smilesoft'
 admin.site.site_title = 'SmileSoft'
 # Register your models here.
 #admin.site.register(AntecedenteClinico, AdminAntecedenteClinico)
-admin.site.register(HistorialClinico)
+# admin.site.register(HistorialClinico)

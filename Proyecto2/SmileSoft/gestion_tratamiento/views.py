@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from django.shortcuts import redirect, render
 
 # Create your views here.
@@ -47,6 +48,22 @@ def agregar_tratamiento (request):
             print('NO ENTRAAAAA')
             
     return render(request,"tratamiento/agregar_tratamiento.html",data)
+#------------------------ Lista de pacientes para asignación de tratamientos -----------------------
+class PacienteList2(ListView):
+    model = Paciente
+    template_name = 'listar_paciente2.html'
+    # @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))
+    # def dispatch(self, *args, **kwargs):
+    #     return super(PacienteList2, self).dispatch(*args, **kwargs)
+
+    def get(self, request, **kwargs):
+        # verificamos permisos
+        if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
+            return render(request, "panel_control/error.html")
+        self.object_list = self.get_queryset()
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
 
 # -----------------------------------------------------------------------------------------------
 # ***Vista de listar Tratamiento
@@ -66,34 +83,60 @@ def listar_tratamiento(request):
         
     return render (request,"tratamiento/listar_tratamientos.html",{'listado_tratamientos':listado_tratamientos})
 
-def listar_tratamiento_asignado(request, cedula):
+
+def asignar_tratamientos(request, id_paciente):
+    paciente = Paciente.objects.get(id_paciente=id_paciente)
+    data= {
+        'form' : PacienteAsignadoForm(instance=paciente),
+        'paciente': paciente
+    }
+    # persona = Persona.objects.get(numero_documento=numero_documento)
+    if request.method== "POST":
+        form= PacienteAsignadoForm(data = request.POST, instance=paciente,files= request.FILES)
+        if form.is_valid():
+            form.save()
+            # form.save_m2m()
+            data["mensaje"]="Tratamiento asignado correctamente"
+            messages.success(request, (
+                'Agregado correctamente!'))
+            return redirect("/tratamiento/listar_tratamientos_asignados/%s"%(id_paciente))
+        else:
+            data["form"]=form
+            data['paciente']=paciente
+    return render(request,"tratamiento/asignar_tratamiento.html",data)
+
+
+def listar_tratamiento_asignado(request, id_paciente):
     """
     Lista los tratamientos asigandos a un paciente en especifico. Muestra el precio de cada tratamiento.
     Además de eso la template correspondiente a esta función tiene lo siguiente:
         - La opción de Agregar mas tratamientos asigandos o eliminarlos.
         - Permite confirmar los tratamientos a fin de proceder al cobro de las mismas
     """
-    listado_tratamientos = PacienteTratamientoAsignado.objects.all()
-    persona = Persona.objects.get(numero_documento=cedula)
-    paciente = Paciente.objects.get(numero_documento=cedula)
-    id_paciente = paciente.id_paciente
-
+    listado_tratamientos_asig = PacienteTratamientoAsignado.objects.all()
+    paciente = Paciente.objects.get(id_paciente=id_paciente)
     tratamientos_asignados = []
     precio_total = 0
     id_paciente_tratamiento = ''
-    for tratamiento in listado_tratamientos:
-        if str(tratamiento.get_paciente()) == str(cedula) and tratamiento.get_estado() == 'Pendiente':
-            id_paciente_tratamiento = tratamiento.id_tratamiento_asig
-            cod_tratamiento = tratamiento.get_tratamiento()
+
+    for tratamiento_asig in listado_tratamientos_asig:
+        if str(tratamiento_asig.get_paciente()) == str(id_paciente) and tratamiento_asig.get_estado() == 'Pendiente':
+            print('pacienteeeeeeeee ',tratamiento_asig.get_paciente())
+            print('Estado de Tratamiento ',tratamiento_asig.get_estado())
+            id_paciente_tratamiento = tratamiento_asig.id_tratamiento_asig
+            cod_tratamiento = tratamiento_asig.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             precio_total = precio_total + nuevo_tratamieto.precio
             tratamientos_asignados.append(nuevo_tratamieto)
+
+    if tratamientos_asignados is NULL:
+        render(request, 'mensaje_sin_tratamientos_asignados.html')
 
     precio_total = '{:,}'.format(precio_total).replace(',','.')
 
     return render (request,"tratamiento/listar_tratamientos_asignados.html",{
                                                                             'tratamientos_asignados':tratamientos_asignados,
-                                                                            'persona':persona,
+                                                                            'paciente':paciente,
                                                                             'precio_total':precio_total,
                                                                             'id_paciente_tratamiento':id_paciente_tratamiento,
                                                                             'id_paciente':id_paciente

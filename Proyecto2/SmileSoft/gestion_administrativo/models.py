@@ -5,7 +5,6 @@ from django.template.defaultfilters import default
 from datetime import date, datetime
 import dateutil.relativedelta
 from dateutil.relativedelta import relativedelta
-from gestion_historial_clinico.models import HistorialClinico
 from gestion_administrativo.models import *
 from gestion_tratamiento.models import Tratamiento
 
@@ -212,12 +211,12 @@ class Paciente(models.Model):
                                             on_delete=models.PROTECT,
                                         )
     #TratamientosRealizados = models.ManyToManyField(Tratamiento, through='TratamientoRealizado')
-    id_historial_clinico = models.ForeignKey(
-                                            HistorialClinico,
-                                            on_delete=models.PROTECT, 
-                                            # default=0
-                                            null=True
-                                        )
+    # id_historial_clinico = models.ForeignKey(
+    #                                         HistorialClinico,
+    #                                         on_delete=models.PROTECT, 
+    #                                         # default=0
+    #                                         null=True
+    #                                     )
     enfermedad_base = models.TextField(max_length=500, verbose_name='Enfermedad de base (*)',null= True,blank=True)
     alergia = models.TextField(max_length=500,  verbose_name='Alergia (*)',null= True, blank=True)
     tolerancia_anestecia = models.BooleanField(verbose_name='¿Es tolerante al uso de Anestecia?', null= True, blank=True)
@@ -285,28 +284,66 @@ class PacienteTratamientoAsignado(models.Model):
         null=True,
         verbose_name='Tratamientos ConsulDent'
     )
-    P = 'Pendiente'
-    R = 'Realizado'
-    C = 'Confirmado'
-    ESTADOS = ((P, 'Pendiente'), (R, 'Realizado'), (C, 'Confirmado'))
-    estado = models.CharField(max_length=12, choices=ESTADOS, default='Pendiente')
 
     class Meta:
         db_table = 'PacienteTratamientoAsignado'
         verbose_name = 'Tratamieto Asignado al Paciente'
         verbose_name = 'Tratamietos del Paciente'
 
+    def __str__(self):
+        return self.id_tratamiento_asig
+
     def get_tratamiento(self):
         return str(self.tratamiento.get_codigo_tratamiento())
 
     def get_paciente(self):
-        return str(self.paciente)
+        return str(self.paciente.id_paciente)
 
     def get_estado(self):
         return str(self.estado)
 
     def get_id_tratamiento(self):
         return str(self.id_tratamiento_asig)
+
+
+class TratamientoConfirmado(models.Model):
+    id_tratamiento_conf = models.AutoField(primary_key=True)
+    paciente = models.ForeignKey(
+        Paciente, 
+        on_delete=models.CASCADE, 
+        blank=False, 
+        null=False,
+    )
+
+    tratamiento = models.ForeignKey(
+        Tratamiento,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=False,
+    )
+    P = 'Pendiente' # Al asignarlo un tratamiento al paciente
+    R = 'Realizado'# Al haberle realizado el tratamiento al paciente
+    C = 'Confirmado'# Una vez que el paciente paga por su tratamiento
+    ESTADOS = ((P, 'Pendiente'), (R, 'Realizado'), (C, 'Confirmado'))
+    estado = models.CharField(max_length=12, choices=ESTADOS, default='Pendiente')
+
+    class Meta:
+        db_table = 'TratamientoConfirmado'
+
+    def __str__(self):
+        return self.id_tratamiento_conf
+
+    def get_tratamiento(self):
+        return str(self.tratamiento.get_codigo_tratamiento())
+
+    def get_paciente(self):
+        return str(self.paciente.id_paciente)
+
+    def get_estado(self):
+        return str(self.estado)
+
+    def get_id_tratamiento(self):
+        return str(self.id_tratamiento_conf)
 
 
 #####################################################################
