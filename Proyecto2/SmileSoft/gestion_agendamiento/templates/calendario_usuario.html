@@ -82,7 +82,7 @@
                 <div class="card-body">
                         <center> 
                             
-                            <h2 <i class="bi bi-calendar"> Calendario| Citas</i> </h2>
+                            <h2 style="color:blue"> <i class="bi bi-calendar"> Agendamiento | Citas</i> </h2>
                         </center>
                 </div>
 
@@ -104,7 +104,7 @@
     <script src="{% static 'fullcalendar/lib/locales-all.js' %}"></script>
    <!--Scrip de los EVENTOS DE LAS CITAS DEL Calendario-->
     <script>
-        document.addEventListener('DOMContentLoaded', function(){
+        document.addEventListener('DOMContentLoaded', function (){
             var calendarEI = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEI,{
                 headerToolbar: {
@@ -116,15 +116,15 @@
                 events: [
                     {% for cita in object_list %}
                         {
-                            title: "{{ cita.hora}} hs| {{ cita.tratamiento_solicitado }} | {{cita.profesional}}| ",
+                            title: "{{ cita.hora}} hs| Reservado |",
                             start: '{{ cita.fecha | date:"Y-m-d" }}',
-                            url: '/agendamiento/usuario_changeCita/'+'{{ cita.id_cita }}'
+                            url: '/agendamiento/cita_vista/'+'{{ cita.id_cita }}' 
                            {% comment %}  end: '{{ reserva.fecha_vencimiento | date:"Y-m-d" }}', {% endcomment %}
                         },
                     {% endfor %}
                 ],
                
-                eventClick: function(event) {
+                eventClick: function (event) {
                 if (event.url){
                     window.open(event.url, "_blank");
                     return false;

@@ -257,20 +257,27 @@
                                                 Agendamiento</a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion 6.1 -->
-      
+                                                  <li><a class="dropdown-item" href="/agendamiento/calendario_usuario">
+                                                        <strong  style="color:blue; font-size:16px;" >
+                                                                • Calendario 
+                                                        </strong></li></a>
+                                                  {%if perms.gestion_agendamiento.add_cita%}
+                                                  <li><a class="dropdown-item" href="/agendamiento/usuario_addCita/{{user.numero_documento}}">• Agendar una cita </li></a>
+                                                  {% endif %}
+                                                  <hr>
+                                                  {%if perms.gestion_agendamiento.view_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/calendar">
-                                                    <strong  style="color:blue; font-size:16px;" >
-                                                           • Calendario
+                                                    <strong  style="color:black; font-size:16px;" >
+                                                           • Calendario del Odontólogo
                                                     </strong></li></a>
+                                                  {%endif%}
                                                   {%if perms.gestion_agendamiento.view_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Reservaciones de citas </li></a>
                                                   {% endif %}
                                                   {%if perms.gestion_agendamiento.view_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Listado | Reservar una cita</li></a>
                                                   {% endif %}
-                                                  {%if perms.gestion_agendamiento.add_cita%}
-                                                  <li><a class="dropdown-item" href="/agendamiento/usuario_addCita/{{user.numero_documento}}">• Agendar una cita </li></a>
-                                                  {% endif %}
+                                                  
                          
                                                   
                                                 </ul>
