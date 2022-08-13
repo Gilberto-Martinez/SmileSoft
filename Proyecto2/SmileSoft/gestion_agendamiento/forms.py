@@ -25,3 +25,20 @@ class CitaForm(forms.ModelForm):
         ]
     
       
+class CitaUsuario(forms.ModelForm):
+    fecha = forms.DateField(
+        label='Fecha de consulta: ', widget=forms.NumberInput(attrs={'type': 'date', 'readonly': True}))
+    
+    hora = forms.TimeField(label='Hora de cita: ',
+                           widget=forms.TimeInput(attrs={'type': 'time', 'readonly': True}))
+
+    class Meta:
+        model= Cita
+        fields= [
+                'tratamiento_solicitado',
+                'fecha',
+                'hora',
+                'profesional'
+        ]
+    
+      

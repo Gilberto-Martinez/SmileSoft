@@ -1,3 +1,7 @@
+from django.utils.html import conditional_escape as esc
+from itertools import groupby
+from datetime import date
+from calendar import HTMLCalendar
 from ctypes.wintypes import PCHAR
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -130,7 +134,7 @@ def mis_citas_lista(request, numero_documento):
     return render(request, "mis_citas.html", {'mis_citas': mis_citas})
 
 
-# @permission_required('gestion_agendamiento.cambiarCita_usuario', login_url="/panel_control/error/",)
+ # @permission_required('gestion_agendamiento.cambiarCita_usuario', login_url="/panel_control/error/",)
 def cambiarCita_usuario(request, id_cita):
 #enproceso
     cita = Cita.objects.get(id_cita=id_cita)
@@ -141,11 +145,9 @@ def cambiarCita_usuario(request, id_cita):
     nro_documento=ci_user.numero_documento
     persona_user=ci_user.usuario
     # user = Usuario.objects.filter(usuario=request.user.usuario)
-    # cedula_user=user.usuario
-            
-   
+    # cedula_user=user.usuario    
     nombre = persona.nombre + ' ' + persona.apellido
-
+    
     data = {
         'form': CitaForm(instance=cita),
         'persona': persona,
@@ -161,17 +163,17 @@ def cambiarCita_usuario(request, id_cita):
         
         if formulario.is_valid():
             # user = Usuario.objects.filter(usuario=request.user.usuario)
-            if persona_user == request.user.usuario:
+            # if persona_user == request.user.usuario:
                 print('-------------------AQUI', persona_user,request.user.usuario)
                 formulario.save()
-                messages.success(request, (
-                            '✅ Su cita ha sido modificada'))
+                # messages.success(request, (
+                #             '✅ Su cita ha sido modificada'))
                     
-                return render(request, "calendario.html")
-            else:
-                messages.info(
-                       request, "⚠️No está permitido modificar otra cita, que no sea la suya")
-                return render(request, "panel_control/error.html")
+                return redirect("/agendamiento/calendario_mensaje/")
+            # else:
+            #     messages.info(
+            #            request, "⚠️No está permitido modificar otra cita, que no sea la suya")
+            #     return render(request, "panel_control/error.html")
         
         else:
                 messages.error(request, (
@@ -181,7 +183,7 @@ def cambiarCita_usuario(request, id_cita):
         # else:
         #     return render(request, "panel_control/error.html")
 
-    return render(request, "usuario_changeCita.html", data)
+    return render(request, "usuario_changeCita.html", data) 
 
 
 # <--Modificar cita-->
@@ -276,3 +278,54 @@ def listar_cita(request):
         'listado_cita': listado_cita,
     }
     )
+
+
+#<-- -->
+# "calendario_usuario.html"
+
+class CalendarioUsuario(LoginMixin, ListView):
+    model = Cita
+    template_name = 'calendario_usuario.html'
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(
+            estado=True)
+        return queryset
+
+#<--Vista intermedia usado para restringir accesos-->
+def cita_vista(request, id_cita):
+    #enproceso
+    cita = Cita.objects.get(id_cita=id_cita)
+    cedula = cita.paciente
+    persona = Persona.objects.get(numero_documento=cedula)
+    ci_persona = persona.numero_documento
+    ci_user = Usuario.objects.get(numero_documento=ci_persona)
+    nro_documento = ci_user.numero_documento
+    persona_user = ci_user.usuario
+    # user = Usuario.objects.filter(usuario=request.user.usuario)
+    # cedula_user=user.usuario
+
+    nombre = persona.nombre + ' ' + persona.apellido
+
+    data = {
+        'form': CitaUsuario(instance=cita),
+        'persona': persona,
+        'id_cita': id_cita,
+        'ci_user': ci_user,
+        'nro_documento': nro_documento,
+        # 'cedula_user':cedula_user
+
+    }
+    if persona_user == request.user.usuario:
+        print ("es el id_ del usuario", id_cita)
+        return redirect("/agendamiento/usuario_changeCita/%s"%(id_cita))
+        # 
+        # return render(request, "usuario_changeCita.html", data) 
+    else:
+        return render(request, "cita_vista.html", data)
+
+
+def calendario_mensaje (request):
+    return render (request, "calendario_mensaje.html")
+
+
