@@ -7,7 +7,7 @@ from gestion_tratamiento.models import Tratamiento
 
 class HistorialClinico(models.Model):
     id_historial_clinico = models.AutoField(primary_key=True)
-    codigo_tratamiento = models.ForeignKey(
+    tratamiento = models.ForeignKey(
                                             Tratamiento, 
                                             null=False, 
                                             blank=False, 

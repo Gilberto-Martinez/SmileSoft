@@ -1,15 +1,15 @@
-from asyncio.windows_events import NULL
+from gestion_administrativo.models import TratamientoConfirmado
 from gestion_historial_clinico.models import *
-from gestion_administrativo.models import Paciente, PacienteTratamientoAsignado
+from gestion_administrativo.models import Paciente
 
 
-def guardar_historial_clinico(id_tratamiento_asig):
-    tratamiento_asig = PacienteTratamientoAsignado.objects.get(id_tratamiento_asig=id_tratamiento_asig)
-    paciente_id = tratamiento_asig.get_paciente()
-    tratamiento = tratamiento_asig.get_tratamiento()
+def guardar_historial_clinico(id_tratamiento_conf):
+    tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
+    paciente_id = tratamiento_conf.get_paciente()
+    tratamiento_id = tratamiento_conf.get_tratamiento()
+    tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_id)
 
     paciente = Paciente.objects.get(id_paciente=paciente_id)
 
-    if paciente.id_historial_clinico is NULL:
-        print("El historial es nulo")
-        # HistorialClinico.objects.create()
+    HistorialClinico.objects.create(tratamiento=tratamiento, paciente=paciente)
+

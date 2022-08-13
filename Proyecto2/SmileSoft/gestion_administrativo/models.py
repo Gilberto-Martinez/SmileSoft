@@ -299,9 +299,6 @@ class PacienteTratamientoAsignado(models.Model):
     def get_paciente(self):
         return str(self.paciente.id_paciente)
 
-    def get_estado(self):
-        return str(self.estado)
-
     def get_id_tratamiento(self):
         return str(self.id_tratamiento_asig)
 
@@ -321,11 +318,10 @@ class TratamientoConfirmado(models.Model):
         blank=False,
         null=False,
     )
-    P = 'Pendiente' # Al asignarlo un tratamiento al paciente
     R = 'Realizado'# Al haberle realizado el tratamiento al paciente
     C = 'Confirmado'# Una vez que el paciente paga por su tratamiento
-    ESTADOS = ((P, 'Pendiente'), (R, 'Realizado'), (C, 'Confirmado'))
-    estado = models.CharField(max_length=12, choices=ESTADOS, default='Pendiente')
+    ESTADOS = ((R, 'Realizado'), (C, 'Confirmado'))
+    estado = models.CharField(max_length=12, choices=ESTADOS, default='Confirmado')
 
     class Meta:
         db_table = 'TratamientoConfirmado'

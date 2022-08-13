@@ -100,12 +100,12 @@
                     </table>
                     <div class="d-flex justify-content-center">
                         {%if tratamientos_asignados%}
-                        <a type="submit" href="/tratamiento/asignar_tratamientos/{{id_paciente}}" class="btn btn-primary btn-block txt-white">
+                        <a type="submit" href="/tratamiento/asignar_tratamientos/{{paciente.id_paciente}}" class="btn btn-primary btn-block txt-white">
                             <i class="bi bi-plus-circle"></i>
                             Agregar
                         </a>
                         &nbsp;
-                        <a type="submit" href="/cobros/cobrar_tratamiento/{{persona.numero_documento}}" class="btn btn-success btn-block txt-white">
+                        <a type="submit" href="/cobros/cobrar_tratamiento/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
                             <i class="bi bi-check2-square"></i>
                             Confirmar todos
                         </a>

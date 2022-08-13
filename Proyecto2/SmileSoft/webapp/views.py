@@ -380,15 +380,13 @@ class UsuarioView(LoginMixin, View):
 # @permission_required('webapp.eliminar_usuario', login_url="/panel_control/error/",)
 def eliminar_usuario(request, usuario):
     try:
-        usuarios = Usuario.objects.get(usuario=usuario)
-        usuarios.delete()
-        listado_usuarios = Usuario.objects.all()
+        usuario = Usuario.objects.get(usuario=usuario)
+        usuario.delete()
         #print ("usuario eliminado",{'listado_usuarios': listado_usuarios})
        # print("ESTA ES LA LISTA: ->",  context={'listado_usuarios': listado_usuarios})
         messages.success(request, "Eliminado")
         #messages.error(request, 'Este usuario ha sido eliminado ..!')
-        return render(request, "usuario/listar_usuario.html", {'listado_usuarios': listado_usuarios})
-        # return redirect(to="listar_usuario")
+        return redirect( "/listar_usuario/")
     except Usuario.DoesNotExist:
         message.error(request, "El usuario que quiere eliminar ya no existe")
         raise Http404(
