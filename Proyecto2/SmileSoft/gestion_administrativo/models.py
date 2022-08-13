@@ -211,11 +211,10 @@ class Paciente(models.Model):
                                             on_delete=models.PROTECT,
                                         )
     #TratamientosRealizados = models.ManyToManyField(Tratamiento, through='TratamientoRealizado')
-    # id_historial_clinico = models.ForeignKey(
-    #                                         HistorialClinico,
-    #                                         on_delete=models.PROTECT, 
-    #                                         # default=0
-    #                                         null=True
+    # historial_clinico = models.ManyToManyField(
+    #                                         Tratamiento, 
+    #                                          through='HistorialClinico',
+    #                                          related_name='paciente_historial_set'
     #                                     )
     enfermedad_base = models.TextField(max_length=500, verbose_name='Enfermedad de base (*)',null= True,blank=True)
     alergia = models.TextField(max_length=500,  verbose_name='Alergia (*)',null= True, blank=True)

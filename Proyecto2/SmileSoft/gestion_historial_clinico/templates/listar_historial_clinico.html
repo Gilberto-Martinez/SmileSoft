@@ -1,0 +1,39 @@
+{%extends 'panel_control/base.html'%}
+
+{% block content %}
+	<div class="container">
+		<div class="card">
+			<div class="card-body">
+				<center>
+                    <h2>
+                        <i class="bi-person-lines-fill">
+                            Historial clinico de {{paciente.numero_documento.nombre}} {{paciente.numero_documento.apellido}}
+                        </i>
+                    </h2> 
+                </center>
+		        <br>
+		        <br>
+		        <table class="table table-striped table-hover">
+			        <thead style="border: 1cm;">
+				        <tr>
+					        <th>Número</th>
+					        <th>Tratamiento realizado</th>
+					        <th>Fecha de realización</th>
+				        </tr>	
+			        </thead>
+			        <tbody>
+				        {% if historial %}
+				            {% for h in historial %}
+				                <tr>
+					                <td >{{forloop.counter}}</td>
+					                <td>{{ h.tratamiento.nombre_tratamiento }}</td>
+					                <td>{{ h.fecha_realizacion }}</td>
+				                </tr>
+				            {% endfor %}
+				        {% endif %}
+			        </tbody>
+		        </table> 
+			</div>
+		</div>
+	</div>
+{% endblock%}
