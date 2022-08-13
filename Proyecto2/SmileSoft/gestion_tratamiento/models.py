@@ -28,6 +28,8 @@ class Tratamiento(models.Model):
     def get_codigo_tratamiento(self):
         return str(self.codigo_tratamiento)
 
+
+
 class TratamientoInsumo(models.Model):
     tratamiento = models.ForeignKey(
                                     Tratamiento,

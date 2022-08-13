@@ -22,7 +22,7 @@
                 </center>
                     <center>
                         <h4>
-                            <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}}</i>
+                            <b>Paciente:</b> <i>{{paciente.numero_documento.nombre}} {{paciente.numero_documento.apellido}}</i>
                         </h4>
                     </center>
 
@@ -52,7 +52,7 @@
                                             <!-- Eliminar-->
                                             {%if perms.gestion_tratamiento.delete_tratamiento%}
                                                 <td>
-                                                    <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{persona.numero_documento}}" class="btn btn-danger btnEliminacion">
+                                                    <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
                                                         <i class="bi-trash" ></i> 
                                                         Eliminar
                                                     </a>
@@ -100,18 +100,18 @@
                     </table>
                     <div class="d-flex justify-content-center">
                         {%if tratamientos_asignados%}
-                        <a type="submit" href="/administrativo/modificar_tratamiento_asignado/{{id_paciente}}" class="btn btn-primary btn-block txt-white">
+                        <a type="submit" href="/tratamiento/asignar_tratamientos/{{paciente.id_paciente}}" class="btn btn-primary btn-block txt-white">
                             <i class="bi bi-plus-circle"></i>
                             Agregar
                         </a>
                         &nbsp;
-                        <a type="submit" href="/cobros/cobrar_tratamiento/{{persona.numero_documento}}" class="btn btn-success btn-block txt-white">
+                        <a type="submit" href="/cobros/cobrar_tratamiento/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
                             <i class="bi bi-check2-square"></i>
                             Confirmar todos
                         </a>
                         {%endif%}
                         &nbsp;
-                        <a href="/tratamiento/listar_paciente2/" class="btn btn-secondary"  >
+                        <a onclick = "history.back()" class="btn btn-secondary"  >
                             <i class="bi-x-circle"></i> 
                             Atras
                         </a>

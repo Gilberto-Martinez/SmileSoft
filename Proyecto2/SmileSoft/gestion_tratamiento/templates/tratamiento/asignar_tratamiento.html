@@ -11,7 +11,7 @@
                     {%csrf_token%}
                         {%if mensaje%}
                             <div class="alert alert-success" role="alert">
-                                  ✅ Modificado exitosamente
+                                  ✅ Asignado exitosamente
                             </div>
                         {%endif%}
                         <br>
@@ -19,7 +19,7 @@
                             <h5>
                                 <b>Paciente:</b> <i><td>{{ paciente.numero_documento.nombre }} {{paciente.numero_documento.apellido}}</td></i>
                             </h5>
-                        </Center>
+                        </CEnter>
                     <div style="margin: 20px;" >
                         <table>
                             <div class="form-group">
@@ -34,15 +34,10 @@
                             <i class="bi-save"></i>
                             Guardar
                         </button>
-                        <!-- &nbsp; -->
-                        <a href="/tratamiento/listar_paciente2/" class="btn btn-secondary" style="margin: 10px;">
+                        <a onclick="history.back()" class="btn btn-danger" style="margin: 10px;">
                             <i class="bi-x-circle"></i>
-                            Cancelar
+                            Atras
                         </a>
-                        <!-- <a href="/roles/listar_roles/ " class="btn btn-danger" style="margin: 10px;">
-                            <i class="bi-x-circle"></i>
-                            Cancelar
-                        </a> -->
                     </div>
                     <hr>
                 </form>

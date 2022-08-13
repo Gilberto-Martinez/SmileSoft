@@ -1,0 +1,25 @@
+{%extends 'panel_control/base.html'%}
+
+
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <div class="col-1 col-md-6 offset-md-3">
+        <!-- <div class="card"> -->
+            <!-- <div class="card-body"> -->
+                <br>
+                {%if id_tratamiento_conf%}
+                <center>
+                    <h3>¿Estas seguro que quieres confirmar <br>
+                        la realización de este tratamiento?</h3>
+                    <br>
+                    <a class="btn btn-primary" href ="/tratamiento/confirmar_tratamientos/{{id_tratamiento_conf}}">Estoy seguro</a>
+                    <a class= "btn btn-danger" href="/tratamiento/listar_tratamientos_pendientes/">Cancelar</a>
+                </center>
+                {%endif%}
+                <br>
+            <!-- </div> -->
+        <!-- </div> -->
+    </div>
+</form>
+{% endblock %}

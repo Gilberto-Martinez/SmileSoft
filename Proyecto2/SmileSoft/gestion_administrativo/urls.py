@@ -38,6 +38,6 @@ urlpatterns = [
             path('eliminar_especialidad/<int:pk>', EspecialidadDelete.as_view(),  name="eliminar_especialidad"),
             path('correcto', SuccessView.as_view(),  name="correcto"),
             path('mensaje_error/', SuccessError.as_view(),  name="mensaje_error"),
-            path('asignar_tratamiento/<int:pk>', TratamientoAsignadoCreate.as_view(), name="asignar_tratamiento"),
-            path('modificar_tratamiento_asignado/<int:pk>', TratamientoAsignadoUpdate.as_view(), name="modificar_tratamiento_asignado"),
+            # path('asignar_tratamiento/<int:pk>', TratamientoAsignadoCreate.as_view(), name="asignar_tratamiento"),
+            # path('modificar_tratamiento_asignado/<int:pk>', TratamientoAsignadoUpdate.as_view(), name="modificar_tratamiento_asignado"),
 ]

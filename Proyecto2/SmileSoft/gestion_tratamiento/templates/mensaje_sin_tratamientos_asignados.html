@@ -1,0 +1,27 @@
+{%extends 'panel_control/base.html'%}  
+
+{%load static%}
+
+
+{%block content%}
+ 
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <center>
+                    <h5>
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <i>El paciente no tiene tratamientos asignados</i> 
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </h5>
+                </center>
+                <a href="/tratamiento/listar_paciente2/" class="btn btn-secondary"  >
+                    <i class="bi-x-circle"></i> 
+                    Atras
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+{%endblock%}

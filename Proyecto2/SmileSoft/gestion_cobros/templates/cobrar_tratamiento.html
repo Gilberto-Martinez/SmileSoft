@@ -56,12 +56,18 @@
                                 {%else%}
                                     <br>
                                     <br>
-                                    <br>
                                     <center>
                                         <h5>
                                             <i class="bi bi-exclamation-triangle-fill"></i>
                                             <i>El paciente no tiene tratamientos asignados</i> 
                                             <i class="bi bi-exclamation-triangle-fill"></i>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <a href="/tratamiento/listar_paciente2/" type="submit" class="btn btn-danger">
+                                                <i class="bi bi-check2-square"></i>
+                                                OK
+                                            </a>
                                         </h5>
                                     </center>
                                 {%endif%}
@@ -91,12 +97,12 @@
                             <i class="bi bi-check2-square"></i>
                             Cobrar
                         </a>
-                        {%endif%}
                         &nbsp;
-                        <a href="/tratamiento/listar_tratamientos_asignados/{{persona.numero_documento}}" class="btn btn-danger"  >
+                        <a href="/tratamiento/listar_tratamientos_asignados/{{id_paciente}}" class="btn btn-danger"  >
                             <i class="bi-x-circle"></i> 
                             Cancelar
                         </a>
+                        {%endif%}
                     </div>
                 </table>
             <!--end TABLA-->

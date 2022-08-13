@@ -1,21 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
+from gestion_administrativo.models import TratamientoConfirmado
 from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento
-import gestion_administrativo.models
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, Paciente
 
-def cobrar_tratamiento(request, cedula):
+def cobrar_tratamiento(request, id_paciente):
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
+    paciente = Paciente.objects.get(id_paciente=id_paciente)
+    cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
-    # paciente = Paciente.objects.get(numero_documento=cedula)
     # id_paciente = paciente.id_paciente
 
     tratamientos_asignados = []
     precio_total = 0
     id_paciente_tratamiento = ''
     for tratamiento in listado_tratamientos:
-        if str(tratamiento.get_paciente()) == str(cedula):
+        if str(tratamiento.get_paciente()) == str(id_paciente):
             id_paciente_tratamiento = tratamiento.id_tratamiento_asig
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
@@ -33,7 +34,8 @@ def cobrar_tratamiento(request, cedula):
                                                         'persona':persona,
                                                         'precio_total':precio_total,
                                                         'id_paciente_tratamiento':id_paciente_tratamiento,
-                                                        'menor_edad':menor_edad
+                                                        'menor_edad':menor_edad,
+                                                        'id_paciente':id_paciente
                                                     }
                     )
 
@@ -43,12 +45,15 @@ def registrar_cobro(request, numero_documento):
     nombre = str(persona.nombre)+" "+str(persona.apellido)
     precio_total = obtener_precio_total(numero_documento)
 
-    cobro_contado = CobroContado.objects.create(
-                                        paciente=paciente,
-                                        numero_documento= numero_documento,
-                                        razon_social=nombre,
-                                        monto_total=precio_total
-    )
+    if precio_total>0:
+        cobro_contado = CobroContado.objects.create(
+                                            paciente=paciente,
+                                            numero_documento= numero_documento,
+                                            razon_social=nombre,
+                                            monto_total=precio_total
+        )
+    else:
+        return redirect("/cobros/error_cobro/")
 
     tratamientos_confirmados = obtener_tratamientos(numero_documento)
     detalle_cobro_nuevo = DetalleCobroContado.objects.create(
@@ -60,7 +65,7 @@ def registrar_cobro(request, numero_documento):
                                             tratamiento = tratamiento_conf
         )
     confirmar_tratamientos(numero_documento)
-    return render(request, "confirmar_cobro.html")
+    return redirect("/cobros/mensaje_confirmacion_cobro/")
 
 def obtener_tratamientos(cedula):
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
@@ -76,9 +81,10 @@ def obtener_tratamientos(cedula):
 def obtener_precio_total(cedula):
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
     precio_total = 0
+    paciente = Paciente.objects.get(numero_documento=cedula)
 
     for tratamiento in listado_tratamientos:
-        if str(tratamiento.get_paciente()) == str(cedula):
+        if str(tratamiento.get_paciente()) == str(paciente.id_paciente):
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             precio_total = precio_total + nuevo_tratamieto.precio
@@ -86,31 +92,35 @@ def obtener_precio_total(cedula):
 
 def confirmar_tratamientos(cedula):
     """ 
-    Cambia el estado de los tratamientos asignados a un paciente de la siguiente manera:
-        Una vez que se haya realizado el registro del cobro de los tratamientos cambia el
-        estados de estos a Confirmado, es decir, estado = Confirmado
+        Copia el/los registro/s de la tabla PacienteTratamientoAsignado a Tratamiento confirmado
+        con estado = confirmado
+        Luego elimina el/los registro/s en cuestión de la tabla PacienteTratamientoAsignado
     """
     paciente = Paciente.objects.get(numero_documento=cedula)
     id_paciente = paciente.id_paciente
-    listado_tratamientos = PacienteTratamientoAsignado.objects.all()
-    # tratamientos_asignados = []
+    listado_tratamientos_asig = PacienteTratamientoAsignado.objects.all()
 
-    for tratamiento in listado_tratamientos:
-        if str(tratamiento.get_paciente()) == str(cedula):
-            cod_tratamiento = tratamiento.get_tratamiento()
-            PacienteTratamientoAsignado.objects.filter(paciente = id_paciente,tratamiento = cod_tratamiento,).update(estado = 'Confirmado')
-            print("Se ejecuta")
-            print("Se ejecuta")
-            print("Se ejecuta")
-            print("Se ejecuta")
-            print("Se ejecuta")
-            # resultado = PacienteTratamientoAsignado.objects.update(
-            #                                                 paciente = id_paciente,
-            #                                                 tratamiento = cod_tratamiento,
-            #                                                 estado = 'Confirmado'
-        # )
+    for tratamiento_asig in listado_tratamientos_asig:
+        if str(tratamiento_asig.get_paciente()) == str(id_paciente):
+            tratatmiento_asign = tratamiento_asig.tratamiento
+            id_tratamiento_asig = tratamiento_asig.id_tratamiento_asig
+            # tratamiento = tratamiento_pagado.tratamiento
+            tratamiento_conf = TratamientoConfirmado.objects.create(
+                                                                    tratamiento = tratatmiento_asign,
+                                                                    paciente = paciente,
+                                                                    estado = 'Confirmado'
+            )
+            tratamiento_pagado = PacienteTratamientoAsignado.objects.filter(id_tratamiento_asig=id_tratamiento_asig).delete()
 
 #---------------------------------------------------------#
 class CobrosListView(ListView):
     model = CobroContado
     template_name = 'listar_cobro_contado.html'
+
+#------------------------ Vista de mensajes ----------------------------#
+class ErrorCobro(TemplateView):
+    template_name = "mensajes/error_cobro.html"
+
+class ConfirmacionCobro(TemplateView):
+    template_name = "mensajes/confirmar_cobro.html"
+
