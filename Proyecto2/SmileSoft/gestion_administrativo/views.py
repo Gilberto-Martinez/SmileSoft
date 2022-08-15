@@ -160,7 +160,7 @@ class PersonaCreate(CreateView):
         form4 = self.fourth_form_class(request.POST)
         if form.is_valid():
             persona = form.save()
-            if form2.is_valid(): # Si Formulario de Funcionario es valido
+            if form2.is_valid() and form2.has_changed(): # Si Formulario de Funcionario es valido
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
@@ -171,7 +171,7 @@ class PersonaCreate(CreateView):
             #     paciente.save()
             #     # messages.success(
                 #     request, " ✅Se ha agregado  correctamente")
-            if form4.is_valid():
+            if form4.is_valid() and form4.has_changed():
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
@@ -179,7 +179,7 @@ class PersonaCreate(CreateView):
             return HttpResponseRedirect(self.success_url)
         else:
             print("No entraaaaaaaaaaaaaaaaaaa")
-            messages.error('No ha ingresado los datos correctamente')
+            messages.error(request,'No ha ingresado los datos correctamente')
             return self.render_to_response(self.get_context_data(form=form, form2=form2, form4=form4))
 
 
@@ -423,7 +423,10 @@ class PacienteCreate(CreateView):
             data['mensaje'] = "Agregado correctamente"
             return HttpResponseRedirect(self.success_url)
         else:
-            print('NO ENTRA en form')
+            if not form.is_valid():
+                print('Formulario de paciente no valido')
+            if not form2.is_valid():
+                print('Formulario de persona no valido')
             messages.error(
                 request, "Ha ocurrido un error, vuelva a intentarlo")
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
@@ -552,7 +555,7 @@ class PersonaUpdate(UpdateView):
             print("*-----------------------------*")
             print("form es valido")
             persona = form.save()
-            if form2.is_valid():# Si el formulario de Funcionario es válido
+            if form2.is_valid() and form2.has_changed():# Si el formulario de Funcionario es válido
                 print("form2 es valido")
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
@@ -563,7 +566,7 @@ class PersonaUpdate(UpdateView):
             #     paciente = form3.save(commit=False)
             #     paciente.numero_documento = persona
             #     paciente.save()
-            if form4.is_valid(): # Si el formulario de Epecialista de salud es válido
+            if form4.is_valid() and form4.has_changed(): # Si el formulario de Epecialista de salud es válido
                 print("form4 es valido")
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
@@ -718,10 +721,16 @@ def modificar_persona_paciente(request, numero_documento):
         'persona' : persona
     }
     if request.method == 'POST':
-        form = PacienteForm(
-            data=request.POST, instance=paciente, files=request.FILES)
+        try:
+            paciente = Paciente.objects.get(numero_documento=numero_documento)
+        except ObjectDoesNotExist:
+            form = PacienteForm(
+            data=request.POST, files=request.FILES)
+        else:
+            form = PacienteForm(
+                data=request.POST, instance=paciente, files=request.FILES)
         if form.is_valid():
-            paciente = form.save(commit=True)
+            paciente = form.save(commit=False)
             paciente.numero_documento = persona
             paciente.save()
             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!", data)

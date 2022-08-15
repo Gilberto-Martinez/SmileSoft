@@ -18,8 +18,8 @@
 				        </tr>	
 			        </thead>
 			        <tbody>
-				        {% if lista_paciente_historial %}
-				            {% for paciente in lista_paciente_historial %}
+				        {% if lista_pacientes %}
+				            {% for paciente in lista_pacientes %}
 				                <tr>
 					                <td >{{forloop.counter}}</td>
 					                <td>{{ paciente.numero_documento }}</td>

@@ -18,24 +18,14 @@ def guardar_historial_clinico(id_tratamiento_conf):
 
 
 def listar_pacientes_historial(request):
-    lista_historial = HistorialClinico.objects.all()
-    lista_paciente_historial = []
-
+    lista_historial = HistorialClinico.objects.distinct('paciente')
+    lista_pacientes = []
     for historial in lista_historial:
-        respuesta = ' '
-        paciente = Paciente.objects.get(id_paciente=historial.paciente.id_paciente)
-        if not lista_paciente_historial: # Condición que comprueba si la lista está vacia
-            print('Es nulo')
-            lista_paciente_historial.append(paciente)
-        else:
-            for paciente_hist in lista_paciente_historial:
-                if paciente_hist.id_paciente != paciente.id_paciente:
-                    respuesta = 'DISTINTOS'
-            if respuesta == 'DISTINTOS':
-                lista_paciente_historial.append(paciente)
+        paciente = Paciente.objects.get(id_paciente=historial.paciente.get_id())
+        lista_pacientes.append(paciente)
 
     return render(request,'listar_pacientes_historial.html',{
-                                                            'lista_paciente_historial':lista_paciente_historial
+                                                            'lista_pacientes':lista_pacientes
                                                             }
             )
 
@@ -49,3 +39,14 @@ def listar_historial_clinico(request, id_paciente):
                                                             'paciente':paciente
                                                             }
             )
+
+def ver_mi_historial_clinico(request, numero_documento):
+    paciente = Paciente.objects.get(numero_documento=numero_documento)
+    historial = HistorialClinico.objects.filter(paciente=paciente)
+
+    return render(request, 'ver_historial_clinico.html',{
+                                                            'historial':historial,
+                                                            'paciente':paciente
+                                                            }
+            )
+
