@@ -151,6 +151,9 @@ class FuncionarioForm(forms.ModelForm):
                }
       # InlineForeignKeyField(Cargo)
 
+   def clean_cargos(self):
+      cargos= self.cleaned_data["cargos"]
+      return cargos
 
 class PersonaTratamientoForm(forms.ModelForm):
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'readonly':'True'}))

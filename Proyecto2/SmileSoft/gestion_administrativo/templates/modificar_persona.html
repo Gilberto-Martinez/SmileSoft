@@ -59,7 +59,7 @@
                             <br>
                             <!-- Modificar Funcionario -->
                             <div>
-                                <input class="btn btn-outline-secondary" type="button" id="boton_funcionario" value="+ Agregar como funcionario" onclick="mostrar_ocultar_funcionario()">
+                                <input class="btn btn-outline-secondary" type="button" id="boton_funcionario" value="Ver / Agregar datos de funcionario" onclick="mostrar_ocultar_funcionario()">
                                 </input>
                             </div>
                             <br>
@@ -72,7 +72,7 @@
                             <hr>
                             <!-- Agregar Especialista de Salud -->
                             <div>
-                                <input class="btn btn-outline-secondary" type="button" id="boton_especialista_salud" value="+ Agregar como especialista de salud" onclick="mostrar_ocultar_especialista();"></input>
+                                <input class="btn btn-outline-secondary" type="button" id="boton_especialista_salud" value="Ver / Agregar datos de especialista de salud" onclick="mostrar_ocultar_especialista();"></input>
                             </div>
                             <br>
                             <div id="especialista_salud" style="display: none;">
@@ -107,7 +107,7 @@
                             }
                             else{
                                 ocultar_funcionario()
-                                document.getElementById('boton_funcionario').value = '+ Agregar como funcionario';
+                                document.getElementById('boton_funcionario').value = 'Ver / Agregar datos de funcionario';
                             }
                         }
                         // Especialista de salud
@@ -125,7 +125,7 @@
                             }
                             else{
                                 ocultar_especialista_salud()
-                                document.getElementById('boton_especialista_salud').value = '+ Agregar como especialista de salud';
+                                document.getElementById('boton_especialista_salud').value = 'Ver / Agregar datos de especialista de salud';
                             }
                         }
                     </script>

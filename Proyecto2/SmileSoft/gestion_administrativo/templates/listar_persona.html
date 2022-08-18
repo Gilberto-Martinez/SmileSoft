@@ -28,9 +28,9 @@
 								<th>Nro</th>
 								<th>N° de Documento</th>
 								<th>Nombre y apellido</th>
-								<!-- <td>Funcionario</td>
-								<td>Personal de salud</td>
-								<td>Paciente</td> -->
+								<!-- <td>Funcionario</td> -->
+								<!-- <td>Especialista de salud</td> -->
+								<!-- <td>Paciente</td> -->
 								<th>Acciones</th>
 							</tr>
 							
@@ -42,9 +42,9 @@
 								<td >{{forloop.counter}}</td>
 								<td>{{ persona.numero_documento }}</td>
 								<td>{{ persona.nombre }} {{persona.apellido}}</td>
-								<!-- <td>{{ persona.es_funcionario }}</td>
-								<td>{{ persona.es_personal_salud }}</td>
-								<td>{{ persona.es_paciente }}</td> -->
+								<!-- <td>{{ persona.es_funcionario }}</td> -->
+								<!-- <td>{{ persona.es_especialista_salud }}</td> -->
+								<!-- <td>{{ persona.es_paciente }}</td> -->
 								<td>
 									{%if perms.gestion_administrativo.change_persona%}
 									<a class="btn btn-primary" href="/administrativo/modificar_persona/{{persona.numero_documento}}">
@@ -58,10 +58,20 @@
 										Eliminar
 									</a>
 									{%endif%}
-									<a class="btn btn-info" href="/administrativo/modificar_persona_paciente/{{persona.numero_documento}}">
-										<i class="bi bi-person-plus-fill"></i>
-										Agregar como paciente
-									</a>
+									{%if perms.gestion_administrativo.add_paciente%}
+										{%if persona.es_paciente%}
+											<a class="btn btn-info" href="/administrativo/modificar_persona_paciente/{{persona.numero_documento}}">
+												<i class="bi bi-card-checklist"></i>
+												Ver Datos del paciente
+												
+											</a>
+										{%else%}
+											<a class="btn btn-info" href="/administrativo/modificar_persona_paciente/{{persona.numero_documento}}">
+												<i class="bi bi-person-plus-fill"></i>
+												Agregar como paciente
+											</a>
+										{%endif%}
+									{%endif%}
 								</td>
 							</tr>
 							{% endfor %}

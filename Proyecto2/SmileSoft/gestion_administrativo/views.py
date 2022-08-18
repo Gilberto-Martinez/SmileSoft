@@ -1,3 +1,4 @@
+from ast import Delete
 from audioop import reverse
 from multiprocessing import context
 from pyexpat import model
@@ -165,6 +166,8 @@ class PersonaCreate(CreateView):
                 funcionario.numero_documento = persona
                 funcionario.save()
                 form2.save_m2m()
+                cedula = funcionario.numero_documento
+                agregar_como_funcionario(cedula)
             # if form3.is_valid():
             #     paciente = form3.save(commit=False)
             #     paciente.numero_documento = persona
@@ -176,6 +179,9 @@ class PersonaCreate(CreateView):
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
                 form4.save_m2m()
+                cedula = especialista_salud.numero_documento
+                agregar_como_especialista(cedula)
+
             return HttpResponseRedirect(self.success_url)
         else:
             print("No entraaaaaaaaaaaaaaaaaaa")
@@ -187,7 +193,6 @@ class FuncionarioCreate(CreateView):
     model = Funcionario
     template_name = 'agregar_funcionario.html'
     second_form_class = PersonaForm
-    # third_form_class = Cargo
     success_url = reverse_lazy('listar_funcionario')
     form_class = FuncionarioForm
 
@@ -197,8 +202,6 @@ class FuncionarioCreate(CreateView):
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
             context['form2'] = self.second_form_class(self.request.GET)
-        # if 'form3' not in context:
-            # context['form3'] = self.third_form_class(self.request.GET)
         return context
 
     @method_decorator(csrf_protect)
@@ -206,13 +209,14 @@ class FuncionarioCreate(CreateView):
         self.object = self.get_object
         form = self.form_class(request.POST)
         form2 = self.second_form_class(request.POST)
-        # form3 = self.third_form_class(request.POST)
         if form.is_valid() and form2.is_valid():
             funcionario = form.save(commit=False)
             persona = form2.save()
             funcionario.numero_documento = persona
             funcionario.save()
             form.save_m2m()
+            cedula = funcionario.numero_documento
+            agregar_como_funcionario(cedula)
             messages.success(request,"Funcionario agregado correctamente")
             return HttpResponseRedirect(self.success_url)
         else:
@@ -408,19 +412,16 @@ class PacienteCreate(CreateView):
         self.object = self.get_object
         form = self.form_class(request.POST)  # self.form_class
         form2 = self.second_form_class(request.POST)  # self.second_form_class
-        data = {
-            'form': PacienteForm(),
-            'form2': PersonaForm()
-        }
         if form.is_valid() and form2.is_valid():
             paciente = form.save(commit=False)
             paciente.numero_documento = form2.save()
             paciente.save()
+            cedula = paciente.numero_documento
+            agregar_como_paciente(cedula)
             messages.success(
                 request, " ✅Se ha agregado  correctamente")
             # messages.success(request,"Paciente agregado")
 
-            data['mensaje'] = "Agregado correctamente"
             return HttpResponseRedirect(self.success_url)
         else:
             if not form.is_valid():
@@ -473,7 +474,6 @@ class PersonaPacienteCreate(CreateView):
 
 
 ############################### ACTUALIZACIONES #############################
-
 
 class PersonaUpdate(UpdateView):
     model = Persona
@@ -555,12 +555,28 @@ class PersonaUpdate(UpdateView):
             print("*-----------------------------*")
             print("form es valido")
             persona = form.save()
-            if form2.is_valid() and form2.has_changed():# Si el formulario de Funcionario es válido
+            if form2.is_valid() and form2.has_changed():# Si el formulario de Funcionario es válido y además tiene cambios respecto al anterior
                 print("form2 es valido")
                 funcionario = form2.save(commit=False)
                 funcionario.numero_documento = persona
                 funcionario.save()
+                cedula = funcionario.numero_documento
+                cantidad_antes = comprobar_funcionario(cedula)
+                print('Cantidad antes: ',cantidad_antes)
                 form2.save_m2m()
+                cantidad_despues = comprobar_funcionario(cedula)
+                print('Cantidad despues: ',cantidad_despues)
+
+                if cantidad_antes == 0 and cantidad_despues>0: #Si al inicio no tenia cargos y se le ha agregado alguno
+                    persona = form.save(commit=False)
+                    persona.es_funcionario = True
+                    persona.save()
+                if cantidad_antes > 0 and cantidad_despues == 0: # Si tenia cargos y se le han quitado todos
+                    persona = form.save(commit=False)
+                    persona.es_funcionario = False
+                    persona.save()
+                    eliminar_funcionario(cedula)
+                    
             # if form3.is_valid(): # Si el formulario de Paciente es válido
             #     print("form3 es valido")
             #     paciente = form3.save(commit=False)
@@ -571,7 +587,22 @@ class PersonaUpdate(UpdateView):
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
                 especialista_salud.save()
+                cedula = especialista_salud.numero_documento
+                cantidad_antes = comprobar_especialista(cedula)
+                print('Cantidad antes: ',cantidad_antes)
                 form4.save_m2m()
+                cantidad_despues = comprobar_especialista(cedula)
+                print('Cantidad despues: ',cantidad_despues)
+
+                if cantidad_antes == 0 and cantidad_despues>0: #Si al inicio no tenia cargos y se le ha agregado alguno
+                    persona = form.save(commit=False)
+                    persona.es_especialista_salud = True
+                    persona.save()
+                if cantidad_antes > 0 and cantidad_despues == 0: # Si tenia cargos y se le han quitado todos
+                    persona = form.save(commit=False)
+                    persona.es_especialista_salud = False
+                    persona.save()
+                    eliminar_especialista(cedula)
             # messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         
@@ -698,6 +729,7 @@ class PacienteUpdate(UpdateView):
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
+            cedula = form2.numero_documento
             return HttpResponseRedirect(self.get_success_url())
         else:
             if form2.evento == "Cedula ya existe":
@@ -733,6 +765,7 @@ def modificar_persona_paciente(request, numero_documento):
             paciente = form.save(commit=False)
             paciente.numero_documento = persona
             paciente.save()
+            agregar_como_paciente(numero_documento)
             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!", data)
             data["form"] = form
             data["persona"] = persona
@@ -887,17 +920,47 @@ class FuncionarioDelete(DeleteView):
     template_name = 'eliminar_funcionario.html'
     success_url = reverse_lazy('listar_funcionario')
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object() # obtiene el objecto en cuestión
+        pk = self.kwargs.get('pk', 0) # obtiene la pk del funcionario en cuestión
+        funcionario = Funcionario.objects.get(id_funcionario=pk) # obtiene una instancia del funcionario dada su pk
+        cedula = funcionario.numero_documento # almacena el numero de documento del funcionario en la variable cedula
+        success_url = self.get_success_url() # obtiene la ruta al cual será redirigida la página una vez que se haya realizado la eliminación
+        self.object.delete() # se elimina el objeto en cuestión, y por lo tanto el registro de la base de datos
+        eliminar_como_funcionario(cedula)
+        return HttpResponseRedirect(success_url)
+
 
 class EspecialistaSaludDelete(DeleteView):
     model = EspecialistaSalud
     template_name = 'eliminar_especialista_salud.html'
     success_url = reverse_lazy('listar_especialista_salud')
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = self.kwargs.get('pk', 0)
+        especialista_salud = EspecialistaSalud.objects.get(id_especialista_salud=pk)
+        cedula = especialista_salud.numero_documento
+        success_url = self.get_success_url()
+        self.object.delete()
+        eliminar_como_especialista(cedula)
+        return HttpResponseRedirect(success_url)
+
 
 class PacienteDelete(DeleteView):
     model = Paciente
     template_name = 'eliminar_paciente.html'
     success_url = reverse_lazy('listar_paciente')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = self.kwargs.get('pk', 0)
+        paciente = Paciente.objects.get(id_paciente=pk)
+        cedula = paciente.numero_documento
+        success_url = self.get_success_url()
+        self.object.delete()
+        eliminar_como_paciente(cedula)
+        return HttpResponseRedirect(success_url)
 
 
 class ProveedorDelete(DeleteView):
@@ -916,111 +979,52 @@ class EspecialidadDelete(DeleteView):
     template_name = 'eliminar_especialidad.html'
     success_url = reverse_lazy('listar_especialidad')
 
-################################################################################
-################################################################################
-# @permission_required('gestion_administrativo.add_pacientetratamientoasignado', login_url="/panel_control/error/",)
 
-# ################################################################################
-# ################################################################################
-# def asignar_tratamiento (request, numero_documento):
-#     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
-#     paciente = Paciente.objects.get(numero_documento=numero_documento)
-#     data= {
-#         'form' : PacienteAsignadoForm(instance=paciente),
-#         'object' : Persona.objects.get(numero_documento=numero_documento)
-#     }
-#     persona = Persona.objects.get(numero_documento=numero_documento)
-#     if request.method== "POST":
-#         form= PacienteAsignadoForm(data = request.POST, instance=paciente,files= request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             # form.save_m2m()
-#             data["mensaje"]="Tratamiento asignado correctamente"
-#             messages.success(request, (
-#                 'Agregado correctamente!'))
-#             # return HttpResponseRedirect(success_url)
-#         else:
-#             data["form"]=form
-#             data['object']=persona
-#             print('NO ENTRAAAAA')
-            
-#     return render(request,"asignar_tratamiento.html",data)
+#------------------------------ Actualizar tipo de Persona -------------
+def agregar_como_paciente(cedula):
+    persona = Persona.objects.filter(numero_documento=cedula).update(es_paciente=True)
 
+def agregar_como_funcionario(cedula):
+    persona = Persona.objects.filter(numero_documento=cedula).update(es_funcionario=True)
 
-############################################################################################################3
-# class TratamientoAsignadoCreate(CreateView):
-#     model = Paciente
-#     second_model = Persona
-#     template_name = 'asignar_tratamiento.html'
-#     form_class = PacienteAsignadoForm
-#     second_form_class = PersonaUpdateForm
-#     success_url = reverse_lazy('listar_paciente2')
-# # def asignar_tratamiento (request, numero_documento):
-# #     # success_url ='mensajes/mensaje_exitoso_asignar_tratamiento.html'
-# #     paciente = Paciente.objects.get(numero_documento=numero_documento)
-# #     data= {
-# #         'form' : PacienteAsignadoForm(instance=paciente),
-# #         'object' : Persona.objects.get(numero_documento=numero_documento)
-# #     }
-#     def get_context_data(self, **kwargs):
-#         context = super(TratamientoAsignadoCreate, self).get_context_data(**kwargs)
-#         pk = self.kwargs.get('pk', 0)
-#         paciente = self.model.objects.get(id_paciente=pk)
-#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+def agregar_como_especialista(cedula):
+    persona = Persona.objects.filter(numero_documento=cedula).update(es_especialista_salud=True)
 
-#         if 'form' not in context:
-#             context['form'] = self.form_class()
-#         if 'form2' not in context:
-#             context['form2'] = self.second_form_class(instance=persona)
-#         context['id_paciente'] = pk
-#         return context
+def eliminar_como_paciente(cedula):
+    persona = Persona.objects.filter(numero_documento=cedula).update(es_paciente=False)
 
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object
-#         id_pac = kwargs['pk']
-#         paciente = self.model.objects.get(id_paciente=id_pac)
-#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
-#         form = self.form_class(request.POST, instance=paciente)
-#         form2 = self.second_form_class(request.POST, instance=persona)
-#         if form.is_valid():
-#             form.save()
-#             #form2.save()
-#             return HttpResponseRedirect(self.get_success_url())
-#         else:
-#             return HttpResponseRedirect(self.get_success_url())
+def eliminar_como_funcionario(cedula):
+    persona = Persona.objects.filter(numero_documento=cedula).update(es_funcionario=False)
 
+def eliminar_como_especialista(cedula):
+    persona = Persona.objects.filter(numero_documento=cedula).update(es_especialista_salud=False)
 
-# class TratamientoAsignadoUpdate(UpdateView):
-#     model = Paciente
-#     second_model = Persona
-#     template_name = 'modificar_tratamiento_asignado.html'
-#     form_class = PacienteAsignadoForm
-#     second_form_class = PersonaUpdateForm
-#     # success_url = reverse_lazy('listar_paciente')
-#     def get_context_data(self, **kwargs):
-#         context = super(TratamientoAsignadoUpdate, self).get_context_data(**kwargs)
-#         pk = self.kwargs.get('pk', 0)
-#         paciente = self.model.objects.get(id_paciente=pk)
-#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+#------------------ Comprobaciones ----------------------
+def comprobar_funcionario(cedula):
+    funcionario = Funcionario.objects.get(numero_documento=cedula)
+    id_funcionario = funcionario.id_funcionario
 
-#         if 'form' not in context:
-#             context['form'] = self.form_class()
-#         if 'form2' not in context:
-#             context['form2'] = self.second_form_class(instance=persona)
-#         context['id_paciente'] = pk
-#         return context
+    try:
+        cantidad_cargos = FuncionarioCargo.objects.filter(funcionario=id_funcionario).count()
+    except ObjectDoesNotExist:
+        cantidad_cargos = 0
 
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object
-#         id_pac = kwargs['pk']
-#         paciente = self.model.objects.get(id_paciente=id_pac)
-#         persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
-#         id_paciente = paciente.id_paciente
-#         form = self.form_class(request.POST, instance=paciente)
-#         form2 = self.second_form_class(request.POST, instance=persona)
-#         if form.is_valid():
-#             form.save()
-#             #form2.save()
-#             return redirect("/tratamiento/listar_tratamientos_asignados/%s"%(id_paciente))
-#         else:
-#             return self.render_to_response(self.get_context_data(form=form))
+    return cantidad_cargos
+
+def comprobar_especialista(cedula):
+    especialista = EspecialistaSalud.objects.get(numero_documento=cedula)
+    id_especialista = especialista.id_especialista_salud
+
+    try:
+        cant_especialidades = EspecialistaEspecialidades.objects.filter(especialista_salud=id_especialista).count()
+    except ObjectDoesNotExist:
+        cant_especialidades = 0
+
+    return cant_especialidades
+
+    #-------------------- Eliminar registros ----------------------
+def eliminar_funcionario(cedula):
+    funcionario = Funcionario.objects.filter(numero_documento=cedula).delete()
+
+def eliminar_especialista(cedula):
+    especialista = EspecialistaSalud.objects.filter(numero_documento=cedula).delete()

@@ -76,6 +76,7 @@ class Funcionario(models.Model):
                                     related_name='funcionario_set',
                                     blank=True)
 
+
     class Meta:
         # ordering = ['nombre']
         verbose_name_plural = 'Funcionarios'
@@ -93,7 +94,7 @@ class FuncionarioCargo(models.Model):
 
     cargo= models.ForeignKey(
         Cargo,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         blank=True,
         null=True
     )
@@ -163,7 +164,7 @@ class EspecialistaSalud(models.Model):
 class EspecialistaEspecialidades(models.Model):
     especialista_salud = models.ForeignKey(
         EspecialistaSalud,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         blank=True, null=True
     )
     especialidad = models.ForeignKey(

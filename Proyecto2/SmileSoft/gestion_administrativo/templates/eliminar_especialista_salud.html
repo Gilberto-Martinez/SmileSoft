@@ -5,7 +5,7 @@
 	{% csrf_token %}
     <center>
         {% if object %}
-            <h3>¿Desea eliminar el especialista de salud {{ object.numero_documento.nombre }}{{ object.numero_documento.apellido }}?</h3>
+            <h3>¿Desea eliminar el especialista de salud {{ object.numero_documento.nombre }} {{ object.numero_documento.apellido }}?</h3>
             <button class="btn btn-primary" type="submit">Sí, eliminar</button>
             <a class= "btn btn-danger" href="/administrativo/listar_especialista_salud/">Cancelar</a>
         {% endif %}
