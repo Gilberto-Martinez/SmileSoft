@@ -100,7 +100,7 @@ class PersonaPacienteForm(forms.ModelForm):
             (F, 'Femenino'),
             (M, 'Masculino')
    ]
-   sexo = forms.ChoiceField(choices=SEXOS, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
+   sexo = forms.ChoiceField(choices=SEXOS, widget = forms.Select (attrs = {'class': 'form-control',}))
    fecha_nacimiento = forms.DateField(label='Fecha de nacimiento', widget=forms.DateInput(attrs={'type': 'date'}))
    mensaje_error = ""
    evento = ""
@@ -150,7 +150,10 @@ class FuncionarioForm(forms.ModelForm):
                #  'numero_documento': HiddenInput(attrs={'required': False}
                }
       # InlineForeignKeyField(Cargo)
-            
+
+   def clean_cargos(self):
+      cargos= self.cleaned_data["cargos"]
+      return cargos
 
 class PersonaTratamientoForm(forms.ModelForm):
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'readonly':'True'}))
