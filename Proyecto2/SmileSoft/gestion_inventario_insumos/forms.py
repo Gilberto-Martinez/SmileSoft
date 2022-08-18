@@ -36,9 +36,18 @@ class InsumoForm(forms.ModelForm):
     cantidad_insumo = forms.IntegerField(
                                                    label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
-    unidad = forms.IntegerField(
-                                                   label='Unidad:', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del Insumo'}))
+    # unidad = forms.IntegerField(
+    #                                                label='Unidad:', 
+    #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del Insumo'}))
+    P = 'Paquetes'
+    C = 'Cajas'
+    L = 'Litros'
+    UNIDADES = [
+            (P, 'Paquetes'),
+            (C, 'Cajas'),
+            (L, 'Litros')
+            ]
+    unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
         model = Insumo
        # fields= '__all__'
@@ -63,9 +72,18 @@ class InsumoUpdateForm(forms.ModelForm):
     cantidad_insumo = forms.IntegerField(
                                                    label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
-    unidad = forms.IntegerField(
-                                                   label='Unidad:', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del insumo'}))
+    # unidad = forms.IntegerField(
+    #                                                label='Unidad:', 
+    #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del insumo'}))
+    P = 'Paquetes'
+    C = 'Cajas'
+    L = 'Litros'
+    UNIDADES = [
+            (P, 'Paquetes'),
+            (C, 'Cajas'),
+            (L, 'Litros')
+            ]
+    unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
         model = Insumo
         fields= '__all__'
