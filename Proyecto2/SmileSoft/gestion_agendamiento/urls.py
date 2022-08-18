@@ -35,4 +35,6 @@ urlpatterns = [
     
     path('calendario_mensaje/', calendario_mensaje, name="calendario_mensaje"),
     
+    path('agregar_hora/', agregar_hora, name="agregar_hora"),
+    
 ]
