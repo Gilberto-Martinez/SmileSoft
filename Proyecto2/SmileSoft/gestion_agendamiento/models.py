@@ -34,8 +34,37 @@ class Cita(models.Model):
     class Meta(object):
         verbose_name_plural = 'Cita'
         
-     
+    # def save(self, *args, **kwargs):
+    #     cita_reservada = Cita.objects.filter(hora=self.hora,fecha=self.fecha,estado='True')
+    #     if cita_reservada and self.estado == True:
+    #         raise Exception('Ya existe una cita reservada a esa hora y en esa fecha')
+    #     super(Cita, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.tratamiento_solicitado}  reservada por {self.paciente}| | {self.nombre_paciente}'
     
+
+class Horario(models.Model):
+    id_hora= models.AutoField(primary_key=True)
+    hora = models.TimeField()
+    LUN='Lunes'
+    MART='Martes'
+    MIERC='Miércoles'
+    JUEV='Jueves'
+    VIER='Viernes'
+    
+    DIAS= [
+        (LUN,'Lunes'),
+        (MART,'Martes'),
+        (MIERC,'Miércoles'),
+        (JUEV,'Jueves'),
+        (VIER,'Viernes'),
+    ]
+    dias_atencion = models.CharField(max_length=100,choices=DIAS, verbose_name='Días de atención',null= True,)
+    # estado = models.BooleanField('Estado', default=True)
+   
+    
+
+    class Meta(object):
+        verbose_name_plural = 'Horario'
+        

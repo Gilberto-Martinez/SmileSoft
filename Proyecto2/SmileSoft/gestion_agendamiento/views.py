@@ -19,7 +19,12 @@ from django.http import (
     Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
 from django.contrib.auth.decorators import permission_required
 # ---------Vista Principal-------
+from datetime import datetime
+import calendar
 
+print(datetime.today().weekday())
+curr_date = date.today()
+print(calendar.day_name[curr_date.weekday()])
 
 class Calendario(LoginMixin, ListView):
     model = Cita
@@ -94,6 +99,7 @@ def addcita_usuario(request, numero_documento):
         if formulario.is_valid():
             cita = formulario.save(commit=False)
             cita.paciente = paciente
+            # cita.id_paciente=paciente
             cita.nombre_paciente = nombre
             cita.save()
             messages.success(request, (
@@ -327,5 +333,20 @@ def cita_vista(request, id_cita):
 
 def calendario_mensaje (request):
     return render (request, "calendario_mensaje.html")
+
+#HORARIO
+def agregar_hora(request):
+    data = {
+        'form': HoraForm()
+    }
+    if request.method == "POST":
+        formulario = HoraForm(data=request.POST, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data["mensaje"] = "Registrado correctamente"
+        else:
+            data["form"] = formulario
+
+    return render(request, "agregar_hora.html", data)
 
 

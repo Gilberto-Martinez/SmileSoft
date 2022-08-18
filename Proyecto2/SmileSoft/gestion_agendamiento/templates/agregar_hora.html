@@ -17,57 +17,44 @@
 {%block content%}
   
 
-{%if perms.gestion_agendamiento.add_cita%}
+{%if perms.gestion_agendamiento.view_cita%}
     <div class="container">
         <div class="card">
             <div class="card-body">
                 <center> 
                         
-                    <h2 <i class="bi bi-calendar"></i> Agregar Cita</i> </h2>
+                    <h2 <i class="bi bi-calendar"></i> Horario</i> </h2>
                 </center>
               <br>
-               <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}} </i> </h5></center>
-
+          
                 <form method="POST" id="group_form" novalidate="">
                     {%csrf_token%}
                         {%if mensaje%}
                             <div class="alert alert-success" role="alert">
-                                  ✅ Cita registrada
+                                  ✅ Hora registrada
                             </div>
                             {%endif%}
                     <div style="margin: 20px;" >
                         <br>
                         <div class="form-group">
-                            <label for="tratamiento_solicitado"> Motivo de Consulta</label>
-                                {{form.tratamiento_solicitado}} <br>
+                            <label for="dias_atencion"> Dias de atencion</label>
+                                {{form.dias_atencion}} <br>
                         </div>
                         <br>
-                        <div class="form-group">
-                           <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
-                            {{form.fecha}}
-                        </div>
-
-                        <br>
+                           
                         <div class="form-group">
                            <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
                             {{form.hora}}
                         </div> 
-                          <br>
-                        <div class="form-group">
-                          <label for="profesional"> Elegir al Profesional: </label> 
-                            {{form.profesional}}
-                        </div>
-                    </div>
-                     
-                      
+                        <br>
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <button  href="/agendamiento/calendario_usuario/ " class="btn btn-primary" type="submit" style="margin: 10px;">
+                        <button class="btn btn-primary" type="submit" style="margin: 10px;">
                             <i class="bi-save"></i>
                             Guardar
                         </button>
-                        <a href="/agendamiento/agregar_cita/ " class="btn btn-danger" style="margin: 10px;">
+                        <a href="/agendamiento/agregar_hora/ " class="btn btn-danger" style="margin: 10px;">
                             <i class="bi-x-circle"></i>
                             Cancelar
                         </a>

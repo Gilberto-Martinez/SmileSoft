@@ -278,6 +278,10 @@
                                                   <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Listado | Reservar una cita</li></a>
                                                   {% endif %}
                                                   
+                                                  {%if perms.gestion_agendamiento.view_cita%}
+                                                  <li><a class="dropdown-item" href="/agendamiento/agregar_hora/">• Horario </li></a>
+                                                  {% endif %}
+                                                  
                          
                                                   
                                                 </ul>
