@@ -53,14 +53,14 @@ class DetalleCobroContado(models.Model):
 
 class DetalleCobroTratamiento(models.Model):
     detalle_cobro = models.ForeignKey(
-                                            DetalleCobroContado,
-                                            # null=False,
-                                            # blank=False,
-                                            on_delete=models.CASCADE
+                                        DetalleCobroContado,
+                                        # null=False,
+                                        # blank=False,
+                                        on_delete=models.CASCADE
     )
     tratamiento = models.ForeignKey(
-                                            Tratamiento,
-                                            # null=False,
-                                            # blank=False,
-                                            on_delete=models.CASCADE
+                                    Tratamiento,
+                                    # null=False,
+                                    # blank=False,
+                                    on_delete=models.CASCADE
     )

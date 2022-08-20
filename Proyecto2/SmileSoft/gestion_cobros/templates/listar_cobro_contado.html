@@ -6,19 +6,6 @@
 			<div class="card">
 				<div class="card-body">
 					<center>  <h2> <i class="bi-file-earmark-medical"></>Listado de Cobros realizados</i></h2> </center>
-
-				<!-- <table  align="right" >
-					<tr>
-					<td>
-						{%if perms.gestion_administrativo.add_especialista_salud%}
-						<a href="/administrativo/agregar_especialista_salud/" class="btn btn-success">
-							<i class="bi-person-plus-fill"></i>
-							Agregar un especialista de salud
-						</a>
-						{%endif%}
-					</td>
-					</tr>
-				</table> -->
 				<br>
 				<br>
 
@@ -43,7 +30,7 @@
                                 <td>{{ cobro.monto_total }}</td>
 								<td>
 									<!-- {%if perms.gestion_administrativo.change_especialista_salud%} -->
-									<a class="btn btn-primary" href="#">
+									<a class="btn btn-primary" href="/cobros/ver_detalle_cobro/{{cobro.id_cobro_contado}}">
 										<i class="bi bi-eye"></i>
 										Ver detalle
 									</a>
