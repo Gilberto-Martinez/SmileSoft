@@ -7,6 +7,7 @@ from .gmail import enviar_link_reseteo
 urlpatterns = [
             # Urls USUARIO
             path('agregar_usuario/', agregar_usuario, name="agregar_usuario"),
+            path('elegir_persona/', elegir_persona, name="elegir_persona"),
             path('modificar_usuario/<usuario>/', modificar_usuario, name="modificar_usuario"),
             path('listar_usuario/', listar_usuario, name="listar_usuario"),
             path('eliminar_usuario/<usuario>/', eliminar_usuario, name="eliminar_usuario"),
