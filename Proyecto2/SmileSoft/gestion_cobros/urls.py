@@ -8,5 +8,5 @@ urlpatterns = [
     # path('calendar/', pruebacalendar, name="calendar"),
     path('error_cobro/', ErrorCobro.as_view(), name="error_cobro"),
     path('mensaje_confirmacion_cobro/', ConfirmacionCobro.as_view(), name="mensaje_confirmacion_cobro"),
-    
+    path('ver_detalle_cobro/<int:id_cobro_contado>', ver_detalle_cobro, name="ver_detalle_cobro"),
 ]

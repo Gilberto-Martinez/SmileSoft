@@ -112,6 +112,25 @@ def confirmar_tratamientos(cedula):
             )
             tratamiento_pagado = PacienteTratamientoAsignado.objects.filter(id_tratamiento_asig=id_tratamiento_asig).delete()
 
+def ver_detalle_cobro(request, id_cobro_contado):
+    cobro = CobroContado.objects.get(id_cobro_contado=id_cobro_contado)
+    detalle_cobro = DetalleCobroContado.objects.get(cobro=id_cobro_contado)
+    id_detalle_cobro = detalle_cobro.id
+    detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+    tratamientos =[]
+
+    for detalle_tratamiento in detalle_tratamientos:
+        if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
+            id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
+            tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
+            tratamientos.append(tratamiento)
+
+    return render(request, 'ver_detalle_cobro.html',{
+                                                    'cobro':cobro,
+                                                    'tratamientos':tratamientos
+                                                    }
+                )
+
 #---------------------------------------------------------#
 class CobrosListView(ListView):
     model = CobroContado
