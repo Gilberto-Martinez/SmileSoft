@@ -12,15 +12,17 @@ class CitaForm(forms.ModelForm):
     fecha = forms.DateField(
         label='Fecha de consulta: ', widget=forms.NumberInput(attrs={'type': 'date'}))
     
-    hora = forms.TimeField(label='Hora de cita: ',
-        widget=forms.TimeInput(attrs={'type': 'time'}))
+    # hora = forms.TimeField(label='Hora de cita: ',
+    #                        help_text='<small> <b>Lunes a Viernes</b>  ! <br> 08:00hs a 12:00hs ; 13:30hs a 21:00hs </i></small>',
+    #     widget=forms.TimeInput(attrs={'type': 'time'}))
 
     class Meta:
         model= Cita
         fields= [
                 'tratamiento_solicitado',
                 'fecha',
-                'hora',
+                # 'hora',
+                'hora_atencion',
                 'profesional',
         ]
     
@@ -29,22 +31,26 @@ class CitaUsuario(forms.ModelForm):
     fecha = forms.DateField(
         label='Fecha de consulta: ', widget=forms.NumberInput(attrs={'type': 'date', 'readonly': True}))
     
-    hora = forms.TimeField(label='Hora de cita: ',
-                           widget=forms.TimeInput(attrs={'type': 'time', 'readonly': True}))
-
+    # hora = forms.TimeField(label='Hora',
+    #                        help_text='<small> <b>Lunes a Viernes</b>  ! <br> 08:00hs a 12:00hs ; 13:30hs a 21:00hs </i></small>',
+    #                        widget=forms.TimeInput(attrs={'type': 'time', 'readonly': True}))
+    
+    
+    
     class Meta:
         model= Cita
         fields= [
                 'tratamiento_solicitado',
                 'fecha',
-                'hora',
+                # 'hora',
+                'hora_atencion',
                 'profesional'
         ]
     
 
 class HoraForm (forms.ModelForm):
-    # hora = forms.TimeField(label='Hora de cita: ',
-    #                        widget=forms.TimeInput(attrs={'type': 'time', 'readonly': True}))
+    hora = forms.TimeField(label='Hora de cita: ',
+                           widget=forms.TimeInput(attrs={'type': 'time'}))
     class Meta:
         model= Horario
         fields=['hora',

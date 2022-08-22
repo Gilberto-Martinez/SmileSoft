@@ -46,16 +46,23 @@
                            <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
                             {{form.fecha}}
                         </div>
-
+                            {% comment %} <br><small> <i>-Lunes a Viernes | 08:00hs a 12:00hs ; 13:30hs a 21:00hs </i></small> {% endcomment %}
                             {% comment %} <label for="fecha"> Fecha de la cita</label> {% endcomment %}
                           
                             {% comment %} <input type="date" name="fecha" required="" >  {% endcomment %}
                             <br>
                             {% comment %} <input type="date" name="fecha" min="2022-12-31" max="2022-01-01" step=1 /> {% endcomment %}
-                        <div class="form-group">
-                           <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
+                        {% comment %} <div class="form-group" >
+                            <br> <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
                             {{form.hora}}
-                        </div> 
+                           
+                          
+                        </div>  {% endcomment %}
+                       
+                         <div class="form-group">
+                            <label for="hora_atencion"> Hora de atencion</label>
+                                {{form.hora_atencion}} <i class="bi bi-alarm"></i> <br>
+                        </div>
                         <br>
                         <div class="form-group">
                           <label for="profesional"> Elegir al Profesional: </label> 

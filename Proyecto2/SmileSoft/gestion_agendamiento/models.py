@@ -4,7 +4,47 @@ from gestion_administrativo.models import Persona
 from webapp.models import Usuario
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Paciente
+# from gestion_agendamiento.models import *
+
 # Create your models here.
+
+
+class Horario (models.Model):
+    id_hora = models.AutoField(primary_key=True)
+    hora = models.TimeField()
+    LUN = 'Lunes'
+    MART = 'Martes'
+    MIERC = 'Miércoles'
+    JUEV = 'Jueves'
+    VIER = 'Viernes'
+
+    DIAS = [
+        (LUN, 'Lunes'),
+        (MART, 'Martes'),
+        (MIERC, 'Miércoles'),
+        (JUEV, 'Jueves'),
+        (VIER, 'Viernes'),
+    ]
+    dias_atencion = models.CharField(
+        max_length=100, choices=DIAS, verbose_name='Días de atención', null=True,)
+    # estado = models.BooleanField('Estado', default=True)
+#     TM='08:00'
+#     TM='09:00'
+#     TM='10:00'
+#     TM='11:00'
+#    hora_atencion=models.CharField(max_length=100,choices=HORAS, verbose_name='Hora de atención',null= True,)
+
+    class Meta(object):
+        verbose_name_plural = 'Horario'
+    
+    
+    def __str__(self):
+        return str(self.hora)
+    
+    def get_hora(self):
+        return str(self.hora.get_hora())
+
+
 
 class Cita(models.Model):
     id_cita=models.AutoField(primary_key=True)
@@ -23,7 +63,12 @@ class Cita(models.Model):
     )
    
     fecha = models.DateField()
-    hora = models.TimeField()
+    # hora = models.TimeField()
+    
+    hora_atencion = models.ForeignKey(Horario, null=True,
+                                        on_delete=models.PROTECT,
+                                        verbose_name='Hora de atencion')
+    
     estado = models.BooleanField('Estado', default=True)
     
     profesional=models.ForeignKey(Especialidad, max_length=45,
@@ -43,28 +88,3 @@ class Cita(models.Model):
     def __str__(self):
         return f'{self.tratamiento_solicitado}  reservada por {self.paciente}| | {self.nombre_paciente}'
     
-
-class Horario(models.Model):
-    id_hora= models.AutoField(primary_key=True)
-    hora = models.TimeField()
-    LUN='Lunes'
-    MART='Martes'
-    MIERC='Miércoles'
-    JUEV='Jueves'
-    VIER='Viernes'
-    
-    DIAS= [
-        (LUN,'Lunes'),
-        (MART,'Martes'),
-        (MIERC,'Miércoles'),
-        (JUEV,'Jueves'),
-        (VIER,'Viernes'),
-    ]
-    dias_atencion = models.CharField(max_length=100,choices=DIAS, verbose_name='Días de atención',null= True,)
-    # estado = models.BooleanField('Estado', default=True)
-   
-    
-
-    class Meta(object):
-        verbose_name_plural = 'Horario'
-        

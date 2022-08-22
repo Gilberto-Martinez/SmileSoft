@@ -27,6 +27,8 @@
                 </center>
               <br>
                <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}} </i> </h5></center>
+              <br>
+               <center> <small><b> Horario de Atención</b> <br><i> Lunes a Viernes | 08:00hs a 12:00hs ; 13:30hs a 21:00hs </i></small></center>
 
                 <form method="POST" id="group_form" novalidate="">
                     {%csrf_token%}
@@ -46,12 +48,17 @@
                            <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
                             {{form.fecha}}
                         </div>
-
-                        <br>
+                          <br>
+                         <div class="form-group">
+                            <label for="hora_atencion"> Hora de atencion</label>
+                                {{form.hora_atencion}} <i class="bi bi-alarm"></i> <br>
+                        </div>
+                      
+                        {% comment %} <br>
                         <div class="form-group">
                            <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
                             {{form.hora}}
-                        </div> 
+                        </div>  {% endcomment %}
                           <br>
                         <div class="form-group">
                           <label for="profesional"> Elegir al Profesional: </label> 
