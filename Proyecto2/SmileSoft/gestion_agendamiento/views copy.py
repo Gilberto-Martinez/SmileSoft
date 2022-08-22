@@ -63,8 +63,6 @@ def agregar_cita(request, id_paciente):
         'persona': persona
     }
 
-
-   
     if request.method == "POST":
         formulario = CitaForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
@@ -99,32 +97,31 @@ def addcita_usuario(request, numero_documento):
     # dia_atencion= fecha.dia_atencion
     # apellido = persona.apellido
     print('Esta es la cedula', cedula, 'Este es el id del paciente', id_paciente,) 
-   
-    # hora= Cita.objects.all()
-    # hora_form= CitaForm(request.POST)
-    
+
     data = {
         'form': CitaForm(),
         'persona': persona,
-        'id_paciente': id_paciente,
-        #  'hora': hora,
+        'id_paciente': id_paciente
     }
 
     if request.method == "POST":
         formulario = CitaForm(data=request.POST, files=request.FILES)
-        if formulario.is_valid():
-                # hora= formulario.cleaned_data['hora']
-                # horario = Cita.objects.filter(hora=hora)
-                # if formulario.hora.hour >= 23:
-                #     messages.success (request,'Las citas no se reservan después de las 21 p.m. del día')
-                    cita = formulario.save(commit=False)
-                    cita.paciente = paciente
-                    cita.nombre_paciente = nombre
-                    cita.save()
-                    messages.success(request, (
-                        '✅ Su cita ha sido registrada'))
 
-                    return render(request, "calendario.html")      
+        if formulario.is_valid():
+            cita = formulario.save(commit=False)
+            cita.paciente = paciente
+            # cita.id_paciente=paciente
+            cita.nombre_paciente = nombre
+            # cita.dias_atencion=fecha
+            # curr_date = date.dia_atencion()
+            # print(calendar.day_name[curr_date.weekday()])
+            # cita.fecha= calendar.day_name[curr_date.weekday()]
+            cita.save()
+            # print('esta es la fecha',dia_atencion )
+            messages.success(request, (
+                '✅ Su cita ha sido registrada'))
+
+            return render(request, "calendario.html")
         else:
             messages.error(request, (
                 'No ha guardado'))
@@ -355,25 +352,20 @@ def calendario_mensaje (request):
 
 #HORARIO
 def agregar_hora(request):
-    # hora= Horario.objects.filter(hora=hora)
-   # horario_form= HoraForm()
     
     data = {
-        'form': HoraForm(),
-        # 'hora': hora
+        'form': HoraForm()
     }
     
     if request.method == "POST":
         formulario = HoraForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
-            # if formulario.hora <= 21:
-            #     messages.success (request,'Las citas no se reservan después de las 21 p.m. del día')
-               
-                
-                data["mensaje"] = "Registrado correctamente"
-                formulario.save()
-        # else:
-        #     data["form"] = formulario
+            
+            formulario.save()
+            
+            data["mensaje"] = "Registrado correctamente"
+        else:
+            data["form"] = formulario
 
     return render(request, "agregar_hora.html", data)
 

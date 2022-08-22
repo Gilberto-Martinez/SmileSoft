@@ -73,6 +73,7 @@
                                         <th>Cédula</th>
                                         <th>Fecha de Agendamiento</th>
                                         <th>Hora de Agendamiento</th>
+                                        {% comment %} <th>Hora de Atencion</th> {% endcomment %}
                                         <th>Tratamiento Solicitado</th>
                                         <th>Profesional</th>
                                         <th colspan="2">Acciones </th> 
@@ -88,7 +89,8 @@
                                             <td >{{c.nombre_paciente}}</td>
                                             <td >{{c.paciente }}</td>
                                             <td >{{c.fecha}}</td>
-                                            <td >{{c.hora}} hs.</td>
+                                            {% comment %} <td >{{c.hora}} hs.</td> {% endcomment %}
+                                            <td >{{c.hora_atencion}} hs.</td>
                                             <td >{{c.tratamiento_solicitado}}</td>
                                             <td >{{c.profesional}}</td>
                                             {{busqueda}}

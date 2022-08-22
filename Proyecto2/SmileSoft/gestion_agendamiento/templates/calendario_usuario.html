@@ -81,9 +81,11 @@
             <div class="card">
                 <div class="card-body">
                         <center> 
-                            
                             <h2 style="color:blue"> <i class="bi bi-calendar"> Agendamiento | Citas</i> </h2>
                         </center>
+                        <div class="container mt-3 text-center">
+                            <i> ¡ Horario de atención de <b>Lunes a Viernes</b>  ! <br> 08:00hs a 12:00hs ; 13:30hs a 21:00hs </i>
+                        </div>
                 </div>
 
                   <!--Calendario-->
@@ -116,7 +118,7 @@
                 events: [
                     {% for cita in object_list %}
                         {
-                            title: "{{ cita.hora}} hs| Reservado |",
+                            title: "{{ cita.hora_atencion}} hs | Reservado |",
                             start: '{{ cita.fecha | date:"Y-m-d" }}',
                             url: '/agendamiento/cita_vista/'+'{{ cita.id_cita }}' 
                            {% comment %}  end: '{{ reserva.fecha_vencimiento | date:"Y-m-d" }}', {% endcomment %}
