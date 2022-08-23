@@ -63,7 +63,7 @@ class Cita(models.Model):
     )
    
     fecha = models.DateField()
-    # hora = models.TimeField()
+   # hora = models.TimeField(null=True)
     
     hora_atencion = models.ForeignKey(Horario, null=True,
                                         on_delete=models.PROTECT,
