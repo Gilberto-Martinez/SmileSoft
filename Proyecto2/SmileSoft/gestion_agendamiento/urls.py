@@ -16,10 +16,9 @@ urlpatterns = [
     path('eliminar_cita/<int:id_cita>', eliminar_cita, name="eliminar_cita"),
     path('pacientes_cita/', listar_citapaciente, name="pacientes_cita"),
   
-    # A nivel usuario
+    #<--- A NIVEL USUARIO-->
      path('cita_vista/<int:id_cita>/',
          cita_vista, name="cita_vista"),
-       
     path('usuario_addCita/<str:numero_documento>/',
          addcita_usuario, name="usuario_addCita"),
 #     path('usuario_changeCita/<str:numero_documento>/',
@@ -34,7 +33,11 @@ urlpatterns = [
     path('mis_citas/<numero_documento>', mis_citas_lista, name="mis_citas"),
     
     path('calendario_mensaje/', calendario_mensaje, name="calendario_mensaje"),
-    
+   
+   # <--Horarios-->
     path('agregar_hora/', agregar_hora, name="agregar_hora"),
+    path('eliminar_hora/<int:id_hora>', eliminar_hora, name='eliminar_hora'),
+    path('listar_hora/', listar_hora, name="listar_hora"),
+
     
 ]

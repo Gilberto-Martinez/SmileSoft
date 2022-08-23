@@ -304,7 +304,6 @@ def listar_cita(request):
     }
     )
 
-
 #<-- -->
 # "calendario_usuario.html"
 
@@ -353,7 +352,7 @@ def cita_vista(request, id_cita):
 def calendario_mensaje (request):
     return render (request, "calendario_mensaje.html")
 
-#HORARIO
+#----------------HORARIO------------------------------
 def agregar_hora(request):
     # hora= Horario.objects.filter(hora=hora)
    # horario_form= HoraForm()
@@ -378,3 +377,27 @@ def agregar_hora(request):
     return render(request, "agregar_hora.html", data)
 
 
+#<--listado de hora
+def listar_hora(request):
+    
+    horarios = Horario.objects.all()
+
+
+    return render(request, "horarios_lista.html", {
+        'horarios': horarios})
+
+#<---Eliminar hora
+
+
+def eliminar_hora(request, id_hora):
+    try:
+        horarios = Horario.objects.get(id_hora=id_hora)
+        horarios.delete()
+      
+        messages.success(request, "Eliminado")
+
+        return render(request, "horarios_lista.html", {'horarios' : horarios })
+
+    except Horario.DoesNotExist:
+        raise Http404(
+            "No se puede eliminar. Dado que ya se Elimino")

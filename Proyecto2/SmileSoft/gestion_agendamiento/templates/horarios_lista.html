@@ -1,0 +1,94 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+
+{% block javascripts%}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     
+
+{%endblock%}
+<!--Cuadro de DIALOGO DE ELIMINAR-->
+
+
+
+{%block content%}
+  
+
+{%if perms.gestion_agendamiento.view_cita%}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                    <center> 
+                        
+                        <h2 <i class="bi bi-alarm"></i> Horarios  </h2>
+                    </center>
+              
+               
+            
+<br> <br>
+
+                        <!--Inicio de la TABLA DE USUARIOS-->
+                        <!-- <div class="col-4 col-md-10 offset-md-1"> -->
+                        <table>
+                            <!--table striped es para que resalte 1 fila y otra no-->
+                            <!--table-bordered para bordes-->
+                            <table class="table table-striped table-hover">       
+                                <thead> 
+                                    <tr>
+                                        <th>Nro</th>
+                                        {% comment %} <th>Dia</th> {% endcomment %}
+                                        <th>Horario</th>
+                                        <th colspan="2">Acciones </th> 
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {%if horarios%}
+                                        {%for c in horarios%}
+
+                                        <tr>
+                                            <td >{{forloop.counter}}</td>
+                                            {% comment %} <td >{{c.dias_atencion}}</td> {% endcomment %}
+                                            <td >{{c.hora }}</td>
+                                           
+                                            <!--OPCIONES Modificar y Eliminar-->
+                                                {% comment %} <td>
+                                                    {%if perms.gestion_agendamiento.change_cita%}
+                                                    <a href="/agendamiento/modificar_cita/{{c.id_cita}}" class="btn btn-primary">
+                                                        <i class="bi-pencil-square"></i>
+                                                        Modificar
+                                                    </a>
+                                                    {%endif%}
+                                              </td> {% endcomment %}
+
+                                                <td>
+
+                                                    {% comment %} {%if perms.gestion_agendamiento.delete_cita%} {% endcomment %}
+                                                    <!-- Eliminar-->                
+                                                    <a href="/agendamiento/eliminar_hora/{{c.id_hora}}" class="btn btn-danger btnEliminacion">
+                                                        <i class="bi-trash-fill" ></i>
+                                                        Eliminar
+                                                    </a> 
+                                                    {% comment %} {%endif%} {% endcomment %}
+                                                </td>  
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <br>
+                                        <h2><center>No hay registros </center> </h2>
+                                        <br>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </table>
+                        <!--end TABLA-->
+                        <!-- </div> -->
+            </div>
+        </div>
+            
+    </div>
+    {% endif %}
+{%endblock%}
