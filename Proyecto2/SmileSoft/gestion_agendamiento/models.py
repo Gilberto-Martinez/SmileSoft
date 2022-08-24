@@ -71,7 +71,7 @@ class Cita(models.Model):
     
     estado = models.BooleanField('Estado', default=True)
     
-    profesional=models.ForeignKey(Especialidad, max_length=45,
+    profesional=models.ForeignKey(EspecialistaSalud, max_length=45,
                                                 null=False,
                                                 blank= False,
                                                 on_delete=models.PROTECT,

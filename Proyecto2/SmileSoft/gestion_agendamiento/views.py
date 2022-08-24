@@ -101,7 +101,7 @@ def addcita_usuario(request, numero_documento):
     print('Esta es la cedula', cedula, 'Este es el id del paciente', id_paciente,) 
    
     hora_atencion= Horario.objects.all()
-   # hora_form= HorariO(request.POST)
+    hora= HoraForm(request.POST)
     
     data = {
         'form': CitaForm(),
@@ -118,7 +118,7 @@ def addcita_usuario(request, numero_documento):
             citas= Cita.objects.all()
             
             for c in citas:
-                if paciente== c.paciente and formulario.hora_atencion== c.hora_atencion and formulario.fecha==c.fecha and formulario.profesional==c.profesional:
+                if paciente== c.paciente and formulario.hora_atencion == c.hora_atencion and formulario.fecha==c.fecha and formulario.profesional==c.profesional:
                     
                     respuesta = "YA EXISTE"
                     
