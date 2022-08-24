@@ -55,7 +55,7 @@
                                                             <td>  
                                                                  {{busqueda}} 
                                                             <!--OPCIONES Agregar Modificar y Eliminar-->
-                                                             {%if perms.gestion_agendamiento.add_cita%}
+                                                             {%if perms.gestion_agendamiento.view_cita%}
                                                                 <a href="/agendamiento/agregar_cita/{{ paciente.id_paciente }}" class="btn btn-success">
                                                                     <i class="bi-person-plus-fill"></i>
                                                                     Agregar una cita

@@ -100,39 +100,31 @@ def addcita_usuario(request, numero_documento):
     # apellido = persona.apellido
     print('Esta es la cedula', cedula, 'Este es el id del paciente', id_paciente,) 
    
-    hora_atencion= Horario.objects.all()
-   # hora_form= HorariO(request.POST)
+    # hora= Cita.objects.all()
+    # hora_form= CitaForm(request.POST)
     
     data = {
         'form': CitaForm(),
         'persona': persona,
         'id_paciente': id_paciente,
-        'hora_atencion': hora_atencion,
+        #  'hora': hora,
     }
 
     if request.method == "POST":
         formulario = CitaForm(data=request.POST, files=request.FILES)
-        respuesta= "NO EXISTE"
         if formulario.is_valid():
-            cita = formulario.save(commit=False)
-            citas= Cita.objects.all()
-            
-            for c in citas:
-                if paciente== c.paciente and formulario.hora_atencion== c.hora_atencion and formulario.fecha==c.fecha and formulario.profesional==c.profesional:
-                    
-                    respuesta = "YA EXISTE"
-                    
-            if respuesta== "NO EXISTE":
-                cita.paciente = paciente
-                cita.nombre_paciente = nombre
-                cita.save()
-                messages.success(request, (
-                    '✅ Su cita ha sido registrada'))
+                # hora= formulario.cleaned_data['hora']
+                # horario = Cita.objects.filter(hora=hora)
+                # if formulario.hora.hour >= 23:
+                #     messages.success (request,'Las citas no se reservan después de las 21 p.m. del día')
+                    cita = formulario.save(commit=False)
+                    cita.paciente = paciente
+                    cita.nombre_paciente = nombre
+                    cita.save()
+                    messages.success(request, (
+                        '✅ Su cita ha sido registrada'))
 
-                return render(request, "calendario.html")
-            else:
-                return render(request, 'panel_control/error.html')
-                      
+                    return render(request, "calendario.html")      
         else:
             messages.error(request, (
                 'No ha guardado'))
