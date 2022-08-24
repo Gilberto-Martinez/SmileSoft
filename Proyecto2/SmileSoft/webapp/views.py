@@ -252,6 +252,31 @@ def agregar_usuario(request):
 
     return render(request, "usuario/agregar_usuario.html", data)
 
+def elegir_persona(request):
+    personas = Persona.objects.all()
+    listado_personas = []
+
+    for persona in personas:
+        numero_documento = persona.numero_documento
+        nombre = persona.nombre
+        apellido = persona.apellido
+        data = {
+            'numero_documento':numero_documento,
+            'nombre':nombre,
+            'apellido':apellido
+        }
+        try:
+            usuario = Usuario.objects.get(numero_documento=numero_documento)
+            nombre_usuario = usuario.usuario
+            data['nombre_usuario'] = nombre_usuario
+        except ObjectDoesNotExist:
+            pass
+            # nombre_usuario = 'No tiene usuario'
+            # data['nombre_usuario'] = nombre_usuario
+        listado_personas.append(data)
+
+    return render(request, 'usuario/listar_personas_elegir.html', {'listado_personas':listado_personas})
+
     # funciona, vista simple de listar
 # def listar_usuario(request):
 #     listado_usuarios= Usuario.objects.all()
