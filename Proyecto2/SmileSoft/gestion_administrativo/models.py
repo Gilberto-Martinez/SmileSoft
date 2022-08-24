@@ -159,7 +159,7 @@ class EspecialistaSalud(models.Model):
         db_table = 'EspecialistaSalud'
 
     def __str__(self):
-        return str(self.numero_documento)
+        return str(self.numero_documento.nombre+ ' '+self.numero_documento.apellido)
 
 class EspecialistaEspecialidades(models.Model):
     especialista_salud = models.ForeignKey(
@@ -169,7 +169,7 @@ class EspecialistaEspecialidades(models.Model):
     )
     especialidad = models.ForeignKey(
         Especialidad,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         blank=True, null=True
     )
 
