@@ -45,6 +45,41 @@ class Horario (models.Model):
         return str(self.hora.get_hora())
 
 
+# class Dia(models.Model):
+#     DOM = 'Domingo'
+#     LUN = 'Lunes'
+#     MART = 'Martes'
+#     MIERC = 'Miércoles'
+#     JUEV = 'Jueves'
+#     VIER = 'Viernes'
+#     SAB = 'Sabado'
+#     DIAS = [
+#         (DOM, 'Lunes'),
+#         (LUN, 'Lunes'),
+#         (MART, 'Martes'),
+#         (MIERC, 'Miércoles'),
+#         (JUEV, 'Jueves'),
+#         (VIER, 'Viernes'),
+#         (SAB, 'Sabado'),
+#     ]
+#     nombre = models.CharField(max_length=9, choices=DIAS, primary_key=True)
+#     horarios_atencion = models.ManyToManyField(Horario,
+#                                         through='HorarioDia',
+#                                         related_name='dia_set',
+#                                         blank=True)
+
+#     class Meta:
+#         db_table = 'Dia'
+
+
+# class HorarioDia(models.Model):
+#     id_horario_dia = models.AutoField(primary_key=True)
+#     horario = models.ForeignKey(Horario, on_delete=models.CASCADE)
+#     dia = models.ForeignKey(Dia, on_delete=models.CASCADE)
+
+#     class Meta:
+#         db_table = 'HorarioDia'
+
 
 class Cita(models.Model):
     id_cita=models.AutoField(primary_key=True)
