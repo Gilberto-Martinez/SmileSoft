@@ -91,17 +91,17 @@ def agregar_cita(request, id_paciente):
 # <--Agregar cita a UN USUARIO
 def addcita_usuario(request, numero_documento):
     persona = Persona.objects.get(numero_documento=numero_documento)
-    cedula = persona.numero_documento
-    paciente = Paciente.objects.get(numero_documento=cedula)
+    # cedula = persona.numero_documento
+    paciente = Paciente.objects.get(numero_documento=numero_documento)
     id_paciente = paciente.id_paciente
     nombre = persona.nombre + ' ' + persona.apellido
     # fecha=Cita.objects.get(paciente=paciente)
     # dia_atencion= fecha.dia_atencion
     # apellido = persona.apellido
-    print('Esta es la cedula', cedula, 'Este es el id del paciente', id_paciente,) 
+    print('Esta es la cedula: ', numero_documento, 'Este es el id del paciente: ', id_paciente,) 
    
     hora_atencion= Horario.objects.all()
-    hora= HoraForm(request.POST)
+    # hora= HoraForm(request.POST)
     
     data = {
         'form': CitaForm(),
@@ -118,10 +118,9 @@ def addcita_usuario(request, numero_documento):
             citas= Cita.objects.all()
             
             for c in citas:
-                if paciente== c.paciente and formulario.hora_atencion == c.hora_atencion and formulario.fecha==c.fecha and formulario.profesional==c.profesional:
-                    
+                if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
                     respuesta = "YA EXISTE"
-                    
+                    break
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
