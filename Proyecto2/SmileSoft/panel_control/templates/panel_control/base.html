@@ -264,7 +264,7 @@
                                                   {%if perms.gestion_agendamiento.add_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/usuario_addCita/{{user.numero_documento}}">• Agendar una cita </li></a>
                                                   {% endif %}
-                                                  <hr>
+                                                 <br>
                                                   {%if perms.gestion_agendamiento.view_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/calendar">
                                                     <strong  style="color:black; font-size:16px;" >
@@ -272,15 +272,15 @@
                                                     </strong></li></a>
                                                   {%endif%}
                                                   {%if perms.gestion_agendamiento.view_cita%}
-                                                  <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Reservaciones de citas </li></a>
+                                                  <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Citas Reservadas</li></a>
                                                   {% endif %}
                                                   {%if perms.gestion_agendamiento.view_cita%}
-                                                  <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Listado | Reservar una cita</li></a>
+                                                  <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Pacientes | Reservar una cita</li></a>
                                                   {% endif %}
                                                   
-                                                  {%if perms.gestion_agendamiento.view_horario%}
+                                                  {% comment %} {%if perms.gestion_agendamiento.view_horario%}
                                                   <li><a class="dropdown-item" href="/agendamiento/agregar_hora/">• Agregar Horario </li></a>
-                                                  {% endif %}
+                                                  {% endif %} {% endcomment %}
                                                        {%if perms.gestion_agendamiento.view_horario%}
                                                   <li><a class="dropdown-item" href="/agendamiento/listar_hora/">• Horarios </li></a>
                                                   {% endif %}

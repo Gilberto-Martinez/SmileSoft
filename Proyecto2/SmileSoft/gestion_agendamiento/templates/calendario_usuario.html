@@ -118,7 +118,7 @@
                 events: [
                     {% for cita in object_list %}
                         {
-                            title: "{{ cita.hora_atencion}} hs | Reservado |",
+                            title: "{{ cita.hora_atencion}} hs | Reservado con {{ cita.profesional}}",
                             start: '{{ cita.fecha | date:"Y-m-d" }}',
                             url: '/agendamiento/cita_vista/'+'{{ cita.id_cita }}' 
                            {% comment %}  end: '{{ reserva.fecha_vencimiento | date:"Y-m-d" }}', {% endcomment %}

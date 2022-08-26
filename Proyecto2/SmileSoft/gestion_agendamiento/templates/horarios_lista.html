@@ -25,9 +25,19 @@
                         
                         <h2 <i class="bi bi-alarm"></i> Horarios  </h2>
                     </center>
-              
-               
-            
+                  <table  align="right" >
+                        <tr>
+                        <td>
+                        
+                            {%if perms.gestion_agendamiento.view_cita%}
+                                <a href="/agendamiento/agregar_hora/" class="btn btn-success">
+                                    Agregar Horario
+                                    <br>
+                                </a>
+                                {%endif%}
+                        </td>
+                        </tr>
+                    </table>
 <br> <br>
 
                         <!--Inicio de la TABLA DE USUARIOS-->
@@ -44,26 +54,16 @@
                                         <th colspan="2">Acciones </th> 
                                     </tr>
                                 </thead>
-
-                                <tbody>
-                                    {%if horarios%}
+                                {%if horarios%}
+                                    <tbody>
+                                 
                                         {%for c in horarios%}
 
                                         <tr>
                                             <td >{{forloop.counter}}</td>
                                             {% comment %} <td >{{c.dias_atencion}}</td> {% endcomment %}
-                                            <td >{{c.hora }}</td>
+                                            <td >{{c.hora }}hs.</td>
                                            
-                                            <!--OPCIONES Modificar y Eliminar-->
-                                                {% comment %} <td>
-                                                    {%if perms.gestion_agendamiento.change_cita%}
-                                                    <a href="/agendamiento/modificar_cita/{{c.id_cita}}" class="btn btn-primary">
-                                                        <i class="bi-pencil-square"></i>
-                                                        Modificar
-                                                    </a>
-                                                    {%endif%}
-                                              </td> {% endcomment %}
-
                                                 <td>
 
                                                     {% comment %} {%if perms.gestion_agendamiento.delete_cita%} {% endcomment %}
@@ -76,12 +76,13 @@
                                                 </td>  
                                         </tr>
                                         {% endfor %}
-                                    {% else %}
+                                  </tbody>
+                                 {% else %}
                                         <br>
-                                        <h2><center>No hay registros </center> </h2>
+                                        <h2><center>El horario ha sido eliminado </center> </h2>
                                         <br>
                                     {% endif %}
-                                </tbody>
+
                             </table>
                         </table>
                         <!--end TABLA-->

@@ -36,11 +36,11 @@
                             {%endif%}
                     <div style="margin: 20px;" >
                         <br>
-                        <div class="form-group">
+                        {% comment %} <div class="form-group">
                             <label for="dias_atencion"> Dias de atencion</label>
                                 {{form.dias_atencion}} <br>
                         </div>
-                        <br>
+                        <br> {% endcomment %}
                           
                         <div class="form-group">
                            <label for="{{form.hora.name}}"> {{form.hora.label}}</label>

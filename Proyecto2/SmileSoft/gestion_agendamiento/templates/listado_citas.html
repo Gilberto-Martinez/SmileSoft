@@ -76,6 +76,7 @@
                                         {% comment %} <th>Hora de Atencion</th> {% endcomment %}
                                         <th>Tratamiento Solicitado</th>
                                         <th>Profesional</th>
+                                        <th>Estado </th>
                                         <th colspan="2">Acciones </th> 
                                     </tr>
                                 </thead>
@@ -93,6 +94,12 @@
                                             <td >{{c.hora_atencion}} hs.</td>
                                             <td >{{c.tratamiento_solicitado}}</td>
                                             <td >{{c.profesional}}</td>
+                                            {%if c.estado%}
+                                             <td>Confirmado</td>
+                                            {%else%}
+                                             <td>Pendiente</td>
+                                            {%endif%}
+                                                    {{busqueda}}
                                             {{busqueda}}
                                             <!--OPCIONES Modificar y Eliminar-->
                                                 <td>
@@ -118,7 +125,7 @@
                                         {% endfor %}
                                     {% else %}
                                         <br>
-                                        <h2><center>No hay registros del paciente</center> </h2>
+                                        <h2><center>No hay registros</center> </h2>
                                         <br>
                                     {% endif %}
                                 </tbody>

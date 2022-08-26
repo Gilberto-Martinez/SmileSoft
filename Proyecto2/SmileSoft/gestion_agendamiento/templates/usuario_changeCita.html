@@ -53,6 +53,13 @@
                             <label for="profesional"> Elegir al Profesional: </label> 
                                 {{form.profesional}}
                             </div>
+                            <br>
+                                {%if perms.gestion_agendamiento.view_cita%}
+                                <div class="form-group">
+                                    <label for="{{form.estado.name}}">{{form.estado.label}}</label>
+                                    {{form.estado}}
+                                </div> 
+                            {%endif%}
                         </div>
                         
                         <div class="d-flex justify-content-center">

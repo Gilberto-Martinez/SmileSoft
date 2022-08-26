@@ -104,7 +104,7 @@ class Cita(models.Model):
                                         on_delete=models.PROTECT,
                                         verbose_name='Hora de atencion')
     
-    estado = models.BooleanField('Estado', default=True)
+    estado = models.BooleanField('Confirmar cita', default=False)
     
     profesional=models.ForeignKey(EspecialistaSalud, max_length=45,
                                                 null=False,
