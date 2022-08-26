@@ -24,6 +24,7 @@ class CitaForm(forms.ModelForm):
                 # 'hora',
                 'hora_atencion',
                 'profesional',
+                'estado',
         ]
     
       
@@ -54,5 +55,5 @@ class HoraForm (forms.ModelForm):
     class Meta:
         model= Horario
         fields=['hora',
-                'dias_atencion'
+                # 'dias_atencion'
         ]

@@ -51,16 +51,22 @@
                             {{form.fecha}}
                         </div>
                         <br>
-
-                        <div class="form-group">
-                           <label for="{{form.hora.name}}"> {{form.hora.label}}</label>
-                            {{form.hora}}
+                       <div class="form-group">
+                           <label for="{{form.hora_atencion.name}}"> {{form.hora_atencion.label}}</label>
+                            {{form.hora_atencion}}
                         </div> 
                          <br>
                         <div class="form-group">
                           <label for="profesional"> Elegir al Profesional: </label> 
                             {{form.profesional}}
                         </div>
+                        <br>
+                        {%if perms.gestion_agendamiento.view_cita%}
+                         <div class="form-group">
+                            <label for="{{form.estado.name}}">{{form.estado.label}}</label>
+                                {{form.estado}}
+                        </div> 
+                        {%endif%}
                     </div>
                    
 

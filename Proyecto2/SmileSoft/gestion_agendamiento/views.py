@@ -36,11 +36,12 @@ print(then-now)
 class Calendario(LoginMixin, ListView):
     model = Cita
     template_name = 'calendar.html'
-
-    def get_queryset(self):
-        queryset = self.model.objects.filter(
-            estado=True)
-        return queryset
+    
+    # si no esta confirmado no aparece en el calendario
+    # def get_queryset(self):
+    #     queryset = self.model.objects.filter(
+    #         estado=True)
+    #     return queryset
 
 # def calendario_vista(request):
 #     return render(request, "calendario.html")
@@ -63,22 +64,29 @@ def agregar_cita(request, id_paciente):
         'persona': persona
     }
 
-
-   
     if request.method == "POST":
         formulario = CitaForm(data=request.POST, files=request.FILES)
+        respuesta= "NO EXISTE"
+        
         if formulario.is_valid():
             cita = formulario.save(commit=False)
             cita.paciente = paciente
             cita.nombre_paciente = nombre
-            # cita.apellido = apellido
-            cita.save()
-            # formulario.save()
-            data["mensaje"] = "Registrado correctamente"
-            messages.success(request, (
-                'Agregado correctamente!'))
-            print('aquiiiiiiiiiiiiii ENTRAAAAA',)
-            return redirect("/agendamiento/listado_citas/")
+            citas= Cita.objects.all()        
+            for c in citas:
+                if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
+                    respuesta = "YA EXISTE"
+                    break
+            if respuesta== "NO EXISTE":
+                cita.paciente = paciente
+                cita.nombre_paciente = nombre
+                cita.save()
+                messages.success(request, (
+                    '✅Agregado correctamente!'))
+                print('aquiiiiiiiiiiiiii ENTRAAAAA',)
+                return redirect("/agendamiento/listado_citas/")
+            else:
+                return render(request, 'horario_reservado.html')
         else:
             messages.error(request, (
                 'No ha guardado'))
@@ -130,7 +138,7 @@ def addcita_usuario(request, numero_documento):
 
                 return render(request, "calendario.html")
             else:
-                return render(request, 'panel_control/error.html')
+                return render(request, 'horario_reservado.html')
                       
         else:
             messages.error(request, (
@@ -141,13 +149,14 @@ def addcita_usuario(request, numero_documento):
     return render(request, "usuario_addCita.html", data)
 
 # --> Esta es una template de redirección para el calendario
-
-
 def calendario_vista(request):
     return render(request, "calendar.html")
 
-# <- Modificar Cita del Usuario iniciado
+# --> Esta es una template de redirección para el horario reservado
+def horario_reservado(request):
+    return render(request, "horario_reservado.html")
 
+# <- Modificar Cita del Usuario iniciado
 
 def mis_citas_lista(request, numero_documento):
     #no funciona
@@ -179,6 +188,8 @@ def cambiarCita_usuario(request, id_cita):
     # user = Usuario.objects.filter(usuario=request.user.usuario)
     # cedula_user=user.usuario    
     nombre = persona.nombre + ' ' + persona.apellido
+    paciente = Paciente.objects.get(numero_documento=nro_documento)
+    id_paciente = paciente.id_paciente
     
     data = {
         'form': CitaForm(instance=cita),
@@ -186,27 +197,29 @@ def cambiarCita_usuario(request, id_cita):
         'id_cita': id_cita,
         'ci_user':ci_user,
         'nro_documento': nro_documento,
+        'id_paciente': id_paciente,
         # 'cedula_user':cedula_user
         
     }
     if request.method == "POST":
-        formulario = CitaForm(
-            data=request.POST, instance= cita,files=request.FILES)
+        formulario = CitaForm(data=request.POST, instance= cita,files=request.FILES)
+        respuesta= "NO EXISTE"
         
         if formulario.is_valid():
-            # user = Usuario.objects.filter(usuario=request.user.usuario)
-            # if persona_user == request.user.usuario:
-                print('-------------------AQUI', persona_user,request.user.usuario)
-                formulario.save()
-                # messages.success(request, (
-                #             '✅ Su cita ha sido modificada'))
-                    
+            cita = formulario.save(commit=False)
+            citas= Cita.objects.all()
+            
+            for c in citas:
+                if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
+                    respuesta = "YA EXISTE"
+                    break
+            if respuesta== "NO EXISTE":
+                cita.paciente = paciente
+                cita.nombre_paciente = nombre
+                cita.save()
                 return redirect("/agendamiento/calendario_mensaje/")
-            # else:
-            #     messages.info(
-            #            request, "⚠️No está permitido modificar otra cita, que no sea la suya")
-            #     return render(request, "panel_control/error.html")
-        
+            else:
+                return render(request, 'horario_reservado.html')
         else:
                 messages.error(request, (
                     'No ha guardado'))
@@ -224,6 +237,11 @@ def modificar_cita(request, id_cita):
     cita = Cita.objects.get(id_cita=id_cita)
     cedula = cita.paciente
     persona = Persona.objects.get(numero_documento=cedula)
+    ci_persona= persona.numero_documento
+    ci_user= Usuario.objects.get(numero_documento=ci_persona)
+    nro_documento=ci_user.numero_documento
+    paciente = Paciente.objects.get(numero_documento=nro_documento)
+    nombre = persona.nombre + ' ' + persona.apellido
     data = {
         'form': CitaForm(instance=cita),
         'persona': persona
@@ -232,12 +250,32 @@ def modificar_cita(request, id_cita):
     if request.method == "POST":
         formulario = CitaForm(
             data=request.POST, instance=cita, files=request.FILES)
+        respuesta= "NO EXISTE"
+        
         if formulario.is_valid():
-            formulario.save()
-            data["mensaje"] = "Cita Modificada"
-            messages.success(request, (
-                'Modificado correctamente!'))
-            return redirect("/agendamiento/listado_citas/")
+           
+            cita = formulario.save(commit=False)
+            citas= Cita.objects.all()
+            
+            for c in citas:
+                # if cita.paciente!=c.paciente:
+                    if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
+                        respuesta = "YA EXISTE"
+                        break
+                # else:
+                #     respuesta = "Duplicado"
+                #     messages.info(request, 'Se ha duplicado la Cita')
+            if respuesta== "NO EXISTE":
+                cita.paciente = paciente
+                cita.nombre_paciente = nombre
+                cita.save()
+            
+                messages.success(request, (
+                    'Modificado correctamente!'))            
+                return redirect("/agendamiento/listado_citas/", respuesta)
+            else:
+                return render(request, 'horario_reservado.html')
+                
         else:
             messages.error(
                 request, "Algo ha salido Mal, por favor verifique nuevamente")
@@ -318,10 +356,10 @@ class CalendarioUsuario(LoginMixin, ListView):
     model = Cita
     template_name = 'calendario_usuario.html'
 
-    def get_queryset(self):
-        queryset = self.model.objects.filter(
-            estado=True)
-        return queryset
+    # def get_queryset(self):
+    #     queryset = self.model.objects.filter(
+    #         estado=True)
+    #     return queryset
 
 #<--Vista intermedia usado para restringir accesos-->
 def cita_vista(request, id_cita):
@@ -403,7 +441,7 @@ def eliminar_hora(request, id_hora):
       
         messages.success(request, "Eliminado")
 
-        return render(request, "horarios_lista.html", {'horarios' : horarios })
+        return render(request, "horarios_lista.html")
 
     except Horario.DoesNotExist:
         raise Http404(

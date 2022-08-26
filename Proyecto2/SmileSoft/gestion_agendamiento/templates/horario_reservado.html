@@ -1,0 +1,29 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+                      <img src="{% static 'img/horario.jpg' %}" width="130px" alt="auto">
+                           <br>
+        <strong  style="color:red; font-size:16px;" >
+                        <h2 <i class="bi bi-journal-x"></i> El horario ya fue reservado por otro paciente</h2>                                       
+                    </strong>
+                       <center> <small><b> Por favor realize su cita </b> <i>en un horario diferente </i></small></center>
+                       <br>
+                        <button  href="/agendamiento/usuario_addCita/{{user.numero_documento}} " class="btn btn-primary" type="submit" style="margin: 10px;">
+                           Agendar una cita 
+                        </button>
+
+                          
+                                <a href="/agendamiento/calendario_usuario" class="btn btn-info">
+                                    <i class="bi bi-calendar"></i>
+                                   Ver Calendario <br>
+                                </a>
+                          
+                     
+      
+    </center>
+     
+</form>
+{% endblock %}
