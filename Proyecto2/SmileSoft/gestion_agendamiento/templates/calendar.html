@@ -116,7 +116,7 @@
                 events: [
                     {% for cita in object_list %}
                         {
-                            title: "{{ cita.hora_atencion}} hs| {{ cita.tratamiento_solicitado }} | {{cita.profesional}}| ",
+                            title: "{{ cita.hora_atencion}} hs| {{ cita.tratamiento_solicitado }} | {{cita.profesional}}| Usuario: {{cita.paciente}}",
                             start: '{{ cita.fecha | date:"Y-m-d" }}',
                             url: '/agendamiento/usuario_changeCita/'+'{{ cita.id_cita }}'
                            {% comment %}  end: '{{ reserva.fecha_vencimiento | date:"Y-m-d" }}', {% endcomment %}

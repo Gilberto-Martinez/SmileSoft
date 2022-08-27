@@ -21,28 +21,17 @@ from django.contrib.auth.decorators import permission_required
 # ---------Vista Principal-------
 from datetime import datetime
 import calendar
-import datetime
 # import locale
 # locale.setlocale(locale.LC_ALL,"es_py.UTF-8")
 
-# print(datetime.today().weekday())
-# curr_date = date.today()
-# print(calendar.day_name[curr_date.weekday()])
-# print(list(calendar.day_name))
+print(datetime.today().weekday())
+curr_date = date.today()
+print(calendar.day_name[curr_date.weekday()])
+print(list(calendar.day_name))
 
-# then = datetime(1987, 12, 30, 17, 50, 14)  # yr, mo, day, hr, min, sec
-# now = datetime(2020, 12, 25, 23, 13, 0)
-# print(then-now)
-
-#Funcion que trae el dia de la fecha de la Semana
-
-def dia_semana(date): 
-    born = datetime.datetime.strptime(date, '%d/%m/%Y').weekday() 
-    return (calendar.day_name[born]) 
-  
-date = '30/08/2022'
-print(dia_semana(date)) 
-
+then = datetime(1987, 12, 30, 17, 50, 14)  # yr, mo, day, hr, min, sec
+now = datetime(2020, 12, 25, 23, 13, 0)
+print(then-now)
 
 class Calendario(LoginMixin, ListView):
     model = Cita
@@ -269,16 +258,13 @@ def modificar_cita(request, id_cita):
             citas= Cita.objects.all()
             
             for c in citas:
-              
-                
+                # if cita.paciente!=c.paciente:
                     if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                       
                         respuesta = "YA EXISTE"
                         break
-                    else:
-                        respuesta = "Duplicado"
-                        messages.info(request, 'Se ha duplicado la Cita')
-                    
+                # else:
+                #     respuesta = "Duplicado"
+                #     messages.info(request, 'Se ha duplicado la Cita')
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
