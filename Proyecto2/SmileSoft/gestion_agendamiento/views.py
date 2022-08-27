@@ -140,7 +140,13 @@ def addcita_usuario(request, numero_documento):
                 if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
                     respuesta = "YA EXISTE"
                     break
+                else:
+                    if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
+                        respuesta = "DUPLICADO"
+                        break
             if respuesta== "NO EXISTE":
+                # Validar que la fecha de agendamiento no sea menos a la fecha actual
+                # Si la fecha de agendamiento es igual a la fecha actual, entonces la hora de agendamiento debe ser mayor a la hora actual
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
                 cita.save()
@@ -148,6 +154,8 @@ def addcita_usuario(request, numero_documento):
                     '✅ Su cita ha sido registrada'))
 
                 return render(request, "calendario.html")
+            if respuesta== "DUPLICADO":
+                return render(request, 'horario_duplicado.html')
             else:
                 return render(request, 'horario_reservado.html')
                       
