@@ -124,7 +124,7 @@ def ver_detalle_cobro(request, id_cobro_contado):
             id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
             tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
             tratamientos.append(tratamiento)
-
+ 
     return render(request, 'ver_detalle_cobro.html',{
                                                     'cobro':cobro,
                                                     'tratamientos':tratamientos
