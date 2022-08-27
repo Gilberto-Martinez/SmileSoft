@@ -143,6 +143,8 @@ def addcita_usuario(request, numero_documento):
                 else:
                     if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
                         respuesta = "DUPLICADO"
+                        messages.success(request, (
+                               ' Cita duplicada'))
                         break
             if respuesta== "NO EXISTE":
                 # Validar que la fecha de agendamiento no sea menos a la fecha actual
