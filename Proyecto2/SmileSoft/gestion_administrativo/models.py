@@ -6,7 +6,7 @@ from datetime import date, datetime
 import dateutil.relativedelta
 from dateutil.relativedelta import relativedelta
 from gestion_administrativo.models import *
-from gestion_tratamiento.models import Tratamiento
+from gestion_tratamiento.models import *
 
 # Create your models here.
 class Persona(models.Model):
@@ -248,7 +248,7 @@ class Paciente(models.Model):
     ]
     grupo_sanguineo = models.CharField(max_length=100,choices=GRUPOS , verbose_name='Grupo sanguíneo',null= True,)
     tratamientos = models.ManyToManyField(
-                                             Tratamiento, 
+                                            Tratamiento, 
                                              through='PacienteTratamientoAsignado',
                                              related_name='paciente_set'
                                          )

@@ -74,13 +74,14 @@
                                     <!--OPCIONES Modificar y Eliminar-->
                                     <td>
                                         {%if perms.gestion_tratamiento.change_tratamiento%}
-                                        <a href="#" class="btn btn-success">
+                                        <!-- <a href="#" class="btn btn-success"> -->
+                                            <a href="/tratamiento/asignar_insumos/{{c.codigo_tratamiento}}" class="btn btn-primary">
                                             <i class="bi-pencil-square"></i>
                                             Agregar insumos
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="/tratamiento/modificar_tratamiento/{{c.nombre_tratamiento}}" class="btn btn-primary">
+                                        <a href="/tratamiento/modificar_tratamiento/{{c.codigo_tratamiento}}" class="btn btn-primary">
                                             <i class="bi-pencil-square"></i>
                                             Modificar
                                         </a>
@@ -89,7 +90,7 @@
                                 <!-- Eliminar-->      
                                     {%if perms.gestion_tratamiento.delete_tratamiento%}
                                     <td>
-                                        <a href="/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}" class="btn btn-danger btnEliminacion">
+                                        <a href="/tratamiento/eliminar_tratamiento/{{c.codigo_tratamiento}}" class="btn btn-danger btnEliminacion">
                                             <i class="bi-trash-fill" ></i> 
                                                 Eliminar
                                             </a> 

@@ -19,6 +19,7 @@ from django.views.generic import ListView, CreateView, TemplateView, UpdateView,
 from gestion_administrativo.models import PacienteTratamientoAsignado
 from gestion_administrativo.forms import *
 from gestion_historial_clinico.views import guardar_historial_clinico
+from gestion_inventario_insumos.views import asignar_insumos
 
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
@@ -167,15 +168,15 @@ def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
 
 
 # @permission_required('gestion_tratamiento.modificar_tratamiento', login_url="/panel_control/error/",)
-def modificar_tratamiento(request, nombre_tratamiento):
-    nombre_tratamiento = Tratamiento.objects.get(nombre_tratamiento=nombre_tratamiento)
+def modificar_tratamiento(request, codigo_tratamiento):
+    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
 
     data= {
-        'form': TratamientoUpdateForm(instance=nombre_tratamiento)
+        'form': TratamientoUpdateForm(instance=tratamiento)
     }
     if request.method == 'POST':
         formulario = TratamientoForm(
-            data=request.POST, instance=nombre_tratamiento, files=request.FILES)
+            data=request.POST, instance=tratamiento, files=request.FILES)
         if formulario.is_valid():
             
             formulario.save()
@@ -184,6 +185,7 @@ def modificar_tratamiento(request, nombre_tratamiento):
             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
                   
             data['mensaje'] = "Modificado correctamente"
+            return redirect("/tratamiento/listar_tratamiento/")
             
         else:
             messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
@@ -195,9 +197,9 @@ def modificar_tratamiento(request, nombre_tratamiento):
 # -----------------------------------------------------------------------------------------------
 # ***Vista de Eliminar Tratamiento
 # @permission_required('gestion_tratamiento.eliminar_tratamiento', login_url="/panel_control/error/",)
-def eliminar_tratamiento(request, nombre_tratamiento):
+def eliminar_tratamiento(request, codigo_tratamiento):
     try:
-        tratamiento = Tratamiento.objects.get(nombre_tratamiento=nombre_tratamiento)
+        tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
         tratamiento.delete()
         listado_tratamientos = Tratamiento.objects.all()
         messages.success(request, "Eliminado")
@@ -278,42 +280,42 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 
     return render("tratamiento/mostrar_tratamientos_asignados.html", data)
 
+# """ #BORRADOR
+# class InsumoAsignado(UpdateView):
+#     model = Tratamiento
+#     # second_model = Persona
+#     template_name = 'modificar_tratamiento_asignado.html'
+#     form_class = TratamientoForm
+#     # second_form_class = PersonaUpdateForm
+#     # success_url = reverse_lazy('listar_paciente')
+#     def get_context_data(self, **kwargs):
+#         context = super(InsumoAsignado, self).get_context_data(**kwargs)
+#         pk = self.kwargs.get('pk', 0)
+#         tratamiento = self.model.objects.get(codigo_tratamiento=pk)
+#         # persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
 
-class InsumoAsignado(UpdateView):
-    model = Tratamiento
-    # second_model = Persona
-    template_name = 'modificar_tratamiento_asignado.html'
-    form_class = TratamientoForm
-    # second_form_class = PersonaUpdateForm
-    # success_url = reverse_lazy('listar_paciente')
-    def get_context_data(self, **kwargs):
-        context = super(InsumoAsignado, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk', 0)
-        tratamiento = self.model.objects.get(codigo_tratamiento=pk)
-        # persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+#         if 'form' not in context:
+#             context['form'] = self.form_class(instance=tratamiento)
+#         # if 'form2' not in context:
+#             # context['form2'] = self.second_form_class(instance=persona)
+#         context['codigo_tratamiento'] = pk
+#         return context
 
-        if 'form' not in context:
-            context['form'] = self.form_class(instance=tratamiento)
-        # if 'form2' not in context:
-            # context['form2'] = self.second_form_class(instance=persona)
-        context['codigo_tratamiento'] = pk
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        id_trat = kwargs['pk']
-        tratamiento = self.model.objects.get(codigo_tratamiento=id_trat)
-        cod_tratamiento = tratamiento.codigo_tratamiento
-        # persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
-        # cedula = paciente.numero_documento
-        form = self.form_class(request.POST, instance=tratamiento)
-        # form2 = self.second_form_class(request.POST, instance=persona)
-        if form.is_valid():
-            form.save()
-            #form2.save()
-            return redirect("/tratamiento/listar_insumos_asignados/%s"%(cod_tratamiento))
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object
+#         id_trat = kwargs['pk']
+#         tratamiento = self.model.objects.get(codigo_tratamiento=id_trat)
+#         cod_tratamiento = tratamiento.codigo_tratamiento
+#         # persona = self.second_model.objects.get(numero_documento=paciente.numero_documento)
+#         # cedula = paciente.numero_documento
+#         form = self.form_class(request.POST, instance=tratamiento)
+#         # form2 = self.second_form_class(request.POST, instance=persona)
+#         if form.is_valid():
+#             form.save()
+#             #form2.save()
+#             return redirect("/tratamiento/listar_insumos_asignados/%s"%(cod_tratamiento))
+#         else:
+#             return self.render_to_response(self.get_context_data(form=form)) """
 
 
 # def listar_insumos_asignado(request, cod_tratamiento):
@@ -356,3 +358,28 @@ def preguntar_confirmacion(request,id_tratamiento_conf):
 
 def mostrar_mensaje_confirmacion(request,id_tratamiento_conf):
     return render(request,'mensajes/mostrar_mensaje_confirmacion.html',{'id_tratamiento_conf':id_tratamiento_conf}) 
+
+
+# #############################################
+# #asignar insumo esto está en gestión_inventario_insumo
+
+
+# def asignar_insumos(request, codigo_tratamiento):
+#     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#     data= {
+#         'form' : TratamientoInsAsignadoForm(instance=tratamiento),
+#         'tratamiento': tratamiento
+#     }
+#     # persona = Persona.objects.get(numero_documento=numero_documento)
+#     if request.method== "POST":
+#         form= TratamientoInsAsignadoForm(data = request.POST, instance=tratamiento,files= request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             # form.save_m2m()
+#             # messages.success(request, (
+#             #     'Agregado correctamente!'))
+#             return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
+#         else:
+#             data["form"]=form
+#             data['tratamiento']=tratamiento
+#     return render(request,"tratamiento/asignar_insumo.html",data)
