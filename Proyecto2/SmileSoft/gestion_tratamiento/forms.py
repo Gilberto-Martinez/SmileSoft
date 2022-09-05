@@ -22,6 +22,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordResetForm
 
 from gestion_administrativo.models import PacienteTratamientoAsignado
+from gestion_inventario_insumos.models import *
 
 
 
@@ -105,19 +106,19 @@ class TratamientoUpdateForm(forms.ModelForm):
             'precio',
         ]
 
-class PacienteTratamientoAsignadoForm(forms.ModelForm):
-    #nombre_tratamiento = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del trataniento'}))
-    #descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'}))
-    #precio = forms.IntegerField(
-     #                                              label='Precio', 
-      #                                             widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del tratamiento'}))
-    #descripcion_tratamiento = forms.CharField( widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del tratamiento'} ))
-    class Meta:
-        model = PacienteTratamientoAsignado
-        fields= '__all__'
-        # fields = [
-        #     'codigo_tratamiento',
-        #     'nombre_tratamiento',
-        #     'descripcion_tratamiento',
-        #     'precio',
-        # ]
+class TratamientoInsAsignadoForm(forms.ModelForm):
+   class Meta:
+      model = Tratamiento
+      fields = [
+               'insumos',
+                ]
+      widgets = {
+          'insumos': forms.CheckboxSelectMultiple(attrs={
+              'class': 'form-select2',
+              'style': 'width: 30px',
+              'multiple': 'multiple'}),
+               #  'numero_documento': HiddenInput(attrs={'required': False}
+               }
+      # InlineForeignKeyField(Cargo)
+   
+      # label = 'Nombre de los tratamientos'
