@@ -123,18 +123,43 @@ def ver_detalle_cobro(request, id_cobro_contado):
         if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
             id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
             tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
-            tratamientos.append(tratamiento)
- 
+            precio = '{:,}'.format(tratamiento.precio).replace(',','.')
+            tratamiento_tmp = {
+                                'nombre_tratamiento':tratamiento.nombre_tratamiento,
+                                'precio':precio
+            }
+            tratamientos.append(tratamiento_tmp)
+
+    monto_total = cobro.monto_total
+    monto_total = '{:,}'.format(monto_total).replace(',','.')
+
     return render(request, 'ver_detalle_cobro.html',{
                                                     'cobro':cobro,
-                                                    'tratamientos':tratamientos
+                                                    'tratamientos':tratamientos,
+                                                    'monto_total':monto_total
                                                     }
                 )
 
 #---------------------------------------------------------#
-class CobrosListView(ListView):
-    model = CobroContado
-    template_name = 'listar_cobro_contado.html'
+# class   CobrosListView(ListView):
+#     model = CobroContado
+#     template_name = 'listar_cobro_contado.html'
+
+def listar_cobros(request):
+    cobros = CobroContado.objects.all()
+    listado_cobros = []
+    for cobro in cobros:
+        monto_total = '{:,}'.format(cobro.monto_total).replace(',','.')
+        cobro_tmp = {
+                    'id_cobro_contado' : cobro.id_cobro_contado,
+                    'numero_documento' : cobro.numero_documento,
+					'razon_social' : cobro.razon_social,
+					'fecha' : cobro.fecha,
+                    'monto_total' :monto_total
+        }
+        listado_cobros.append(cobro_tmp)
+
+    return render(request, 'listar_cobro_contado.html', {'listado_cobros':listado_cobros})
 
 #------------------------ Vista de mensajes ----------------------------#
 class ErrorCobro(TemplateView):
