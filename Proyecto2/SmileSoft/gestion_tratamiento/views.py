@@ -19,7 +19,7 @@ from django.views.generic import ListView, CreateView, TemplateView, UpdateView,
 from gestion_administrativo.models import PacienteTratamientoAsignado
 from gestion_administrativo.forms import *
 from gestion_historial_clinico.views import guardar_historial_clinico
-from gestion_inventario_insumos.views import asignar_insumos
+# from gestion_inventario_insumos.views import asignar_insumos
 
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)

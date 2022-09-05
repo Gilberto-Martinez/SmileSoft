@@ -27,8 +27,8 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, DetailView
 from gestion_administrativo.forms import *
 from gestion_inventario_insumos.forms import *
-from gestion_administrativo.models import TratamientoInsumoAsignado
-from gestion_tratamiento.forms import TratamientoInsAsignadoForm
+# from gestion_administrativo.models import TratamientoInsumoAsignado
+# from gestion_tratamiento.forms import TratamientoInsAsignadoForm
 from django.shortcuts import redirect
 # ***Vista de Agregar Rol
 # @permission_required('gestion_inventario_insumos.agregar_insumo', login_url="/panel_control/error/",)
@@ -118,54 +118,54 @@ def eliminar_insumo(request, nombre_insumo):
 
 ###INSUMOS ASIGNADOS 
 
-def asignar_insumos(request, codigo_tratamiento):
-    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    data= {
-        'form' : TratamientoInsAsignadoForm(instance=tratamiento),
-        'tratamiento': tratamiento
-    }
-    # persona = Persona.objects.get(numero_documento=numero_documento)
-    if request.method== "POST":
-        form= TratamientoInsAsignadoForm(data = request.POST, instance=tratamiento,files= request.FILES)
-        if form.is_valid():
-            form.save()
-            # form.save_m2m()
-            # messages.success(request, (
-            #     'Agregado correctamente!'))
-            return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
-        else:
-            data["form"]=form
-            data['tratamiento']=tratamiento
-    return render(request,"insumo/asignar_insumo.html",data)
+# def asignar_insumos(request, codigo_tratamiento):
+#     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#     data= {
+#         'form' : TratamientoInsAsignadoForm(instance=tratamiento),
+#         'tratamiento': tratamiento
+#     }
+#     # persona = Persona.objects.get(numero_documento=numero_documento)
+#     if request.method== "POST":
+#         form= TratamientoInsAsignadoForm(data = request.POST, instance=tratamiento,files= request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             # form.save_m2m()
+#             # messages.success(request, (
+#             #     'Agregado correctamente!'))
+#             return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
+#         else:
+#             data["form"]=form
+#             data['tratamiento']=tratamiento
+#     return render(request,"insumo/asignar_insumo.html",data)
 
 
-def listar_insumo_asignado(request, codigo_tratamiento):
-    """
-    Lista los insumos asigandos a un tratamiento en especifico. 
-    """
-    listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
-    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    insumos_asignados = []
-    precio_total = 0
-    codigo_tratamiento_insumo = ''
+# def listar_insumo_asignado(request, codigo_tratamiento):
+#     """
+#     Lista los insumos asigandos a un tratamiento en especifico. 
+#     """
+#     listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
+#     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#     insumos_asignados = []
+#     precio_total = 0
+#     codigo_tratamiento_insumo = ''
 
-    for insumo_asig in listado_insumos_asig:
-        if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
-            id_tratamiento_insumo = insumo_asig.id_insumo_asig
-            cod_insumo = insumo_asig.get_insumo()
-            nuevo_insumo = Insumo.objects.get(cod_insumo=cod_insumo)
-            #precio_total = precio_total + nuevo_tratamieto.precio
-            insumos_asignados.append(nuevo_insumo)
+#     for insumo_asig in listado_insumos_asig:
+#         if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
+#             id_tratamiento_insumo = insumo_asig.id_insumo_asig
+#             cod_insumo = insumo_asig.get_insumo()
+#             nuevo_insumo = Insumo.objects.get(cod_insumo=cod_insumo)
+#             #precio_total = precio_total + nuevo_tratamieto.precio
+#             insumos_asignados.append(nuevo_insumo)
 
-    #precio_total = '{:,}'.format(precio_total).replace(',','.')
+#     #precio_total = '{:,}'.format(precio_total).replace(',','.')
 
-    return render (request,"insumo/listar_insumos_asignados.html",{
-                                                                            'insumos_asignados':insumos_asignados,
-                                                                            'tratamiento':tratamiento,
-                                                                            #'precio_total':precio_total,
-                                                                            'id_tratamiento_insumo':id_tratamiento_insumo,
-                                                                            }
-                    )
+#     return render (request,"insumo/listar_insumos_asignados.html",{
+                    #                                                         'insumos_asignados':insumos_asignados,
+                    #                                                         'tratamiento':tratamiento,
+                    #                                                         #'precio_total':precio_total,
+                    #                                                         'id_tratamiento_insumo':id_tratamiento_insumo,
+                    #                                                         }
+                    # )
 
 # def listar_tratamientos_pendientes(request):
 #     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Confirmado")
@@ -250,9 +250,9 @@ def listar_insumo_asignado(request, codigo_tratamiento):
 #     template_name = 'eliminar_tratamiento.html'
 #     success_url = reverse_lazy('listar_tratamientos')
 
-class DetalleInsumosAsignados(DetailView):
-    model = TratamientoInsumoAsignado
-    template_name= 'mostrar_insumos_asignados.html'
+# class DetalleInsumosAsignados(DetailView):
+#     model = TratamientoInsumoAsignado
+#     template_name= 'mostrar_insumos_asignados.html'
 
     # def get_object(self):
     #     try:
@@ -260,61 +260,61 @@ class DetalleInsumosAsignados(DetailView):
     #         instance = self.model.objects.get(paciente = )
     #     return super().get_object(queryset)
 
-def mostrar_insumo_asignado (request, codigo_tratamiento):
-    success_url ='mensajes/mensaje_exitoso_asignar_insumo.html'
-    tratamiento_asig=Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    tratamiento_asig = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    data= {
-        'object' : Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento),
-        'object' : Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento),
-        'object2' : TratamientoInsumoAsignado.objects.get_queryset()
-    }
-    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    if request.method== "POST":
-        formulario= TratamientoInsAsignadoForm(data = request.POST, files= request.FILES)
-        if formulario.is_valid():
-            tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-            insumos = formulario.save(commit=False)
-            insumos.tratamiento = tratamiento
-            insumos.save()
-            formulario.save_m2m()
-            data["mensaje"]="Insumo asignado correctamente"
-            messages.success(request, (
-                'Agregado correctamente!'))
-            return HttpResponseRedirect(success_url)
-        else:
-            data["form"]=formulario
-            data['object']=tratamiento
-            print('NO ENTRAAAAA')
-    data["object"]=tratamiento_asig
-    data["object2"]=tratamiento_asig
+# def mostrar_insumo_asignado (request, codigo_tratamiento):
+#     success_url ='mensajes/mensaje_exitoso_asignar_insumo.html'
+#     tratamiento_asig=Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#     tratamiento_asig = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#     data= {
+#         'object' : Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento),
+#         'object' : Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento),
+#         'object2' : TratamientoInsumoAsignado.objects.get_queryset()
+#     }
+#     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#     if request.method== "POST":
+#         formulario= TratamientoInsAsignadoForm(data = request.POST, files= request.FILES)
+#         if formulario.is_valid():
+#             tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#             insumos = formulario.save(commit=False)
+#             insumos.tratamiento = tratamiento
+#             insumos.save()
+#             formulario.save_m2m()
+#             data["mensaje"]="Insumo asignado correctamente"
+#             messages.success(request, (
+#                 'Agregado correctamente!'))
+#             return HttpResponseRedirect(success_url)
+#         else:
+#             data["form"]=formulario
+#             data['object']=tratamiento
+#             print('NO ENTRAAAAA')
+#     data["object"]=tratamiento_asig
+#     data["object2"]=tratamiento_asig
             
-    return render(request,"insumo/mostrar_insumos_asignados.html",data)
+#     return render(request,"insumo/mostrar_insumos_asignados.html",data)
 
-def mostrar_insumo_asignado (request, codigo_tratamiento):
-    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    tratamiento_asignado = TratamientoInsumoAsignado.objects.get(tratamiento=tratamiento.codigo_tratamiento)
+# def mostrar_insumo_asignado (request, codigo_tratamiento):
+#     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+#     tratamiento_asignado = TratamientoInsumoAsignado.objects.get(tratamiento=tratamiento.codigo_tratamiento)
 
-    data= {
-        'form': TratamientoInsAsignadoForm(instance=tratamiento_asignado)
-    }
-    if request.method == 'POST':
-        form = TratamientoInsAsignadoForm(
-            data=request.POST, instance=tratamiento_asignado, files=request.FILES)
-        if form.is_valid():
+#     data= {
+#         'form': TratamientoInsAsignadoForm(instance=tratamiento_asignado)
+#     }
+#     if request.method == 'POST':
+#         form = TratamientoInsAsignadoForm(
+#             data=request.POST, instance=tratamiento_asignado, files=request.FILES)
+#         if form.is_valid():
             
-            #formulario.save()
+#             #formulario.save()
             
-            messages.success(request, "Modificado")       
-            print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
+#             messages.success(request, "Modificado")       
+#             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
                   
-            data['mensaje'] = "Modificado correctamente"
+#             data['mensaje'] = "Modificado correctamente"
             
-        else:
-            messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
-            print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
+#         else:
+#             messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
+#             print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
 
-    return render("insumo/mostrar_insumos_asignados.html", data)
+#     return render("insumo/mostrar_insumos_asignados.html", data)
 
 
 # class InsumoAsignado(UpdateView):
