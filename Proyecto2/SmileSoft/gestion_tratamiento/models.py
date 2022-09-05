@@ -14,13 +14,11 @@ class Tratamiento(models.Model):
                                              through='TratamientoInsumoAsignado',
                                              related_name='tratamiento_set'
                                          )
-    # farmacos = []
 
-    
     class Meta:
         verbose_name = ("tratamiento")
         verbose_name_plural = ("tratamientos")
-        ordering = ["codigo_tratamiento"]
+        # ordering = ["codigo_tratamiento"]
         db_table = 'Tratamiento'
 
     def __str__(self):
@@ -28,7 +26,9 @@ class Tratamiento(models.Model):
 
     def get_id(self):
         return str(self.codigo_tratamiento)
-        
+
+    def get_codigo_tratamiento(self):
+        return str(self.codigo_tratamiento)
 #TRATAMIENTO ASIGNADO
 class TratamientoInsumoAsignado(models.Model):
     id_insumo_asig = models.AutoField(primary_key=True)
@@ -50,8 +50,8 @@ class TratamientoInsumoAsignado(models.Model):
         db_table = 'TratamientoInsumoAsignado'
         
 
-    # def __str__(self):
-    #     return self.id_insumo_asig
+    def __str__(self):
+        return self.id_insumo_asig
 
 
 # Comentado por el momento a espera de analisis
@@ -78,38 +78,3 @@ class TratamientoInsumoAsignado(models.Model):
 #         verbose_name = ("Horario")
 #         verbose_name_plural = ("Horarios")
 #         db_table = 'Horario'
-
-#INSUMO ASIGNADO
-# class TratamientoInsumoAsignado(models.Model):
-#     id_insumo_asig = models.AutoField(primary_key=True)
-#     tratamiento = models.ForeignKey(
-#         Tratamiento, 
-#         on_delete=models.CASCADE, 
-#         blank=True, 
-#         null=True,
-#     )
-
-#     insumo = models.ForeignKey(
-#         Insumo,
-#         on_delete=models.CASCADE,
-#         blank=True,
-#         null=True,
-#         verbose_name='Insumos ConsulDent'
-#     )
-
-#     class Meta:
-#         db_table = 'TratamientoInsumoAsignado'
-#         verbose_name = 'Insumo Asignado al Tratamiento'
-#         verbose_name = 'Insumos para el Tratamiento del Paciente'
-
-#     def __str__(self):
-#         return self.id_insumo_asig
-
-#     def get_insumo(self):
-#         return str(self.insumo.get_codigo_insumo())
-
-#     def get_tratamiento(self):
-#         return str(self.tratamiento.codigo_tratamiento)
-
-#     def get_id_insumo(self):
-#         return str(self.id_insumo_asig)

@@ -21,7 +21,6 @@ from django.utils.translation import gettext as _, ngettext
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordResetForm
 
-from gestion_tratamiento.models import TratamientoInsumoAsignado
 
 
 

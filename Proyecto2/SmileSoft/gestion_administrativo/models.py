@@ -6,7 +6,7 @@ from datetime import date, datetime
 import dateutil.relativedelta
 from dateutil.relativedelta import relativedelta
 from gestion_administrativo.models import *
-from gestion_tratamiento.models import *
+from gestion_tratamiento.models import Tratamiento
 
 # Create your models here.
 class Persona(models.Model):
