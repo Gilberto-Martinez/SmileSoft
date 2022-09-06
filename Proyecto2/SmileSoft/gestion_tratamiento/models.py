@@ -22,7 +22,7 @@ class Tratamiento(models.Model):
         db_table = 'Tratamiento'
 
     def __str__(self):
-        return str(self.codigo_tratamiento)
+        return str(self.nombre_tratamiento)
 
     def get_id(self):
         return str(self.codigo_tratamiento)

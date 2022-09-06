@@ -65,16 +65,14 @@ class PacienteList2(ListView):
 
 # @permission_required('gestion_tratamiento.listar_tratamiento', login_url="/panel_control/error/",)
 def listar_tratamiento(request):
-    
     busqueda=request.POST.get("q")
     listado_tratamientos = Tratamiento.objects.all()
-    
-    if busqueda:  
+
+    if busqueda:
         listado_tratamientos =Tratamiento.objects.filter(Q(nombre_tratamiento__icontains= busqueda))
         print("AQUI ESTA ENTRANDO Y buscando", {'listado_tratamientos':listado_tratamientos})
     else:                                                              
         print("Buscado AQUI",)
-        
     return render (request,"tratamiento/listar_tratamientos.html",{'listado_tratamientos':listado_tratamientos})
 
 
@@ -92,7 +90,7 @@ def asignar_tratamientos(request, id_paciente):
             # form.save_m2m()
             # messages.success(request, (
             #     'Agregado correctamente!'))
-            return redirect("/tratamiento/listar_tratamientos_asignados/%s"%(id_paciente))
+            return render(request, "mensajes/tratamiento_asignado_exitoso.html")
         else:
             data["form"]=form
             data['paciente']=paciente
