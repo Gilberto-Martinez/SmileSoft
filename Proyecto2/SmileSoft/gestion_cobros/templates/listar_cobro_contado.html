@@ -21,13 +21,13 @@
 						
 					</thead>
 						<tbody>
-							{% if object_list %}
-							{% for cobro in object_list %}
+							{% if listado_cobros %}
+							{% for cobro in listado_cobros %}
 							<tr>
 								<td>{{ cobro.numero_documento }}</td>
 								<td>{{ cobro.razon_social }}</td>
 								<td>{{ cobro.fecha }}</td>
-                                <td>{{ cobro.monto_total }}</td>
+                                <td>{{ cobro.monto_total }} Gs</td>
 								<td>
 									<!-- {%if perms.gestion_administrativo.change_especialista_salud%} -->
 									<a class="btn btn-primary" href="/cobros/ver_detalle_cobro/{{cobro.id_cobro_contado}}">
