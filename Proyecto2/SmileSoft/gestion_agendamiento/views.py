@@ -1,7 +1,8 @@
+from time import strptime
 from django.utils.html import conditional_escape as esc
 from itertools import groupby
 from datetime import date
-from calendar import HTMLCalendar
+from calendar import HTMLCalendar, day_name
 from ctypes.wintypes import PCHAR
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -40,7 +41,7 @@ def dia_semana(date):
     born = datetime.datetime.strptime(date, '%d/%m/%Y').weekday() 
     return (calendar.day_name[born]) 
   
-date = '30/08/2022'
+date = '05/08/2022'
 print(dia_semana(date)) 
 
 
@@ -68,7 +69,7 @@ def agregar_cita(request, id_paciente):
     persona = Persona.objects.get(numero_documento=cedula)
     nombre = persona.nombre + ' ' + persona.apellido
     # fecha=Cita.objects.get(paciente=paciente)
-    # dia_atencion= fecha.fecha
+    # dia= fecha.fecha
     # apellido = persona.apellido
     data = {
         'form': CitaForm(),
@@ -84,6 +85,12 @@ def agregar_cita(request, id_paciente):
             cita.paciente = paciente
             cita.nombre_paciente = nombre
             citas= Cita.objects.all()        
+            # cita.fecha=dia
+            # born = datetime.datetime.strptime(date, '%d/%m/%Y').weekday()
+            # dia_semana= calendar.day_name[born]
+            # print(dia)
+
+                # date = '05/08/2022'
             for c in citas:
                 if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
                     respuesta = "YA EXISTE"
@@ -114,8 +121,9 @@ def addcita_usuario(request, numero_documento):
     paciente = Paciente.objects.get(numero_documento=numero_documento)
     id_paciente = paciente.id_paciente
     nombre = persona.nombre + ' ' + persona.apellido
-    # fecha=Cita.objects.get(paciente=paciente)
-    # dia_atencion= fecha.dia_atencion
+    
+    fecha=Cita.objects.all()
+    
     # apellido = persona.apellido
     print('Esta es la cedula: ', numero_documento, 'Este es el id del paciente: ', id_paciente,) 
    
@@ -127,25 +135,36 @@ def addcita_usuario(request, numero_documento):
         'persona': persona,
         'id_paciente': id_paciente,
         'hora_atencion': hora_atencion,
+      
     }
 
     if request.method == "POST":
         formulario = CitaForm(data=request.POST, files=request.FILES)
         respuesta= "NO EXISTE"
+        # mensaje="NO DUPLICADO"
         if formulario.is_valid():
             cita = formulario.save(commit=False)
             citas= Cita.objects.all()
-            
+           
             for c in citas:
+        
                 if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                    respuesta = "YA EXISTE"
-                    break
+                       
+                        respuesta = "YA EXISTE"
+                        return render(request, 'horario_reservado.html')
+                        # break
                 else:
-                    if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
-                        respuesta = "DUPLICADO"
-                        messages.success(request, (
-                               ' Cita duplicada'))
-                        break
+                        # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
+                        if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
+                            respuesta = "Reservado"
+                            # mensaje = "DUPLICADO"
+                            messages.success(request, (
+                                    'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                            return render(request, 'horario_duplicado.html')
+                        # break
+                #break       
+              
+                
             if respuesta== "NO EXISTE":
                 # Validar que la fecha de agendamiento no sea menos a la fecha actual
                 # Si la fecha de agendamiento es igual a la fecha actual, entonces la hora de agendamiento debe ser mayor a la hora actual
@@ -154,13 +173,7 @@ def addcita_usuario(request, numero_documento):
                 cita.save()
                 messages.success(request, (
                     '✅ Su cita ha sido registrada'))
-
                 return render(request, "calendario.html")
-            if respuesta== "DUPLICADO":
-                return render(request, 'horario_duplicado.html')
-            else:
-                return render(request, 'horario_reservado.html')
-                      
         else:
             messages.error(request, (
                 'No ha guardado'))
@@ -176,6 +189,10 @@ def calendario_vista(request):
 # --> Esta es una template de redirección para el horario reservado
 def horario_reservado(request):
     return render(request, "horario_reservado.html")
+
+# --> Esta es una template de redirección para el horario duplicado
+def horario_duplicado(request):
+    return render(request, "horario_duplicado.html")
 
 # <- Modificar Cita del Usuario iniciado
 
