@@ -132,7 +132,8 @@ def asignar_insumos(request, codigo_tratamiento):
             # form.save_m2m()
             # messages.success(request, (
             #     'Agregado correctamente!'))
-            return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
+            #   return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
+            return render(request, "mensajes/insumo_asignado_exitoso.html")
         else:
             data["form"]=form
             data['tratamiento']=tratamiento
