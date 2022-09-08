@@ -29,7 +29,7 @@ import datetime
 # print(datetime.today().weekday())
 # curr_date = date.today()
 # print(calendar.day_name[curr_date.weekday()])
-# print(list(calendar.day_name))
+# #print(list(calendar.day_name))
 
 # then = datetime(1987, 12, 30, 17, 50, 14)  # yr, mo, day, hr, min, sec
 # now = datetime(2020, 12, 25, 23, 13, 0)
@@ -41,7 +41,7 @@ def dia_semana(date):
     born = datetime.datetime.strptime(date, '%d/%m/%Y').weekday() 
     return (calendar.day_name[born]) 
   
-date = '05/08/2022'
+date = '07/09/2022'
 print(dia_semana(date)) 
 
 
@@ -147,9 +147,27 @@ def addcita_usuario(request, numero_documento):
             citas= Cita.objects.all()
            
             for c in citas:
-        
+                #dia= cita.fecha
+                dia=str (cita.fecha)
+                nro_semana = datetime.datetime.strptime(dia,'%Y-%m-%d').weekday()
+                dia = calendar.day_name[nro_semana]
+               # print('es el dia', dia, "el numero de la semana  es", nro_semana)
+               
+               #'Fecha actual'
+                actual = datetime.datetime.now().strftime("%Y-%m-%d")
+               #'Fecha que recibe'
+                dia_recibido=str(cita.fecha)
+                if dia_recibido < actual:
+                    print('fecha actual', actual, 'fecha pasada', dia, "que recibe", dia_recibido)
+                    return render(request, 'fecha_pasada.html')
+                   
+                #''Dias de la semana 5 y 6 es Sabado y Domingo''
+                if nro_semana> 4:
+                    messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
+                    return render(request, 'cerrado.html')
+                                    
                 if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                       
+                        print("el numero de la semana  es", nro_semana)
                         respuesta = "YA EXISTE"
                         return render(request, 'horario_reservado.html')
                         # break
@@ -168,6 +186,7 @@ def addcita_usuario(request, numero_documento):
             if respuesta== "NO EXISTE":
                 # Validar que la fecha de agendamiento no sea menos a la fecha actual
                 # Si la fecha de agendamiento es igual a la fecha actual, entonces la hora de agendamiento debe ser mayor a la hora actual
+                
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
                 cita.save()
