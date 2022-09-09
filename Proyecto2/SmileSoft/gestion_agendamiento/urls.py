@@ -25,6 +25,7 @@ urlpatterns = [
     path('usuario_changeCita/<int:id_cita>/',cambiarCita_usuario, name="usuario_addCita"),
     path('delete_cita/<int:id_cita>', deletecita, name='delete_cita'),
     path('horario_reservado/', horario_reservado, name='horario_reservado'),
+    path('horario_duplicado/', horario_duplicado, name='horario_duplicado'),
 
     path('mis_citas/<numero_documento>', mis_citas_lista, name="mis_citas"),
     path('calendario_mensaje/', calendario_mensaje, name="calendario_mensaje"),
