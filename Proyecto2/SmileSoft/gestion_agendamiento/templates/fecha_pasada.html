@@ -6,14 +6,14 @@
     <center>
                     
                            <br>
-        <strong  style="color:blue; font-size:16px;" >
-         <br>
+        <strong  style="color:black; font-size:16px;" >
                         <h2> <img src="{% static 'img/aviso.jpg' %}" width="120px" alt="auto"> 
-                            No se puede reservar una fecha pasada <br> 
+                           <br> <br>No se puede reservar esta cita <br> <br> <b>  <u>la hora o, la fecha   </u> <b>  
+                              <b style="color:red;"> ya pasó</b> <br> 
                        </h2>                                       
                     </strong> <br>
 
-                       <center> <small><b> Por favor elija otra fecha</b> </small></center>
+                       {% comment %} <center> <small><b> Por favor elija otra fecha</b> </small></center> {% endcomment %}
                        <br>
                        <button  href="/agendamiento/usuario_addCita/{{user.numero_documento}} " class="btn btn-primary" type="submit" style="margin: 10px;">
                            Agendar una cita 
