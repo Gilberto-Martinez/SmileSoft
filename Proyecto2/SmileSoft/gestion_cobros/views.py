@@ -26,7 +26,7 @@ def cobrar_tratamiento(request, id_paciente):
     precio_total = '{:,}'.format(precio_total).replace(',','.')
     edad = persona.obtener_edad()
     menor_edad = False
-    if edad > 18:
+    if edad < 18:
         menor_edad = True
 
     return render (request,"cobrar_tratamiento.html",{
@@ -57,8 +57,10 @@ def registrar_cobro(request, numero_documento):
 
     tratamientos_confirmados = obtener_tratamientos(numero_documento)
     detalle_cobro_nuevo = DetalleCobroContado.objects.create(
-                                                        cobro=cobro_contado
+                                                        cobro=cobro_contado,
+                                                        tratamientos=tratamientos_confirmados
     )
+    # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
     for tratamiento_conf in tratamientos_confirmados:
         DetalleCobroTratamiento.objects.create(
                                             detalle_cobro=detalle_cobro_nuevo,
