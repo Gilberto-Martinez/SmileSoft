@@ -1,4 +1,4 @@
-from time import strptime
+from time import gmtime, strftime, strptime
 from django.utils.html import conditional_escape as esc
 from itertools import groupby
 from datetime import date
@@ -39,10 +39,12 @@ import datetime
 
 def dia_semana(date): 
     born = datetime.datetime.strptime(date, '%d/%m/%Y').weekday() 
+    # hora_actual = datetime.strftime('%d/%m/%Y %H:%M:%S')
+    # print("Hora actual", hora_actual)
     return (calendar.day_name[born]) 
   
-date = '07/09/2022'
-print(dia_semana(date)) 
+date = '08/09/2022'
+print(dia_semana(date))
 
 
 class Calendario(LoginMixin, ListView):
@@ -145,48 +147,55 @@ def addcita_usuario(request, numero_documento):
         if formulario.is_valid():
             cita = formulario.save(commit=False)
             citas= Cita.objects.all()
-           
+            
             for c in citas:
                 #dia= cita.fecha
                 dia=str (cita.fecha)
                 nro_semana = datetime.datetime.strptime(dia,'%Y-%m-%d').weekday()
                 dia = calendar.day_name[nro_semana]
-               # print('es el dia', dia, "el numero de la semana  es", nro_semana)
-               
-               #'Fecha actual'
+                print('es el dia', dia, "el numero de la semana  es", nro_semana)
+               ########################
+                      #||DATOS|||
+              #""" 'Fecha actual' """
                 actual = datetime.datetime.now().strftime("%Y-%m-%d")
-               #'Fecha que recibe'
-                dia_recibido=str(cita.fecha)
-                if dia_recibido < actual:
-                    print('fecha actual', actual, 'fecha pasada', dia, "que recibe", dia_recibido)
+               #""" 'Fecha que recibe' """
+                dia_recibido = str(cita.fecha)
+               #""" 'Hora actual' """
+                hora_actual = datetime.datetime.now().strftime("%H:%M:%S")
+                # Imprime la Hora y la fecha actual -> actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                #print("es la hora actual",hora_actual)
+               #""" 'Hora que recibe' """
+                hora_recibida = str(cita.hora_atencion)
+                ########################
+                
+                if  dia_recibido < actual or hora_recibida < hora_actual:
+                    messages.success(request, "Por favor verifique nuevamente")
                     return render(request, 'fecha_pasada.html')
-                   
+                
                 #''Dias de la semana 5 y 6 es Sabado y Domingo''
-                if nro_semana> 4:
-                    messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
-                    return render(request, 'cerrado.html')
-                                    
-                if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                        print("el numero de la semana  es", nro_semana)
-                        respuesta = "YA EXISTE"
-                        return render(request, 'horario_reservado.html')
-                        # break
+                if nro_semana < 4:                   
+                    if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
+                            #print("el numero de la semana  es", nro_semana)
+                            respuesta = "YA EXISTE"
+                            return render(request, 'horario_reservado.html')
+                            # break
+                    else:
+                            # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
+                            if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
+                                respuesta = "Reservado"
+                                # mensaje = "DUPLICADO"
+                                messages.success(request, (
+                                        'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                return render(request, 'horario_duplicado.html')
+                            # break
+                    #break   
                 else:
-                        # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
-                        if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
-                            respuesta = "Reservado"
-                            # mensaje = "DUPLICADO"
-                            messages.success(request, (
-                                    'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
-                            return render(request, 'horario_duplicado.html')
-                        # break
-                #break       
+                    #"Si es fin de semana emite el msj"
+                    messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
+                    return render(request, 'cerrado.html')    
               
                 
             if respuesta== "NO EXISTE":
-                # Validar que la fecha de agendamiento no sea menos a la fecha actual
-                # Si la fecha de agendamiento es igual a la fecha actual, entonces la hora de agendamiento debe ser mayor a la hora actual
-                
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
                 cita.save()
