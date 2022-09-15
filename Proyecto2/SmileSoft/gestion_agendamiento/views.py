@@ -1,4 +1,5 @@
 from time import gmtime, strftime, strptime
+from urllib import request
 from django.utils.html import conditional_escape as esc
 from itertools import groupby
 from datetime import date
@@ -156,45 +157,47 @@ def addcita_usuario(request, numero_documento):
                 print('es el dia', dia, "el numero de la semana  es", nro_semana)
                ########################
                       #||DATOS|||
-              #""" 'Fecha actual' """
+                #""" 'Fecha actual' """
                 actual = datetime.datetime.now().strftime("%Y-%m-%d")
-               #""" 'Fecha que recibe' """
+                #""" 'Fecha que recibe' """
                 dia_recibido = str(cita.fecha)
-               #""" 'Hora actual' """
+                #""" 'Hora actual' """
                 hora_actual = datetime.datetime.now().strftime("%H:%M:%S")
                 # Imprime la Hora y la fecha actual -> actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 #print("es la hora actual",hora_actual)
-               #""" 'Hora que recibe' """
+                #""" 'Hora que recibe' """
                 hora_recibida = str(cita.hora_atencion)
                 ########################
-                
-                if  dia_recibido < actual or hora_recibida < hora_actual:
-                    messages.success(request, "Por favor verifique nuevamente")
-                    return render(request, 'fecha_pasada.html')
-                
-                #''Dias de la semana 5 y 6 es Sabado y Domingo''
-                if nro_semana < 4:                   
-                    if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                            #print("el numero de la semana  es", nro_semana)
-                            respuesta = "YA EXISTE"
-                            return render(request, 'horario_reservado.html')
-                            # break
-                    else:
+            
+                if dia_recibido > actual or hora_recibida > hora_actual:
+                    #        
+                    #''Dias de la semana 5 y 6 es Sabado y Domingo''
+                    if nro_semana <= 4:  
+                        print("-----------------------------DIA DE LA SEMANA----------------------")                 
+                        if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
+                                #print("el numero de la semana  es", nro_semana)
+                                respuesta = "YA EXISTE"
+                                return render(request, 'horario_reservado.html')
+                        else: 
                             # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
                             if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
-                                respuesta = "Reservado"
-                                # mensaje = "DUPLICADO"
-                                messages.success(request, (
-                                        'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
-                                return render(request, 'horario_duplicado.html')
-                            # break
-                    #break   
+                                    respuesta = "Reservado"
+                                    # mensaje = "DUPLICADO"
+                                    messages.success(request, (
+                                            'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                    return render(request, 'horario_duplicado.html')
+                    else:
+                        if nro_semana >=5: 
+                            #"Si es fin de semana emite el msj"
+                            messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
+                            return render(request, 'cerrado.html')   
                 else:
-                    #"Si es fin de semana emite el msj"
-                    messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
-                    return render(request, 'cerrado.html')    
-              
-                
+                    if dia_recibido < actual or hora_recibida < hora_actual:
+                        print("pasa por aqui primero||||||||||------------------")
+                        respuesta = "PASADO"
+                        messages.success(request, "Por favor verifique nuevamente")
+                        return render(request, 'fecha_pasada.html')
+                    
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
@@ -404,19 +407,22 @@ def listar_citapaciente(request):
 def listar_cita(request):
     busqueda = request.POST.get("q")
     listado_cita = Cita.objects.all()
-
-    if busqueda:
+    filtro = request.POST.get("f")
+    
+    # print("AQUI", en este bloque busca pero no encuentra)
+    if filtro :
+      print("Buscado AQUI",filtro)
+      listado_cita = Cita.objects.filter(Q(fecha__icontains=filtro))
+      
+    elif busqueda:
         listado_cita = Cita.objects.filter(
             Q(nombre_paciente__icontains=busqueda))
         print("AQUI ESTA ENTRANDO Y buscando", {
               'listado_cita': listado_cita})
-    else:
-        print("Buscado AQUI",)
-       # return render (request, "usuario/buscar.html")
-    return render(request, "listado_citas.html", {
-        'listado_cita': listado_cita,
-    }
-    )
+        
+    return render(request, "listado_citas.html", {'listado_cita': listado_cita,})
+            
+
 
 #<-- -->
 # "calendario_usuario.html"
