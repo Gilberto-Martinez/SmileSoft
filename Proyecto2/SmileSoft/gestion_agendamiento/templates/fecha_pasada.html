@@ -4,14 +4,12 @@
 <form method="post">
 	{% csrf_token %}
     <center>
-                    
-                           <br>
-        <strong  style="color:black; font-size:16px;" >
-                        <h2> <img src="{% static 'img/aviso.jpg' %}" width="120px" alt="auto"> 
-                           <br> <br>No se puede reservar esta cita <br> <br> <b>  <u>la hora o, la fecha   </u> <b>  
-                              <b style="color:red;"> ya pasó</b> <br> 
-                       </h2>                                       
-                    </strong> <br>
+                        <h3> <img src="{% static 'img/aviso.jpg' %}" width="100px" alt="auto"> <br>
+                           <br>  <u>La hora o, la fecha   </u> <b>  
+                              <b style="color:red;"> ya pasó</b> <br> <br>
+                              <i>No se puede reservar esta cita  </i> 
+                       </h3>                                       
+                   
 
                        {% comment %} <center> <small><b> Por favor elija otra fecha</b> </small></center> {% endcomment %}
                         <br>
@@ -28,7 +26,7 @@
                            <i class="bi bi-backspace"></i>
                            Atras <br>
                         </a>
-      
+
     </center>
      
 </form>
