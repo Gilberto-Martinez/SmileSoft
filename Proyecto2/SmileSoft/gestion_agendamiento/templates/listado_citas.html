@@ -31,7 +31,7 @@
                         <td>
                            
                             {%if perms.gestion_agendamiento.view_cita%}
-                                <a href="/agendamiento/calendario_usuario" class="btn btn-info">
+                                <a href="/agendamiento/calendar" class="btn btn-info">
                                     <i class="bi bi-calendar"></i>
                                    Ver Calendario <br>
                                 </a>
@@ -42,7 +42,7 @@
             
 <br> <br>
 <br> 
-                        <!--Barra de Busqueda-->
+                        <!--Barra de Busqueda Por nombre-->
                         <form  class="form-inline" method="POST">
                             {% csrf_token %}
                             <div class="input-group">
@@ -58,6 +58,27 @@
                                 </div>
                             </div>
                         </form>
+                        <br>
+                          <FONT COLOR="skyblue" style="font-size: 1.0rem" > &nbsp;  Filtro por fecha</FONT> 
+                          <!--Barra de Busqueda Por Fecha-->
+                        <form  class="form-inline" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <br><input type="date" name="f"  class="form-control bg-light border-0 small "  aria-label="search" value="{{request.POST.filtro}}" >
+                                <br>
+                                 {% comment %} Buscar por fecha: <input type="date" name="f" > {% endcomment %}
+                                <!--<input type="submit" value="{{request.POST.buscar}}" />-->
+                                <div class="input-group-append">
+                                    <button  class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="{{request.POST.buscar}}">
+                                        <!--ICONO LUPA-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
                         <!--end-->
 
                         <!--Inicio de la TABLA DE USUARIOS-->
