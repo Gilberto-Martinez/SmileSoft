@@ -19,5 +19,5 @@ urlpatterns = [
             path('confirmar_tratamientos/<str:id_tratamiento_conf>', confirmar_tratamiento, name="confirmar_tratamientos"),
             path('mostrar_mensaje_confirmacion/<str:id_tratamiento_conf>', mostrar_mensaje_confirmacion, name="mostrar_mensaje_confirmacion/"),
             # path('tratamiento_asignado_exitoso/', mostrar_mensaje_confirmacion, name="mostrar_mensaje_confirmacion/"),
-            # path('asignar_insumos/<int:codigo_tratamiento>', asignar_insumos, name="asignar_insumos"),
+            #path('asignar_insumos/<int:codigo_tratamiento>', asignar_insumos, name="asignar_insumos"),
 ]
