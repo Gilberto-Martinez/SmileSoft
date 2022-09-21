@@ -26,7 +26,7 @@ def cobrar_tratamiento(request, id_paciente):
     precio_total = '{:,}'.format(precio_total).replace(',','.')
     edad = persona.obtener_edad()
     menor_edad = False
-    if edad > 18:
+    if edad < 18:
         menor_edad = True
 
     return render (request,"cobrar_tratamiento.html",{
@@ -57,10 +57,14 @@ def registrar_cobro(request, numero_documento):
 
     tratamientos_confirmados = obtener_tratamientos(numero_documento)
     detalle_cobro_nuevo = DetalleCobroContado.objects.create(
-                                                        cobro=cobro_contado
+                                                        cobro=cobro_contado,
+                                                        # tratamientos=tratamientos_confirmados
     )
+    # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
     for tratamiento_conf in tratamientos_confirmados:
-        DetalleCobroTratamiento.objects.create(
+        print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
+        # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
+        detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
                                             detalle_cobro=detalle_cobro_nuevo,
                                             tratamiento = tratamiento_conf
         )
@@ -72,8 +76,9 @@ def obtener_tratamientos(cedula):
     tratamientos_asignados = []
 
     for tratamiento in listado_tratamientos:
-        if str(tratamiento.get_paciente()) == str(cedula):
+        if str(tratamiento.paciente) == str(cedula):
             cod_tratamiento = tratamiento.get_tratamiento()
+            print("Este es el tratamiento: ",cod_tratamiento)
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             tratamientos_asignados.append(nuevo_tratamieto)
     return tratamientos_asignados
@@ -120,6 +125,8 @@ def ver_detalle_cobro(request, id_cobro_contado):
     tratamientos =[]
 
     for detalle_tratamiento in detalle_tratamientos:
+        print("id Detalle parametro: ", id_detalle_cobro)
+        print("Detalle de cobro en BD: ", detalle_tratamiento.detalle_cobro.id)
         if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
             id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
             tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
@@ -129,6 +136,7 @@ def ver_detalle_cobro(request, id_cobro_contado):
                                 'precio':precio
             }
             tratamientos.append(tratamiento_tmp)
+            print("Entra en detalle de cobro")
 
     monto_total = cobro.monto_total
     monto_total = '{:,}'.format(monto_total).replace(',','.')

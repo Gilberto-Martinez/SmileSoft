@@ -1,0 +1,33 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+                        <h3> <img src="{% static 'img/aviso.jpg' %}" width="100px" alt="auto"> <br>
+                           <br>  <u>La hora o, la fecha   </u> <b>  
+                              <b style="color:red;"> ya pasó</b> <br> <br>
+                              <i>No se puede reservar esta cita  </i> 
+                       </h3>                                       
+                   
+
+                       {% comment %} <center> <small><b> Por favor elija otra fecha</b> </small></center> {% endcomment %}
+                        <br>
+                        <button  href="/agendamiento/usuario_addCita/{{user.numero_documento}} " class="btn btn-primary" type="submit" style="margin: 10px;">
+                           Agendar una cita 
+                        </button> 
+
+                        <a href="/agendamiento/calendario_usuario" class="btn btn-info">
+                           <i class="bi bi-calendar"></i>
+                           Ver Calendario <br>
+                        </a>
+                        &nbsp;
+                        <a onclick="history.back()" class="btn btn-danger">
+                           <i class="bi bi-backspace"></i>
+                           Atras <br>
+                        </a>
+
+    </center>
+     
+</form>
+{% endblock %}
