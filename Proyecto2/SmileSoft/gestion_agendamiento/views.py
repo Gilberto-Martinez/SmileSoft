@@ -1,3 +1,4 @@
+from mailbox import NoSuchMailboxError
 from time import gmtime, strftime, strptime
 from urllib import request
 from django.utils.html import conditional_escape as esc
@@ -71,12 +72,13 @@ def agregar_cita(request, id_paciente):
     cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
     nombre = persona.nombre + ' ' + persona.apellido
-    # fecha=Cita.objects.get(paciente=paciente)
-    # dia= fecha.fecha
-    # apellido = persona.apellido
+    celular = persona.telefono
+    print(celular, nombre, "este es ------------------")
     data = {
         'form': CitaForm(),
-        'persona': persona
+        'persona': persona,
+        'celular': celular,
+
     }
 
     if request.method == "POST":
@@ -88,47 +90,88 @@ def agregar_cita(request, id_paciente):
             cita.paciente = paciente
             cita.nombre_paciente = nombre
             citas= Cita.objects.all()        
-            # cita.fecha=dia
-            # born = datetime.datetime.strptime(date, '%d/%m/%Y').weekday()
-            # dia_semana= calendar.day_name[born]
-            # print(dia)
-
-                # date = '05/08/2022'
+       
+        
             for c in citas:
-                if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                    respuesta = "YA EXISTE"
-                    break
+                dia=str (cita.fecha)
+                nro_semana = datetime.datetime.strptime(dia,'%Y-%m-%d').weekday()
+                dia = calendar.day_name[nro_semana]
+                print('es el dia', dia, "el numero de la semana  es", nro_semana)
+               ########################
+                      #||DATOS|||
+                #""" 'Fecha actual' """
+                actual = datetime.datetime.now().strftime("%Y-%m-%d")
+                #""" 'Fecha que recibe' """
+                dia_recibido = str(cita.fecha)
+                #""" 'Hora actual' """
+                hora_actual = datetime.datetime.now().strftime("%H:%M:%S")
+                # Imprime la Hora y la fecha actual -> actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                #print("es la hora actual",hora_actual)
+                #""" 'Hora que recibe' """
+                hora_recibida = str(cita.hora_atencion)
+                ########################
+            
+                if dia_recibido > actual or hora_recibida > hora_actual:
+                    #        
+                    #''Dias de la semana 5 y 6 es Sabado y Domingo''
+                    if nro_semana <= 4:  
+                        print("-----------------------------DIA DE LA SEMANA----------------------")                 
+                        if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
+                                #print("el numero de la semana  es", nro_semana)
+                                respuesta = "YA EXISTE"
+                                return render(request, 'horario_reservado.html')
+                        else: 
+                            # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
+                            if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
+                                    respuesta = "Reservado"
+                                    # mensaje = "DUPLICADO"
+                                    messages.success(request, (
+                                            'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                    return render(request, 'horario_duplicado.html')
+                    else:
+                        if nro_semana >=5: 
+                            #"Si es fin de semana emite el msj"
+                            messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
+                            return render(request, 'cerrado.html')   
+                else:
+                    if dia_recibido < actual or hora_recibida < hora_actual:
+                        print("pasa por aqui primero||||||||||------------------")
+                        respuesta = "PASADO"
+                        messages.success(request, "Por favor verifique nuevamente")
+                        return render(request, 'fecha_pasada.html')
+      
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
+                cita.celular = celular
                 cita.save()
-                messages.success(request, (
-                    '✅Agregado correctamente!'))
+                messages.success(request, ('✅Agregado correctamente!'))
                 print('aquiiiiiiiiiiiiii ENTRAAAAA',)
                 return redirect("/agendamiento/listado_citas/")
-            else:
-                return render(request, 'horario_reservado.html')
+            
         else:
             messages.error(request, (
-                'No ha guardado'))
+                'La cita no ha sido registrada'))
             data["form"] = formulario
             print('NO ENTRAAAAA')
 
     return render(request, "agregar_cita.html", data)
 
 
-# <--Agregar cita a UN USUARIO
+# <--Agregar cita a UN USUARIO(hecho)
 def addcita_usuario(request, numero_documento):
     persona = Persona.objects.get(numero_documento=numero_documento)
     # cedula = persona.numero_documento
     paciente = Paciente.objects.get(numero_documento=numero_documento)
     id_paciente = paciente.id_paciente
     nombre = persona.nombre + ' ' + persona.apellido
+    celular= persona.telefono
+    print(celular, nombre,"este es ------------------")
     
     fecha=Cita.objects.all()
     
     # apellido = persona.apellido
-    print('Esta es la cedula: ', numero_documento, 'Este es el id del paciente: ', id_paciente,) 
+    print('Esta es la cedula: ', numero_documento, 'Este es el id del paciente: ', id_paciente) 
    
     hora_atencion= Horario.objects.all()
     # hora= HoraForm(request.POST)
@@ -138,13 +181,14 @@ def addcita_usuario(request, numero_documento):
         'persona': persona,
         'id_paciente': id_paciente,
         'hora_atencion': hora_atencion,
+        'celular':celular,
       
     }
 
     if request.method == "POST":
         formulario = CitaForm(data=request.POST, files=request.FILES)
         respuesta= "NO EXISTE"
-        # mensaje="NO DUPLICADO"
+    
         if formulario.is_valid():
             cita = formulario.save(commit=False)
             citas= Cita.objects.all()
@@ -200,7 +244,8 @@ def addcita_usuario(request, numero_documento):
                     
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
-                cita.nombre_paciente = nombre
+                cita.nombre_paciente = nombre 
+                cita.celular= celular
                 cita.save()
                 messages.success(request, (
                     '✅ Su cita ha sido registrada'))
@@ -225,28 +270,8 @@ def horario_reservado(request):
 def horario_duplicado(request):
     return render(request, "horario_duplicado.html")
 
-# <- Modificar Cita del Usuario iniciado
-
-def mis_citas_lista(request, numero_documento):
-    #no funciona
-    persona = Persona.objects.get(numero_documento=numero_documento)
-    cedula = persona.numero_documento
-    paciente = Paciente.objects.get(numero_documento=cedula)
-    id_paciente = paciente.id_paciente
-    
-    cita = Cita.objects.get(paciente=cedula)
-    
-    pkcita = cita.id_cita
-    
-    mis_citas=Cita.objects.all()
-    print('Imprime esto', {'mis_citas': mis_citas})
-    
-    return render(request, "mis_citas.html", {'mis_citas': mis_citas})
-
-
  # @permission_required('gestion_agendamiento.cambiarCita_usuario', login_url="/panel_control/error/",)
 def cambiarCita_usuario(request, id_cita):
-#enproceso
     cita = Cita.objects.get(id_cita=id_cita)
     cedula = cita.paciente
     persona = Persona.objects.get(numero_documento=cedula)
@@ -279,19 +304,60 @@ def cambiarCita_usuario(request, id_cita):
             citas= Cita.objects.all()
             
             for c in citas:
-                if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                    respuesta = "YA EXISTE"
-                    break
+                #---Datos---#
+                dia = str(cita.fecha)
+                nro_semana = datetime.datetime.strptime(
+                    dia, '%Y-%m-%d').weekday()
+                dia = calendar.day_name[nro_semana]
+                #""" 'Fecha actual' """
+                actual = datetime.datetime.now().strftime("%Y-%m-%d")
+                #""" 'Fecha que recibe' """
+                dia_recibido = str(cita.fecha)
+                #""" 'Hora actual' """
+                hora_actual = datetime.datetime.now().strftime("%H:%M:%S")
+                # Imprime la Hora y la fecha actual -> actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                #print("es la hora actual",hora_actual)
+                #""" 'Hora que recibe' """
+                hora_recibida = str(cita.hora_atencion)
+                #-----------#
+                if dia_recibido > actual or hora_recibida > hora_actual:
+                    #
+                    #''Dias de la semana 5 y 6 es Sabado y Domingo''
+                    if nro_semana <= 4:
+                        if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional:
+                            #print("el numero de la semana  es", nro_semana)
+                            respuesta = "YA EXISTE"
+                            return render(request, 'horario_reservado.html')
+                        else:
+                            # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
+                            if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional:
+                                respuesta = "Reservado"
+                                # mensaje = "DUPLICADO"
+                                messages.success(request, (
+                                    'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                return render(request, 'horario_duplicado.html')
+                    else:
+                        if nro_semana >= 5:
+                            #"Si es fin de semana emite el msj"
+                            messages.success(
+                                request, "Por favor, elija dias entre Lunes a Viernes")
+                            return render(request, 'cerrado.html')
+                else:
+                    if dia_recibido < actual or hora_recibida < hora_actual:
+                        print("pasa por aqui primero||||||||||------------------")
+                        respuesta = "PASADO"
+                        messages.success(
+                            request, "Por favor verifique nuevamente")
+                        return render(request, 'fecha_pasada.html')
+                    
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
                 cita.save()
                 return redirect("/agendamiento/calendario_mensaje/")
-            else:
-                return render(request, 'horario_reservado.html')
+          
         else:
-                messages.error(request, (
-                    'No ha guardado'))
+                messages.error(request, ('No ha guardado'))
                 data["form"] = formulario
                 print('NO ENTRAAAAA')
         # else:
@@ -300,7 +366,7 @@ def cambiarCita_usuario(request, id_cita):
     return render(request, "usuario_changeCita.html", data) 
 
 
-# <--Modificar cita-->
+# <--Modificar cita-->(hecho)
 
 def modificar_cita(request, id_cita):
     cita = Cita.objects.get(id_cita=id_cita)
@@ -313,44 +379,74 @@ def modificar_cita(request, id_cita):
     nombre = persona.nombre + ' ' + persona.apellido
     data = {
         'form': CitaForm(instance=cita),
-        'persona': persona
+        'persona': persona,
     }
 
     if request.method == "POST":
-        formulario = CitaForm(
-            data=request.POST, instance=cita, files=request.FILES)
+        formulario = CitaForm(data=request.POST, instance=cita, files=request.FILES)
         respuesta= "NO EXISTE"
         
         if formulario.is_valid():
-           
             cita = formulario.save(commit=False)
             citas= Cita.objects.all()
-            
             for c in citas:
-              
-                
-                    if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                       
-                        respuesta = "YA EXISTE"
-                        break
+                #---Datos---#
+                dia=str (cita.fecha)
+                nro_semana = datetime.datetime.strptime(dia,'%Y-%m-%d').weekday()
+                dia = calendar.day_name[nro_semana]
+                #""" 'Fecha actual' """
+                actual = datetime.datetime.now().strftime("%Y-%m-%d")
+                #""" 'Fecha que recibe' """
+                dia_recibido = str(cita.fecha)
+                #""" 'Hora actual' """
+                hora_actual = datetime.datetime.now().strftime("%H:%M:%S")
+                # Imprime la Hora y la fecha actual -> actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                #print("es la hora actual",hora_actual)
+                #""" 'Hora que recibe' """
+                hora_recibida = str(cita.hora_atencion)
+                #-----------#
+                if dia_recibido > actual or hora_recibida > hora_actual:
+                    #
+                    #''Dias de la semana 5 y 6 es Sabado y Domingo''
+                    if nro_semana <= 4:
+                        print(
+                            "-----------------------------DIA DE LA SEMANA----------------------")
+                        if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional:
+                            #print("el numero de la semana  es", nro_semana)
+                            respuesta = "YA EXISTE"
+                            return render(request, 'horario_reservado.html')
+                        else:
+                            # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
+                            if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha:
+                                respuesta = "Reservado"
+                                # mensaje = "DUPLICADO"
+                                messages.success(request, (
+                                    'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                return render(request, 'horario_duplicado.html')
                     else:
-                        respuesta = "Duplicado"
-                        messages.info(request, 'Se ha duplicado la Cita')
-                    
+                        if nro_semana >= 5:
+                            #"Si es fin de semana emite el msj"
+                            messages.success(
+                                request, "Por favor, elija dias entre Lunes a Viernes")
+                            return render(request, 'cerrado.html')
+                else:
+                    if dia_recibido < actual or hora_recibida < hora_actual:
+                        print("pasa por aqui primero||||||||||------------------")
+                        respuesta = "PASADO"
+                        messages.success(
+                            request, "Por favor verifique nuevamente")
+                        return render(request, 'fecha_pasada.html')
+ 
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre
                 cita.save()
             
                 messages.success(request, (
-                    'Modificado correctamente!'))            
-                return redirect("/agendamiento/listado_citas/", respuesta)
-            else:
-                return render(request, 'horario_reservado.html')
-                
+                    '✅ Modificado correctamente!'))            
+                return redirect("/agendamiento/listado_citas/", respuesta)                
         else:
-            messages.error(
-                request, "Algo ha salido Mal, por favor verifique nuevamente")
+            messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
     return render(request, "modificar_cita.html", data)
 
 # <--Eliminar cita-->
@@ -360,7 +456,7 @@ def eliminar_cita(request, id_cita):
         citas.delete()
         listado_citas = Cita.objects.all()
 
-        messages.success(request, "Eliminado")
+        messages.success(request, "❌ Cita Eliminada")
 
         return render(request, "listado_citas.html", {'listado_citas': listado_citas})
 
@@ -368,7 +464,7 @@ def eliminar_cita(request, id_cita):
         raise Http404(
             "No se puede eliminar la cita indicada. Dado que ya se Elimino")
         
-#Eliminar la cita de un usuario
+#Eliminar la cita de un usuario(hecho)
 def deletecita(request,id_cita):
     try:
        
@@ -406,25 +502,47 @@ def listar_citapaciente(request):
 # <-Listar cita AGENDADA-->
 def listar_cita(request):
     busqueda = request.POST.get("q")
-    listado_cita = Cita.objects.all()
+      #'filtro de fecha, y nombre 
     filtro = request.POST.get("f")
-    
-    # print("AQUI", en este bloque busca pero no encuentra)
-    if filtro :
-      print("Buscado AQUI",filtro)
-      listado_cita = Cita.objects.filter(Q(fecha__icontains=filtro))
-      
+    listado_cita = Cita.objects.all() 
+    if filtro:
+            print("Buscado AQUI", filtro)
+            listado_cita = Cita.objects.filter(Q(fecha__icontains=filtro))
+
     elif busqueda:
         listado_cita = Cita.objects.filter(
-            Q(nombre_paciente__icontains=busqueda))
-        print("AQUI ESTA ENTRANDO Y buscando", {
-              'listado_cita': listado_cita})
+                Q(nombre_paciente__icontains=busqueda))
+  
+    cita_reservadas=[]
+    
+    for listado_cita in listado_cita:
+        cita= Cita.objects.get(id_cita=listado_cita.id_cita)
+        # paciente = Paciente.objects.get(paciente=listado_cita.paciente) 
+        persona = Persona.objects.get(numero_documento=listado_cita.paciente)
+      
+        cedula = persona.numero_documento
+        nombre = persona.nombre + ' ' + persona.apellido
+        celular = persona.telefono
+        fecha_reservada= cita.fecha
+        tratamiento= cita.tratamiento_solicitado
+        hora=cita.hora_atencion
+        doctor=cita.profesional
+      
+        cita_reservada= {
+                        'nombre_paciente': nombre,
+                        'paciente':cedula,
+                        'celular':celular,
+                        'fecha': fecha_reservada, 
+                        'tratamiento_solicitado': tratamiento , 
+                        'hora_atencion': hora,  
+                        'profesional':doctor         
+                        
+        }
         
-    return render(request, "listado_citas.html", {'listado_cita': listado_cita,})
-            
+        cita_reservadas.append(cita_reservada)
+        
+    return render(request, "listado_citas.html", {'cita_reservadas': cita_reservadas,})
 
-
-#<-- -->
 # "calendario_usuario.html"
 
 class CalendarioUsuario(LoginMixin, ListView):

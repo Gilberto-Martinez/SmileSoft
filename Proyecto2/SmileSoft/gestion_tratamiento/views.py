@@ -34,9 +34,9 @@ def agregar_tratamiento (request):
         if formulario.is_valid():
             formulario.save()
             data["mensaje"]="Registrado correctamente"
-            messages.success(request, (
-                'Agregado correctamente!'))
+            messages.success(request,'Agregado correctamente✅')
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
+            return redirect('/tratamiento/listar_tratamiento/')
         else:
             data["form"]=formulario
             print('NO ENTRAAAAA')
@@ -179,7 +179,7 @@ def modificar_tratamiento(request, codigo_tratamiento):
             
             formulario.save()
             
-            messages.success(request, "Modificado")       
+            messages.success(request, "Modificado ✅")
             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
                   
             data['mensaje'] = "Modificado correctamente"
@@ -200,7 +200,7 @@ def eliminar_tratamiento(request, codigo_tratamiento):
         tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
         tratamiento.delete()
         listado_tratamientos = Tratamiento.objects.all()
-        messages.success(request, "Eliminado")
+        messages.success(request, "Eliminado ❌")
         return render(request, "tratamiento/listar_tratamientos.html", {'listado_tratamientos': listado_tratamientos})
     except Tratamiento.DoesNotExist:
         raise Http404("No se puede eliminar el Tratamiento indicado. Dado que ya se Elimino")

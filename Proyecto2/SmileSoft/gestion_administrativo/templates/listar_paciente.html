@@ -74,7 +74,7 @@
 				<h1>No hay registros de pacientes</h1>
 				{% endif %}
 
-				{% if messages %}
+				{% comment %} {% if messages %}
 								<ul class="messages">
 								
 									{% for message in messages %}
@@ -89,7 +89,7 @@
 									</li>
 									{% endfor %}
 								</ul>
-								{% endif %}
+								{% endif %} {% endcomment %}
 			{%endif%}
 		</tbody>
 	</table> 
