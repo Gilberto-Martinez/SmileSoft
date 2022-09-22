@@ -18,7 +18,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required, permission_required
-
+from django.shortcuts import get_object_or_404, redirect, render
 
 # ***Vista de Agregar Rol
 @permission_required('gestion_roles.agregar_rol', login_url="/panel_control/error/",)
@@ -82,6 +82,7 @@ def modificar_rol(request, name):
             # formulario.save_m2m()
             messages.success(request, "Modificado")
             data['mensaje'] = "Modificado correctamente"
+            return redirect("/roles/listar_roles/")
         else:
             messages.error(
                 request, "Algo ha salido Mal, por favor verifique nuevamente")
