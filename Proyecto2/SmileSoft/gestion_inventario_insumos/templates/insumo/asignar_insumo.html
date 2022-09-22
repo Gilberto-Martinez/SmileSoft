@@ -1,0 +1,47 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+
+<div class= "col-12 col-md-8 offset-md-2" >
+        <div class="card">
+            <br>
+            <center>  <h2>Asignar Insumo</h2> </center>
+            <!-- <div class="card-body"> -->
+                <form method="POST"id="group_form" novalidate="">
+                    {%csrf_token%}
+                        {%if mensaje%}
+                            <div class="alert alert-success" role="alert">
+                                  ✅ Asignado exitosamente
+                            </div>
+                        {%endif%}
+                        <br>
+                        <center>
+                            <h5>
+                                <b>Trataminto:</b> <i><td>{{ tratamiento.codigo_tratamiento.nombre_tratamiento }}<!--  {{tratamiento.codigo_tratamiento.precio}}--> </td></i>
+                            </h5>
+                        </CEnter>
+                    <div style="margin: 20px;" >
+                        <table>
+                            <div class="form-group">
+                                <label for="{{form.insumos.name}}"><b>Insumos ConsulDent:</b></label>
+                                {{form.insumos}}
+                            </div>
+                        </table>
+                        <!-- <b>{{form.tratamientos.label}}</b> -->
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary" type="submit" style="margin: 10px;">
+                            <i class="bi-save"></i>
+                            Guardar
+                        </button>
+                        <a onclick="history.back()" class="btn btn-danger" style="margin: 10px;">
+                            <i class="bi-x-circle"></i>
+                            Atras
+                        </a>
+                    </div>
+                    <hr>
+                </form>
+            </div>
+        </div>
+    </div>
+{%endblock%}
