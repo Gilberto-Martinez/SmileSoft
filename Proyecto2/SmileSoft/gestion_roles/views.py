@@ -36,6 +36,7 @@ def agregar_rol(request):
             messages.success(request, (
                 'Agregado correctamente!'))
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
+            return redirect("/roles/listar_roles/")
         else:
             data["form"] = formulario
             print('NO ENTRAAAAA')

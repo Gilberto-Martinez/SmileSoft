@@ -113,6 +113,7 @@ class UsuarioForm(forms.ModelForm):
                 usuario.save()
             return usuario
 
+#--Modificar usuario
 class UsuarioUpdateForm(forms.ModelForm):
     usuario = forms.CharField(max_length=15,
                               widget=forms.TextInput(attrs={

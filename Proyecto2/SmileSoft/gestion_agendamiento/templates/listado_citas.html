@@ -10,13 +10,10 @@
      
 
 {%endblock%}
-<!--Cuadro de DIALOGO DE ELIMINAR-->
-
-
 
 {%block content%}
   
-
+{{persona}}
 {%if perms.gestion_agendamiento.view_cita%}
     <div class="container">
         <div class="card">
@@ -59,10 +56,12 @@
                             </div>
                         </form>
                         <br>
-                          <FONT COLOR="skyblue" style="font-size: 1.0rem" > &nbsp;  Filtro por fecha</FONT> 
+                        <strong>  <FONT COLOR="skyblue" style="font-size: 1.0rem" > &nbsp;  Filtro por fecha</FONT> </strong>
                           <!--Barra de Busqueda Por Fecha-->
                         <form  class="form-inline" method="POST">
                             {% csrf_token %}
+
+                       
                             <div class="input-group">
                                 <br><input type="date" name="f"  class="form-control bg-light border-0 small "  aria-label="search" value="{{request.POST.filtro}}" >
                                 <br>
@@ -92,24 +91,26 @@
                                         <th>Nro</th>
                                         <th>Nombre </th>
                                         <th>Cédula</th>
-                                        <th>Fecha de Agendamiento</th>
-                                        <th>Hora de Agendamiento</th>
+                                        <th>N° telefónico</th>
+                                        <th>Fecha </th>
+                                        <th>Hora</th>
                                         {% comment %} <th>Hora de Atencion</th> {% endcomment %}
                                         <th>Tratamiento Solicitado</th>
                                         <th>Profesional</th>
-                                        <th>Estado </th>
+                                        <th> Estado </th>
                                         <th colspan="2">Acciones </th> 
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    {%if listado_cita%}
-                                        {%for c in listado_cita%}
+                                    {%if cita_reservadas%}
+                                        {%for c in cita_reservadas%}
 
                                         <tr>
                                             <td >{{forloop.counter}}</td>
                                             <td >{{c.nombre_paciente}}</td>
                                             <td >{{c.paciente }}</td>
+                                            <td >{{c.celular }}</td>
                                             <td >{{c.fecha}}</td>
                                             {% comment %} <td >{{c.hora}} hs.</td> {% endcomment %}
                                             <td >{{c.hora_atencion}} hs.</td>
@@ -146,8 +147,15 @@
                                         {% endfor %}
                                     {% else %}
                                         <br>
-                                        <h2><center>No hay registros</center> </h2>
-                                        <br>
+                                        <h2>
+                                            <center>No hay registros
+                                             <br><a onclick="history.back()" class="btn btn-primary">
+                                                    <i class="bi bi-backspace"></i>
+                                                    Atrás 
+                                                </a>
+                                            </center> 
+                                       </h2>
+
                                     {% endif %}
                                 </tbody>
                             </table>

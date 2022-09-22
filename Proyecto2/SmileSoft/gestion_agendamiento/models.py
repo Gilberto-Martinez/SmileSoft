@@ -83,7 +83,7 @@ class Horario (models.Model):
 
 class Cita(models.Model):
     id_cita=models.AutoField(primary_key=True)
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT)
     nombre_paciente = models.CharField(max_length=40,
                                       verbose_name='Nombre del Paciente',null=True)
     apellido_paciente = models.CharField(max_length=40,
@@ -96,6 +96,7 @@ class Cita(models.Model):
                                                 on_delete=models.PROTECT,
                                                 verbose_name='Motivo de consulta'
     )
+    celular = models.ForeignKey(Persona,null= True, max_length=40, on_delete=models.PROTECT,)
    
     fecha = models.DateField()
    # hora = models.TimeField(null=True)

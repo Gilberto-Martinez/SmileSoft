@@ -28,41 +28,66 @@
                                   ✅ Usuario registrado exitosamente
                             </div>
                             {%endif%}
-                          
-                           <small class="form-text text-muted"> 
-                               
-                                ✏️ Ejemplo :<b> jperez </b>
-                           </small>                        
-
-                           
-                            {{form.as_p}} 
                             
+                            {% comment %} {{form.as_p}}  {% endcomment %}
+                          <div style="margin: 20px;" >
+                            <table>
+                              <b>
+                                <div class="form-group">
+                                    <label for="{{form.usuario.name}}">{{form.usuario.label}}</label>
+                                    {{form.usuario}}
+                                </div>
+                                 <small class="form-text text-muted"> ✏️ Ejemplo : jperez </small> 
+                                <br>
+                                <br>
+                               <div class="form-group">
+                                  <label for="{{form.password1.name}}">{{form.password1.label}}</label>
+                                  {{form.password1}}
+                               </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form.password2.name}}">{{form.password2.label}}</label>
+                                    {{form.password2}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                            <label for="{{form.numero_documento.name}}">{{form.numero_documento.label}}</label>
+                                            {{form.numero_documento}}
+                                        </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="{{form.groups.name}}">{{form.groups.label}}</label>
+                                    {{form.groups}}
+                                </div>
+                                
+                                <br>
+                                <div class="form-group">
+                                  <label for="{{form.is_active.name}}">{{form.is_active.label}}</label>
+                                  {{form.is_active}}
+                                </div>
+                           
+                                <div class="form-group">
+                                    <label for="{{form.is_admin.name}}">{{form.is_admin.label}}</label>
+                                    {{form.is_admin}}
+                                </div>
+                              </b>
+                            </table>
+                          </div>
 
                             <br>
-                            <div class="d-flex justify-content-center">  
-                                {% comment %} <div class="d-flex justify-content-end">--> para poner en una esquina     {% endcomment %}
-                                <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
-                                <input type="submit" onclick="guardar()" value="Guardar" class= "btn btn-primary btn-block txt-white">
-                                 {% comment %} <script>
-                                          function guardar() {
-                                          
-                                              Swal.fire({
-                                        icon: 'success',
-                                        title: 'Guardado exitosamente',
-                                      })
-                                          }
-                                      </script> {% endcomment %}
-                                &nbsp;
-                                {% comment %} <input href="/sesion/agregar_usuario/" type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
-                              <button id="cancel" name="cancel" class="btn btn-default" value="1">Cancel</button> {% endcomment %}
-                                  <a href="/listar_usuario/" id="cancel" name="cancel" class= "btn btn-secondary btn-block txt-white">Cancelar</a>
-                          
-                                </div>
+                          <div class="d-flex justify-content-center">  
+                              {% comment %} <div class="d-flex justify-content-end">--> para poner en una esquina     {% endcomment %}
+                              <!--tipo submit para enviar,luego son clases y colores btn, y btnblock para que muestre a lo largo de la tarjeta-->
+                              <input type="submit" onclick="guardar()" value="Guardar" class= "btn btn-primary btn-block txt-white">
+                              &nbsp;
+                              {% comment %} <input href="/sesion/agregar_usuario/" type="reset" value="Cancelar" class= "btn btn-secondary btn-block txt-white">  
+                            <button id="cancel" name="cancel" class="btn btn-default" value="1">Cancel</button> {% endcomment %}
+                                <a href="/listar_usuario/" id="cancel" name="cancel" class= "btn btn-secondary btn-block txt-white">Cancelar</a>
+                        
+                          </div>
                         </form>
-                         {% comment %} {{mensaje}}  {% endcomment %}
-                   <div>
+                  <div>
               </div>
-
             </div>
         </div>
 <hr>

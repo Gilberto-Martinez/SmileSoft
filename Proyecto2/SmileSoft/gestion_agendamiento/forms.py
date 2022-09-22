@@ -23,6 +23,7 @@ class CitaForm(forms.ModelForm):
                 'fecha',
                 # 'hora',
                 'hora_atencion',
+                
                 'profesional',
                 'estado',
         ]

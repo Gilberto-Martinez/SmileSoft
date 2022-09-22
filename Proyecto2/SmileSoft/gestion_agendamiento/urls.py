@@ -11,7 +11,11 @@ urlpatterns = [
          name="calendario_usuario"),
     # path('calendario_usuario/', calendario_usuario, name="calendario_usuario"),
     # path('calendar/', pruebacalendar, name="calendar"),
+
+    # <--- A Sistema-->
     path('listado_citas/', listar_cita, name="listado_citas"),
+    # path("listado_citas/", listaReserva.as_view(),
+    #      name="listado_citas"),
     path('agregar_cita/<int:id_paciente>', agregar_cita, name="agregar_cita"),
     path('modificar_cita/<int:id_cita>', modificar_cita, name="modificar_cita"),
     path('eliminar_cita/<int:id_cita>', eliminar_cita, name="eliminar_cita"),
@@ -27,7 +31,7 @@ urlpatterns = [
     path('horario_reservado/', horario_reservado, name='horario_reservado'),
     path('horario_duplicado/', horario_duplicado, name='horario_duplicado'),
 
-    path('mis_citas/<numero_documento>', mis_citas_lista, name="mis_citas"),
+   
     path('calendario_mensaje/', calendario_mensaje, name="calendario_mensaje"),
 
     # <--Horarios-->

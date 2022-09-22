@@ -43,8 +43,9 @@ def agregar_insumo (request):
         if formulario.is_valid():
             formulario.save()
             data["mensaje"]="Registrado correctamente"
-            messages.success(request, (
-                'Agregado correctamente!'))
+            messages.success(request, (' ✅ Agregado correctamente!'))
+            return redirect("/insumo/listar_insumo/")  
+            
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
         else:
             data["form"]=formulario
@@ -89,11 +90,9 @@ def modificar_insumo(request, nombre_insumo):
             
             formulario.save()
             
-            messages.success(request, "Modificado")       
-            print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
-                  
-            data['mensaje'] = "Modificado correctamente"
-            
+            messages.success(request, "Modificado Correctamente ✅")
+            return redirect("/insumo/listar_insumo/")     
+                
         else:
             messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
             print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
@@ -109,7 +108,7 @@ def eliminar_insumo(request, nombre_insumo):
         insumo = Insumo.objects.get(nombre_insumo=nombre_insumo)
         insumo.delete()
         listado_insumos = Insumo.objects.all()
-        messages.success(request, "Eliminado")
+        messages.success(request, "Eliminado ❌")
         return render(request, "insumo/listar_insumos.html", {'listado_insumos': listado_insumos})
     except Insumo.DoesNotExist:
         raise Http404("No se puede eliminar el Insumo indicado. Dado que ya se Elimino")

@@ -60,7 +60,7 @@
                                 <th>Nro Tratamiento</th>
                                 <th>Nombre </th>
                                 <th>Precio</th>  
-                                <th colspan="2">Acciones </th>
+                                <th colspan="3">Acciones </th>
                             </tr>
                         </thead>
 
@@ -75,7 +75,7 @@
                                     <td>
                                         {%if perms.gestion_tratamiento.change_tratamiento%}
                                         <!-- <a href="#" class="btn btn-success"> -->
-                                            <a href="/tratamiento/asignar_insumos/{{c.codigo_tratamiento}}" class="btn btn-primary">
+                                            <a href="/tratamiento/asignar_insumos/{{c.codigo_tratamiento}}" class="btn btn-info">
                                             <i class="bi-pencil-square"></i>
                                             Agregar insumos
                                         </a>
@@ -99,7 +99,7 @@
                                 </tr>
                                 {% endfor %}
                             
-
+{% comment %} 
                                 {% if messages %}
                                 <ul class="messages">
                                 
@@ -115,7 +115,7 @@
                                     </li>
                                     {% endfor %}
                                 </ul>
-                                {% endif %}
+                                {% endif %} {% endcomment %}
 
                         </tbody>
                     </table>
