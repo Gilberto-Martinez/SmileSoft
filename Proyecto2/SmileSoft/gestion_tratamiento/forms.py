@@ -106,19 +106,19 @@ class TratamientoUpdateForm(forms.ModelForm):
             'precio',
         ]
 
-# class TratamientoInsAsignadoForm(forms.ModelForm):
-#    class Meta:
-#       model = Tratamiento
-#       fields = [
-#                'insumos',
-#                 ]
-#       widgets = {
-#           'insumos': forms.CheckboxSelectMultiple(attrs={
-#               'class': 'form-select2',
-#               'style': 'width: 30px',
-#               'multiple': 'multiple'}),
-#                #  'numero_documento': HiddenInput(attrs={'required': False}
-#                }
-      # InlineForeignKeyField(Cargo)
+class TratamientoInsAsignadoForm(forms.ModelForm):
+   class Meta:
+      model = Tratamiento
+      fields = [
+               'insumos',
+                ]
+      widgets = {
+          'insumos': forms.CheckboxSelectMultiple(attrs={
+              'class': 'form-select2',
+              'style': 'width: 30px',
+              'multiple': 'multiple'}),
+               #  'numero_documento': HiddenInput(attrs={'required': False}
+               }
+      #InlineForeignKeyField(Cargo)
    
-      # label = 'Nombre de los tratamientos'
+      label = 'Nombre de los tratamientos'
