@@ -43,7 +43,7 @@ def agregar_insumo (request):
         if formulario.is_valid():
             formulario.save()
             data["mensaje"]="Registrado correctamente"
-            messages.success(request, (' ✅ Agregado correctamente!'))
+            messages.success(request, (' ✅ Insumo Agregado Correctamente!'))
             return redirect("/insumo/listar_insumo/")  
             
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
@@ -90,7 +90,7 @@ def modificar_insumo(request, nombre_insumo):
             
             formulario.save()
             
-            messages.success(request, "Modificado Correctamente ✅")
+            messages.success(request, " Insumo Modificado Correctamente ✅")
             return redirect("/insumo/listar_insumo/")     
                 
         else:
@@ -108,7 +108,7 @@ def eliminar_insumo(request, nombre_insumo):
         insumo = Insumo.objects.get(nombre_insumo=nombre_insumo)
         insumo.delete()
         listado_insumos = Insumo.objects.all()
-        messages.success(request, "Eliminado ❌")
+        messages.success(request, " Insumo Eliminado ❌")
         return render(request, "insumo/listar_insumos.html", {'listado_insumos': listado_insumos})
     except Insumo.DoesNotExist:
         raise Http404("No se puede eliminar el Insumo indicado. Dado que ya se Elimino")
@@ -119,9 +119,11 @@ def eliminar_insumo(request, nombre_insumo):
 
 def asignar_insumos(request, codigo_tratamiento):
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+    nombre= tratamiento.nombre_tratamiento
     data= {
         'form' : TratamientoInsAsignadoForm(instance=tratamiento),
-        'tratamiento': tratamiento
+        'tratamiento': tratamiento,
+        'nombre':nombre
     }
     # persona = Persona.objects.get(numero_documento=numero_documento)
     if request.method== "POST":
@@ -141,13 +143,14 @@ def asignar_insumos(request, codigo_tratamiento):
 
 def listar_insumo_asignado(request, codigo_tratamiento):
     """
-    Lista los insumos asigandos a un tratamiento en especifico. 
+    Lista los insumos asignados a un tratamiento en especifico. 
     """
     listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
     insumos_asignados = []
     precio_total = 0
     codigo_tratamiento_insumo = ''
+   
 
     for insumo_asig in listado_insumos_asig:
         if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
