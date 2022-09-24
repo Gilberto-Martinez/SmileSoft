@@ -101,7 +101,7 @@
                             {% endfor %}
                         
 
-                            {% if messages %}
+                            {% comment %} {% if messages %}
                             <ul class="messages">
                             
                                 {% for message in messages %}
@@ -116,7 +116,7 @@
                                 </li>
                                 {% endfor %}
                             </ul>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
 
                     </tbody>
                 </table>

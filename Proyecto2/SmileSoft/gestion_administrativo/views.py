@@ -1,7 +1,11 @@
 from ast import Delete
+from asyncio import constants
 from audioop import reverse
+from distutils.log import error
 from multiprocessing import context
+from pickle import EMPTY_LIST
 from pyexpat import model
+from xml.dom import VALIDATION_ERR
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -34,6 +38,7 @@ class PersonaList(ListView):
             return render(request, "panel_control/error.html")
         self.object_list = self.get_queryset()
         context = self.get_context_data()
+       
         return self.render_to_response(context)
 
 
@@ -172,8 +177,8 @@ class PersonaCreate(CreateView):
             #     paciente = form3.save(commit=False)
             #     paciente.numero_documento = persona
             #     paciente.save()
-            #     # messages.success(
-                #     request, " ✅Se ha agregado  correctamente")
+                messages.success(
+                    request, " ✅Se ha agregado  correctamente")
             if form4.is_valid() and form4.has_changed():
                 especialista_salud = form4.save(commit=False)
                 especialista_salud.numero_documento = persona
@@ -181,11 +186,13 @@ class PersonaCreate(CreateView):
                 form4.save_m2m()
                 cedula = especialista_salud.numero_documento
                 agregar_como_especialista(cedula)
+                messages.success(
+                    request, " ✅Se ha agregado  correctamente")
 
             return HttpResponseRedirect(self.success_url)
         else:
             print("No entraaaaaaaaaaaaaaaaaaa")
-            messages.error(request,'No ha ingresado los datos correctamente')
+            messages.error(request, 'No ha ingresado los datos correctamente', messages.error)
             return self.render_to_response(self.get_context_data(form=form, form2=form2, form4=form4))
 
 
@@ -195,6 +202,7 @@ class FuncionarioCreate(CreateView):
     second_form_class = PersonaForm
     success_url = reverse_lazy('listar_funcionario')
     form_class = FuncionarioForm
+    mensaje_error=''
 
     def get_context_data(self, **kwargs):
         context = super(FuncionarioCreate, self).get_context_data(**kwargs)
@@ -217,13 +225,15 @@ class FuncionarioCreate(CreateView):
             form.save_m2m()
             cedula = funcionario.numero_documento
             agregar_como_funcionario(cedula)
-            messages.success(request,"Funcionario agregado correctamente")
+            messages.success(request," ✅ Funcionario agregado correctamente")
             return HttpResponseRedirect(self.success_url)
         else:
             if form2.evento == "Cedula ya existe":
                 messages.error(request, form2.mensaje_error)
+               
             if form2.evento == "Menor de Edad":
                 messages.error(request, form2.mensaje_error)
+               
             print('NO ENTRAAAAA')
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
@@ -555,6 +565,7 @@ class PersonaUpdate(UpdateView):
             print("*-----------------------------*")
             print("form es valido")
             persona = form.save()
+            
             if form2.is_valid() and form2.has_changed():# Si el formulario de Funcionario es válido y además tiene cambios respecto al anterior
                 print("form2 es valido")
                 funcionario = form2.save(commit=False)
@@ -603,7 +614,7 @@ class PersonaUpdate(UpdateView):
                     persona.es_especialista_salud = False
                     persona.save()
                     eliminar_especialista(cedula)
-            # messages.success(request, " ✅ Modificado correctamente")
+            messages.success(request, " ✅ Modificado correctamente")
             return HttpResponseRedirect(self.get_success_url())
         
         else:
@@ -730,6 +741,7 @@ class PacienteUpdate(UpdateView):
             form.save()
             form2.save()
             cedula = form2.numero_documento
+            messages.success(request, " ✅Se ha realizado su cambio")
             return HttpResponseRedirect(self.get_success_url())
         else:
             if form2.evento == "Cedula ya existe":
@@ -769,8 +781,8 @@ def modificar_persona_paciente(request, numero_documento):
             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!", data)
             data["form"] = form
             data["persona"] = persona
-            messages.success(request, " ✅Se ha realizado su cambio")
-            return redirect("/administrativo/modificar_persona/%s" %(numero_documento))
+            messages.success(request, " ✅Se ha realizado su modificación")
+            return redirect("/administrativo/modificar_persona_paciente/%s" %(numero_documento))
         else:
             messages.error(request, "No se ha realizado su cambio")
             print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
@@ -913,6 +925,19 @@ class PersonaDelete(DeleteView):
     model = Persona
     template_name = 'eliminar_persona.html'
     success_url = reverse_lazy('listar_persona')
+    #<--Este bloque emite un msj en listar persona que se ha eliminado la persona seleccionada-->
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = self.kwargs.get('pk', 0)
+        persona = Persona.objects.get(numero_documento=pk)
+        try:
+            cedula = persona.numero_documento
+            self.object.delete()
+            messages.success(request,"❌ Se ha eliminado correctamente")
+            return HttpResponseRedirect(self.success_url)
+        except BaseException as err:
+            messages.error(request, " ⚠️No es posible Eliminar, puede ser un funcionario o paciente, con datos cargados ")
+            return HttpResponseRedirect(self.success_url)
 
 
 class FuncionarioDelete(DeleteView):
@@ -928,6 +953,7 @@ class FuncionarioDelete(DeleteView):
         success_url = self.get_success_url() # obtiene la ruta al cual será redirigida la página una vez que se haya realizado la eliminación
         self.object.delete() # se elimina el objeto en cuestión, y por lo tanto el registro de la base de datos
         eliminar_como_funcionario(cedula)
+        messages.success(request, " ❌ Eliminado correctamente")
         return HttpResponseRedirect(success_url)
 
 
@@ -940,13 +966,24 @@ class EspecialistaSaludDelete(DeleteView):
         self.object = self.get_object()
         pk = self.kwargs.get('pk', 0)
         especialista_salud = EspecialistaSalud.objects.get(id_especialista_salud=pk)
-        cedula = especialista_salud.numero_documento
-        success_url = self.get_success_url()
-        self.object.delete()
-        eliminar_como_especialista(cedula)
-        return HttpResponseRedirect(success_url)
-
-
+        try:
+            cedula = especialista_salud.numero_documento
+            success_url = self.get_success_url()
+            self.object.delete()
+            eliminar_como_especialista(cedula)
+            messages.success(request, " ❌ Eliminado correctamente")
+            return HttpResponseRedirect(success_url)
+            
+        except ValueError:
+           messages.error(request, " Ocurrio un error ❌, No es posible eliminar al especialista de salud")
+           return HttpResponseRedirect(success_url)
+                      
+        except BaseException as err:
+            messages.error(
+                request, "⚠️ No es posible eliminar. Este especialista ya contiene citas agendadas")
+            return HttpResponseRedirect(success_url)
+        
+  
 class PacienteDelete(DeleteView):
     model = Paciente
     template_name = 'eliminar_paciente.html'
@@ -956,28 +993,68 @@ class PacienteDelete(DeleteView):
         self.object = self.get_object()
         pk = self.kwargs.get('pk', 0)
         paciente = Paciente.objects.get(id_paciente=pk)
-        cedula = paciente.numero_documento
-        success_url = self.get_success_url()
-        self.object.delete()
-        eliminar_como_paciente(cedula)
-        return HttpResponseRedirect(success_url)
+        try:
+            cedula = paciente.numero_documento
+            success_url = self.get_success_url()
+            self.object.delete()
+            eliminar_como_paciente(cedula)
+            messages.success(request, " ❌ Eliminado correctamente")
+            return HttpResponseRedirect(success_url)
+        except BaseException as err:
+            messages.error(request, " ⚠️No es posible Eliminar, ya contiene datos cargados. Por favor verificar nuevamente")
+            return HttpResponseRedirect(self.success_url)
 
 
 class ProveedorDelete(DeleteView):
     model = Proveedor
     template_name = 'eliminar_proveedor.html'
     success_url = reverse_lazy('listar_proveedor')
+    #<--Su ruc es su pk
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = self.kwargs.get('pk', 0)
+        persona = Proveedor.objects.get(ruc=pk)
+        cedula = persona.ruc
+        self.object.delete()
+        messages.success(request,"❌ Se ha eliminado correctamente")
+        return HttpResponseRedirect(self.success_url)
 
 
 class CargoDelete(DeleteView):
     model = Cargo
     template_name = 'eliminar_cargo.html'
     success_url = reverse_lazy('listar_cargo')
+   
+    #<--Su nombre es su pk
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = self.kwargs.get('pk', '')
+        cargo = Cargo.objects.get(nombre=pk)
+        cedula = cargo.nombre
+        self.object.delete()
+        messages.success(request, "❌ Se ha eliminado correctamente")
+        return HttpResponseRedirect(self.success_url)
+    
+    
 
 class EspecialidadDelete(DeleteView):
     model = Especialidad
     template_name = 'eliminar_especialidad.html'
     success_url = reverse_lazy('listar_especialidad')
+
+    #<--Su pk es id_especialidad
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = self.kwargs.get('pk',0)
+        especialidad = Especialidad.objects.get(id_especialidad=pk)
+        try:
+            id = especialidad.id_especialidad
+            self.object.delete()
+            messages.success(request, "❌ Se ha eliminado correctamente")
+            return HttpResponseRedirect(self.success_url)
+        except ObjectDoesNotExist:
+            messages.info(request, "No se puede eliminar esta especialidad")
+            
 
 
 #------------------------------ Actualizar tipo de Persona -------------

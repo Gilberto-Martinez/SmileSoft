@@ -245,10 +245,13 @@ def agregar_usuario(request):
         formulario = UsuarioForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            # messages.success(request, "Agregado")
-            data["mensaje"] = "Registrado correctamente"
+            formulario._save_m2m()
+            messages.success(request, " ✅Agregado correctamente")
+            print("entra-----------------------------")
+            return redirect("/listar_usuario/")
         else:
             data["form"] = formulario
+            messages.error(request, "⚠️¡Ha ocurrido un error! ")
 
     return render(request, "usuario/agregar_usuario.html", data)
 
@@ -330,7 +333,8 @@ def modificar_usuario(request, usuario):
             formulario.save()
             formulario._save_m2m()
             data["form"] = formulario
-            messages.success(request, " ✅Cambio realizado")
+            messages.success(request, " ✅ Modificación realizada")
+            return redirect("/listar_usuario/")
 
         else:
             messages.error(request, "Algo ha salido Mal ⚠️")
@@ -409,7 +413,7 @@ def eliminar_usuario(request, usuario):
         usuario.delete()
         #print ("usuario eliminado",{'listado_usuarios': listado_usuarios})
        # print("ESTA ES LA LISTA: ->",  context={'listado_usuarios': listado_usuarios})
-        messages.success(request, "Eliminado")
+        messages.success(request, " ❌ Usuario eliminado")
         #messages.error(request, 'Este usuario ha sido eliminado ..!')
         return redirect( "/listar_usuario/")
     except Usuario.DoesNotExist:
