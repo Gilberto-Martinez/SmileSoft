@@ -169,6 +169,8 @@ def listar_cobros(request):
 
     return render(request, 'listar_cobro_contado.html', {'listado_cobros':listado_cobros})
 
+    
+
 #------------------------ Vista de mensajes ----------------------------#
 class ErrorCobro(TemplateView):
     template_name = "mensajes/error_cobro.html"
