@@ -5,7 +5,7 @@
 <div class= "col-12 col-md-8 offset-md-2" >
         <div class="card">
             <br>
-            <center>  <h2>Insumos</h2> </center>
+           
             <!-- <div class="card-body"> -->
                 <form method="POST"id="group_form" novalidate="">
                     {%csrf_token%}
@@ -16,14 +16,15 @@
                         {%endif%}
                         <br>
                         <center>
-                            <h5>
-                                <b>Tratamiento:</b> <b style="color:blue; font-size:19px;" ><td>{{ tratamiento.nombre_tratamiento }}</b><!--  {{tratamiento.codigo_tratamiento.precio}}--> </td></i>
-                            </h5>
-                        </CEnter>
+                            <h3>
+                                <b>Insumos para el Tratamiento de</b> <b style="color:blue; font-size:25px;" ><td>{{ tratamiento.nombre_tratamiento }}</b><!--  {{tratamiento.codigo_tratamiento.precio}}--> </td></i>
+                            </h3>
+                        </center>
+                        
                     <div style="margin: 20px;" >
                         <table>
                             <div class="form-group">
-                                <label for="{{form.insumos.name}}"><b>Insumos ConsulDent:</b></label>
+                                <label for="{{form.insumos.name}}"></label>
                                 {{form.insumos}}
                             </div>
                         </table>

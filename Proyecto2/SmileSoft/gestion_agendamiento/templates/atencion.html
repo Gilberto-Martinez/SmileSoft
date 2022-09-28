@@ -1,0 +1,31 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+                    
+                           <br>
+        <strong  style="color:blue; font-size:16px;" >
+             <img src="{% static 'img/atencion.png' %}" width="120px" alt="auto"> 
+                        <h2> Esta persona   
+                            <br> No podrá ser agendada <br> </h2>  
+                            <small> La clinica atiende a niños mayores de 4 años <small>                                     
+                    </strong> <br>
+                       <br>
+                    
+                        <a onclick="history.back()" class="btn btn-info">
+                           <i class="bi bi-backspace"></i>
+                          Atrás <br>
+                        </a>
+                         <a href="/agendamiento/pacientes_cita/" class="btn btn-success">
+                           
+                         📝 Listado de pacientes <br>
+                        </a>
+                      
+                     
+      
+    </center>
+     
+</form>
+{% endblock %}

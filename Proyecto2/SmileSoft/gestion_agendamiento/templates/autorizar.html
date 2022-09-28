@@ -1,0 +1,36 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+                    
+                           <br>
+        <strong  style="color:blue; font-size:20px;" > La Persona Seleccionada es Menor de Edad
+                       <br> Por lo que requiere autorización para que su cita sea registrada 
+                                                            
+                    </strong> <br>
+                       <br>
+                       
+                       {% comment %} <h4> ¿Seguro de que desea registrar esta cita? </h4>
+                        {% endcomment %}
+
+                       <form method="POST" id="group_form" novalidate="">
+
+#falta modificar y agregar
+
+
+                            <a href="/agendamiento/agregar_cita_menor/{{persona.numero_documento}}" class="btn btn-info">
+                                <img src="{% static 'img/check.jpg' %}" width="25px" alt="auto"> Agregar Cita<br>
+                            </a>
+                            <a href="/agendamiento/pacientes_cita/" class="btn btn-danger">
+                                <i class="bi bi-backspace"></i>
+                                Cancelar <br>
+                            </a>
+                          
+                     
+      
+    </center>
+     
+</form>
+{% endblock %}

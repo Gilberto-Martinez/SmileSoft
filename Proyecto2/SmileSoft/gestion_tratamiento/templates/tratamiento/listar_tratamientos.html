@@ -24,7 +24,7 @@
                 {%if perms.gestion_tratamiento.add_tratamiento%}  
                     <table  align="right" >
                             <tr>
-                            <td> <a href="/tratamiento/agregar_tratamiento/" class="btn btn-success">Agregar un tratamiento +</a> </td>
+                            <td> <a href="/tratamiento/agregar_tratamiento/" class="btn btn-success">+ Agregar un tratamiento </a> </td>
                             </tr>
                     </table>
                 {%endif%}
@@ -73,23 +73,13 @@
                                     {{busqueda}}
                                     <!--OPCIONES Modificar y Eliminar-->
                                     <td>
-                                        {%if perms.gestion_tratamiento.change_tratamiento%}
-                                        <!-- <a href="#" class="btn btn-success"> -->
-
-                                            <a href="/insumo/listar_insumos_asignados/{{c.codigo_tratamiento}}" class="btn btn-info">
-
-                                            <i class="bi-pencil-square"></i>
-                                            Insumos
-                                        </a>
-                                    </td>
-                                    <td>
                                         <a href="/tratamiento/modificar_tratamiento/{{c.codigo_tratamiento}}" class="btn btn-primary">
                                             <i class="bi-pencil-square"></i>
                                             Modificar
                                         </a>
-                                    {%endif%}
+                                   
                                     </td>
-                                <!-- Eliminar-->      
+                                    <!-- Eliminar-->      
                                     {%if perms.gestion_tratamiento.delete_tratamiento%}
                                     <td>
                                         <a href="/tratamiento/eliminar_tratamiento/{{c.codigo_tratamiento}}" class="btn btn-danger btnEliminacion">
@@ -97,7 +87,13 @@
                                                 Eliminar
                                             </a> 
                                     </td>
-                                        {%endif%}
+                                    {%endif%}
+                                    <td>
+                                        <a href="/insumo/listar_insumos_asignados/{{c.codigo_tratamiento}}" class="btn btn-info">
+                                            <i class="bi-pencil-square"></i>
+                                            Insumos
+                                        </a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             

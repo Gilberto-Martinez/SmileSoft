@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    # # Django Filters
+    # 'django_filters',
     
     'webapp',
     'panel_control',
@@ -58,6 +60,8 @@ INSTALLED_APPS = [
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

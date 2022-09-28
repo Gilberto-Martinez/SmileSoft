@@ -1,0 +1,20 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+
+    <form method="POST" id="group_form" novalidate="">
+            {% csrf_token %}
+         <center>
+                <br>
+                <h2 style="color:blue;" > ¿Desea modificar esta cita? </h2>
+                <br>
+                <a href="/agendamiento/modificar_cita_menor/{{id_cita}}" class="btn btn-white">
+                    <img src="{% static 'img/update.png' %}" width="25px" alt="auto"> Aceptar <br>
+                </a>
+                <a href="/agendamiento/pacientes_cita/" class="btn btn-white">
+                    <i class="bi bi-backspace"></i>
+                    Cancelar <br>
+                </a>                      
+            </center>
+    </form>
+{% endblock %}

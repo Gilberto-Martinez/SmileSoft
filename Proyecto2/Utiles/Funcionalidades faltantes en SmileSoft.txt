@@ -6,16 +6,17 @@ FUNCIONALIDADES QUE FALTAN EN SMILESOFT
 2-En Especialidad se debe insertar aunque sea una especialidad más
 3-En agregar tratamiento, debe implementarse agregar insumo
 4-En asignar tratamientos>tratamiento asignado, debe permitir imprimir una liquidación previa a la facturación
-5-En usuario_addCita al intentar un paciente agregar una cita a la misma hora, misma fecha y mismo especialista u otro especialista debe de mostrar el mensaje "Ya cuenta con una cita en esa fecha y en la hora seleccionada"
-6-En citas reservadas, si la fecha de agendamiento y hora de agendamiento es superior a la fecha y hora actual, la cita debe tener estado cancelado o no confirmado
-7-En usuario_addCita y agregar cita al lanzar el error "El horario ya fue reservado" debería tener la opción modificar, que permita modificar la cita no guardada
-8-En agregar horario  corregir el botón Cancelar
+5-(HECHO)En usuario_addCita al intentar un paciente agregar una cita a la misma hora, misma fecha y mismo especialista u otro especialista debe de mostrar el mensaje "Ya cuenta con una cita en esa fecha y en la hora seleccionada"
+6-(HECHO)En citas reservadas, si la fecha de agendamiento y hora de agendamiento es superior a la fecha y hora actual, la cita debe tener estado cancelado o no confirmado
+7-(HECHO)En usuario_addCita y agregar cita al lanzar el error "El horario ya fue reservado" debería tener la opción modificar, que permita modificar la cita no guardada
+8-(HECHO)En agregar horario  corregir el botón Cancelar
 9-En Facturación, debe implementarse emitir factura y pago a proveedores, además agregar la opción pago a funcionarios y a especialidades (analizar si debería estar en una misma función)
 10-En cobrar tratamiento debe validar que si el paciente es menor de edad preguntar por la razón social de la factura
 11-En cobros corregir, ver detalle, ya que no muestra el detalle de cobros
 12-En Lista de cobro, agregar e implementar generación de factura
 13-Para inventario cada vez que un se confirme un tratamiento se resta en los insumos correspondientes
 14-En Administrativo, agregar la opción crear usuario o ver/modificar usuario en Persona, Paciente, Funcionario y Especialista de salud
-15-Agregar mensaje de confirmación o cancelación a la mayoría de los CRUDs
+15-(HECHO)Agregar mensaje de confirmación o cancelación a la mayoría de los CRUDs 
 
+16- A nivel Usuario -> Falta un items de Mis Tratamientos Pendientes
 OBS: Agregar estado de cuenta para paciente

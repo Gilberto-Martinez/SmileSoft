@@ -18,11 +18,12 @@
         <div class="card">
             <div class="card-body">
                 <center> 
-                    <h2 <i class="bi bi-clipboard2-pulse"> Insumos asignados</i> </h2>
+                  <h3> TRATAMIENTO: <b style="color:blue;"> {{tratamiento.nombre_tratamiento}}</b></h3>
                 </center>
                     <center>
                         <h4>
-                            <b>Tratamiento:</b> <i>{{tratamiento.nombre_tratamiento}}</i>
+                           
+                              <h2> <b> Insumos asignados </b></h2>
                         </h4>
                     </center>
 
@@ -68,14 +69,13 @@
                                     </tr> -->
                                 {%else%}
                                     <br>
-                                    <br>
-                                    <br>
+                                   
                                     <center>
-                                        <h5>
-                                            <i class="bi bi-exclamation-triangle-fill"></i>
-                                            <i>El tratamiento no tiene insumos asignados</i> 
-                                            <i class="bi bi-exclamation-triangle-fill"></i>
-                                        </h5>
+                                        
+                                     <div class="alert alert-success alert-info  col-md-4 offset-md-0 "  style ="font-size:17px;"  role="alert">
+                                         El tratamiento no tiene insumos asignados 
+                                    </div>
+                                        
                                     </center>
                                 {%endif%}
 

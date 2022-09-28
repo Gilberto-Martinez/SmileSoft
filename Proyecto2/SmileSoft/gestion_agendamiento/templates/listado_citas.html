@@ -109,6 +109,7 @@
                                         <tr>
                                             <td >{{forloop.counter}}</td>
                                             <td >{{c.nombre_paciente}}</td>
+                                           
                                             <td >{{c.paciente }}</td>
                                             <td >{{c.celular }}</td>
                                             <td >{{c.fecha}}</td>
@@ -149,10 +150,12 @@
                                         <br>
                                         <h2>
                                             <center>No hay registros
-                                             <br><a onclick="history.back()" class="btn btn-primary">
-                                                    <i class="bi bi-backspace"></i>
-                                                    Atrás 
-                                                </a>
+                                             <br>   {%if perms.gestion_agendamiento.view_cita%}
+                                                    <!-- Eliminar-->                
+                                                    <a href="/agendamiento/listado_citas" class="btn btn-info">   
+                                                       Ver Listado
+                                                    </a> 
+                                                    {%endif%}
                                             </center> 
                                        </h2>
 
