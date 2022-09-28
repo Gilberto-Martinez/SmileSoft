@@ -18,7 +18,7 @@ class Tratamiento(models.Model):
     class Meta:
         verbose_name = ("tratamiento")
         verbose_name_plural = ("tratamientos")
-        # ordering = ["codigo_tratamiento"]
+        ordering = ["nombre_tratamiento"]
         db_table = 'Tratamiento'
 
     def __str__(self):

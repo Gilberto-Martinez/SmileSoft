@@ -132,10 +132,9 @@ def asignar_insumos(request, codigo_tratamiento):
         if form.is_valid():
             form.save()
             # form.save_m2m()
-            # messages.success(request, (
-            #     'Agregado correctamente!'))
-            #   return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
-            return redirect("/insumo/insumo_asignado_exitoso/%s"%(tratamiento.codigo_tratamiento))
+            messages.success(request, ('✅ Insumo asignado '))
+            return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
+            # return redirect("/mensajes/insumo_asignado_exitoso/%s"%(tratamiento.codigo_tratamiento))
         else:
             data["form"]=form
             data['tratamiento']=tratamiento
@@ -171,8 +170,9 @@ def listar_insumo_asignado(request, codigo_tratamiento):
                     )
 
 
-def mostrar_insumo_asignado_exitoso(request,codigo_tratamiento):
-    return render(request,"insumo_asignado_exitoso.html",{"codigo_tratamiento":codigo_tratamiento})
+# def mostrar_insumo_asignado_exitoso(request,codigo_tratamiento):
+#     return render(request,"insumo_asignado_exitoso.html",{"codigo_tratamiento":codigo_tratamiento})
+
 # def listar_tratamientos_pendientes(request):
 #     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Confirmado")
 #     tratamientos_pendientes = []

@@ -12,12 +12,14 @@ urlpatterns = [
     # path('calendario_usuario/', calendario_usuario, name="calendario_usuario"),
     # path('calendar/', pruebacalendar, name="calendar"),
 
-    # <--- A Sistema-->
+    # <---A Nivel Sistema-->
     path('listado_citas/', listar_cita, name="listado_citas"),
     # path("listado_citas/", listaReserva.as_view(),
     #      name="listado_citas"),
     path('agregar_cita/<int:id_paciente>', agregar_cita, name="agregar_cita"),
+    path('agregar_cita_usuario/<int:id_paciente>/',addcita_cita_usuario, name="agregar_cita_usuario"),
     path('modificar_cita/<int:id_cita>', modificar_cita, name="modificar_cita"),
+    path('modificar_cita_usuario/<int:id_cita>', modificar_cita_usuario, name="modificar_cita_usuario"),
     path('eliminar_cita/<int:id_cita>', eliminar_cita, name="eliminar_cita"),
     path('pacientes_cita/', listar_citapaciente, name="pacientes_cita"),
 

@@ -1,0 +1,58 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--CSS propio de Gestion de Usuario-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+{% block javascripts%}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{%endblock%}
+
+<!--Cuadro de DIALOGO DE ELIMINAR-->
+
+{%block content%}
+    {%if perms.gestion_agendamiento.change_cita%}
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <br>
+                    <center> 
+                        {% comment %} <h2> ¿Desea modificar su ultima cita {{persona.nombre}} {{persona.apellido}}? </h2> {% endcomment %}
+                            <h2> <i><b>Ya fue reservado</i></b> en este horario <br> por otro paciente  </h2>
+                    </center>
+                    <br>
+                    <h3> ¿Que desea hacer?</h3>
+            
+                    <div class="d-flex justify-content-left">
+                      <li><a  class="btn btn-info" href="/agendamiento/usuario_addCita/{{user.numero_documento}}"> <i class="bi bi-journal-check"></i> Agendar una cita </li></a> 
+                    
+                    </div>
+                     
+                    <li><a href="/agendamiento/calendario_usuario" class="btn btn-primary"> <i class="bi bi-calendar-week"></i> Ver calendario
+                        </a></li>
+                          
+                    <li><a onclick="history.back()" class="btn btn-success">
+                          
+                       <i class="bi bi-arrow-bar-left"></i>    Atrás <br>
+                        </a></li>
+
+                      
+               
+                </div>
+            </div> 
+        </div>
+    
+
+    {% else %}
+                    <br>
+                    <h2>
+                        <center>
+                            No tiene permisos para ingresar a esta sección
+                            <img src="{% static 'img/restringir.png' %}" width="100px" alt="logo">
+                        </center> 
+                    </h2>
+                    <br>  
+    {%endif%}
+
+
+{%endblock%}

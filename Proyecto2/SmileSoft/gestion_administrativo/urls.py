@@ -12,6 +12,7 @@ urlpatterns = [
             path('agregar_cargo/', CargoCreate.as_view(),  name="agregar_cargo"),
             path('agregar_especialidad/', EspecialidadCreate.as_view(),  name="agregar_especialidad"),
             path('listar_persona/', PersonaList.as_view(),  name="listar_persona"),
+            # path('listar_persona/', listar_persona,  name="listar_persona"),
             path('listar_funcionario/', FuncionarioList.as_view(),  name="listar_funcionario"),
             path('listar_paciente/', PacienteList.as_view(),  name="listar_paciente"),
             path('listar_especialista_salud/', EspecialistaSaludList.as_view(),  name="listar_especialista_salud"),
