@@ -7,6 +7,7 @@ from email.charset import QP
 from tokenize import Name
 from unicodedata import name
 from django.shortcuts import render
+from httplib2 import RETRIES
 from urllib3 import encode_multipart_formdata
 #from Proyecto2.SmileSoft.gestion_inventario_insumos.models import Insumo
 # from gestion_roles.models import Rol
@@ -134,7 +135,7 @@ def asignar_insumos(request, codigo_tratamiento):
             # messages.success(request, (
             #     'Agregado correctamente!'))
             #   return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
-            return render(request, "mensajes/insumo_asignado_exitoso.html")
+            return redirect("/insumo/insumo_asignado_exitoso/%s"%(tratamiento.codigo_tratamiento))
         else:
             data["form"]=form
             data['tratamiento']=tratamiento
@@ -148,15 +149,14 @@ def listar_insumo_asignado(request, codigo_tratamiento):
     listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
     insumos_asignados = []
-    precio_total = 0
-    codigo_tratamiento_insumo = ''
+    id_tratamiento_insumo = ''
    
 
     for insumo_asig in listado_insumos_asig:
         if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
             id_tratamiento_insumo = insumo_asig.id_insumo_asig
             cod_insumo = insumo_asig.get_insumo()
-            nuevo_insumo = Insumo.objects.get(cod_insumo=cod_insumo)
+            nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
             #precio_total = precio_total + nuevo_tratamieto.precio
             insumos_asignados.append(nuevo_insumo)
 
@@ -170,6 +170,9 @@ def listar_insumo_asignado(request, codigo_tratamiento):
                                                                             }
                     )
 
+
+def mostrar_insumo_asignado_exitoso(request,codigo_tratamiento):
+    return render(request,"insumo_asignado_exitoso.html",{"codigo_tratamiento":codigo_tratamiento})
 # def listar_tratamientos_pendientes(request):
 #     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Confirmado")
 #     tratamientos_pendientes = []
