@@ -2,6 +2,7 @@ from ast import Delete
 from asyncio import constants
 from audioop import reverse
 from distutils.log import error
+from lib2to3.pgen2.token import PERCENT
 from multiprocessing import context
 from pickle import EMPTY_LIST
 from pyexpat import model
@@ -24,55 +25,31 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 ############################ LISTADOS ###############################################
-#-Es otra manera de Listar personas con filtro de nombre
-# def listar_persona(request):
-#     busqueda = request.POST.get("q")
-#     #'filtro de nombre 
-#     object_list= Persona.objects.all() 
-#     if busqueda:
-#     #         print("Buscado AQUI", filtro)
-#         object_list = Persona.objects.filter(Q(nombre__icontains=busqueda))
-    
-#     return render(request, "listar_persona.html", {
-#         'object_list': object_list})
-
-class PersonaList(ListView):
-    model = Persona
-    template_name = 'listar_persona.html'
-    
-    def post(self, request, *args, **kwargs):
-        busqueda = request.POST.get("q")
+def listar_persona(request):
+    busqueda = request.POST.get("q")
+    #'filtro de nombre 
+    object_list= Persona.objects.all() 
+    if busqueda:
+    #         print("Buscado AQUI", filtro)
         object_list = Persona.objects.filter(Q(nombre__icontains=busqueda))
-       
-        return render(request, "listar_persona.html", {'object_list': object_list})
     
-    # @method_decorator(permission_required('gestion_administrativo.view_persona', login_url="/panel_control/error/"))
-    # # def dispatch(self, *args, **kwargs):
-    #     return super(PersonaList, self).dispatch(*args, **kwargs)
-    
-    def get(self, request, **kwargs):
-        # verificamos permisos
-        if not self.request.user.has_perm('gestion_administrativo.view_persona'):
-            return render(request, "panel_control/error.html")
-        self.object_list = self.get_queryset()
-        context = self.get_context_data()
-       
-        return self.render_to_response(context)
+    return render(request, "listar_persona.html", {
+        'object_list': object_list})
+        
+# class PersonaList(ListView):
+#     model = Persona
+#     template_name = 'listar_persona.html'
+   
 
 
 class FuncionarioList(ListView):
     model = Funcionario
     template_name = 'listar_funcionario.html'
     
-    def post(self, request, *args, **kwargs):
-        busqueda = request.POST.get("q")
-        object_list = Funcionario.objects.filter(Q(numero_documento__in=busqueda))
-
-        return render(request, "listar_funcionario.html", {'object_list': object_list})
-    
     # @method_decorator(permission_required('gestion_administrativo.view_funcionario', login_url="/panel_control/error/"))
     # def dispatch(self, *args, **kwargs):
     #     return super(FuncionarioList, self).dispatch(*args, **kwargs)
+
     def get(self, request, **kwargs):
         # verificamos permisos
         if not self.request.user.has_perm('gestion_administrativo.view_funcionario'):
@@ -86,11 +63,6 @@ class PacienteList(ListView):
     model = Paciente
     template_name = 'listar_paciente.html'
     
-    def post(self, request, *args, **kwargs):
-        busqueda = request.POST.get("q")
-        object_list = Paciente.objects.filter(Q(nombre__icontains=busqueda))
-        
-        return render(request, "listar_paciente.html", {'object_list': object_list}) 
     # @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))
     # def dispatch(self, *args, **kwargs):
     #     return super(PacienteList, self).dispatch(*args, **kwargs)
@@ -188,48 +160,36 @@ class PersonaCreate(CreateView):
     @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        # nacimiento=  args['fecha_nacimiento']
         form = self.form_class(request.POST)
         form2 = self.second_form_class(request.POST)
         # form3 = self.third_form_class(request.POST)
         form4 = self.fourth_form_class(request.POST)
-    #     persona = self.form_class(fecha_nacimiento=nacimiento) 
-    #     edad_persona= persona.obtener_edad()
-    #    #aun no termine
-        # print("esta es la edad ", edad_persona)
         if form.is_valid():
-            
-            # if edad_persona > 4:
-                persona = form.save()
+            persona = form.save()
+            if form2.is_valid() and form2.has_changed(): # Si Formulario de Funcionario es valido
+                funcionario = form2.save(commit=False)
+                funcionario.numero_documento = persona
+                funcionario.save()
+                form2.save_m2m()
+                cedula = funcionario.numero_documento
+                agregar_como_funcionario(cedula)
+            # if form3.is_valid():
+            #     paciente = form3.save(commit=False)
+            #     paciente.numero_documento = persona
+            #     paciente.save()
                 messages.success(
-                        request, " Registrado")
-                if form2.is_valid() and form2.has_changed(): # Si Formulario de Funcionario es valido
-                    funcionario = form2.save(commit=False)
-                    funcionario.numero_documento = persona
-                    funcionario.save()
-                    form2.save_m2m()
-                    cedula = funcionario.numero_documento
-                    agregar_como_funcionario(cedula)
-                # if form3.is_valid():
-                #     paciente = form3.save(commit=False)
-                #     paciente.numero_documento = persona
-                #     paciente.save()
-                    messages.success(
-                        request, " ✅Se ha agregado  correctamente")
-                if form4.is_valid() and form4.has_changed():
-                    especialista_salud = form4.save(commit=False)
-                    especialista_salud.numero_documento = persona
-                    especialista_salud.save()
-                    form4.save_m2m()
-                    cedula = especialista_salud.numero_documento
-                    agregar_como_especialista(cedula)
-                    messages.success(
-                        request, " ✅Se ha agregado  correctamente")
+                    request, " ✅Se ha agregado  correctamente")
+            if form4.is_valid() and form4.has_changed():
+                especialista_salud = form4.save(commit=False)
+                especialista_salud.numero_documento = persona
+                especialista_salud.save()
+                form4.save_m2m()
+                cedula = especialista_salud.numero_documento
+                agregar_como_especialista(cedula)
+                messages.success(
+                    request, " ✅Se ha agregado  correctamente")
 
-                return HttpResponseRedirect(self.success_url)
-            # else:
-            #     return render(request, 'atencion.html')
-                    
+            return HttpResponseRedirect(self.success_url)
         else:
             print("No entraaaaaaaaaaaaaaaaaaa")
             messages.error(request, 'No ha ingresado los datos correctamente', messages.error)

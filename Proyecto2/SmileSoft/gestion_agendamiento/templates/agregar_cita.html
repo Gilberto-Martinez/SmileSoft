@@ -25,13 +25,15 @@
                         
                     <h2 <i class="bi bi-calendar"></i> Agregar Cita</i> </h2>
                 </center>
-              <br>
+             <br>
                <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}}</i> </h5></center>
+                <center><small><b>Fecha de nacimiento:</b> <i>{{persona.fecha_nacimiento}} </i> </small></center>
+               
 
                 <form method="POST" id="group_form" novalidate="">
                     {%csrf_token%}
                         {%if mensaje%}
-                            <div class="alert alert-success" role="alert">
+                            <div class="alert alert-info" role="alert">
                                   ✅ Cita registrada
                             </div>
                             {%endif%}
@@ -86,7 +88,7 @@
                             <i class="bi-save"></i>
                             Guardar
                         </button>
-                        <a href="/agendamiento/agregar_cita/ " class="btn btn-danger" style="margin: 10px;">
+                        <a href="/agendamiento/listado_citas " class="btn btn-danger" style="margin: 10px;">
                             <i class="bi-x-circle"></i>
                             Cancelar
                         </a>

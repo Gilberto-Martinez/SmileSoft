@@ -1,0 +1,21 @@
+Modulo agendamiento
+Restricciones
+
+|-Nivel Sistema
+Usuario. Asistente/Administrador/Cajero
+-- Debe utilizar el calendario Odontologo, para modificaciones
+1. Add, Mod, Eliminar - Cita/Hora
+2. Cambiar el estado de la Cita 1vez que ya se haya dado la CONFIRMACION
+3. Buscar y ver la lista de las reservaciones de del día mediante el filtro fecha, como a su vez por nombre
+4. Modificaciones dentro de la vista CALENDARIO Odontologo
+
+
+|-Nivel Usuario
+Restricciones
+1. No puede duplicar su cita
+2. No puede elegir los fines de semana 
+3. No puede elegir fechas pasadas
+4. No puede elegir una hora del dia que ya pasó
+5. No puede reservar si ya fue reservado antes
+
+Obs: Add/Modi, cuando es menor de edad en otras templates 
