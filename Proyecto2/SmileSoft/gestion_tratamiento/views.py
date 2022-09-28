@@ -170,7 +170,8 @@ def modificar_tratamiento(request, codigo_tratamiento):
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
 
     data= {
-        'form': TratamientoUpdateForm(instance=tratamiento)
+        'form': TratamientoUpdateForm(instance=tratamiento),
+        'tratamiento': tratamiento
     }
     if request.method == 'POST':
         formulario = TratamientoForm(

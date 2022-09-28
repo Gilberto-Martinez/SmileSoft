@@ -53,6 +53,11 @@ class TratamientoInsumoAsignado(models.Model):
     def __str__(self):
         return self.id_insumo_asig
 
+    def get_tratamiento(self):
+        return self.tratamiento.get_codigo_tratamiento()
+
+    def get_insumo(self):
+        return self.insumo.codigo_insumo
 
 # Comentado por el momento a espera de analisis
 # class Horario(models.Model):
