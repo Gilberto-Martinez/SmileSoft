@@ -150,7 +150,6 @@ def listar_insumo_asignado(request, codigo_tratamiento):
     insumos_asignados = []
     id_tratamiento_insumo = ''
    
-
     for insumo_asig in listado_insumos_asig:
         if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
             id_tratamiento_insumo = insumo_asig.id_insumo_asig
@@ -169,6 +168,34 @@ def listar_insumo_asignado(request, codigo_tratamiento):
                                                                             }
                     )
 
+def agregar_cantidad_insumos(request, codigo_tratamiento):
+    """
+    Lista los insumos asignados a un tratamiento en especifico y permite agregar
+    la cantidad que se utilizara de los insumos para el tratamiento dado. 
+    """
+    listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
+    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+    insumos_asignados = []
+    id_tratamiento_insumo = ''
+   
+    for insumo_asig in listado_insumos_asig:
+        if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
+            id_tratamiento_insumo = insumo_asig.id_insumo_asig
+            cod_insumo = insumo_asig.get_insumo()
+            nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
+            insumos_asignados.append(nuevo_insumo)
+
+    data= {
+        'form' : InsumoAsignadoForm(instance=tratamiento),
+    }
+
+    return render (request,"insumo/agregar_cantidad_insumos.html",{
+                                                                            'insumos_asignados':insumos_asignados,
+                                                                            'tratamiento':tratamiento,
+                                                                            #'precio_total':precio_total,
+                                                                            'id_tratamiento_insumo':id_tratamiento_insumo,
+                                                                            }
+                    )
 
 # def mostrar_insumo_asignado_exitoso(request,codigo_tratamiento):
 #     return render(request,"insumo_asignado_exitoso.html",{"codigo_tratamiento":codigo_tratamiento})

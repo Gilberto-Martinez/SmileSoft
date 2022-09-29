@@ -45,6 +45,7 @@ class TratamientoInsumoAsignado(models.Model):
         blank=True,
         null=True,
     )
+    cantidad = models.IntegerField(null=True, blank=True)
 
     class Meta:
         db_table = 'TratamientoInsumoAsignado'
@@ -59,27 +60,3 @@ class TratamientoInsumoAsignado(models.Model):
     def get_insumo(self):
         return self.insumo.codigo_insumo
 
-# Comentado por el momento a espera de analisis
-# class Horario(models.Model):
-#     id_horario = models.AutoField(primary_key=True)
-#     L = 'Lunes'
-#     M = 'Martes'
-#     MI = 'Miércoles'
-#     J = 'Jueves'
-#     V = 'Viernes'
-#     S = 'Sábado'
-#     DIAS = (
-#             (L,'Lunes'),
-#             (M, 'Martes'),
-#             (MI, 'Miércoles'),
-#             (J, 'Jueves'),
-#             (V, 'Viernes'),
-#             (S, 'Sábado'),
-#     )
-#     dia = models.CharField(max_length=9, choices=DIAS, null=False, blank=False, verbose_name='Día')
-#     hora = models.TimeField(auto_now = False, auto_now_add = False,verbose_name='Hora', null=False, blank=False )
-
-#     class Meta:
-#         verbose_name = ("Horario")
-#         verbose_name_plural = ("Horarios")
-#         db_table = 'Horario'
