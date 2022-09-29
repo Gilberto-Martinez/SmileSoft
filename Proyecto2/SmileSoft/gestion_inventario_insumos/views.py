@@ -78,15 +78,15 @@ def listar_insumo(request):
 
 
 # @permission_required('gestion_tratamiento.modificar_tratamiento', login_url="/panel_control/error/",)
-def modificar_insumo(request, nombre_insumo):
-    nombre_insumo = Insumo.objects.get(nombre_insumo=nombre_insumo)
+def modificar_insumo(request, codigo_insumo):
+    codigo_insumo = Insumo.objects.get(codigo_insumo=codigo_insumo)
 
     data= {
-        'form': InsumoUpdateForm(instance=nombre_insumo)
+        'form': InsumoUpdateForm(instance=codigo_insumo)
     }
     if request.method == 'POST':
         formulario = InsumoForm(
-            data=request.POST, instance=nombre_insumo, files=request.FILES)
+            data=request.POST, instance=codigo_insumo, files=request.FILES)
         if formulario.is_valid():
             
             formulario.save()
@@ -104,9 +104,9 @@ def modificar_insumo(request, nombre_insumo):
 # -----------------------------------------------------------------------------------------------
 # ***Vista de Eliminar Insumo
 # @permission_required('gestion_inventario_insumo.eliminar_insumo', login_url="/panel_control/error/",)
-def eliminar_insumo(request, nombre_insumo):
+def eliminar_insumo(request, codigo_insumo):
     try:
-        insumo = Insumo.objects.get(nombre_insumo=nombre_insumo)
+        insumo = Insumo.objects.get(codigo_insumo=codigo_insumo)
         insumo.delete()
         listado_insumos = Insumo.objects.all()
         messages.success(request, " Insumo Eliminado ❌")

@@ -78,7 +78,7 @@
                                     <!--OPCIONES Modificar y Eliminar-->
                                     {%if perms.gestion_inventario_insumos.change_insumo%} 
                                         <td>
-                                            <a href="/insumo/modificar_insumos/{{c.nombre_insumo}}" class="btn btn-primary">
+                                            <a href="/insumo/modificar_insumos/{{c.codigo_insumo}}" class="btn btn-primary">
                                                 <i class="bi-pencil-square"></i>
                                                 Modificar
                                             </a>
@@ -87,7 +87,7 @@
                                     <!-- Eliminar-->
                                     {%if perms.gestion_inventario_insumos.delete_insumo%}          
                                         <td>
-                                            <a href="/insumo/eliminar_insumo/{{c.nombre_insumo}}" class="btn btn-danger btnEliminacion">
+                                            <a href="/insumo/eliminar_insumo/{{c.codigo_insumo}}" class="btn btn-danger btnEliminacion">
                                                 <i class="bi-trash-fill" ></i> 
                                                     Eliminar
                                             </a> 
