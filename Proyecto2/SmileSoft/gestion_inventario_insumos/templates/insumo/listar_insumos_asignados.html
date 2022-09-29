@@ -18,14 +18,16 @@
         <div class="card">
             <div class="card-body">
                 <center> 
-                  <h3> TRATAMIENTO: <b style="color:blue;"> {{tratamiento.nombre_tratamiento}}</b></h3>
+                  <h3> 
+                    <b>Tratamiento: </b><FONT SIZE="5" style="color:blue;"> <i><b>{{tratamiento.nombre_tratamiento}}</b></i></FONT>
+                </h3>
                 </center>
-                    <center>
-                        <h4>
-                           
-                              <h2> <b> Insumos asignados </b></h2>
-                        </h4>
-                    </center>
+                <br>
+                <center>
+                    <h4>
+                       <b> Insumos asignados </b>
+                    </h4>
+                </center>
 
                 <!--Inicio de la TABLA DE TRATAMIENTOS-->
                 <table>
@@ -38,6 +40,7 @@
                                     <th>Nro Insumo</th>
                                     <th>Nombre </th>
                                     <th>Cantidad </th>
+                                    <th> </th>
                                     <!-- <th>Acciones</th> -->
                                 {%endif%}
                             </tr>
@@ -50,23 +53,15 @@
                                             <td >{{forloop.counter}}</td>
                                             <td >{{insumo.nombre_insumo}}</td>
                                             <td ></td>
-                                            <!-- Eliminar-->
-                                            <!-- {%if perms.gestion_tratamiento.delete_tratamiento%}
-                                                <td>
-                                                    <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
-                                                        <i class="bi-trash" ></i> 
-                                                        Eliminar
-                                                    </a>
-                                                </td>
-                                            {%endif%} -->
+                                            <td >
+                                                <a href="/insumo/editar_cantidad_insumo_asignado/{{id_tratamiento_insumo}}" class="btn btn-success">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                    Editar cantidad
+                                                </a>
+                                            </td>
                                         </tr>
                                     {% endfor %}
-                                    <!-- <tr>
-                                        <th>Precio Total</th>
-                                        <th></th>
-                                        <th>{{precio_total}} Gs</th>
-                                        <th></th>
-                                    </tr> -->
+
                                 {%else%}
                                     <br>
                                    

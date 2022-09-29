@@ -13,98 +13,23 @@
 
 {%block content%}
 
-{%if perms.gestion_tratamiento.view_tratamiento%}  
+<!-- {%if perms.gestion_tratamiento.view_tratamiento%}   -->
     <div class="container">
         <div class="card">
             <div class="card-body">
                 <center> 
-                  <h3> TRATAMIENTO: <b style="color:blue;"> {{tratamiento.nombre_tratamiento}}</b></h3>
+                  <h3> Insumo: <b style="color:blue;"> {{tratamiento_insumo_asignado.insumo.nombre_insumo}}</b></h3>
                 </center>
-                    <center>
-                        <h4>
-                           
-                              <h2> <b> Insumos asignados </b></h2>
-                        </h4>
-                    </center>
-
-                <!--Inicio de la TABLA DE TRATAMIENTOS-->
+                <div class="form-group">
+                    <label for="{{form.cantidad.name}}">{{form.cantidad.label}}</label>{{form.cantidad}}
+                </div>
                 <table>
-                    <!--table striped es para que resalte 1 fila y otra no-->
-                    <!--table-bordered para bordes-->
-                    <table class="table table-striped table-hover">
-                        <thead> 
-                            <tr>
-                                {%if insumos_asignados%}
-                                    <th>Nro Insumo</th>
-                                    <th>Nombre </th>
-                                    <th>Cantidad </th>
-                                    <!-- <th>Acciones</th> -->
-                                {%endif%}
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                                {%if insumos_asignados%}
-                                    {%for insumo in insumos_asignados%}
-                                        <tr>
-                                            <td >{{forloop.counter}}</td>
-                                            <td >{{insumo.nombre_insumo}}</td>
-                                            <td ></td>
-                                            <!-- Eliminar-->
-                                            <!-- {%if perms.gestion_tratamiento.delete_tratamiento%}
-                                                <td>
-                                                    <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
-                                                        <i class="bi-trash" ></i> 
-                                                        Eliminar
-                                                    </a>
-                                                </td>
-                                            {%endif%} -->
-                                        </tr>
-                                    {% endfor %}
-                                    <!-- <tr>
-                                        <th>Precio Total</th>
-                                        <th></th>
-                                        <th>{{precio_total}} Gs</th>
-                                        <th></th>
-                                    </tr> -->
-                                {%else%}
-                                    <br>
-                                   
-                                    <center>
-                                        
-                                     <div class="alert alert-success alert-info  col-md-4 offset-md-0 "  style ="font-size:17px;"  role="alert">
-                                         El tratamiento no tiene insumos asignados 
-                                    </div>
-                                        
-                                    </center>
-                                {%endif%}
-
-
-                                <!-- {% if messages %}
-                                <ul class="messages">
-                                
-                                    {% for message in messages %}
-                                    <li>
-                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                        <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
-                                        Insumo
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
-                                        {{ message }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %} -->
-                        </tbody>
-                    </table>
+                    <br>
                     <div class="d-flex justify-content-center">
-                        {%if insumos_asignados%}
                         <a type="submit" href="/insumo/asignar_insumos/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary btn-block txt-white">
                             <i class="bi bi-plus-circle"></i>
-                            Agregar
+                            Guardar
                         </a>
-                        {%endif%}
                         &nbsp;
                         <a onclick = "history.back()" class="btn btn-secondary"  >
                             <i class="bi-x-circle"></i> 
@@ -117,6 +42,6 @@
             </div>
         </div>
     </div>
-{%endif%}
+<!-- {%endif%} -->
 
 {%endblock%}

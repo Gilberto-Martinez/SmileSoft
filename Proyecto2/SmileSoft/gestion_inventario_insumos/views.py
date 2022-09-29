@@ -168,33 +168,29 @@ def listar_insumo_asignado(request, codigo_tratamiento):
                                                                             }
                     )
 
-def agregar_cantidad_insumos(request, codigo_tratamiento):
+def editar_cantidad_insumos_asig(request, id_tratamiento_insumo):
     """
-    Lista los insumos asignados a un tratamiento en especifico y permite agregar
-    la cantidad que se utilizara de los insumos para el tratamiento dado. 
+    Permite modificar la cantidad de insumos a ser utilizado para un tratamiento en especifico 
     """
-    listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
-    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    insumos_asignados = []
-    id_tratamiento_insumo = ''
-   
-    for insumo_asig in listado_insumos_asig:
-        if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
-            id_tratamiento_insumo = insumo_asig.id_insumo_asig
-            cod_insumo = insumo_asig.get_insumo()
-            nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
-            insumos_asignados.append(nuevo_insumo)
+    tratamiento_insumo_asignado = TratamientoInsumoAsignado.objects.get(id_insumo_asig=id_tratamiento_insumo)
 
     data= {
-        'form' : InsumoAsignadoForm(instance=tratamiento),
+        'form' : InsumoAsignadoForm(instance=tratamiento_insumo_asignado),
+        'tratamiento_insumo_asignado':tratamiento_insumo_asignado
     }
+    if request.method == "POST":
+        form= InsumoAsignadoForm(data = request.POST, instance=tratamiento_insumo_asignado,files= request.FILES)
+        if form.is_valid():
+            form.save()
+            # form.save_m2m()
+            # messages.success(request, ('✅ Insumo asignado '))
+            # return redirect("/insumo/listar_insumos_asignados/%s"%(codigo_tratamiento))
+            # return redirect("/mensajes/insumo_asignado_exitoso/%s"%(tratamiento.codigo_tratamiento))
+        else:
+            data["form"]=form
+            data['tratamiento_insumo_asignado']=tratamiento_insumo_asignado
 
-    return render (request,"insumo/agregar_cantidad_insumos.html",{
-                                                                            'insumos_asignados':insumos_asignados,
-                                                                            'tratamiento':tratamiento,
-                                                                            #'precio_total':precio_total,
-                                                                            'id_tratamiento_insumo':id_tratamiento_insumo,
-                                                                            }
+    return render (request,"insumo/agregar_cantidad_insumos.html",data
                     )
 
 # def mostrar_insumo_asignado_exitoso(request,codigo_tratamiento):
