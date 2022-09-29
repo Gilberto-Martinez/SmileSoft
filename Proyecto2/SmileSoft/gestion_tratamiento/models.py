@@ -12,7 +12,9 @@ class Tratamiento(models.Model):
     insumos = models.ManyToManyField(
                                              Insumo, 
                                              through='TratamientoInsumoAsignado',
-                                             related_name='tratamiento_set'
+                                             related_name='tratamiento_set',
+                                             blank=True, 
+                                             null=True,
                                          )
 
     class Meta:
