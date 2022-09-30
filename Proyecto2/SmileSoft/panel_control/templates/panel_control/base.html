@@ -245,8 +245,10 @@
                                                     </li> 
                                                   {%endif%}
                                                   <li>
+                                                  {%if perms.gestion_tratamiento.add_tratamiento%}
                                                     <a class="dropdown-item" href="/tratamiento/listar_tratamientos_pendientes/">• Tratamientos pendientes</a>
                                                   </li>
+                                                  {%endif%}
                                                 </ul>
                                               </li>
                                               {% endif %}
@@ -317,7 +319,9 @@
                                                   <!--Opcion 7.3 -->
                                                   
                                                     <strong class="dropdown-header"  style="color:blue; font-size:16px;" > Tratamientos Realizados</li></strong>
+                                                      {%if perms.gestion_administrativo.view_persona%}
                                                       <li><a class="dropdown-item" href="/historial_clinico/listar_pacientes_historial/">• Seleccionar un paciente</a></li>
+                                                      {%endif%}
                                                       <li><a class="dropdown-item" href="/historial_clinico/ver_mi_historial_clinico/{{user.numero_documento}}">• Mi Historial clínico</a></li> 
                                                   {% comment %} <li><hr class="dropdown-divider"></li>
                                                   <li><a class="dropdown-item" href="#">• Asignar un Tratamiento</a></li> {% endcomment %}
