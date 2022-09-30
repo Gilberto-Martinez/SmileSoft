@@ -157,6 +157,7 @@ def agregar_cita(request, id_paciente):
                     
                         cita.paciente = paciente
                         cita.nombre_paciente = nombre
+                        print("|||||||||||||CITA GUARDADA DEL PACIENTE QUE TIENE USUARIO||||||||||------------------")
                         # cita.celular = nro_telefonico
                         
                         cita.save()
@@ -265,6 +266,7 @@ def addcita_cita_usuario(request, id_paciente):
                 cita.nombre_paciente = nombre
                 # cita.celular= celular
                 cita.save()
+                print("|||||||||||||PACIENTE QUE NO TIENE USUARIO||||||||||------------------")
                 messages.success(request, (
                     '✅ Su cita ha sido registrada'))
                 return render(request, "calendario.html")
@@ -284,10 +286,12 @@ def addcita_usuario(request, numero_documento):
     paciente = Paciente.objects.get(numero_documento=numero_documento)
     id_paciente = paciente.id_paciente
     nombre = persona.nombre + ' ' + persona.apellido
+    
     # celular= persona.telefono
     # print(celular, nombre,"este es ------------------")
     
-    fecha=Cita.objects.all()
+    # cita=Cita.objects.all()
+    # reservado= cita.estado
     
     # apellido = persona.apellido
     print('Esta es la cedula: ', numero_documento, 'Este es el id del paciente: ', id_paciente) 
@@ -336,7 +340,7 @@ def addcita_usuario(request, numero_documento):
                     #        
                     #''Dias de la semana 5 y 6 es Sabado y Domingo''
                     if nro_semana <= 4:  
-                        print("-----------------------------DIA DE LA SEMANA----------------------")                 
+                        print("-----------------------------Nivel Sistema----------------------")                 
                         if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
                                 #print("el numero de la semana  es", nro_semana)
                                 respuesta = "YA EXISTE"
@@ -364,8 +368,9 @@ def addcita_usuario(request, numero_documento):
             if respuesta== "NO EXISTE":
                 cita.paciente = paciente
                 cita.nombre_paciente = nombre 
-                # cita.celular= celular
+                # cita.estado= reservado
                 cita.save()
+                print("###Guarda la CITA  DEL USUARIO REGISTRADO-----------------",cita.estado)
                 messages.success(request, (
                     '✅ Su cita ha sido registrada'))
                 return render(request, "calendario.html")
@@ -379,6 +384,7 @@ def addcita_usuario(request, numero_documento):
 
 
  # @permission_required('gestion_agendamiento.cambiarCita_usuario', login_url="/panel_control/error/",)
+#->|A NIVEL USUARIO (que tiene usuario) (NO TOCAR SU ESTADO)
 def cambiarCita_usuario(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
@@ -393,6 +399,7 @@ def cambiarCita_usuario(request, id_cita):
         nombre = persona.nombre + ' ' + persona.apellido
         paciente = Paciente.objects.get(numero_documento=nro_documento)
         id_paciente = paciente.id_paciente
+        # cambio_estado=cita.estado
 
         data = {
             'form': CitaForm(instance=cita),
@@ -407,6 +414,7 @@ def cambiarCita_usuario(request, id_cita):
         if request.method == "POST":
             formulario = CitaForm(data=request.POST, instance= cita,files=request.FILES)
             respuesta= "NO EXISTE"
+            cambio_estado= False
             
             if formulario.is_valid():
                 cita = formulario.save(commit=False)
@@ -462,6 +470,7 @@ def cambiarCita_usuario(request, id_cita):
                 if respuesta== "NO EXISTE":
                     cita.paciente = paciente
                     cita.nombre_paciente = nombre
+                    # cita.estado= cambio_estado
                     cita.save()
                     return redirect("/agendamiento/calendario_mensaje/")
                 
@@ -478,7 +487,7 @@ def cambiarCita_usuario(request, id_cita):
             return render(request, "cita_sin_usuario.html")
 
 
-# <--Modificar cita-->|A nivel SISTEMA
+# <--Modificar cita-->|A nivel SISTEMA (YA FUNCIONA EL ESTADO CONFIRMADO)
 def modificar_cita(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
@@ -489,18 +498,22 @@ def modificar_cita(request, id_cita):
         nro_documento=ci_user.numero_documento
         paciente = Paciente.objects.get(numero_documento=nro_documento)
         nombre = persona.nombre + ' ' + persona.apellido
+        reservado=cita.estado
         data = {
             'form': CitaForm(instance=cita),
             'persona': persona,
+            'estado':reservado,
         }
 
         if request.method == "POST":
             formulario = CitaForm(data=request.POST, instance=cita, files=request.FILES)
             respuesta= "NO EXISTE"
             
+            
             if formulario.is_valid():
                 cita = formulario.save(commit=False)
                 citas= Cita.objects.all()
+                reservado=cita.estado
                 for c in citas:
                     #---Datos---#
                     dia=str (cita.fecha)
@@ -517,19 +530,21 @@ def modificar_cita(request, id_cita):
                     #""" 'Hora que recibe' """
                     hora_recibida = str(cita.hora_atencion)
                     #-----------#
-                    if dia_recibido > actual or hora_recibida > hora_actual:
+                    c.estado= reservado
+                    if dia_recibido > actual or hora_recibida > hora_actual or c.estado==False:
                         #
                         #''Dias de la semana 5 y 6 es Sabado y Domingo''
                         if nro_semana <= 4:
                             print(
                                 "-----------------------------DIA DE LA SEMANA----------------------")
-                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional:
+                            print("el estado que entra es", reservado)
+                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and reservado==False:
                                 #print("el numero de la semana  es", nro_semana)
                                 respuesta = "YA EXISTE"
                                 return render(request, 'horario_reservado.html')
                             else:
                                 # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
-                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha:
+                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and reservado== False:
                                     respuesta = "Reservado"
                                     # mensaje = "DUPLICADO"
                                     messages.success(request, (
@@ -552,7 +567,9 @@ def modificar_cita(request, id_cita):
                 if respuesta== "NO EXISTE":
                     cita.paciente = paciente
                     cita.nombre_paciente = nombre
+                    cita.estado=reservado
                     cita.save()
+                    print("el estado que GUARDA ES", cita.estado)
                 
                     messages.success(request, (
                         '✅ Modificado correctamente!'))            
@@ -566,7 +583,7 @@ def modificar_cita(request, id_cita):
      return redirect("/agendamiento/modificar_cita_usuario/%s" %(id_cita))
         
 
-# <--Modificar MENOR cita-->|A nivel SISTEMA
+# <--Modificar cita DE UNA PERSONA SIN USUARIO o MENOR DE EDAD-->|A nivel SISTEMA
 def modificar_cita_usuario(request, id_cita):
     # try:    
         cita = Cita.objects.get(id_cita=id_cita)
@@ -577,19 +594,25 @@ def modificar_cita_usuario(request, id_cita):
         nro_documento = persona.numero_documento
         paciente = Paciente.objects.get(numero_documento=nro_documento)
         nombre = persona.nombre + ' ' + persona.apellido
+        reservado = cita.estado
+        
         data = {
             'form': CitaForm(instance=cita),
             'persona': persona,
+            'estado': reservado,
         }
 
         if request.method == "POST":
             formulario = CitaForm(
                 data=request.POST, instance=cita, files=request.FILES)
             respuesta = "NO EXISTE"
+           
 
             if formulario.is_valid():
                 cita = formulario.save(commit=False)
                 citas = Cita.objects.all()
+                reservado=cita.estado
+                print ("AQUI ENTRA Y SU Estado ES", reservado)
                 for c in citas:
                     #---Datos---#
                     dia = str(cita.fecha)
@@ -607,50 +630,47 @@ def modificar_cita_usuario(request, id_cita):
                     #""" 'Hora que recibe' """
                     hora_recibida = str(cita.hora_atencion)
                     #-----------#
-                    if dia_recibido > actual or hora_recibida > hora_actual:
+                    c.estado= reservado
+                    if dia_recibido > actual or hora_recibida > hora_actual  :
                         #
                         #''Dias de la semana 5 y 6 es Sabado y Domingo''
                         if nro_semana <= 4:
-                            print(
-                                "-----------------------------Modificacion en caso de que sea menor de edad----------------------")
-                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional:
-                                #print("el numero de la semana  es", nro_semana)
+                            print("-----------------------------Modificacion en caso de que sea menor de edad----------------------")
+                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and reservado==False:
+                                print("el numero de la semana  es", nro_semana, "EL ESTADO", reservado)
                                 respuesta = "YA EXISTE"
                                 return render(request, 'horario_reservado.html')
                             else:
                                 # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
-                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha:
+                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and reservado==False:
                                     respuesta = "Reservado"
                                     # mensaje = "DUPLICADO"
-                                    messages.success(request, (
-                                        'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                    messages.success(request, ('Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
                                     return render(request, 'horario_duplicado.html')
                         else:
                             if nro_semana >= 5:
                                 #"Si es fin de semana emite el msj"
-                                messages.success(
-                                    request, "Por favor, elija dias entre Lunes a Viernes")
+                                messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
                                 return render(request, 'cerrado.html')
                     else:
                         if dia_recibido < actual or hora_recibida < hora_actual:
-                            print(
-                                "pasa por aqui primero||||||||||------------------")
+                            print("pasa por aqui primero||||||||||------------------")
                             respuesta = "PASADO"
-                            messages.success(
-                                request, "Por favor verifique nuevamente")
+                            messages.success(request, "Por favor verifique nuevamente")
                             return render(request, 'fecha_pasada.html')
-
+        
                 if respuesta == "NO EXISTE":
                     cita.paciente = paciente
                     cita.nombre_paciente = nombre
+                    cita.estado=reservado
                     cita.save()
+                    print("GUARDA||||||||||------------------")
 
                     messages.success(request, (
                         '✅ Modificado correctamente!'))
                     return redirect("/agendamiento/listado_citas/", respuesta)
             else:
-                messages.error(
-                    request, "Algo ha salido Mal, por favor verifique nuevamente")
+                messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
         return render(request, "modificar_cita_usuario.html", data)
     # except Usuario.DoesNoExist:
     #      messages.error(
@@ -738,6 +758,7 @@ def listar_cita(request):
         hora=cita.hora_atencion
         doctor=cita.profesional
         pk_cita = cita.id_cita
+        reservacion= cita.estado
         
         cita_reservada= {
                         'nombre_paciente': nombre,
@@ -747,7 +768,8 @@ def listar_cita(request):
                         'tratamiento_solicitado': tratamiento , 
                         'hora_atencion': hora,  
                         'profesional':doctor , 
-                        'id_cita':pk_cita,       
+                        'id_cita':pk_cita,      
+                        'estado':reservacion 
                         
         }
         
