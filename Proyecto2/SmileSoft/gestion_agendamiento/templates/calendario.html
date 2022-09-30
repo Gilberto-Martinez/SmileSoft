@@ -31,14 +31,21 @@
                <table  align="center" >
                         <tr>
                         <td>
-                           
-                           
                             <a href="/agendamiento/calendario_usuario" class="btn btn-info">
                                 <i class="bi bi-calendar"></i>
                                 Ver Calendario <br>
                             </a>
                               
                         </td>
+                        {%if perms.gestion_agendamiento.view_cita%}
+                            <td>
+                                <a href="/agendamiento/listado_citas" class="btn btn-success">
+                                    <i class="bi bi-calendar"></i>
+                                    Listado de citas Reservadas <br>
+                                </a>
+                                    
+                            </td>
+                        {%endif%}
                         </tr>
                 </table>
             </div>

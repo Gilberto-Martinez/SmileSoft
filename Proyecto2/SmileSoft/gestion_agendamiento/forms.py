@@ -46,7 +46,8 @@ class CitaUsuario(forms.ModelForm):
                 'fecha',
                 # 'hora',
                 'hora_atencion',
-                'profesional'
+                'profesional',
+                'estado',
         ]
     
 
