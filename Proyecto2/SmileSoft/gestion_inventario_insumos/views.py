@@ -147,28 +147,56 @@ def listar_insumo_asignado(request, codigo_tratamiento):
     """
     listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-    insumos_asignados = []
-    id_tratamiento_insumo = ''
+    tratamientos_insumos_asignados = []
+    # id_tratamiento_insumo = ''
    
-
     for insumo_asig in listado_insumos_asig:
         if str(insumo_asig.get_tratamiento()) == str(codigo_tratamiento):
-            id_tratamiento_insumo = insumo_asig.id_insumo_asig
+            # id_tratamiento_insumo = insumo_asig.id_insumo_asig
             cod_insumo = insumo_asig.get_insumo()
             nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
-            #precio_total = precio_total + nuevo_tratamieto.precio
-            insumos_asignados.append(nuevo_insumo)
+            tratamiento_insumo_asig = {
+                                        "insumo":nuevo_insumo,
+                                        "tratamiento_insumo_asignado":insumo_asig
+            }
+            tratamientos_insumos_asignados.append(tratamiento_insumo_asig)
 
-    #precio_total = '{:,}'.format(precio_total).replace(',','.')
 
     return render (request,"insumo/listar_insumos_asignados.html",{
-                                                                            'insumos_asignados':insumos_asignados,
-                                                                            'tratamiento':tratamiento,
-                                                                            #'precio_total':precio_total,
-                                                                            'id_tratamiento_insumo':id_tratamiento_insumo,
+                                                                    'tratamientos_insumos_asignados':tratamientos_insumos_asignados,
+                                                                    'tratamiento':tratamiento,
                                                                             }
                     )
 
+def editar_cantidad_insumos_asig(request, id_tratamiento_insumo):
+    """
+    Permite modificar la cantidad de insumos a ser utilizado para un tratamiento en especifico 
+    """
+    tratamiento_insumo_asignado = TratamientoInsumoAsignado.objects.get(id_insumo_asig=id_tratamiento_insumo)
+    codigo_insumo = tratamiento_insumo_asignado.get_insumo()
+    insumo = Insumo.objects.get(codigo_insumo=codigo_insumo)
+    codigo_tratamiento = int(tratamiento_insumo_asignado.get_tratamiento())
+    data= {
+        'form' : InsumoAsignadoForm(instance=tratamiento_insumo_asignado),
+        'tratamiento_insumo_asignado':tratamiento_insumo_asignado,
+        'insumo':insumo,
+        'codigo_tratamiento':codigo_tratamiento
+    }
+    if request.method == "POST":
+        form= InsumoAsignadoForm(data = request.POST, instance=tratamiento_insumo_asignado,files= request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('✅ Proceso exitoso '))
+            return redirect('/insumo/listar_insumos_asignados/%s'%(codigo_tratamiento))
+        else:
+            data["form"]=form
+            data['tratamiento_insumo_asignado']=tratamiento_insumo_asignado
+            data["insumo"]=insumo
+            data["codigo_tratamiento"]=codigo_tratamiento
+            messages.success(request, (' No Guardado '))
+
+    return render (request,"insumo/agregar_cantidad_insumos.html",data
+                    )
 
 # def mostrar_insumo_asignado_exitoso(request,codigo_tratamiento):
 #     return render(request,"insumo_asignado_exitoso.html",{"codigo_tratamiento":codigo_tratamiento})

@@ -1,0 +1,69 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--Gestion de Insumos-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+
+{% block javascripts%}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     
+
+{%endblock%}
+
+{%block content%}
+<!-- {%if perms.gestion_tratamiento.view_tratamiento%}   -->
+    <center>
+        <FONT size="5" > 
+            <b>INSUMO: </b>
+            <b style="color:blue;">{{tratamiento_insumo_asignado.insumo.nombre_insumo}}x</b> 
+        </FONT>
+    </center>
+    <br>
+    <div class="col-12 col-md-4 offset-md-4">
+        <div class="card">
+            <div class="card-body">
+                <center> 
+                  <h3> 
+                    <!-- <b>
+                        INSUMO
+                    </b>:  -->
+                </h3>
+                </center>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <center>
+                            <h5>
+                                <b>¡Ingrese la cantidad en {{insumo.unidad}}!:</b>
+                            </h5>
+                        </center>
+                        <br>
+                        <div class="col-12 col-md-4 offset-md-2">
+                            <label for="{{form.cantidad.name}}"><b>{{form.cantidad.label}}:</b></label>
+                            {{form.cantidad}} 
+                        </div>
+                        <table>
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-block txt-white">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Guardar
+                                </button>
+                                &nbsp;
+                                &nbsp;
+                                <a onclick = "history.back()" class="btn btn-secondary"  >
+                                    <i class="bi-x-circle"></i> 
+                                    Atrás
+                                </a>
+                            </div>
+                        </table>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- {%endif%} -->
+
+{%endblock%}

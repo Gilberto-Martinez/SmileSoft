@@ -7,3 +7,6 @@ Para utlizar api de gmail para envio de correos
 
 PARA REALIZAR CALCULO DE EDAD Y VALIDAR QUE FUNCIONARIO SEA MAYOR DE EDAD
     pip install python-dateutil
+
+PARA GENERAR PDF 
+    pip install xhtml2pdf

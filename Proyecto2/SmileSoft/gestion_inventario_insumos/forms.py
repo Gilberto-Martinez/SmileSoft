@@ -1,30 +1,8 @@
-from dataclasses import field
-from distutils import text_file
-from email.headerregistry import Group
-from re import U
-from django.forms import BooleanField, CheckboxInput, CheckboxSelectMultiple, ModelForm, MultipleHiddenInput, PasswordInput, SelectMultiple, ValidationError, widgets
-from tokenize import group
 from django import forms
+from gestion_tratamiento.models import TratamientoInsumoAsignado
 from .models import *
-from django.contrib import messages
-from django.http import request
-from agregar_mas import *
-from django.contrib.auth.models import Group, Permission, GroupManager
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.forms import PasswordChangeForm
 
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext as _
-from django.utils.translation import gettext as _, ngettext
-
-#Import para el Login
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import PasswordResetForm
-
-
-
-
-#---------------------------------------------------------------------------------------- FORMULARIOS DEL CRUD DE USUARIO------------------------------------------------------------------------------------#
+#---------------------------------------------- FORMULARIOS DEL CRUD DE USUARIO------------------------------------------------------------------------------------#
 class InsumoForm(forms.ModelForm):
     nombre_insumo = forms.CharField(label='Nombre del Insumo:', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del insumo'}))
     descripcion_insumo = forms.CharField(label='Descripción del Insumo:', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del insumo'}))
@@ -38,13 +16,13 @@ class InsumoForm(forms.ModelForm):
     # unidad = forms.IntegerField(
     #                                                label='Unidad:', 
     #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del Insumo'}))
-    P = 'Paquetes'
-    C = 'Cajas'
-    L = 'Litros'
+    P = 'Paquete/s'
+    C = 'Caja/s'
+    L = 'Litro/s'
     UNIDADES = [
-            (P, 'Paquetes'),
-            (C, 'Cajas'),
-            (L, 'Litros')
+            (P, 'Paquete/s'),
+            (C, 'Caja/s'),
+            (L, 'Litro/s')
             ]
     unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
@@ -74,13 +52,13 @@ class InsumoUpdateForm(forms.ModelForm):
     # unidad = forms.IntegerField(
     #                                                label='Unidad:', 
     #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del insumo'}))
-    P = 'Paquetes'
-    C = 'Cajas'
-    L = 'Litros'
+    P = 'Paquete/s'
+    C = 'Caja/s'
+    L = 'Litro/s'
     UNIDADES = [
-            (P, 'Paquetes'),
-            (C, 'Cajas'),
-            (L, 'Litros')
+            (P, 'Paquete/s'),
+            (C, 'Caja/s'),
+            (L, 'Litro/s')
             ]
     unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
@@ -118,3 +96,19 @@ class InsumoUpdateForm(forms.ModelForm):
 
     # def get_codigo_insumo(self):
     #     return self.codigo_insumo
+
+class InsumoAsignadoForm(forms.ModelForm):
+    cantidad = forms.IntegerField(
+                                    label='Cantidad', 
+                                    widget = forms.NumberInput(attrs = {
+                                                                        'class': 'form-control', 
+                                                                        # 'placeholder': 'Ingrese la cantidad del insumo'
+                                                                        }
+                                                                )
+                                )
+
+    class Meta:
+        model = TratamientoInsumoAsignado
+        fields = [
+            'cantidad',
+        ]
