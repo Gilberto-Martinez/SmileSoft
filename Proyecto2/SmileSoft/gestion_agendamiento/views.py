@@ -384,7 +384,7 @@ def addcita_usuario(request, numero_documento):
 
 
  # @permission_required('gestion_agendamiento.cambiarCita_usuario', login_url="/panel_control/error/",)
-#->|A NIVEL USUARIO (que tiene usuario) (NO TOCAR SU ESTADO)
+#->|A NIVEL USUARIO (que tiene usuario) 
 def cambiarCita_usuario(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
@@ -399,7 +399,7 @@ def cambiarCita_usuario(request, id_cita):
         nombre = persona.nombre + ' ' + persona.apellido
         paciente = Paciente.objects.get(numero_documento=nro_documento)
         id_paciente = paciente.id_paciente
-        # cambio_estado=cita.estado
+        reservado=cita.estado
 
         data = {
             'form': CitaForm(instance=cita),
@@ -408,13 +408,14 @@ def cambiarCita_usuario(request, id_cita):
             'ci_user':ci_user,
             'nro_documento': nro_documento,
             'id_paciente': id_paciente,
+            'estado': reservado,
             # 'cedula_user':cedula_user
             
         }
         if request.method == "POST":
             formulario = CitaForm(data=request.POST, instance= cita,files=request.FILES)
             respuesta= "NO EXISTE"
-            cambio_estado= False
+            reservado = cita.estado
             
             if formulario.is_valid():
                 cita = formulario.save(commit=False)
@@ -437,17 +438,17 @@ def cambiarCita_usuario(request, id_cita):
                     #""" 'Hora que recibe' """
                     hora_recibida = str(cita.hora_atencion)
                     #-----------#
-                    if dia_recibido > actual or hora_recibida > hora_actual:
+                    if dia_recibido > actual or hora_recibida > hora_actual or c.estado == False:
                         #
                         #''Dias de la semana 5 y 6 es Sabado y Domingo''
                         if nro_semana <= 4:
-                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional:
+                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and reservado == False:
                                 #print("el numero de la semana  es", nro_semana)
                                 respuesta = "YA EXISTE"
                                 return render(request, 'horario_reservado.html')
                             else:
                                 # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
-                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional:
+                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and reservado == False:
                                     respuesta = "Reservado"
                                     # mensaje = "DUPLICADO"
                                     messages.success(request, (
@@ -460,7 +461,7 @@ def cambiarCita_usuario(request, id_cita):
                                     request, "Por favor, elija dias entre Lunes a Viernes")
                                 return render(request, 'cerrado.html')
                     else:
-                        if dia_recibido < actual or hora_recibida < hora_actual:
+                        if dia_recibido < actual or hora_recibida < hora_actual or reservado == True:
                             print("pasa por aqui primero||||||||||------------------")
                             respuesta = "PASADO"
                             messages.success(
@@ -557,7 +558,7 @@ def modificar_cita(request, id_cita):
                                     request, "Por favor, elija dias entre Lunes a Viernes")
                                 return render(request, 'cerrado.html')
                     else:
-                        if dia_recibido < actual or hora_recibida < hora_actual:
+                        if dia_recibido < actual or hora_recibida < hora_actual or reservado== True:
                             print("pasa por aqui primero||||||||||------------------")
                             respuesta = "PASADO"
                             messages.success(
@@ -653,7 +654,7 @@ def modificar_cita_usuario(request, id_cita):
                                 messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
                                 return render(request, 'cerrado.html')
                     else:
-                        if dia_recibido < actual or hora_recibida < hora_actual:
+                        if dia_recibido < actual or hora_recibida < hora_actual or reservado == True:
                             print("pasa por aqui primero||||||||||------------------")
                             respuesta = "PASADO"
                             messages.success(request, "Por favor verifique nuevamente")

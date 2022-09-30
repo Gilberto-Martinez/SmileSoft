@@ -67,7 +67,7 @@ class Cita(models.Model):
     
     hora_atencion = models.ForeignKey(Horario, null=True,
                                         on_delete=models.PROTECT,
-                                        verbose_name='Hora de atencion')
+                                        verbose_name='Hora de atención')
     
     estado = models.BooleanField('Confirmar cita', default=False)
     
