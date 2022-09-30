@@ -16,13 +16,13 @@ class InsumoForm(forms.ModelForm):
     # unidad = forms.IntegerField(
     #                                                label='Unidad:', 
     #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del Insumo'}))
-    P = 'Paquetes'
-    C = 'Cajas'
-    L = 'Litros'
+    P = 'Paquete/s'
+    C = 'Caja/s'
+    L = 'Litro/s'
     UNIDADES = [
-            (P, 'Paquetes'),
-            (C, 'Cajas'),
-            (L, 'Litros')
+            (P, 'Paquete/s'),
+            (C, 'Caja/s'),
+            (L, 'Litro/s')
             ]
     unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
@@ -52,13 +52,13 @@ class InsumoUpdateForm(forms.ModelForm):
     # unidad = forms.IntegerField(
     #                                                label='Unidad:', 
     #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del insumo'}))
-    P = 'Paquetes'
-    C = 'Cajas'
-    L = 'Litros'
+    P = 'Paquete/s'
+    C = 'Caja/s'
+    L = 'Litro/s'
     UNIDADES = [
-            (P, 'Paquetes'),
-            (C, 'Cajas'),
-            (L, 'Litros')
+            (P, 'Paquete/s'),
+            (C, 'Caja/s'),
+            (L, 'Litro/s')
             ]
     unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
@@ -102,7 +102,7 @@ class InsumoAsignadoForm(forms.ModelForm):
                                     label='Cantidad', 
                                     widget = forms.NumberInput(attrs = {
                                                                         'class': 'form-control', 
-                                                                        'placeholder': 'Ingrese la cantidad del insumo'
+                                                                        # 'placeholder': 'Ingrese la cantidad del insumo'
                                                                         }
                                                                 )
                                 )

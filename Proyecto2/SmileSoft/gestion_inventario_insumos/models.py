@@ -31,10 +31,10 @@ class Insumo(models.Model):
     fecha_caducidad = models.DateField(verbose_name='Fecha de nacimiento')
     cantidad_insumo = models.IntegerField(default=0, verbose_name= 'Cantidad (*)')
     #unidad = models.IntegerField(default=0, verbose_name= 'Unidad (*)')
-    P = 'Paquetes'
-    C = 'Cajas'
-    L = 'Litros'
-    UNIDADES = ((P, 'Paquetes'), (C, 'Cajas'), (L, 'Litros'))
+    P = 'Paquete/s'
+    C = 'Caja/s'
+    L = 'Litro/s'
+    UNIDADES = ((P, 'Paquete/s'), (C, 'Caja/s'), (L, 'Litro/s'))
     unidad = models.CharField(max_length=12, choices=UNIDADES, verbose_name='Unidad')
     #id_inventario = models.ForeignKey(inventario)
 

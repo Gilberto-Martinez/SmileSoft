@@ -12,33 +12,55 @@
 {%endblock%}
 
 {%block content%}
-
 <!-- {%if perms.gestion_tratamiento.view_tratamiento%}   -->
-    <div class="container">
+    <center>
+        <FONT size="5" > 
+            <b>INSUMO: </b>
+            <b style="color:blue;">{{tratamiento_insumo_asignado.insumo.nombre_insumo}}x</b> 
+        </FONT>
+    </center>
+    <br>
+    <div class="col-12 col-md-4 offset-md-4">
         <div class="card">
             <div class="card-body">
                 <center> 
-                  <h3> Insumo: <b style="color:blue;"> {{tratamiento_insumo_asignado.insumo.nombre_insumo}}</b></h3>
+                  <h3> 
+                    <!-- <b>
+                        INSUMO
+                    </b>:  -->
+                </h3>
                 </center>
-                <div class="form-group">
-                    <label for="{{form.cantidad.name}}">{{form.cantidad.label}}</label>{{form.cantidad}}
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <center>
+                            <h5>
+                                <b>¡Ingrese la cantidad en {{insumo.unidad}}!:</b>
+                            </h5>
+                        </center>
+                        <br>
+                        <div class="col-12 col-md-4 offset-md-2">
+                            <label for="{{form.cantidad.name}}"><b>{{form.cantidad.label}}:</b></label>
+                            {{form.cantidad}} 
+                        </div>
+                        <table>
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-block txt-white">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Guardar
+                                </button>
+                                &nbsp;
+                                &nbsp;
+                                <a onclick = "history.back()" class="btn btn-secondary"  >
+                                    <i class="bi-x-circle"></i> 
+                                    Atrás
+                                </a>
+                            </div>
+                        </table>
+                    </form>
+                    
                 </div>
-                <table>
-                    <br>
-                    <div class="d-flex justify-content-center">
-                        <a type="submit" href="/insumo/asignar_insumos/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary btn-block txt-white">
-                            <i class="bi bi-plus-circle"></i>
-                            Guardar
-                        </a>
-                        &nbsp;
-                        <a onclick = "history.back()" class="btn btn-secondary"  >
-                            <i class="bi-x-circle"></i> 
-                            Atrás
-                        </a>
-                    </div>
-                </table>
-            <!--end TABLA-->
-        
             </div>
         </div>
     </div>

@@ -14,8 +14,7 @@ class Tratamiento(models.Model):
                                              through='TratamientoInsumoAsignado',
                                              related_name='tratamiento_set',
                                              blank=True, 
-                                             null=True,
-                                         )
+                                             )
 
     class Meta:
         verbose_name = ("tratamiento")
