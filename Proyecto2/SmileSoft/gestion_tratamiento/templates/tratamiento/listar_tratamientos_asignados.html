@@ -17,14 +17,16 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <center> 
-                    <h2 <i class="bi bi-clipboard2-pulse"> Tratamientos asignados</i> </h2>
-                </center>
+                
                     <center>
-                        <h4>
+                        <strong style= "font-size:25px;">
                             <b>Paciente:</b> <i>{{paciente.numero_documento.nombre}} {{paciente.numero_documento.apellido}}</i>
-                        </h4>
+                        </strong>
                     </center>
+                    <br>
+                    <center> 
+                    <h3> <i style="color:green";> Tratamientos asignados</i> </h3>
+                </center>
 
                 <!--Inicio de la TABLA DE TRATAMIENTOS-->
                 <table>
@@ -68,8 +70,7 @@
                                     </tr>
                                 {%else%}
                                     <br>
-                                    <br>
-                                    <br>
+                                 
                                     <center>
                                         <h5>
                                             <i class="bi bi-exclamation-triangle-fill"></i>
