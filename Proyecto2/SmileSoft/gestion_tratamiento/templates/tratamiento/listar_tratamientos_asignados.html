@@ -51,15 +51,18 @@
                                             <td >{{forloop.counter}}</td>
                                             <td >{{tratamiento.nombre_tratamiento}}</td>
                                             <td >{{tratamiento.precio}}</td>
-                                            <!-- Eliminar-->
-                                            {%if perms.gestion_tratamiento.delete_tratamiento%}
-                                                <td>
+                                            <td>
+                                                {%if perms.gestion_tratamiento.delete_tratamiento%}
+                                                    <a href="#" class="btn btn-primary">
+                                                        <i class="bi bi-plus-circle"></i> 
+                                                        Agendar
+                                                    </a>
                                                     <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
                                                         <i class="bi-trash" ></i> 
                                                         Eliminar
                                                     </a>
-                                                </td>
-                                            {%endif%}
+                                                {%endif%}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     <tr>
