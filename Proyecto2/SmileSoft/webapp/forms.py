@@ -51,6 +51,73 @@ class UsuarioForm(forms.ModelForm):
     usuario = forms.CharField(max_length=15,
                               widget=forms.TextInput(
                                                     attrs={
+                                                            # 'required': False,
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese su usuario',
+                                                            'readonly':True
+                                                        }
+                                                    )
+                            )
+    password1 = forms.CharField(label= "Contraseña",min_length=6 , max_length=25 ,widget=forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese su contraseña'}), strip=False)
+    password2 = forms.CharField(label="Confirmación de contraseña", min_length=6, max_length=25,help_text='<small> Para verificar, introduzca la misma contraseña anterior.</small>', widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Confirmación de contraseña'}), strip=False)
+
+    class Meta:
+        proxy = True
+        model = Usuario
+        fields = [
+            'usuario',
+            'password1',
+            'password2',
+            'numero_documento',
+            'groups',
+            'is_active',
+            'is_admin',
+        ]
+
+        widgets = {
+            'groups': forms.CheckboxSelectMultiple(attrs={
+                'class': 'form-select2',
+                'style': 'width: 20px',
+                'multiple': 'multiple'}),
+
+            'password1': forms.PasswordInput(render_value=True,
+
+                                            attrs={
+                                                'class': 'from-control',
+                                                'placeholder': 'Password ingrese',
+                                                'required': 'required'
+                                            }
+                                            ),
+        }
+
+        error_messages = {
+            'usuario': {
+                'max_length': ("Ha Superado la longitud. Ingrese nuevamente el usuario. Por Favor'"),
+            },
+        }
+
+
+    def clean_password2(self):
+            # Check that the two password entries match
+            password1 = self.cleaned_data.get("password1")
+            password2 = self.cleaned_data.get("password2")
+            if password1 and password2 and password1 != password2:
+                raise ValidationError(" ❌ Contraseñas no coinciden")
+            return password2
+
+    def save(self, commit=True):
+            # Save the provided password in hashed format
+            usuario = super().save(commit=False)
+            usuario.set_password(self.cleaned_data["password1"])
+            if commit:
+                usuario.save()
+            return usuario
+
+class UsuarioForm2(forms.ModelForm):
+    usuario = forms.CharField(max_length=15,
+                              widget=forms.TextInput(
+                                                    attrs={
                                                             'required': True,
                                                             'class': 'form-control',
                                                             'placeholder': 'Ingrese su usuario'

@@ -4,7 +4,6 @@ from .views import *
 
 
 urlpatterns = [
-
     path("calendar/", Calendario.as_view(), name="calendario"),
     path('gracias/', calendario_vista, name="gracias"),
     path("calendario_usuario/", CalendarioUsuario.as_view(),
@@ -22,7 +21,6 @@ urlpatterns = [
     path('modificar_cita_usuario/<int:id_cita>', modificar_cita_usuario, name="modificar_cita_usuario"),
     path('eliminar_cita/<int:id_cita>', eliminar_cita, name="eliminar_cita"),
     path('pacientes_cita/', listar_citapaciente, name="pacientes_cita"),
-
 
     path('cita_vista/<int:id_cita>/',cita_vista, name="cita_vista"),
     
