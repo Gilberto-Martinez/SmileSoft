@@ -155,9 +155,10 @@ def listar_tratamientos_pendientes(request):
                     )
 
 def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
-    paciente_tratamiento = PacienteTratamientoAsignado.objects.get(id=id_pac_tratamiento)
+    paciente_tratamiento = PacienteTratamientoAsignado.objects.get(id_tratamiento_asig=id_pac_tratamiento)
+    id_paciente = paciente_tratamiento.paciente.get_id()
     paciente_tratamiento.delete()
-    return redirect('/tratamiento/listar_tratamientos_asignados/%s'%(cedula))
+    return redirect('/tratamiento/listar_tratamientos_asignados/%s'%(id_paciente))
 
 
 # -----------------------------------------------------------------------------------------------

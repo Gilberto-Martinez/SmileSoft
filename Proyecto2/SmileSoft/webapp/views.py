@@ -235,6 +235,22 @@ def registrologin(request, cedula):
 #------------------------------------------------------------------------------------------------------#
 # ***Views de Crear Usuario***
 
+def generar_usuario(numero_documento):
+    persona = Persona.objects.get(numero_documento=numero_documento)
+    password = Usuario.objects.make_random_password()
+    print('contraseña: ',password)
+    usuario = Usuario.objects.create_user(password, numero_documento)
+    grupo = Group.objects.get(name='Paciente')
+    grupo.user_set.add(usuario)
+
+    return usuario
+    # email = persona.correo_electronico
+    # context ={'cedula':cedula}
+
+    # if usuario:
+        # nombre_usuario = usuario.usuario
+        # enviar_correo(email,nombre_usuario,password)
+        # return render(request, "inicio/mensaje_envio_correo.html", context)
 
 # @permission_required('webapp.agregar_usuario', login_url="/panel_control/error/",)
 def agregar_usuario(request):
@@ -280,6 +296,24 @@ def elegir_persona(request):
 
     return render(request, 'usuario/listar_personas_elegir.html', {'listado_personas':listado_personas})
 
+def crear_usuario(request, numero_documento):
+    usuario = generar_usuario(numero_documento)
+    data = {
+        'form': UsuarioForm(usuario)
+    }
+    if request.method == "POST":
+        formulario = UsuarioForm(data=request.POST,instance=usuario, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save(commit=False)
+            formulario._save_m2m()
+            messages.success(request, " ✅Agregado correctamente")
+            print("entra-----------------------------")
+            return redirect("/listar_usuario/")
+        else:
+            data["form"] = formulario
+            messages.error(request, "⚠️¡Ha ocurrido un error! ")
+    return render(request, "usuario/agregar_usuario.html", data)
+
     # funciona, vista simple de listar
 # def listar_usuario(request):
 #     listado_usuarios= Usuario.objects.all()
@@ -297,7 +331,6 @@ def elegir_persona(request):
 
 # @permission_required('webapp.listar_usuario', login_url="/panel_control/error/")
 def listar_usuario(request):
-
     busqueda = request.POST.get("q")
     listado_usuarios = Usuario.objects.all()
 
@@ -307,7 +340,6 @@ def listar_usuario(request):
         print("AQUI ESTA ENTRANDO Y buscando", {
               'listado_usuarios': listado_usuarios})
     else:
-
         print("Buscado AQUI",)
        # return render (request, "usuario/buscar.html")
 
