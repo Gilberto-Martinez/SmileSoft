@@ -53,7 +53,7 @@
                                             <td >{{tratamiento.precio}}</td>
                                             <td>
                                                 {%if perms.gestion_tratamiento.delete_tratamiento%}
-                                                    <a href="#" class="btn btn-primary">
+                                                    <a href="/agendamiento/agendar_cita/{{paciente.id_paciente}}/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary">
                                                         <i class="bi bi-plus-circle"></i> 
                                                         Agendar
                                                     </a>

@@ -16,6 +16,7 @@ urlpatterns = [
     # path("listado_citas/", listaReserva.as_view(),
     #      name="listado_citas"),
     path('agregar_cita/<int:id_paciente>', agregar_cita, name="agregar_cita"),
+    path('agendar_cita/<int:id_paciente>/<int:codigo_tratamiento>', agendar_cita, name="agendar_cita"),
     path('agregar_cita_usuario/<int:id_paciente>/',addcita_cita_usuario, name="agregar_cita_usuario"),
     path('modificar_cita/<int:id_cita>', modificar_cita, name="modificar_cita"),
     path('modificar_cita_usuario/<int:id_cita>', modificar_cita_usuario, name="modificar_cita_usuario"),
