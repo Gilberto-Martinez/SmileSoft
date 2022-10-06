@@ -1,5 +1,6 @@
 from genericpath import exists
 from mailbox import NoSuchMailboxError
+from operator import truediv
 from re import U
 from time import gmtime, strftime, strptime
 from urllib import request
@@ -272,7 +273,7 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
                         # cita.celular = nro_telefonico
                         
                         cita.save()
-                        eliminar_tratamiento_asignado(id_paciente, codigo_tratamiento)
+                        agendar_tratamiento_asignado(id_paciente, codigo_tratamiento)
                         messages.success(request, ('✅Agregado correctamente!'))
                         print('aquiiiiiiiiiiiiii ENTRAAAAA',)
                         return redirect("/agendamiento/listado_citas/")
@@ -682,7 +683,8 @@ def modificar_cita(request, id_cita):
                     cita.estado=reservado
                     cita.save()
                     print("el estado que GUARDA ES", cita.estado)
-                
+                    if cita.estado == True:
+                        pass
                     messages.success(request, (
                         '✅ Modificado correctamente!'))            
                     return redirect("/agendamiento/listado_citas/", respuesta)                
@@ -1007,6 +1009,17 @@ def horario_duplicado(request):
     return render(request, "horario_duplicado.html")
 
 ###############
+def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
+    """
+    Procedimiento que cambia el estado del tratamiento asignado al paciente (de la tabla 
+    PacienteTramientoAsignado) del estado ASIGNADO a AGENDADO una vez que se haya realizado el agendamiento de 
+    cita con el tratamiento que fue asignado por el Odontologo
+    """
+    paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
+    tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+    paciente_tratamiento = PacienteTratamientoAsignado.objects.filter(paciente=paciente_obt, tratamiento=tratamiento_obt).update(estado='Agendado')
+
+
 def eliminar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     """
     Procedimiento que elimina el tratamiento asignado al paciente (de la tabla 

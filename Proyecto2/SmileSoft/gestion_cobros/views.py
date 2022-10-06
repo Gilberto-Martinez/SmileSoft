@@ -71,6 +71,41 @@ def registrar_cobro(request, numero_documento):
     confirmar_tratamientos(numero_documento)
     return redirect("/cobros/mensaje_confirmacion_cobro/")
 
+
+def registrar_cobro_pendiente(numero_documento):
+    paciente = Paciente.objects.get(numero_documento=numero_documento)
+    persona = Persona.objects.get(numero_documento=numero_documento)
+    nombre = str(persona.nombre)+" "+str(persona.apellido)
+    precio_total = obtener_precio_total(numero_documento)
+
+    if precio_total>0:
+        cobro_contado = CobroContado.objects.create(
+                                            paciente=paciente,
+                                            numero_documento= numero_documento,
+                                            razon_social=nombre,
+                                            monto_total=precio_total,
+                                            estado='Pendiente'
+        )
+    else:
+        return redirect("/cobros/error_cobro/")
+
+    tratamientos_confirmados = obtener_tratamientos(numero_documento)
+    detalle_cobro_nuevo = DetalleCobroContado.objects.create(
+                                                        cobro=cobro_contado,
+                                                        # tratamientos=tratamientos_confirmados
+    )
+    # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
+    for tratamiento_conf in tratamientos_confirmados:
+        print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
+        # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
+        detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
+                                            detalle_cobro=detalle_cobro_nuevo,
+                                            tratamiento = tratamiento_conf
+        )
+    confirmar_tratamientos(numero_documento)
+    return redirect("/cobros/mensaje_confirmacion_cobro/")
+
+
 def obtener_tratamientos(cedula):
     listado_tratamientos = PacienteTratamientoAsignado.objects.all()
     tratamientos_asignados = []
@@ -148,10 +183,7 @@ def ver_detalle_cobro(request, id_cobro_contado):
                                                     }
                 )
 
-#---------------------------------------------------------#
-# class   CobrosListView(ListView):
-#     model = CobroContado
-#     template_name = 'listar_cobro_contado.html'
+#---------------------------- LISTADOS -----------------------------#
 
 def listar_cobros(request):
     cobros = CobroContado.objects.all()
@@ -169,7 +201,15 @@ def listar_cobros(request):
 
     return render(request, 'listar_cobro_contado.html', {'listado_cobros':listado_cobros})
 
-    
+
+def listar_cobros_pendientes(request):
+    tratamientos_agendados = PacienteTratamientoAsignado.objects.filter(estado='Agendado')
+    pacientes = []
+
+    for tratamiento_agen in tratamientos_agendados:
+        pacientes.append(tratamiento_agen.paciente)
+
+    return render(request,'listar_cobros_pendientes.html', {'pacientes':pacientes})
 
 #------------------------ Vista de mensajes ----------------------------#
 class ErrorCobro(TemplateView):
