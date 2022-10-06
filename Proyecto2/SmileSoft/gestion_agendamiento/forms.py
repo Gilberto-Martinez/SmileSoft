@@ -27,7 +27,27 @@ class CitaForm(forms.ModelForm):
                 'profesional',
                 'estado',
         ]
+
+
+class CitaForm2(forms.ModelForm):
+    fecha = forms.DateField(
+        label='Fecha de consulta: ', widget=forms.NumberInput(attrs={'type': 'date'}))
     
+    # hora = forms.TimeField(label='Hora de cita: ',
+    #                        help_text='<small> <b>Lunes a Viernes</b>  ! <br> 08:00hs a 12:00hs ; 13:30hs a 21:00hs </i></small>',
+    #     widget=forms.TimeInput(attrs={'type': 'time'}))
+
+    class Meta:
+        model= Cita
+        fields= [
+                # 'tratamiento_solicitado',
+                'fecha',
+                # 'hora',
+                'hora_atencion',
+                
+                'profesional',
+                'estado',
+        ]
       
 class CitaUsuario(forms.ModelForm):
     fecha = forms.DateField(
