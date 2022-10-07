@@ -1,0 +1,30 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+        <strong  style="color:blue; font-size:16px;" >
+             <img src="{% static 'img/atencion.png' %}" width="120px" alt="auto"> 
+                        <h2  style="color:black;"> Esta persona   
+                            <br> No podrá ser agendada <br> </h2>  
+                            <small> Dado que su cita debe ser corroborada por <br> la  disponibilidad del profesional<small>  
+                               <br> <i> Por favor comuníquese con la clínica para la reservaciones de citas muy lejanas </i>                                   
+                    </strong> <br>
+                       <br>
+                    
+                        <a onclick="history.back()" class="btn btn-info">
+                           <i class="bi bi-backspace"></i>
+                          Atrás <br>
+                        </a>
+                         <a href="/agendamiento/pacientes_cita/" class="btn btn-success">
+                           
+                         📝 Listado de pacientes <br>
+                        </a>
+                      
+                     
+      
+    </center>
+     
+</form>
+{% endblock %}

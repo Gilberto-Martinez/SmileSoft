@@ -7,8 +7,7 @@ urlpatterns = [
 
     path("calendar/", Calendario.as_view(), name="calendario"),
     path('gracias/', calendario_vista, name="gracias"),
-    path("calendario_usuario/", CalendarioUsuario.as_view(),
-         name="calendario_usuario"),
+    path("calendario_usuario/", CalendarioUsuario.as_view(),name="calendario_usuario"),
     # path('calendario_usuario/', calendario_usuario, name="calendario_usuario"),
     # path('calendar/', pruebacalendar, name="calendar"),
 
