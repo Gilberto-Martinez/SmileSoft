@@ -19,4 +19,5 @@ FUNCIONALIDADES QUE FALTAN EN SMILESOFT
 15-(HECHO)Agregar mensaje de confirmación o cancelación a la mayoría de los CRUDs 
 
 16- A nivel Usuario -> Falta un items de Mis Tratamientos Pendientes
+17- En modificar cita el Asistente no deberia poder cambiar el motivo de la consulta, solo el odontologo deberia poder realizar esa acción
 OBS: Agregar estado de cuenta para paciente

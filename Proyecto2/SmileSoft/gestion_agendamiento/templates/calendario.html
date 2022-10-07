@@ -22,10 +22,19 @@
         <div class="card">
             <div class="card-body">
                 <center> 
+                    <br>
                     <strong  style="color:blue; font-size:16px;" >
-                        <h2 <i class="bi bi-hand-thumbs-up-fill"></i> ¡Gracias por la preferencia! </h2>                                       
+                        <h2 <i class="bi bi-hand-thumbs-up-fill"></i> ¡Gracias por la preferencia! <br>  </h2>                                       
                     </strong>
-                  
+                    <br>
+                    <strong  style="color:black; font-size:20px;" >
+                         La Odontología se pondrá en contacto con usted
+                                                             
+                    </strong>
+                    <br>
+                    <i> para la posterior confirmación de la cita</i>
+
+                 
                 </center>
               <br>
                <table  align="center" >
@@ -37,6 +46,7 @@
                             </a>
                               
                         </td>
+                        &nbsp;
                         {%if perms.gestion_agendamiento.view_cita%}
                             <td>
                                 <a href="/agendamiento/listado_citas" class="btn btn-success">

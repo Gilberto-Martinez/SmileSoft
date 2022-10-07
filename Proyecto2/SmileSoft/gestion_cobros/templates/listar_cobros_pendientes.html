@@ -1,0 +1,58 @@
+{%extends 'panel_control/base.html'%}
+
+{% block content %}
+	<div class="container">
+		<div class="card">
+			<div class="card-body">
+				<center>  <h2>	 <i class="bi-person-lines-fill">Listado de pacientes con cobros pendientes</i></h2> </center>
+				<br>
+				<br>
+				<br>
+				<table class="table table-striped table-hover">
+					<thead style="border: 1cm;">
+						<tr>
+							<th>Número</th>
+							<th>N° de Documento</th>
+							<th>Nombre y apellido</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if pacientes %}
+							{% for paciente in pacientes %}
+								<tr>
+									<td >{{forloop.counter}}</td>
+									<td>{{ paciente.numero_documento }}</td>
+									<td>{{ paciente.numero_documento.nombre }} {{paciente.numero_documento.apellido}}</td>
+									<td>
+										<a class="btn btn-success" href="/cobros/cobrar_tratamiento/{{paciente.id_paciente}}">
+											<i class="bi-eye"></i>
+											Ver detalle
+										</a>
+									</td>
+								</tr>
+							{% endfor %}
+						{% else %}
+							<h1>No hay registros de pacientes</h1>
+						{% endif %}
+
+						{% if messages %}
+							<ul class="messages">
+								{% for message in messages %}
+									<li>
+										{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+										{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+											<B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
+										{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+										{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+											{{ message }}
+									</li>
+								{% endfor %}
+								</ul>
+						{% endif %}
+					</tbody>
+				</table> 
+			</div>
+		</div>
+	</div>
+{% endblock%}

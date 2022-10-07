@@ -1,3 +1,5 @@
+from email.policy import default
+from random import choices
 from django.db import models
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Paciente
