@@ -20,4 +20,12 @@ FUNCIONALIDADES QUE FALTAN EN SMILESOFT
 
 16- A nivel Usuario -> Falta un items de Mis Tratamientos Pendientes
 17- En modificar cita el Asistente no deberia poder cambiar el motivo de la consulta, solo el odontologo deberia poder realizar esa acción
+
+18- INSUMO/INVENTARIO:
+	18.1- Agregar un atributo cantidad_unitaria que contengan las UNIDADES de los insumos
+	18.2- La columna cantidad_unitaria DEBE poder multiplicar cantidad_unitaria * unidades 
+	18.3- Descontarle a insumo a INSUMO-Tratamientos
+	18.4- Columna existencia que diga Disponible - FALTA
 OBS: Agregar estado de cuenta para paciente
+
+19- Falta Validar que el paciente sea mayor a 4años 

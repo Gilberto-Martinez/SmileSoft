@@ -10,7 +10,7 @@ from django.contrib.admin import widgets
 
 class CitaForm(forms.ModelForm):
     fecha = forms.DateField(
-        label='Fecha de consulta: ', widget=forms.NumberInput(attrs={'type': 'date'}))
+        label='Fecha de consulta:', widget=forms.NumberInput(attrs={'type': 'date', 'min': "2022-01-01" ,'max':"2023-01-01"}))
     
     # hora = forms.TimeField(label='Hora de cita: ',
     #                        help_text='<small> <b>Lunes a Viernes</b>  ! <br> 08:00hs a 12:00hs ; 13:30hs a 21:00hs </i></small>',
