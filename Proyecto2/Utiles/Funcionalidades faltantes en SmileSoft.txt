@@ -3,8 +3,8 @@ FUNCIONALIDADES QUE FALTAN EN SMILESOFT
 	1.1*En botón Editar: 
 		1.1.1-Al entrar en modificar usuario debe de aparecer los roles según tipo persona
 	1.2*En elegir, aun falta implementar
-2-En Especialidad se debe insertar aunque sea una especialidad más
-3-En agregar tratamiento, debe implementarse agregar insumo
+2-(HECHO) En Especialidad se debe insertar aunque sea una especialidad más
+3-(HECHO) En agregar tratamiento, debe implementarse agregar insumo
 4-En asignar tratamientos>tratamiento asignado, debe permitir imprimir una liquidación previa a la facturación
 5-(HECHO)En usuario_addCita al intentar un paciente agregar una cita a la misma hora, misma fecha y mismo especialista u otro especialista debe de mostrar el mensaje "Ya cuenta con una cita en esa fecha y en la hora seleccionada"
 6-(HECHO)En citas reservadas, si la fecha de agendamiento y hora de agendamiento es superior a la fecha y hora actual, la cita debe tener estado cancelado o no confirmado

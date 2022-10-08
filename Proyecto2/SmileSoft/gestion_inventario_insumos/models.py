@@ -35,7 +35,7 @@ class Insumo(models.Model):
     C = 'Caja/s'
     L = 'Litro/s'
     UNIDADES = ((P, 'Paquete/s'), (C, 'Caja/s'), (L, 'Litro/s'))
-    unidad = models.CharField(max_length=12, choices=UNIDADES, verbose_name='Unidad')
+    unidad = models.CharField(max_length=12, choices=UNIDADES, verbose_name='Unidad de medida')
     #id_inventario = models.ForeignKey(inventario)
 
         
