@@ -54,7 +54,7 @@ class UsuarioForm(forms.ModelForm):
                                                             # 'required': False,
                                                             'class': 'form-control',
                                                             'placeholder': 'Ingrese su usuario',
-                                                            'readonly':True
+                                                            # 'readonly':True
                                                         }
                                                     )
                             )
