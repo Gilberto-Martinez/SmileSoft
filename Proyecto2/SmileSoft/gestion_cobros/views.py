@@ -6,7 +6,7 @@ from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, Paciente
 
 def cobrar_tratamiento(request, id_paciente):
-    listado_tratamientos = PacienteTratamientoAsignado.objects.all()
+    listado_tratamientos = TratamientoConfirmado.objects.all()
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
@@ -14,10 +14,10 @@ def cobrar_tratamiento(request, id_paciente):
 
     tratamientos_asignados = []
     precio_total = 0
-    id_paciente_tratamiento = ''
+    id_tratamiento_confirmado = ''
     for tratamiento in listado_tratamientos:
         if str(tratamiento.get_paciente()) == str(id_paciente):
-            id_paciente_tratamiento = tratamiento.id_tratamiento_asig
+            id_tratamiento_confirmado = tratamiento.id_tratamiento_conf
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             precio_total = precio_total + nuevo_tratamieto.precio
@@ -33,7 +33,7 @@ def cobrar_tratamiento(request, id_paciente):
                                                         'tratamientos_asignados':tratamientos_asignados,
                                                         'persona':persona,
                                                         'precio_total':precio_total,
-                                                        'id_paciente_tratamiento':id_paciente_tratamiento,
+                                                        'id_tratamiento_confirmado':id_tratamiento_confirmado,
                                                         'menor_edad':menor_edad,
                                                         'id_paciente':id_paciente
                                                     }
@@ -183,6 +183,17 @@ def ver_detalle_cobro(request, id_cobro_contado):
                                                     }
                 )
 
+#----------------------------------------------#
+def eliminar_tratamiento_confirmado(request, id_tratamiento_confirmado):
+    """
+    Elimina de la tabla TratamientoConfirmado el registro correspondiente al tratamiento que
+    el paciente haya agendado, además cambia el estado de la Cita en 'Pendiente'
+    """
+    paciente_tratamiento = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_confirmado)
+    id_paciente = paciente_tratamiento.paciente.get_id()
+    paciente_tratamiento.delete()
+    return redirect('/cobros/cobrar_tratamiento/%s'%(id_paciente))
+
 #---------------------------- LISTADOS -----------------------------#
 
 def listar_cobros(request):
@@ -203,7 +214,7 @@ def listar_cobros(request):
 
 
 def listar_cobros_pendientes(request):
-    tratamientos_agendados = PacienteTratamientoAsignado.objects.filter(estado='Agendado')
+    tratamientos_agendados = TratamientoConfirmado.objects.filter(estado='Agendado')
     pacientes = []
 
     for tratamiento_agen in tratamientos_agendados:

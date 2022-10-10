@@ -6,6 +6,7 @@ urlpatterns = [
     path('registrar_cobro/<str:numero_documento>/', registrar_cobro, name="registrar_cobro"),
     path('listar_cobros/', listar_cobros, name="listar_cobros"),
     path('listar_cobros_pendientes/', listar_cobros_pendientes, name="listar_cobros_pendientes"),
+    path('eliminar_tratamiento_confirmado/<id_tratamiento_confirmado>', eliminar_tratamiento_confirmado, name="eliminar_tratamiento_confirmado"),
     # path('calendar/', pruebacalendar, name="calendar"),
     path('error_cobro/', ErrorCobro.as_view(), name="error_cobro"),
     path('mensaje_confirmacion_cobro/', ConfirmacionCobro.as_view(), name="mensaje_confirmacion_cobro"),
