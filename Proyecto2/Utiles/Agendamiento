@@ -12,7 +12,7 @@ Usuario. Asistente/Administrador/Cajero
 
 |-Nivel Usuario
 Restricciones
-1. No puede duplicar su cita
+1. No puede duplicar su cita / CORRECCIONES-> NO PUEDE REALIZAR MAS DE 1 CITA POR DIA
 2. No puede elegir los fines de semana 
 3. No puede elegir fechas pasadas
 4. No puede elegir una hora del dia que ya pasó

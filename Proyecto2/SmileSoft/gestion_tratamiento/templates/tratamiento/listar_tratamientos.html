@@ -58,20 +58,26 @@
                         <thead> 
                             <tr>
                                 <th>Nro Tratamiento</th>
-                                <th>Nombre </th>
-                                <th>Precio</th>  
+                                <th>Nombre </th>                               
                                 {%if perms.gestion_tratamiento.change_tratamiento%}  
-                                <th colspan="3">Acciones </th>
+                                <th> Descripción </th>
+                                {%endif%}
+                                <th>Precio</th> 
+                                {%if perms.gestion_tratamiento.change_tratamiento%}  
+                                    <th colspan="3">Acciones </th>
                                 {%endif%}
                             </tr>
                         </thead>
 
                         <tbody>
-                                {%for c in listado_tratamientos%}
+                                {%for c in tratamiento%}
                                 <tr>
                                     <td >{{forloop.counter}}</td>
                                     <td >{{c.nombre_tratamiento}}</td>
-                                    <td>{{c.precio}}</td> 
+                                    {%if perms.gestion_tratamiento.change_tratamiento%}  
+                                        <td> {{c.descripcion_tratamiento}}</td>
+                                    {%endif%}
+                                    <td>{{c.precio}} Gs.  </td>  
                                     {{busqueda}}
                                     <!--OPCIONES Modificar y Eliminar-->
                                     {%if perms.gestion_tratamiento.change_tratamiento%}  

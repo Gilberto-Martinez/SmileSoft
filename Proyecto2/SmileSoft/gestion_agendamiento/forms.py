@@ -23,7 +23,7 @@ class CitaForm(forms.ModelForm):
     class Meta:
         model= Cita
         fields= [
-                'tratamiento_solicitado',
+                'tratamiento_simple',
                 'fecha',
                 # 'hora',
                 'hora_atencion',
@@ -44,7 +44,7 @@ class CitaForm2(forms.ModelForm):
     class Meta:
         model= Cita
         fields= [
-                # 'tratamiento_solicitado',
+              #  'tratamiento_solicitado',
                 'fecha',
                 # 'hora',
                 'hora_atencion',

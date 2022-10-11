@@ -7,14 +7,15 @@ urlpatterns = [
     path("calendar/", Calendario.as_view(), name="calendario"),
     path('gracias/', calendario_vista, name="gracias"),
     path("calendario_usuario/", CalendarioUsuario.as_view(),name="calendario_usuario"),
+    path('calendario_mensaje/', calendario_mensaje, name="calendario_mensaje"),
+
     # path('calendario_usuario/', calendario_usuario, name="calendario_usuario"),
     # path('calendar/', pruebacalendar, name="calendar"),
 
     # <---A Nivel Sistema-->
     path('listado_citas/', listar_cita, name="listado_citas"),
-    # path("listado_citas/", listaReserva.as_view(),
-    #      name="listado_citas"),
     path('agregar_cita/<int:id_paciente>', agregar_cita, name="agregar_cita"),
+    
     path('agendar_cita/<int:id_paciente>/<int:codigo_tratamiento>', agendar_cita, name="agendar_cita"),
     path('agregar_cita_usuario/<int:id_paciente>/',addcita_cita_usuario, name="agregar_cita_usuario"),
     path('modificar_cita/<int:id_cita>', modificar_cita, name="modificar_cita"),
@@ -30,9 +31,6 @@ urlpatterns = [
     path('delete_cita/<int:id_cita>', deletecita, name='delete_cita'),
     path('horario_reservado/', horario_reservado, name='horario_reservado'),
     path('horario_duplicado/', horario_duplicado, name='horario_duplicado'),
-
-   
-    path('calendario_mensaje/', calendario_mensaje, name="calendario_mensaje"),
 
     # <--Horarios-->
     path('agregar_hora/', agregar_hora, name="agregar_hora"),

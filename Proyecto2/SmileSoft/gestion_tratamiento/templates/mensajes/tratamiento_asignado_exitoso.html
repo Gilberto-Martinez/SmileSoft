@@ -11,11 +11,38 @@
                 <center>
                     <h3>¡Operación exitosa!</h3>
                     <br>
-                    <a class="btn btn-primary" href ="/tratamiento/listar_paciente2/">
-                        <i class="bi bi-check2-square"></i>
-                        Aceptar
-                    </a>
                 </center>
+                  <div class="d-flex justify-content-center">
+                        <a class="btn btn-success" style="margin: 10px;" href ="/tratamiento/listar_paciente2/">
+                            <i class="bi bi-check2-square"></i>
+                            Aceptar
+                        </a>
+                         {% comment %} <a class="btn btn-primary" style="margin: 10px;" href ="/tratamiento/listar_tratamientos_asignados/{{paciente.id_paciente}}/">
+                                            <i class="bi bi-check2-square"></i>
+                                        Tratamiento asignado
+                                        </a>
+ {% endcomment %}
+
+                        {% comment %} {%if tratamientos_asignados%}
+                                    {%for tratamiento in tratamientos_asignados%}
+                                        <a class="btn btn-primary" style="margin: 10px;" href ="/tratamiento/listar_tratamientos_asignados/{{tratamiento.id_paciente}}/">
+                                            <i class="bi bi-check2-square"></i>
+                                        Tratamiento asignado
+                                        </a>
+                                    {% endfor %}
+                                  
+                        {%else%}
+                                    <center>
+                                        <h5>
+                                            <i class="bi bi-exclamation-triangle-fill"></i>
+                                            <i>El paciente no tiene tratamientos asignados</i> 
+                                            <i class="bi bi-exclamation-triangle-fill"></i>
+                                        </h5>
+                                    </center>
+                                {%endif%} {% endcomment %}
+                      
+            
+                    </div>
                 <br>
             <!-- </div> -->
         <!-- </div> -->

@@ -137,7 +137,8 @@ def agregar_cita(request, id_paciente):
                                     if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
                                             respuesta = "Reservado"
                                             # mensaje = "DUPLICADO"
-                                            messages.success(request, ('Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                            messages.success(request, (
+                                                    'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
                                             return render(request, 'horario_duplicado.html')
                             else:
                                 if nro_semana >=5: 
@@ -188,7 +189,6 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
         usuario=Usuario.objects.get(numero_documento=ci_persona)
         nro_telefonico = persona.telefono
         edad = persona.obtener_edad()
-        # tratamiento= cita.tratamiento_solicitado
 
 
         cita = Cita.objects.all()
@@ -391,7 +391,7 @@ def addcita_cita_usuario(request, id_paciente):
     return render(request, "agregar_cita_usuario.html", data)
 
 # <--Agregar cita a UN USUARIO--->|A nivel USUARIO
-#<--Cualquier paciente
+#<--Cualquier usuario
 def addcita_usuario(request, numero_documento):
     persona = Persona.objects.get(numero_documento=numero_documento)
     # cedula = persona.numero_documento
@@ -454,43 +454,46 @@ def addcita_usuario(request, numero_documento):
                 #""" 'Hora que recibe' """
                 hora_recibida = str(cita.hora_atencion)
                 ########################
-               
-                if str(fecha_meses) > dia_recibido:
-                    
-                    if dia_recibido > actual or hora_recibida > hora_actual:
-                        #        
-                        #''Dias de la semana 5 y 6 es Sabado y Domingo''
-                        if nro_semana <= 4:  
-                            print("-----------------------------Nivel Sistema----------------------")                 
-                            if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
-                                    #print("el numero de la semana  es", nro_semana)
-                                    respuesta = "Reservado"
-                                    return render(request, 'horario_reservado.html')
-                            else: 
-                                # Cuando se realiza la misma cita con hora y fecha igual 
-                                if paciente== c.paciente and cita.fecha==c.fecha:
-                                        respuesta = "Duplicado"
-                                        # mensaje = "DUPLICADO"
-                                        messages.success(request, ('La cita NO fue registrada'))
-                                        return render(request, 'cita_noReservada.html')   
+                if (paciente!= c.paciente and cita.fecha != c.fecha):
+                    if str(fecha_meses) > dia_recibido:
+                        
+                        if dia_recibido > actual or hora_recibida > hora_actual:
+                            #        
+                            #''Dias de la semana 5 y 6 es Sabado y Domingo''
+                            if nro_semana <= 4:  
+                                print("-----------------------------Nivel Sistema----------------------")                 
+                                if cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional==c.profesional:
+                                        #print("el numero de la semana  es", nro_semana)
+                                        respuesta = "YA EXISTE"
+                                        return render(request, 'horario_reservado.html')
+                                else: 
+                                    # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
+                                    if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha:
+                                            respuesta = "Reservado"
+                                            # mensaje = "DUPLICADO"
+                                            messages.success(request, (
+                                                    'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                            return render(request, 'horario_duplicado.html')
+                            else:
+                                if nro_semana >=5: 
+                                    #"Si es fin de semana emite el msj"
+                                    messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
+                                    return render(request, 'cerrado.html')   
                         else:
-                            if nro_semana >=5: 
-                                #"Si es fin de semana emite el msj"
-                                messages.success(request, "Por favor, elija dias entre Lunes a Viernes")
-                                return render(request, 'cerrado.html')   
+                            if dia_recibido < actual or hora_recibida < hora_actual:
+                                print("pasa por aqui primero||||||||||------------------")
+                                respuesta = "PASADO"
+                                messages.success(request, "Por favor verifique nuevamente")
+                                return render(request, 'fecha_pasada.html')
                     else:
-                        if dia_recibido < actual or hora_recibida < hora_actual:
-                            print("pasa por aqui primero||||||||||------------------")
-                            respuesta = "PASADO"
-                            messages.success(request, "Por favor verifique nuevamente")
-                            return render(request, 'fecha_pasada.html')
+                        if str(fecha_meses) < dia_recibido:
+                    #     # dia_recibido se toma la fecha que ingresa por lo tanto, aca el dia que recibe sera mayor que dentro de 6meses, y fecha_meses sera
+                    #     #menor a lo que recibe porque se cuenta desde la fecha actual y no desde la fecha que se ingresa
+                    #     # print("---imprime feha en seis meses", anhio)
+                            return render(request, 'atencion_fecha.html')  
                 else:
-                    if str(fecha_meses) < dia_recibido:
-                #     # dia_recibido se toma la fecha que ingresa por lo tanto, aca el dia que recibe sera mayor que dentro de 6meses, y fecha_meses sera
-                #     #menor a lo que recibe porque se cuenta desde la fecha actual y no desde la fecha que se ingresa
-                #     # print("---imprime feha en seis meses", anhio)
-                        return render(request, 'atencion_fecha.html')  
-            
+                    if  (paciente== c.paciente and cita.fecha == c.fecha):
+                        return render(request, 'cita_noReservada.html')     
                         
             if respuesta== "NO EXISTE" :
                 cita.paciente = paciente
@@ -616,7 +619,7 @@ def cambiarCita_usuario(request, id_cita):
             return render(request, "cita_sin_usuario.html")
 
 
-# <--Modificar cita-->|Cuando Tiene Usuario --> A nivel SISTEMA 
+# <--Modificar cita-->|A nivel SISTEMA (YA FUNCIONA EL ESTADO CONFIRMADO)
 def modificar_cita(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
@@ -628,12 +631,10 @@ def modificar_cita(request, id_cita):
         paciente = Paciente.objects.get(numero_documento=nro_documento)
         nombre = persona.nombre + ' ' + persona.apellido
         reservado=cita.estado
-        tratamiento_tipo= cita.tratamiento_simple or cita.tratamiento_solicitado
         data = {
             'form': CitaForm(instance=cita),
             'persona': persona,
             'estado':reservado,
-            'tratamiento_solicitado': tratamiento_tipo,
         }
 
         if request.method == "POST":
@@ -886,7 +887,7 @@ def listar_cita(request):
         nombre = persona.nombre + ' ' + persona.apellido
         celular = persona.telefono
         fecha_reservada= cita.fecha
-        tratamiento= cita.tratamiento_solicitado or cita.tratamiento_simple
+        tratamiento= cita.tratamiento_solicitado
         hora=cita.hora_atencion
         doctor=cita.profesional
         pk_cita = cita.id_cita
@@ -914,7 +915,52 @@ class CalendarioUsuario(LoginMixin, ListView):
     model = Cita
     template_name = 'calendario_usuario.html'
 
+# def calendario_usuario(request):
+#     from datetime import date, timedelta
+#     d = date(2022, 1, 1)
+#     # d += timedelta(days=6 - d.weekday()) # First Sunday
+   
+#     listado_cita = Cita.objects.all()
+#     cita_reservadas = []
+#     while d.year != 2023:
+#         for listado_cita in listado_cita:
+#             cita= Cita.objects.get(id_cita=listado_cita.id_cita)
+#             persona = Persona.objects.get(numero_documento=listado_cita.paciente)
+      
+#             cedula = persona.numero_documento
+#             nombre = persona.nombre + ' ' + persona.apellido
+#             celular = persona.telefono
+#             fecha_reservada= cita.fecha
+#             tratamiento= cita.tratamiento_solicitado
+#             hora=cita.hora_atencion
+#             doctor=cita.profesional
+#             pk_cita = cita.id_cita
+#             reservacion= cita.estado
+            
+#             cita_reservada= {
+#                             'nombre_paciente': nombre,
+#                             'paciente':cedula,
+#                             'celular':celular,
+#                             'fecha': fecha_reservada, 
+#                             'tratamiento_solicitado': tratamiento , 
+#                             'hora_atencion': hora,  
+#                             'profesional':doctor , 
+#                             'id_cita':pk_cita,      
+#                             'estado':reservacion ,
+#                             'start':d,
+#                             'end':d
+                            
+#             }
+#             cita_reservadas.append(cita_reservada)
+        
+       
+#         return render(request, "calendario_usuario.html", {'cita_reservadas': cita_reservadas, })
 
+
+    # def get_queryset(self):
+    #     queryset = self.model.objects.filter(
+    #         estado=True)
+    #     return queryset
 
 #<--Vista intermedia usado para restringir accesos-->
 def cita_vista(request, id_cita):
@@ -1023,7 +1069,7 @@ def horario_reservado(request):
 def horario_duplicado(request):
     return render(request, "horario_duplicado.html")
 
-############### A NIVEL SISTEMA ####################################
+###############
 def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     """
     Procedimiento que cambia el estado del tratamiento asignado al paciente (de la tabla 
