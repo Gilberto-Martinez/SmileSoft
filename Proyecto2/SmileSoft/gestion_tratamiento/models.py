@@ -30,6 +30,9 @@ class Tratamiento(models.Model):
 
     def get_codigo_tratamiento(self):
         return str(self.codigo_tratamiento)
+
+
+
 #TRATAMIENTO ASIGNADO
 class TratamientoInsumoAsignado(models.Model):
     id_insumo_asig = models.AutoField(primary_key=True)

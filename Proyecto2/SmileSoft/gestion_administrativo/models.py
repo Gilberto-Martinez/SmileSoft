@@ -328,11 +328,12 @@ class TratamientoConfirmado(models.Model):
         blank=False,
         null=False,
     )
-    A = 'Agendado' # Cuando el paciente pide una cita para el tratamiento en cuestión
+    P = 'Pendiente' # Cuando el paciente pide una cita para el tratamiento en cuestión 
+    A = 'Agendado' # Cuando el paciente confirma la cita para el tratamiento en cuestión
     C = 'Confirmado'# Una vez que el paciente paga por su tratamiento
     R = 'Realizado'# Al haberle realizado el tratamiento al paciente
     ESTADOS = ((R, 'Realizado'), (C, 'Confirmado'),(A, 'Agendado'))
-    estado = models.CharField(max_length=12, choices=ESTADOS, default='Agendado')
+    estado = models.CharField(max_length=12, choices=ESTADOS, default='Pendiente')
 
     class Meta:
         db_table = 'TratamientoConfirmado'

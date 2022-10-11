@@ -271,6 +271,8 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
 
                 cita.save()
                 agendar_tratamiento_asignado(id_paciente, codigo_tratamiento)
+                if cita.estado == True:
+                    pass
                 messages.success(request, ('✅Agregado correctamente!'))
                 print('aquiiiiiiiiiiiiii ENTRAAAAA',)
                 return redirect("/agendamiento/listado_citas/")
@@ -691,7 +693,7 @@ def modificar_cita(request, id_cita):
                     cita.save()
                     print("el estado que GUARDA ES", cita.estado)
                     if cita.estado == True:
-                        pass
+                        confirmar_cita_tratamiento(cita.paciente.id_paciente, cita.tratamiento_solicitado.codigo_tratamiento)
                     messages.success(request, (
                         '✅ Modificado correctamente!'))            
                     return redirect("/agendamiento/listado_citas/", respuesta)                
@@ -1061,7 +1063,7 @@ def horario_duplicado(request):
 def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     """
     Procedimiento que registra el tratamiento que el paciente solicito agendar
-    (copia el registro de PacienteTratamientoAgendado a TratamientoConfirmado, en esta con estado='Agendado')
+    (copia el registro de PacienteTratamientoAgendado a TratamientoConfirmado, en esta con estado='Pendiente')
     """
     paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
     tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
@@ -1069,10 +1071,23 @@ def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     tratamiento_agendado = TratamientoConfirmado.objects.create(
                                                                 paciente=paciente_obt,
                                                                 tratamiento=tratamiento_obt,
-                                                                estado='Agendado'
+                                                                estado='Pendiente'
     )
     paciente_tratamiento = PacienteTratamientoAsignado.objects.filter(paciente=paciente_obt, tratamiento=tratamiento_obt).delete()
 
+def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento):
+    """
+    Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Agendado'
+    una vez que esl paciente confirma la cita, pero aun no paga por ella
+    """
+    paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
+    tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+
+    tratamiento_agendado = TratamientoConfirmado.objects.filter(
+                                                                paciente=paciente_obt,
+                                                                tratamiento=tratamiento_obt,
+    )
+    tratamiento_agendado.update(estado='Agendado')
 
 def eliminar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     """
