@@ -17,10 +17,12 @@
                            <i class="bi bi-backspace"></i>
                           Atrás <br>
                         </a>
-                         <a href="/agendamiento/pacientes_cita/" class="btn btn-success">
-                           
-                         📝 Listado de pacientes <br>
-                        </a>
+                        {%if perms.gestion_agendamiento.view_cita%}
+                            <a href="/agendamiento/pacientes_cita/" class="btn btn-success">
+                            
+                            📝 Listado de pacientes <br>
+                            </a>
+                        {%endif%}
                       
                      
       

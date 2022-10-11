@@ -55,10 +55,10 @@ class Cita(models.Model):
     tratamiento_solicitado=models.ForeignKey(
                                                 Tratamiento,
                                                 max_length=45,
-                                                null=False,
+                                                null=   True,
                                                 blank= False,
                                                 on_delete=models.PROTECT,
-                                                verbose_name='Motivo de consulta'
+                                                verbose_name='Tratamientos'
     )
     celular = models.ForeignKey(Persona,null= True, max_length=40, on_delete=models.PROTECT,)
    
@@ -76,6 +76,23 @@ class Cita(models.Model):
                                                 blank= False,
                                                 on_delete=models.PROTECT,
                                                 verbose_name='Profesional a elegir')
+    
+    CD = 'CONSULTA DE DIAGNOSTICO'
+    CCH ='CHEQUEO DE RUTINA'
+    CS = 'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'
+    O = 'ORTODONCIA'
+   
+    SIMPLES = [
+            (CD,'CONSULTA DE DIAGNOSTICO'),
+            (CCH,'CHEQUEO DE RUTINA'),
+            (CS,'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'),
+            (O,'ORTODONCIA'),
+            
+    ]
+    tratamiento_simple = models.CharField(max_length=300,choices=SIMPLES , verbose_name='Motivo de la Consulta',null= True,)
+    
+    
+    
     class Meta(object):
         verbose_name_plural = 'Cita'
         ordering = ['nombre_paciente']
