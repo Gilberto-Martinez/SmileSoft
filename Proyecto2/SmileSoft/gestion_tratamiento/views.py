@@ -132,7 +132,7 @@ def listar_tratamiento_asignado(request, id_paciente):
     id_paciente_tratamiento = ''
 
     for tratamiento_asig in listado_tratamientos_asig:
-        if str(tratamiento_asig.get_paciente()) == str(id_paciente) and tratamiento_asig.estado == 'Asignado':
+        if str(tratamiento_asig.get_paciente()) == str(id_paciente):
             id_paciente_tratamiento = tratamiento_asig.id_tratamiento_asig
             cod_tratamiento = tratamiento_asig.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
@@ -180,6 +180,7 @@ def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
     id_paciente = paciente_tratamiento.paciente.get_id()
     paciente_tratamiento.delete()
     return redirect('/tratamiento/listar_tratamientos_asignados/%s'%(id_paciente))
+
 
 
 # -----------------------------------------------------------------------------------------------

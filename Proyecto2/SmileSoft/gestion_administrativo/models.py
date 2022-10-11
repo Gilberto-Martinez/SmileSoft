@@ -269,6 +269,10 @@ class Paciente(models.Model):
 
 #TRATAMIENTO ASIGNADO
 class PacienteTratamientoAsignado(models.Model):
+    """"
+    Clase que contiene los tratamientos que son asignados al paciente de parte del Odontologo
+    de manera que el paciente pueda agendar citas para estos tratamientos
+    """
     id_tratamiento_asig = models.AutoField(primary_key=True)
     paciente = models.ForeignKey(
         Paciente, 
@@ -284,12 +288,12 @@ class PacienteTratamientoAsignado(models.Model):
         null=True,
         verbose_name='Tratamientos ConsulDent'
     )
-    AS = 'Asignado'
-    AG = 'Agendado'
-    ESTADOS = ( (AS, 'Asignado'),
-                (AG, 'Agendado')
-                )
-    estado = models.CharField(max_length=10, choices=ESTADOS, default='Agendado')
+    # AS = 'Asignado'
+    # AG = 'Agendado'
+    # ESTADOS = ( (AS, 'Asignado'),
+    #             (AG, 'Agendado')
+    #             )
+    # estado = models.CharField(max_length=10, choices=ESTADOS, default='Asignado')
 
     class Meta:
         db_table = 'PacienteTratamientoAsignado'
@@ -324,10 +328,12 @@ class TratamientoConfirmado(models.Model):
         blank=False,
         null=False,
     )
-    R = 'Realizado'# Al haberle realizado el tratamiento al paciente
+    P = 'Pendiente' # Cuando el paciente pide una cita para el tratamiento en cuestión 
+    A = 'Agendado' # Cuando el paciente confirma la cita para el tratamiento en cuestión
     C = 'Confirmado'# Una vez que el paciente paga por su tratamiento
-    ESTADOS = ((R, 'Realizado'), (C, 'Confirmado'))
-    estado = models.CharField(max_length=12, choices=ESTADOS, default='Confirmado')
+    R = 'Realizado'# Al haberle realizado el tratamiento al paciente
+    ESTADOS = ((R, 'Realizado'), (C, 'Confirmado'),(A, 'Agendado'))
+    estado = models.CharField(max_length=12, choices=ESTADOS, default='Pendiente')
 
     class Meta:
         db_table = 'TratamientoConfirmado'
