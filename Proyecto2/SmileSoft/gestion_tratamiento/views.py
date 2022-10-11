@@ -61,19 +61,40 @@ class PacienteList2(ListView):
 
 # -----------------------------------------------------------------------------------------------
 # ***Vista de listar Tratamiento
-
-
-# @permission_required('gestion_tratamiento.listar_tratamiento', login_url="/panel_control/error/",)
 def listar_tratamiento(request):
-    busqueda=request.POST.get("q")
+    busqueda = request.POST.get("q")
     listado_tratamientos = Tratamiento.objects.all()
 
     if busqueda:
-        listado_tratamientos =Tratamiento.objects.filter(Q(nombre_tratamiento__icontains= busqueda))
-        print("AQUI ESTA ENTRANDO Y buscando", {'listado_tratamientos':listado_tratamientos})
-    else:                                                              
+        listado_tratamientos = Tratamiento.objects.filter(
+            Q(nombre_tratamiento__icontains=busqueda))
+        print("AQUI ESTA ENTRANDO Y buscando", {
+              'listado_tratamientos': listado_tratamientos})
+    else:
         print("Buscado AQUI",)
-    return render (request,"tratamiento/listar_tratamientos.html",{'listado_tratamientos':listado_tratamientos})
+        
+    tratamiento=[]
+    for listado_tratamientos in listado_tratamientos:
+        lista = Tratamiento.objects.get(codigo_tratamiento=listado_tratamientos.codigo_tratamiento)
+        
+        nombre=lista.nombre_tratamiento
+        # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
+        detalle= lista.descripcion_tratamiento
+        monto= '{:,}'.format(lista.precio).replace(',','.')
+       
+        lista_tratamientos={ 
+                            'nombre_tratamiento': nombre,
+                            'descripcion_tratamiento': detalle,
+                            'precio':monto,
+            
+                           }
+        
+        tratamiento.append(lista_tratamientos)
+        
+        
+        
+        
+    return render(request, "tratamiento/listar_tratamientos.html", {'tratamiento': tratamiento})
 
 
 def asignar_tratamientos(request, id_paciente):
