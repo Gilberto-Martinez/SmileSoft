@@ -150,7 +150,7 @@ def listar_tratamiento_asignado(request, id_paciente):
                     )
 
 def listar_tratamientos_pendientes(request):
-    tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Confirmado")
+    tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
     tratamientos_pendientes = []
 
     for tratamiento_conf in tratamientos_conf:

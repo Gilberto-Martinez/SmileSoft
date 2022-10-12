@@ -1018,7 +1018,7 @@ def horario_duplicado(request):
 def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     """
     Procedimiento que registra el tratamiento que el paciente solicito agendar
-    (copia el registro de PacienteTratamientoAgendado a TratamientoConfirmado, en esta con estado='Pendiente')
+    (copia el registro de PacienteTratamientoAgendado a TratamientoConfirmado, en esta con estado='Agendado')
     """
     paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
     tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
@@ -1026,13 +1026,13 @@ def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     tratamiento_agendado = TratamientoConfirmado.objects.create(
                                                                 paciente=paciente_obt,
                                                                 tratamiento=tratamiento_obt,
-                                                                estado='Pendiente'
+                                                                estado='Agendado'
     )
     paciente_tratamiento = PacienteTratamientoAsignado.objects.filter(paciente=paciente_obt, tratamiento=tratamiento_obt).delete()
 
 def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento):
     """
-    Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Agendado'
+    Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Confirmado'
     una vez que esl paciente confirma la cita, pero aun no paga por ella
     """
     paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
@@ -1042,7 +1042,7 @@ def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento):
                                                                 paciente=paciente_obt,
                                                                 tratamiento=tratamiento_obt,
     )
-    tratamiento_agendado.update(estado='Agendado')
+    tratamiento_agendado.update(estado='Confirmado')
 
 def eliminar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     """
