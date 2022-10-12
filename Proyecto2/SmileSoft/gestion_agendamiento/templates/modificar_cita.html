@@ -12,8 +12,6 @@
 {%endblock%}
 <!--Cuadro de DIALOGO DE ELIMINAR-->
 
-
-
 {%block content%}
   
 
@@ -22,15 +20,10 @@
         <div class="card">
             <div class="card-body">
                 <center> 
-                        
                     <h2 <i class="bi bi-calendar"></i> Modificar | Cita</i> </h2><br>
                     <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}}</i> </h5></center>
                       <center <b>Fecha de nacimiento:</b> <i>{{persona.fecha_nacimiento}} </i> </center>
-                    
-
                 </center>
-              
-               
 
                 <form method="POST" id="group_form" novalidate="">
                     {%csrf_token%}
@@ -42,8 +35,8 @@
                     <div style="margin: 20px;" >
                         <br>
                         <div class="form-group">
-                            <label for="c.tratamiento_solicitado" or for="c.tratamiento_simple"> Motivo de Consulta</label>
-                                {{form.tratamiento_solicitado}} or {{form.tratamiento_simple}}<br>
+                            <label for="tratamiento_solicitado"> Motivo de Consulta</label>
+                                {{form.tratamiento_solicitado}}<br>
                         </div>
                         <br>
 
