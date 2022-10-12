@@ -30,7 +30,7 @@
                     <table class="table table-striped table-hover">
                         <thead> 
                             <tr>
-                                {%if tratamientos_asignados%}
+                                {%if tratamientos_agendados%}
                                     <th>Nro Tratamiento</th>
                                     <th>Nombre </th>
                                     <th>Precio </th>
@@ -40,14 +40,14 @@
                         </thead>
 
                         <tbody>
-                                {%if tratamientos_asignados%}
-                                {%for tratamiento in tratamientos_asignados%}
+                                {%if tratamientos_agendados%}
+                                {%for t in tratamientos_agendados%}
                                 <tr>
                                     <td >{{forloop.counter}}</td>
-                                    <td >{{tratamiento.nombre_tratamiento}}</td>
-                                    <td >{{tratamiento.precio}}</td>
+                                    <td >{{t.tratamiento.nombre_tratamiento}}</td>
+                                    <td >{{t.tratamiento.precio}}</td>
                                     <td >
-                                        <a href="/cobros/eliminar_tratamiento_confirmado/{{id_tratamiento_confirmado}}" type="submit" class="btn btn-danger">
+                                        <a href="/cobros/eliminar_tratamiento_confirmado/{{t.id_tratamiento_confirmado}}" type="submit" class="btn btn-danger btnEliminacion">
                                             <i class="bi bi-trash3"></i>
                                             Eliminar
                                         </a>
@@ -71,7 +71,7 @@
                                             <br>
                                             <br>
                                             <br>
-                                            <a href="/tratamiento/listar_paciente2/" type="submit" class="btn btn-danger">
+                                            <a href="/cobros/listar_cobros_pendientes/" type="submit" class="btn btn-danger">
                                                 <i class="bi bi-check2-square"></i>
                                                 OK
                                             </a>
@@ -99,7 +99,7 @@
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-center">
-                        {%if tratamientos_asignados%}
+                        {%if tratamientos_agendados%}
                         <a type="submit" href="#" class="btn btn-secondary btn-block txt-white">
                             <i class="bi bi-printer"></i>
                             Detalle previo
@@ -110,7 +110,7 @@
                             Cobrar
                         </a>
                         &nbsp;
-                        <a onclick="history.back()" class="btn btn-danger"  >
+                        <a href="/cobros/listar_cobros_pendientes/" class="btn btn-danger"  >
                             <i class="bi-x-circle"></i> 
                             Cancelar
                         </a>

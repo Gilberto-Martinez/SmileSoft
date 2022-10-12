@@ -23,11 +23,10 @@ class CitaForm(forms.ModelForm):
     class Meta:
         model= Cita
         fields= [
-                'tratamiento_simple',
+                'tratamiento_solicitado',
                 'fecha',
                 # 'hora',
                 'hora_atencion',
-                
                 'profesional',
                 'estado',
         ]
