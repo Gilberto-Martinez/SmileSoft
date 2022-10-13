@@ -95,10 +95,12 @@
                                         <th>Fecha </th>
                                         <th>Hora</th>
                                         {% comment %} <th>Hora de Atencion</th> {% endcomment %}
-                                        <th>Tratamiento Solicitado</th>
+                                        {% comment %} <th>Tratamiento Solicitado</th> {% endcomment %}
                                         <th>Profesional</th>
                                         <th> Estado </th>
-                                        <th colspan="2">Acciones </th> 
+                                        <th colspan="3"> Acciones </th> 
+                                      
+                                        
                                     </tr>
                                 </thead>
 
@@ -115,7 +117,7 @@
                                             <td >{{c.fecha}}</td>
                                             {% comment %} <td >{{c.hora}} hs.</td> {% endcomment %}
                                             <td >{{c.hora_atencion}} hs.</td>
-                                            <td >{{c.tratamiento_solicitado}}</td>
+                                            {% comment %} <td >{{c.tratamiento_solicitado}}</td> {% endcomment %}
                                             <td >{{c.profesional}}</td>
                                             {%if c.estado%}
                                              <td>Confirmado</td>
@@ -126,6 +128,13 @@
                                             {{busqueda}}
                                             <!--OPCIONES Modificar y Eliminar-->
                                                 <td>
+                                                    {%if perms.gestion_agendamiento.change_cita%}
+                                                    <a href="/tratamiento/listar_tratamientos_agendados/45" class="btn btn-info">
+                                                        <i class="bi bi-clipboard2-check" style="font-size:15px"> Tto. Asignado</i>
+                                                    </a>
+                                                    {%endif%}
+                                              </td>
+                                              <td>
                                                     {%if perms.gestion_agendamiento.change_cita%}
                                                     <a href="/agendamiento/modificar_cita/{{c.id_cita}}" class="btn btn-primary">
                                                         <i class="bi-pencil-square"></i>
