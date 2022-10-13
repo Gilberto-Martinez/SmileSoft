@@ -7,7 +7,7 @@ class InsumoForm(forms.ModelForm):
     nombre_insumo = forms.CharField(label='Nombre del Insumo:', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del insumo'}))
     descripcion_insumo = forms.CharField(label='Descripción del Insumo:', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del insumo'}))
     precio = forms.IntegerField(
-                                    label='Costo:', 
+                                    label='Costo Unitario:', 
                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del insumo:'}))
     fecha_caducidad = forms.DateField(label='Fecha de caducidad', widget=forms.DateInput(attrs={'type': 'date'}))
     cantidad_insumo = forms.IntegerField(
@@ -43,7 +43,7 @@ class InsumoUpdateForm(forms.ModelForm):
     nombre_insumo = forms.CharField(label='Nombre del Insumo:', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del insumo'}))
     descripcion_insumo = forms.CharField(label='Descripción del Insumo:', widget = forms.Textarea (attrs = {'class': 'form-control', 'placeholder': 'Breve descripción del insumo'}))
     precio = forms.IntegerField(
-                                                   label='Costo:', 
+                                                   label='Costo Unitario:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del insumo'}))
     fecha_caducidad = forms.DateField(label='Fecha de caducidad', widget=forms.NumberInput(attrs={'type': 'date'}))
     cantidad_insumo = forms.IntegerField(
