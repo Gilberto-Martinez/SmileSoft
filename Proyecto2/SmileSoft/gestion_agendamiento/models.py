@@ -82,13 +82,13 @@ class Cita(models.Model):
     CD = 'CONSULTA DE DIAGNOSTICO'
     CCH ='CHEQUEO DE RUTINA'
     CS = 'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'
-    O = 'ORTODONCIA'
+    O = 'ORTODONCIA | CHEQUEO DE BRACKETS'
    
     SIMPLES = [
             (CD,'CONSULTA DE DIAGNOSTICO'),
             (CCH,'CHEQUEO DE RUTINA'),
             (CS,'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'),
-            (O,'ORTODONCIA'),
+            (O,'ORTODONCIA | CHEQUEO DE BRACKETS '),
             
     ]
     tratamiento_simple = models.CharField(max_length=300,choices=SIMPLES , verbose_name='Motivo de la Consulta',null= True,)

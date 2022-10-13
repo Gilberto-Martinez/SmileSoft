@@ -32,7 +32,7 @@ class TratamientoForm(forms.ModelForm):
                                         label='Nombre del tratamiento',
                                         widget = forms.TextInput (attrs = {
                                                                             'class': 'form-control', 
-                                                                            'placeholder': 'Ingrese el nombre del trataniento'
+                                                                            'placeholder': 'Ingrese el nombre del tratamiento'
                                                                         }
                                                                 )
                                         )
