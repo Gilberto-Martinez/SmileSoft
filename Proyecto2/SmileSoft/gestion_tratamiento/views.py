@@ -73,28 +73,28 @@ def listar_tratamiento(request):
     else:
         print("Buscado AQUI",)
         
-    tratamiento=[]
-    for listado_tratamientos in listado_tratamientos:
-        lista = Tratamiento.objects.get(codigo_tratamiento=listado_tratamientos.codigo_tratamiento)
-        
-        nombre=lista.nombre_tratamiento
+    tratamientos=[]
+    for listado in listado_tratamientos:
+        tratamiento = Tratamiento.objects.get(codigo_tratamiento=listado.codigo_tratamiento)
+        codigo_tratamiento = tratamiento.codigo_tratamiento
+        nombre=tratamiento.nombre_tratamiento
         # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
-        detalle= lista.descripcion_tratamiento
-        monto= '{:,}'.format(lista.precio).replace(',','.')
+        detalle= tratamiento.descripcion_tratamiento
+        monto= '{:,}'.format(tratamiento.precio).replace(',','.')
        
         lista_tratamientos={ 
+                            'codigo_tratamiento' : codigo_tratamiento,
                             'nombre_tratamiento': nombre,
                             'descripcion_tratamiento': detalle,
                             'precio':monto,
-            
                            }
         
-        tratamiento.append(lista_tratamientos)
+        tratamientos.append(lista_tratamientos)
         
         
         
         
-    return render(request, "tratamiento/listar_tratamientos.html", {'tratamiento': tratamiento})
+    return render(request, "tratamiento/listar_tratamientos.html", {'tratamientos': tratamientos})
 
 
 def asignar_tratamientos(request, id_paciente):
