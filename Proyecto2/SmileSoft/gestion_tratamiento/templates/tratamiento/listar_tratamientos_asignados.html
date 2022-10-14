@@ -52,11 +52,11 @@
                                             <td >{{tratamiento.nombre_tratamiento}}</td>
                                             <td >{{tratamiento.precio}}</td>
                                             <td>
-                                                {%if perms.gestion_tratamiento.delete_tratamiento%}
                                                     <a href="/agendamiento/agendar_cita/{{paciente.id_paciente}}/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary">
                                                         <i class="bi bi-calendar2-week"></i> 
                                                         Agendar
                                                     </a>
+                                                {%if perms.gestion_historial_clinico.add_historialclinico%}
                                                     <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
                                                         <i class="bi-trash" ></i> 
                                                         Eliminar
@@ -103,7 +103,7 @@
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-center">
-                        {%if tratamientos_asignados%}
+                       {%if perms.gestion_historial_clinico.add_historialclinico%}
                         <a type="submit" href="/tratamiento/asignar_tratamientos/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
                             <i class="bi bi-plus-circle"></i>
                             Agregar

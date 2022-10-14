@@ -282,6 +282,7 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
 
 
 # <--Agregar cita de un MENOR DE EDAD-->|A nivel SISTEMA
+@permission_required('gestion_agendamiento.addcita_cita_usuario', login_url="/panel_control/error/",)
 def addcita_cita_usuario(request, id_paciente):
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
@@ -383,6 +384,7 @@ def addcita_cita_usuario(request, id_paciente):
 
 # <--Agregar cita a UN USUARIO--->|A nivel USUARIO
 #<--Cualquier paciente
+@permission_required('gestion_agendamiento.addcita_usuario', login_url="/panel_control/error/",)
 def addcita_usuario(request, numero_documento):
     persona = Persona.objects.get(numero_documento=numero_documento)
     # cedula = persona.numero_documento

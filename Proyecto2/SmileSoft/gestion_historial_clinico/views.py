@@ -4,7 +4,10 @@ from django.shortcuts import render
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_historial_clinico.models import *
 from gestion_administrativo.models import Paciente
+from django.contrib.auth.decorators import login_required, permission_required
 
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
 
 def guardar_historial_clinico(id_tratamiento_conf):
     tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
@@ -40,6 +43,7 @@ def listar_historial_clinico(request, id_paciente):
                                                             }
             )
 
+@permission_required('gestion_historial_clinico.ver_mi_historial_clinico', login_url="/panel_control/error/")
 def ver_mi_historial_clinico(request, numero_documento):
     paciente = Paciente.objects.get(numero_documento=numero_documento)
     historial = HistorialClinico.objects.filter(paciente=paciente)
