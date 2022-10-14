@@ -145,7 +145,7 @@
                                                   {%endif%}  
                                                 </ul>
                                             </li>
-                                          {%endif%}
+                                        {%endif%}
                                           <!--Opcion 3 Usuario-->
                                         {%if perms.webapp.view_usuario %} 
                                           <li class="nav-item dropdown">
@@ -199,7 +199,7 @@
                                                 <li><a class="dropdown-item" href="/administrativo/listar_especialista_salud/"> • Especialista de Salud</a></li>
                                                 {%endif%}
                                                 <!--Opcion 4.4-->
-                                                {%if perms.gestion_administrativo.view_proveedor%}
+                                                {%if perms.gestion_administrativo.add_proveedor%}
                                                 <li><a class="dropdown-item" href="/administrativo/listar_proveedor/"> • Proveedores</a></li>
                                                 {%endif%}
                                                 <!--Opcion 4.5-->
@@ -235,20 +235,23 @@
                                                           <div class="dropdown-divider"></div>  -->
                                                     
                                                 <!--Opcion 5.3 -->
-                                                  {%if perms.gestion_adminstrativo.add_pacientetratamientoasignado%}
+                                                 {%if perms.gestion_historial_clinico.add_historialclinico%}
                                                     <div class="dropdown-divider"></div>
                                                     <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                       Asignación de Tratamientos a Pacientes 
                                                     </strong>
+                                                  {%endif%}
+                                                  {%if perms.gestion_tratamiento.add_tratamiento%}
                                                     <li>
                                                       <a class="dropdown-item" href="/tratamiento/listar_paciente2">• Seleccionar Paciente</a>
                                                     </li> 
                                                   {%endif%}
                                                   <li>
-                                                  {%if perms.gestion_tratamiento.add_tratamiento%}
+                                                  <!--FALTA*******************EL PERMISO DE ESTE ITEM DEBE SER INTERMEDIO -->
+                                                  {% comment %} {%if perms.gestion_tratamiento.view_tratamientopendiente%} {% endcomment %}
                                                     <a class="dropdown-item" href="/tratamiento/listar_tratamientos_pendientes/">• Tratamientos pendientes</a>
                                                   </li>
-                                                  {%endif%}
+                                                  {% comment %} {%endif%} {% endcomment %}
                                                 </ul>
                                               </li>
                                               {% endif %}
@@ -319,63 +322,67 @@
                                                   <!--Opcion 7.3 -->
                                                   
                                                     <strong class="dropdown-header"  style="color:blue; font-size:16px;" > Tratamientos Realizados</li></strong>
-                                                      {%if perms.gestion_administrativo.view_persona%}
-                                                      <li><a class="dropdown-item" href="/historial_clinico/listar_pacientes_historial/">• Seleccionar un paciente</a></li>
+                                                      {%if perms.gestion_historial_clinico.add_historialclinico%}
+                                                      <li><a class="dropdown-item" href="/historial_clinico/listar_pacientes_historial/">• Listado de Historiales Clínicos</a></li>
                                                       {%endif%}
+                                                      {%if perms.gestion_historial_clinico.view_historialclinico%}
                                                       <li><a class="dropdown-item" href="/historial_clinico/ver_mi_historial_clinico/{{user.numero_documento}}">• Mi Historial clínico</a></li> 
-                                                  {% comment %} <li><hr class="dropdown-divider"></li>
+                                                      {%endif%}
+                                                      {% comment %} <li><hr class="dropdown-divider"></li>
                                                   <li><a class="dropdown-item" href="#">• Asignar un Tratamiento</a></li> {% endcomment %}
                                                 </ul>
                                               </li>
                                                    
                                               <!--Opcion 8-->
+                                              {%if perms.permiso.add_permission%}
                                                  <li class="nav-item dropdown">
                                                     <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
                                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                       Facturación
                                                     </a>
                                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 8.1 -->
-                                                  <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                        Emitir factura
-                                                              </strong>
-                                                   <li><a class="dropdown-item" href="#"> 
-                                                        <font color="black">• Factura</font></a></li>
-                                                   <!--Opcion 8.2 -->
-                                                 
-                                                    <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                      Pagos
-                                                    </strong>
-                                                        <!--Opcion 10.1 -->
+                                                      <!--Opcion 8.1 -->
+                                                      <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                            Emitir factura
+                                                                  </strong>
                                                       <li><a class="dropdown-item" href="#"> 
-                                                        <font color="black">  • Pago a Proveedores </font></a>
-                                                      </li>
-
-                                               
-                                            </li>
-                                                     
-                                                  </ul>
-                                            </li>
+                                                            <font color="black">• Factura</font></a></li>
+                                                            <!--Opcion 8.2 -->
+                                                    
+                                                            <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                              Pagos
+                                                            </strong>
+                                                                <!--Opcion 10.1 -->
+                                                              <li><a class="dropdown-item" href="#"> 
+                                                                <font color="black">  • Pago a Proveedores </font></a>
+                                                              </li>
+                                                        </li>
+                                                    </ul>
+                                                  </li>
+                                              {%endif%}
+                                                 
                                           
 
                                             <!--Opcion 9-->
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Cobros</a>
-                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 9.1 -->
-                                                  <li><a class="dropdown-item" href="#"> 
-                                                    <font color="black">  • Servicios brindados a <br>Cuota | Contado</font></a>
-                                                  </li>
-                                                  <li><a class="dropdown-item" href="/cobros/listar_cobros/"> 
-                                                    <font color="black">  • Cobros registrados</font></a>
-                                                  </li>
-                                                  <li><a class="dropdown-item" href="/cobros/listar_cobros_pendientes/"> 
-                                                    <font color="black">  • Cobros pendientes</font></a>
-                                                  </li>
-                                                </ul>
-                                            </li>
+                                            {%if perms.gestion_tratamiento.add_tratamiento%}
+                                              <li class="nav-item dropdown">
+                                                  <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
+                                                  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                  Cobros</a>
+                                                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                    <!--Opcion 9.1 -->
+                                                    <li><a class="dropdown-item" href="#"> 
+                                                      <font color="black">  • Servicios brindados a <br>Cuota | Contado</font></a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="/cobros/listar_cobros/"> 
+                                                      <font color="black">  • Cobros registrados</font></a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="/cobros/listar_cobros_pendientes/"> 
+                                                      <font color="black">  • Cobros pendientes</font></a>
+                                                    </li>
+                                                  </ul>
+                                              </li>
+                                            {%endif%}
                                             <!--Opcion 10-->
 
                                            
@@ -390,12 +397,13 @@
                                                        Registro de Insumos
                                                      </strong>
                                                  <!--Opcion 11.1 -->
-                                                   {%if perms.gestion_inventario_insumos.add_tratamiento%}
+                                                   {%if perms.gestion_inventario_insumos.add_insumo%}
                                                      <li><a class="dropdown-item" href="/insumo/agregar_insumo/">• Agregar Insumos</li></a>
-                                                   {%endif%}
+                                                   
                                                  <!--Opcion 11.2 -->
                                                  
                                                      <li><a class="dropdown-item" href="/insumo/listar_insumo/">• Lista de Insumos</li></a>
+                                                    {%endif%}
                                                      <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
                                                          <div class="dropdown-divider"></div>  -->
                                                </ul>

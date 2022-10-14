@@ -8,7 +8,7 @@
 
 {%block content%}
 
-{%if perms.gestion_tratamiento.view_tratamiento%}
+{% comment %} {%if perms.gestion_tratamiento.view_tratamientopendiente%} {% endcomment %}
     <div class="container">
         <div class="card">
             <div class="card-body">
@@ -95,6 +95,6 @@
             </div>
         </div>
     </div>
-{%endif%}
+{% comment %} {%endif%} {% endcomment %}
 
 {%endblock%}

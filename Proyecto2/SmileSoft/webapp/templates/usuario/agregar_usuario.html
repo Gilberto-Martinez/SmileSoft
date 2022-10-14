@@ -28,9 +28,11 @@
                                   ✅ Usuario registrado exitosamente
                             </div>
                             {%endif%}
-                            
-                            {% comment %} {{form.as_p}}  {% endcomment %}
-                          <div style="margin: 20px;" >
+                            <b>
+                            {{form.as_p}}
+                            </b> 
+                           <!--COMENTE ESTE BLOQUE PERSONALIZADO DE USUARIO . Porque, si es con el form.as_p SI HAY ERRORES MUESTRA QUE ERROR ES-->
+                          {% comment %} <div style="margin: 20px;" >
                             <table>
                               <b>
                                 <div class="form-group">
@@ -72,7 +74,7 @@
                                 </div>
                               </b>
                             </table>
-                          </div>
+                          </div> {% endcomment %}
 
                             <br>
                           <div class="d-flex justify-content-center">  
