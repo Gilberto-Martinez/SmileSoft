@@ -52,13 +52,15 @@ class Cita(models.Model):
                                       verbose_name='Nombre del Paciente',null=True)
     apellido_paciente = models.CharField(max_length=40,
                                       verbose_name='Apellido del Paciente',null=True)
+    # LIMIT = obtener_tratamientos_simples()
     tratamiento_solicitado=models.ForeignKey(
                                                 Tratamiento,
                                                 max_length=45,
-                                                null=False,
+                                                null=   True,
                                                 blank= False,
                                                 on_delete=models.PROTECT,
-                                                verbose_name='Motivo de consulta'
+                                                verbose_name='Motivo de consulta',
+                                                # limit_choices_to=LIMIT
     )
     celular = models.ForeignKey(Persona,null= True, max_length=40, on_delete=models.PROTECT,)
    
@@ -76,10 +78,31 @@ class Cita(models.Model):
                                                 blank= False,
                                                 on_delete=models.PROTECT,
                                                 verbose_name='Profesional a elegir')
+    
+    CD = 'CONSULTA DE DIAGNOSTICO'
+    CCH ='CHEQUEO DE RUTINA'
+    CS = 'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'
+    O = 'ORTODONCIA | CHEQUEO DE BRACKETS'
+   
+    SIMPLES = [
+            (CD,'CONSULTA DE DIAGNOSTICO'),
+            (CCH,'CHEQUEO DE RUTINA'),
+            (CS,'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'),
+            (O,'ORTODONCIA | CHEQUEO DE BRACKETS '),
+            
+    ]
+    tratamiento_simple = models.CharField(max_length=300,choices=SIMPLES , verbose_name='Motivo de la Consulta',null= True,)
+    
+    
+    
     class Meta(object):
         verbose_name_plural = 'Cita'
         ordering = ['nombre_paciente']
-        
+
+
+    # def obtener_tratamientos_simples():
+    #     tratamientos = Tratamiento.objects.filter(tipo='Tratamiento simple')
+    #     return tratamientos
         
     # def save(self, *args, **kwargs):
     #     cita_reservada = Cita.objects.filter(hora=self.hora,fecha=self.fecha,estado='True')

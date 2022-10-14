@@ -20,7 +20,7 @@
             <div class="card-body">
                     <center> 
                         
-                        <h2 <i class="bi bi-archive"> Citas </i> </h2>
+                        <h2  style="color:blue;" <i class="bi bi-calendar2-week"> Citas Reservadas </i> </h2>
                     </center>
               
                 <table  align="right" >
@@ -95,10 +95,12 @@
                                         <th>Fecha </th>
                                         <th>Hora</th>
                                         {% comment %} <th>Hora de Atencion</th> {% endcomment %}
-                                        <th>Tratamiento Solicitado</th>
+                                         <th>Tratamiento Solicitado</th> 
                                         <th>Profesional</th>
                                         <th> Estado </th>
-                                        <th colspan="2">Acciones </th> 
+                                        <th colspan="3"> Acciones </th> 
+                                      
+                                        
                                     </tr>
                                 </thead>
 
@@ -115,7 +117,7 @@
                                             <td >{{c.fecha}}</td>
                                             {% comment %} <td >{{c.hora}} hs.</td> {% endcomment %}
                                             <td >{{c.hora_atencion}} hs.</td>
-                                            <td >{{c.tratamiento_solicitado}}</td>
+                                             <td >{{c.tratamiento_solicitado}}</td> 
                                             <td >{{c.profesional}}</td>
                                             {%if c.estado%}
                                              <td>Confirmado</td>
@@ -125,7 +127,14 @@
                                                     {{busqueda}}
                                             {{busqueda}}
                                             <!--OPCIONES Modificar y Eliminar-->
-                                                <td>
+                                                {% comment %} <td>
+                                                    {%if perms.gestion_agendamiento.change_cita%}
+                                                    <a href="/tratamiento/listar_tratamientos_agendados/45" class="btn btn-info">
+                                                        <i class="bi bi-clipboard2-check" style="font-size:15px"> Tto. Asignado</i>
+                                                    </a>
+                                                    {%endif%}
+                                              </td> {% endcomment %}
+                                              <td>
                                                     {%if perms.gestion_agendamiento.change_cita%}
                                                     <a href="/agendamiento/modificar_cita/{{c.id_cita}}" class="btn btn-primary">
                                                         <i class="bi-pencil-square"></i>

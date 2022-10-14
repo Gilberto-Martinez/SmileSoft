@@ -61,19 +61,40 @@ class PacienteList2(ListView):
 
 # -----------------------------------------------------------------------------------------------
 # ***Vista de listar Tratamiento
-
-
-# @permission_required('gestion_tratamiento.listar_tratamiento', login_url="/panel_control/error/",)
 def listar_tratamiento(request):
-    busqueda=request.POST.get("q")
+    busqueda = request.POST.get("q")
     listado_tratamientos = Tratamiento.objects.all()
 
     if busqueda:
-        listado_tratamientos =Tratamiento.objects.filter(Q(nombre_tratamiento__icontains= busqueda))
-        print("AQUI ESTA ENTRANDO Y buscando", {'listado_tratamientos':listado_tratamientos})
-    else:                                                              
+        listado_tratamientos = Tratamiento.objects.filter(
+            Q(nombre_tratamiento__icontains=busqueda))
+        print("AQUI ESTA ENTRANDO Y buscando", {
+              'listado_tratamientos': listado_tratamientos})
+    else:
         print("Buscado AQUI",)
-    return render (request,"tratamiento/listar_tratamientos.html",{'listado_tratamientos':listado_tratamientos})
+        
+    tratamientos=[]
+    for listado in listado_tratamientos:
+        tratamiento = Tratamiento.objects.get(codigo_tratamiento=listado.codigo_tratamiento)
+        codigo_tratamiento = tratamiento.codigo_tratamiento
+        nombre=tratamiento.nombre_tratamiento
+        # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
+        detalle= tratamiento.descripcion_tratamiento
+        monto= '{:,}'.format(tratamiento.precio).replace(',','.')
+       
+        lista_tratamientos={ 
+                            'codigo_tratamiento' : codigo_tratamiento,
+                            'nombre_tratamiento': nombre,
+                            'descripcion_tratamiento': detalle,
+                            'precio':monto,
+                           }
+        
+        tratamientos.append(lista_tratamientos)
+        
+        
+        
+        
+    return render(request, "tratamiento/listar_tratamientos.html", {'tratamientos': tratamientos})
 
 
 def asignar_tratamientos(request, id_paciente):
@@ -111,7 +132,7 @@ def listar_tratamiento_asignado(request, id_paciente):
     id_paciente_tratamiento = ''
 
     for tratamiento_asig in listado_tratamientos_asig:
-        if str(tratamiento_asig.get_paciente()) == str(id_paciente) and tratamiento_asig.estado == 'Asignado':
+        if str(tratamiento_asig.get_paciente()) == str(id_paciente):
             id_paciente_tratamiento = tratamiento_asig.id_tratamiento_asig
             cod_tratamiento = tratamiento_asig.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
@@ -129,7 +150,7 @@ def listar_tratamiento_asignado(request, id_paciente):
                     )
 
 def listar_tratamientos_pendientes(request):
-    tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Confirmado")
+    tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
     tratamientos_pendientes = []
 
     for tratamiento_conf in tratamientos_conf:
@@ -159,6 +180,7 @@ def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
     id_paciente = paciente_tratamiento.paciente.get_id()
     paciente_tratamiento.delete()
     return redirect('/tratamiento/listar_tratamientos_asignados/%s'%(id_paciente))
+
 
 
 # -----------------------------------------------------------------------------------------------

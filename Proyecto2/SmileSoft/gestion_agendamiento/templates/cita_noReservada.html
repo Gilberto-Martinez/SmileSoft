@@ -1,0 +1,35 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+
+        <h2 style="color:red;">
+            
+                        <br> Usted ya cuenta con una cita <br>en esta fecha                                 
+        </h2>
+          <img src="{% static 'img/check.PNG' %}" width="120px" alt="auto"> 
+
+                       <center> <small  style="font-size:20px;"><i> No puede reservarse más de <b>una cita por día </b> </i></small></center>
+                       <br>
+                        {% comment %} <button  href="/agendamiento/usuario_addCita/{{user.numero_documento}} " class="btn btn-primary" type="submit" style="margin: 10px;">
+                           Agendar una cita 
+                        </button> {% endcomment %}
+
+                          
+                                <a href="/agendamiento/calendario_usuario" class="btn btn-info">
+                                    <i class="bi bi-calendar"></i>
+                                   Ver Calendario <br>
+                                </a>
+                                <a onclick="history.back()" class="btn btn-success">
+                                    <i class="bi bi-backspace"></i>
+                                    Atrás <br>
+                                </a>
+                          
+                     
+      
+    </center>
+     
+</form>
+{% endblock %}

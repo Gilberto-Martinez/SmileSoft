@@ -853,7 +853,7 @@ def editar_persona(request, numero_documento):
     return render(request, "editar_persona.html", data)
 
 
-# @permission_required('gestion_administrativo.editar_antecedente', login_url="/panel_control/error/",)
+@permission_required('gestion_administrativo.editar_antecedente', login_url="/panel_control/error/",)
 def editar_antecedente(request, numero_documento):
     persona = Paciente.objects.get(numero_documento=numero_documento)
     data = {

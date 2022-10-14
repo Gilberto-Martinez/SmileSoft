@@ -20,12 +20,12 @@
                 
                     <center>
                         <strong style= "font-size:25px;">
-                            <b>Paciente:</b> <i>{{paciente.numero_documento.nombre}} {{paciente.numero_documento.apellido}}</i>
+                            <b>Cita del Paciente: </b> <i>{{paciente.numero_documento.nombre}} {{paciente.numero_documento.apellido}}</i>
                         </strong>
                     </center>
                     <br>
                     <center> 
-                    <h3> <i style="color:green";> Tratamientos asignados</i> </h3>
+                    <h3> <i style="color:blue";> Tratamientos Agendados </i> </h3>
                 </center>
 
                 <!--Inicio de la TABLA DE TRATAMIENTOS-->
@@ -39,7 +39,9 @@
                                     <th>Nro Tratamiento</th>
                                     <th>Nombre </th>
                                     <th>Precio </th>
-                                    <th>Acciones</th>
+                                    <th>Fecha de Agendamiento </th>
+
+                                   
                                 {%endif%}
                             </tr>
                         </thead>
@@ -51,18 +53,19 @@
                                             <td >{{forloop.counter}}</td>
                                             <td >{{tratamiento.nombre_tratamiento}}</td>
                                             <td >{{tratamiento.precio}}</td>
-                                            <td>
+                                             <td > </td>
+                                            {% comment %} <td>
+                                                {%if perms.gestion_tratamiento.delete_tratamiento%}
                                                     <a href="/agendamiento/agendar_cita/{{paciente.id_paciente}}/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary">
                                                         <i class="bi bi-calendar2-week"></i> 
                                                         Agendar
                                                     </a>
-                                                {%if perms.gestion_historial_clinico.add_historialclinico%}
                                                     <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
                                                         <i class="bi-trash" ></i> 
                                                         Eliminar
                                                     </a>
                                                 {%endif%}
-                                            </td>
+                                            </td> {% endcomment %}
                                         </tr>
                                     {% endfor %}
                                     <tr>
@@ -83,39 +86,10 @@
                                     </center>
                                 {%endif%}
 
-
-                                {% if messages %}
-                                <ul class="messages">
-                                
-                                    {% for message in messages %}
-                                    <li>
-                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                        <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
-                                        Tratamiento
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
-                                        {{ message }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-center">
-                       {%if perms.gestion_historial_clinico.add_historialclinico%}
-                        <a type="submit" href="/tratamiento/asignar_tratamientos/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
-                            <i class="bi bi-plus-circle"></i>
-                            Agregar
-                        </a>
-                        &nbsp;
-                        {% comment %} <a type="submit" href="/cobros/cobrar_tratamiento/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
-                            <i class="bi bi-check2-square"></i>
-                            Confirmar todos
-                        </a> {% endcomment %}
-                        {%endif%}
-                        &nbsp;
-                        <a onclick = "history.back()" class="btn btn-secondary"  >
+                        <a onclick = "history.back()" class="btn btn-info"  >
                             <i class="bi-x-circle"></i> 
                             Atrás
                         </a>
