@@ -29,8 +29,12 @@ class Insumo(models.Model):
     descripcion_insumo= models.TextField(max_length=500, verbose_name='Descripción (*):')
     precio=models.IntegerField(verbose_name='Costo Unitario (*):')
     fecha_caducidad = models.DateField(verbose_name='Fecha de nacimiento')
-    cantidad_insumo = models.IntegerField(default=0, verbose_name= 'Cantidad (*)')
+    cantidad_insumo = models.IntegerField(default=0, verbose_name= 'Cantidad (*)') #Cantidad_insumo =  5  Paquetes/Cajas/Litros --> se agrega por teclado
     #unidad = models.IntegerField(default=0, verbose_name= 'Unidad (*)')
+    unidad_x_paquete = models.IntegerField(default=0, verbose_name= 'Unidad por pcl (*)')#donde pcl es unidad por paquete caja o litro # unidad_x_paquete = 12  --> se agrega por teclado
+    cantidad_unitaria = models.IntegerField(default=0, verbose_name= 'Cantidad unitaria (*)') #cantidad_unitaria = 5 x 12 = 60    unidad --> no se agrega por teclado
+    stock_minimo = models.IntegerField(default=0, verbose_name= 'Stock mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
+   # existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
     P = 'Paquete/s'
     C = 'Caja/s'
     L = 'Litro/s'
