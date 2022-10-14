@@ -13,6 +13,12 @@ class InsumoForm(forms.ModelForm):
     cantidad_insumo = forms.IntegerField(
                                                    label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
+    unidad_x_paquete = forms.IntegerField(
+                                                   label='Unidad por paquete, caja o litro:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad por paquete del insumo'}))
+    cantidad_unitaria = forms.IntegerField(
+                                                   label='Cantidad Unitaria:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Cantidad unitaria = cantidad_insumo x unidad_x_paquete'}))
     # unidad = forms.IntegerField(
     #                                                label='Unidad:', 
     #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del Insumo'}))
@@ -35,6 +41,8 @@ class InsumoForm(forms.ModelForm):
             'precio',
             'fecha_caducidad',
             'cantidad_insumo',
+            'unidad_x_paquete',
+            'cantidad_unitaria',
             'unidad',
             #'estado',
         ]
@@ -49,6 +57,12 @@ class InsumoUpdateForm(forms.ModelForm):
     cantidad_insumo = forms.IntegerField(
                                                    label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
+    unidad_x_paquete = forms.IntegerField(
+                                                   label='Unidad por paquete, caja o litro:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad por paquete del insumo'}))
+    cantidad_unitaria = forms.IntegerField(
+                                                   label='Cantidad Unitaria:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Cantidad unitaria = cantidad_insumo x unidad_x_paquete'}))
     # unidad = forms.IntegerField(
     #                                                label='Unidad:', 
     #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad del insumo'}))
