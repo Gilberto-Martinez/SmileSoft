@@ -31,6 +31,29 @@ class CitaForm(forms.ModelForm):
                 'estado',
         ]
 
+class CitaUpdateForm(forms.ModelForm):
+    fecha_meses = (datetime.date.today())+ timedelta(365/2)
+    fecha = forms.DateField(
+                            label='Fecha de consulta:', 
+                            widget=forms.NumberInput(attrs={
+                                                            'type': 'date', 
+                                                            'min': "2022-01-01" ,
+                                                            'max': str(fecha_meses)
+                                                            }
+                                                    )
+                            )
+
+    class Meta:
+        model= Cita
+        fields= [
+                # 'tratamiento_solicitado',
+                'fecha',
+                # 'hora',
+                'hora_atencion',
+                'profesional',
+                'estado',
+        ]
+
 
 class CitaForm2(forms.ModelForm):
     fecha = forms.DateField(

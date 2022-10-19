@@ -621,18 +621,17 @@ def modificar_cita(request, id_cita):
         paciente = Paciente.objects.get(numero_documento=nro_documento)
         nombre = persona.nombre + ' ' + persona.apellido
         reservado=cita.estado
-        tratamiento_tipo= cita.tratamiento_simple or cita.tratamiento_solicitado
+        tratamiento_solicitado= cita.tratamiento_solicitado
         data = {
-            'form': CitaForm(instance=cita),
+            'form': CitaUpdateForm(instance=cita),
             'persona': persona,
             'estado':reservado,
-            'tratamiento_solicitado': tratamiento_tipo,
+            'tratamiento_solicitado': tratamiento_solicitado,
         }
 
         if request.method == "POST":
-            formulario = CitaForm(data=request.POST, instance=cita, files=request.FILES)
+            formulario = CitaUpdateForm(data=request.POST, instance=cita, files=request.FILES)
             respuesta= "NO EXISTE"
-            
             
             if formulario.is_valid():
                 cita = formulario.save(commit=False)
