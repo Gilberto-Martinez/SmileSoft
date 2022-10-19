@@ -334,6 +334,7 @@ class TratamientoConfirmado(models.Model):
     R = 'Realizado'# Al haberle realizado el tratamiento al paciente
     ESTADOS = ((A, 'Agendado'), (C, 'Confirmado'), (P, 'Pagado'), (R, 'Realizado'), )
     estado = models.CharField(max_length=12, choices=ESTADOS, default='Agendado')
+  
 
     class Meta:
         db_table = 'TratamientoConfirmado'

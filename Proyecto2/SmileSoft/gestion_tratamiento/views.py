@@ -181,8 +181,31 @@ def eliminar_tratamiento_asignado(request, id_pac_tratamiento, cedula):
     paciente_tratamiento.delete()
     return redirect('/tratamiento/listar_tratamientos_asignados/%s'%(id_paciente))
 
+# def categoria_tratamiento (request):
+#     tratamientos= Tratamiento.objects.all()
+  
+#     tratamientos_por_categoria= []
 
+#     for indice in tratamientos_por_categoria:
+#         tratamiento = Tratamiento.objects.get(codigo_tratamiento=indice.get_tratamiento())
+#         categoria= TratamientoCategoria.objects.get(categoria_tratamiento=indice.codigo_tratamiento)
+        
+#         nombre_tratamiento = tratamiento.nombre_tratamiento
+#         tratamiento_categorizado= {
+                                
+#                                 'nombre_tratamiento':nombre_tratamiento
+                              
+#                                 }
+#         tratamientos_pendientes.append(tratamiento_pendiente)
+#     return render (request,"tratamiento/listar_tratamientos_pendientes.html",{
+#                                                                             'tratamientos_pendientes':tratamientos_pendientes,
+#                                                                             }
+#                     )
+    
 
+class TratamientoCategoriaList (ListView):
+    model = TratamientoCategoria
+    template_name = 'listar_tratamiento_categoria.html'
 # -----------------------------------------------------------------------------------------------
 
 # ***Vista de Modificar Tratamiento

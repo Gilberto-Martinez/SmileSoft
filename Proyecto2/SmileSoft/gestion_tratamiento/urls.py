@@ -4,6 +4,7 @@ from .forms import *
 
 urlpatterns = [
             path('listar_tratamiento/', listar_tratamiento, name="listar_tratamiento"),
+            path('listar_tratamiento_categoria/', TratamientoCategoriaList.as_view(), name="listar_tratamiento_categoria"),
             path('eliminar_tratamiento/<codigo_tratamiento>/', eliminar_tratamiento, name="eliminar_tratamiento"),
             path('agregar_tratamiento/', agregar_tratamiento, name="agregar_tratamiento"),
             path('modificar_tratamiento/<int:codigo_tratamiento>/', modificar_tratamiento, name="modificar_tratamiento"),          

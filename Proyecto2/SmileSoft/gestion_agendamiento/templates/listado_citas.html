@@ -117,7 +117,10 @@
                                             <td >{{c.fecha}}</td>
                                             {% comment %} <td >{{c.hora}} hs.</td> {% endcomment %}
                                             <td >{{c.hora_atencion}} hs.</td>
-                                             <td >{{c.tratamiento_solicitado}}</td> 
+                                             <td >{{c.tratamiento_solicitado}}
+                                                {% comment %} {{c.tratamiento_simple}} {% endcomment %}
+
+                                             </td> 
                                             <td >{{c.profesional}}</td>
                                             {%if c.estado%}
                                              <td>Confirmado</td>

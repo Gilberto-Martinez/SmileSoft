@@ -231,8 +231,10 @@
                                                   <!--Opcion 5.2 -->
                                                   
                                                       <li><a class="dropdown-item" href="/tratamiento/listar_tratamiento/">• Lista de Tratamientos</li></a>
-                                                      <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
-                                                          <div class="dropdown-divider"></div>  -->
+                                                    {%if perms.gestion_tratamiento.view_tratamientocategoria%}
+                                                      <li><a class="dropdown-item" href="/tratamiento/listar_tratamiento_categoria/">• Categoria</li></a>
+                                                    {%endif%}
+                                                          {% comment %} <div class="dropdown-divider"></div>  --> {% endcomment %}
                                                     
                                                 <!--Opcion 5.3 -->
                                                  {%if perms.gestion_historial_clinico.add_historialclinico%}
