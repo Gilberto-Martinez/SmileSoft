@@ -35,29 +35,30 @@
                     <div style="margin: 20px;" >
                         <br>
                         <div class="form-group">
-                            <label for="tratamiento_solicitado"> Motivo de Consulta</label>
+
+                            <label for="tratamiento_solicitado"><b>Motivo de Consulta: </b> </label>
                                 {{tratamiento_solicitado}}<br>
                         </div>
                         <br>
 
                         <div class="form-group">
-                           <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
+                           <label for="{{form.fecha.name}}"><b>{{form.fecha.label}}</b></label>
                             {{form.fecha}}
                         </div>
                         <br>
                        <div class="form-group">
-                           <label for="{{form.hora_atencion.name}}"> {{form.hora_atencion.label}}</label>
+                           <label for="{{form.hora_atencion.name}}"><b>{{form.hora_atencion.label}}: </b></label>
                             {{form.hora_atencion}}
                         </div> 
                          <br>
                         <div class="form-group">
-                          <label for="profesional"> Elegir al Profesional: </label> 
+                          <label for="profesional"><b>Elegir al Profesional: </b></label> 
                             {{form.profesional}}
                         </div>
                         <br>
                       
                          <div class="form-group">
-                            <label for="{{form.estado.name}}">{{form.estado.label}}</label>
+                            <label for="{{form.estado.name}}"><b>{{form.estado.label}}</b></label>
                                 {{form.estado}}
                         </div> 
                        
