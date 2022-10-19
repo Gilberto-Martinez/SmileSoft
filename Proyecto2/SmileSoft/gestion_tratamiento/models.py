@@ -15,7 +15,9 @@ class Tratamiento(models.Model):
                                              related_name='tratamiento_set',
                                              blank=True, 
                                              )
+   
 
+  
     class Meta:
         verbose_name = ("tratamiento")
         verbose_name_plural = ("tratamientos")
@@ -30,7 +32,32 @@ class Tratamiento(models.Model):
 
     def get_codigo_tratamiento(self):
         return str(self.codigo_tratamiento)
+   
 
+#Modelo CATEGORIA
+
+class TratamientoCategoria(models.Model):
+    id_categoria_tratamiento = models.AutoField(primary_key=True,)
+    categoria_tratamiento= models.ForeignKey(Tratamiento,on_delete=models.CASCADE, 
+                                                    blank=True, 
+                                                    null=True,)
+    SIMPLE = 'Simple'
+    COMPLEJO = 'Complejo'
+    
+    TIPO = [(SIMPLE, 'Simple'),
+                (COMPLEJO, 'Complejo'),]
+    tipo_categoria = models.CharField(max_length=20,  choices=TIPO, default= COMPLEJO)
+    
+    def get_tipo_categoria(self):
+        return str(self.tipo_categoria)   
+    
+    def __str__(self):
+      return f'{self.categoria_tratamiento}'
+    
+#  return f'{self.categoria_tratamiento} es Tratamiento {self.tipo_categoria}'
+    
+    # def is_upperclass(self):
+    #     return self.tipo_categoria in {self.SIMPLE, self.COMPLEJO}
 
 
 #TRATAMIENTO ASIGNADO

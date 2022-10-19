@@ -1,0 +1,44 @@
+{%extends 'panel_control/base.html'%}
+
+{% block content %}
+	{%if perms.gestion_administrativo.view_categoria%}
+		<div class="container">
+			<div class="card">
+				<div class="card-body">
+					<center>  <h2> <b>Listado de Tratamientos por Categoria</b></i></h2> </center>    
+				
+					<br>
+					
+									
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Nro</th>
+								<th>TRATAMIENTO</th>
+								<th>TIPO CATEGORIA</th>
+								
+							</tr>
+							
+						</thead>
+						<tbody>
+							{% if object_list %}
+							{% for categoria in object_list %}
+							<tr>
+								<td >{{forloop.counter}}</td>
+							
+								<td>{{ categoria.categoria_tratamiento}}</td>
+								<td>{{ categoria.tipo_categoria }}</td>
+								<!-- <td>{{ categoria.es_especialista_salud }}</td> -->
+								<!-- <td>{{ categoria.es_paciente }}</td> -->
+								
+							</tr>
+							{% endfor %}
+							{%endif%}
+							
+						</tbody>
+					</table> 
+				</div>
+			</div>
+		</div>
+	{%endif%}	
+{% endblock%}

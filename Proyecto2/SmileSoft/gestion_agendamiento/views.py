@@ -86,7 +86,7 @@ def agregar_cita(request, id_paciente):
         # pk_cita=cita.id_cita
         print(nro_telefonico, nombre, "este es el año------------------",edad)
         data = {
-            'form': CitaForm(),
+            'form': CitaUsuario(),
             'persona': persona,
             # 'nro_telefonico': nro_telefonico,
             # 'pk_cita' : pk_cita
@@ -94,7 +94,7 @@ def agregar_cita(request, id_paciente):
         }
 
         if request.method == "POST":
-            formulario = CitaForm(data=request.POST, files=request.FILES)
+            formulario = CitaUsuario(data=request.POST, files=request.FILES)
             respuesta= "NO EXISTE"
             
             if formulario.is_valid():
@@ -298,7 +298,7 @@ def addcita_cita_usuario(request, id_paciente):
     # hora= HoraForm(request.POST)
 
     data = {
-        'form': CitaForm(),
+        'form': CitaUsuario(),
         'persona': persona,
         'id_paciente': id_paciente,
         'hora_atencion': hora_atencion,
@@ -306,7 +306,7 @@ def addcita_cita_usuario(request, id_paciente):
     }
 
     if request.method == "POST":
-        formulario = CitaForm(data=request.POST, files=request.FILES)
+        formulario = CitaUsuario(data=request.POST, files=request.FILES)
         respuesta = "NO EXISTE"
 
         if formulario.is_valid():
@@ -384,28 +384,20 @@ def addcita_cita_usuario(request, id_paciente):
 
 # <--Agregar cita a UN USUARIO--->|A nivel USUARIO
 #<--Cualquier paciente
-@permission_required('gestion_agendamiento.addcita_usuario', login_url="/panel_control/error/",)
+# @permission_required('gestion_agendamiento.addcita_usuario', login_url="/panel_control/error/",)
 def addcita_usuario(request, numero_documento):
     persona = Persona.objects.get(numero_documento=numero_documento)
     # cedula = persona.numero_documento
     paciente = Paciente.objects.get(numero_documento=numero_documento)
     id_paciente = paciente.id_paciente
     nombre = persona.nombre + ' ' + persona.apellido
-    
-    # celular= persona.telefono
-    # print(celular, nombre,"este es ------------------")
-    
-    # cita=Cita.objects.all()
-    # reservado= cita.estado
-    
-    # apellido = persona.apellido
-    print('Esta es la cedula: ', numero_documento, 'Este es el id del paciente: ', id_paciente) 
+    print(' A nivel USUARIO/CLIENTE --- > Esta es la cedula: ', numero_documento, 'Este es el id del paciente: ', id_paciente) 
    
     hora_atencion= Horario.objects.all()
     # hora= HoraForm(request.POST)
     
     data = {
-        'form': CitaForm(),
+        'form': CitaUsuario(),
         'persona': persona,
         'id_paciente': id_paciente,
         'hora_atencion': hora_atencion,
@@ -414,7 +406,7 @@ def addcita_usuario(request, numero_documento):
     }
 
     if request.method == "POST":
-        formulario = CitaForm(data=request.POST, files=request.FILES)
+        formulario = CitaUsuario(data=request.POST, files=request.FILES)
         respuesta= "NO EXISTE"
     
         if formulario.is_valid():
@@ -495,17 +487,15 @@ def addcita_usuario(request, numero_documento):
                     '✅ Su cita ha sido registrada'))
                 return render(request, "calendario.html")
         else:
-            messages.error(request, (
-                'No ha guardado'))
+            messages.error(request, ('No ha guardado'))
             data["form"] = formulario
             print('NO ENTRAAAAA')
-        messages.error(request, (
-                'No ha guardado la cita...........HA FALLADO'))
+        messages.error(request, ('No ha guardado la cita...........Ocurrió un error'))
     return render(request, "usuario_addCita.html", data)
 
 
  # @permission_required('gestion_agendamiento.cambiarCita_usuario', login_url="/panel_control/error/",)
-#->|A NIVEL USUARIO (que tiene usuario) 
+#->|A NIVEL USUARIO (Que tiene acceso al sistema ej: dcolman) 
 def cambiarCita_usuario(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
@@ -523,7 +513,7 @@ def cambiarCita_usuario(request, id_cita):
         reservado=cita.estado
 
         data = {
-            'form': CitaForm(instance=cita),
+            'form': CitaUsuario(instance=cita),
             'persona': persona,
             'id_cita': id_cita,
             'ci_user':ci_user,
@@ -534,7 +524,7 @@ def cambiarCita_usuario(request, id_cita):
             
         }
         if request.method == "POST":
-            formulario = CitaForm(data=request.POST, instance= cita,files=request.FILES)
+            formulario = CitaUsuario(data=request.POST, instance= cita,files=request.FILES)
             respuesta= "NO EXISTE"
             reservado = cita.estado
             
@@ -609,8 +599,8 @@ def cambiarCita_usuario(request, id_cita):
             return render(request, "cita_sin_usuario.html")
 
 
-# <--Modificar cita-->|Cuando Tiene Usuario --> A nivel SISTEMA 
-def modificar_cita(request, id_cita):
+# <--Modificar cita-->|Cuando Tiene Usuario --> A nivel SISTEMA CAMBIAR (NO BORRAR )
+def modificar_cita_asistente(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
         cedula = cita.paciente.numero_documento
@@ -637,6 +627,7 @@ def modificar_cita(request, id_cita):
                 cita = formulario.save(commit=False)
                 citas= Cita.objects.all()
                 reservado=cita.estado
+                tratamiento_tipo= cita.tratamiento_solicitado 
                 for c in citas:
                     #---Datos---#
                     dia=str (cita.fecha)
@@ -691,12 +682,12 @@ def modificar_cita(request, id_cita):
                     cita.paciente = paciente
                     cita.nombre_paciente = nombre
                     cita.estado=reservado
+                    cita.tratamiento_solicitado= tratamiento_tipo
                     cita.save()
                     print("el estado que GUARDA ES", cita.estado)
                     if cita.estado == True:
                         confirmar_cita_tratamiento(cita.paciente.id_paciente, cita.tratamiento_solicitado.codigo_tratamiento)
-                    messages.success(request, (
-                        '✅ Modificado correctamente!'))            
+                    messages.success(request, ('✅ Modificado correctamente!'))            
                     return redirect("/agendamiento/listado_citas/", respuesta)                
             else:
                 messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
@@ -721,13 +712,13 @@ def modificar_cita_usuario(request, id_cita):
         reservado = cita.estado
         
         data = {
-            'form': CitaForm(instance=cita),
+            'form': CitaSistemaForm(instance=cita),
             'persona': persona,
             'estado': reservado,
         }
 
         if request.method == "POST":
-            formulario = CitaForm(
+            formulario = CitaSistemaForm(
                 data=request.POST, instance=cita, files=request.FILES)
             respuesta = "NO EXISTE"
            
@@ -879,6 +870,7 @@ def listar_cita(request):
         celular = persona.telefono
         fecha_reservada= cita.fecha
         tratamiento= cita.tratamiento_solicitado or cita.tratamiento_simple
+        # tratamiento= cita.tratamiento_simple
         hora=cita.hora_atencion
         doctor=cita.profesional
         pk_cita = cita.id_cita
@@ -890,6 +882,7 @@ def listar_cita(request):
                         'celular':celular,
                         'fecha': fecha_reservada, 
                         'tratamiento_solicitado': tratamiento , 
+                        # 'tratamiento_simple': tratamiento,
                         'hora_atencion': hora,  
                         'profesional':doctor , 
                         'id_cita':pk_cita,      

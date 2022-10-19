@@ -1,5 +1,4 @@
 from django.db import models
-from gestion_tratamiento.models import TratamientoCategoria
 from gestion_administrativo.models import *
 from gestion_administrativo.models import Persona
 from webapp.models import Usuario
@@ -80,13 +79,22 @@ class Cita(models.Model):
                                                 on_delete=models.PROTECT,
                                                 verbose_name='Profesional a elegir')
     
-
-    tratamiento_simple= models.ForeignKey(TratamientoCategoria, 
-                                          on_delete=models.PROTECT,
-                                          limit_choices_to={'tipo_categoria': 'Simple'},
-                                          null= True)
-
-  
+    CD = 'CONSULTA DE DIAGNOSTICO'
+    CCH ='CHEQUEO DE RUTINA'
+    CS = 'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'
+    O = 'ORTODONCIA | CHEQUEO DE BRACKETS'
+   
+    SIMPLES = [
+            (CD,'CONSULTA DE DIAGNOSTICO'),
+            (CCH,'CHEQUEO DE RUTINA'),
+            (CS,'CONTROL Y SEGUIMIENTO DEL TRATAMIENTO'),
+            (O,'ORTODONCIA | CHEQUEO DE BRACKETS '),
+            
+    ]
+    tratamiento_simple = models.CharField(max_length=300,choices=SIMPLES , verbose_name='Motivo de la Consulta',null= True,)
+    
+    
+    
     class Meta(object):
         verbose_name_plural = 'Cita'
         ordering = ['nombre_paciente']
