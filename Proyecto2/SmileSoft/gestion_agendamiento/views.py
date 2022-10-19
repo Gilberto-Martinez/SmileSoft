@@ -613,12 +613,12 @@ def cambiarCita_usuario(request, id_cita):
 def modificar_cita(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
-        cedula = cita.paciente
+        cedula = cita.paciente.numero_documento
         persona = Persona.objects.get(numero_documento=cedula)
-        ci_persona= persona.numero_documento
-        ci_user= Usuario.objects.get(numero_documento=ci_persona)
-        nro_documento=ci_user.numero_documento
-        paciente = Paciente.objects.get(numero_documento=nro_documento)
+        # ci_persona= persona.numero_documento
+        # ci_user= Usuario.objects.get(numero_documento=cedula)
+        # nro_documento=ci_user.numero_documento
+        paciente = Paciente.objects.get(numero_documento=cedula)
         nombre = persona.nombre + ' ' + persona.apellido
         reservado=cita.estado
         tratamiento_solicitado= cita.tratamiento_solicitado
@@ -661,13 +661,13 @@ def modificar_cita(request, id_cita):
                             print(
                                 "-----------------------------DIA DE LA SEMANA----------------------")
                             print("el estado que entra es", reservado)
-                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and reservado==False:
+                            if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and reservado==False and paciente.numero_documento != c.paciente.numero_documento:
                                 #print("el numero de la semana  es", nro_semana)
                                 respuesta = "YA EXISTE"
                                 return render(request, 'horario_reservado.html')
                             else:
                                 # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
-                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and reservado== False:
+                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and reservado== False and cita.profesional == c.profesional:
                                     respuesta = "Reservado"
                                     # mensaje = "DUPLICADO"
                                     messages.success(request, (
