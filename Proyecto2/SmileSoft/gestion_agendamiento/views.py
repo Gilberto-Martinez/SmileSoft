@@ -282,7 +282,7 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
 
 
 # <--Agregar cita de un MENOR DE EDAD-->|A nivel SISTEMA
-@permission_required('gestion_agendamiento.addcita_cita_usuario', login_url="/panel_control/error/",)
+# @permission_required('gestion_agendamiento.addcita_cita_usuario', login_url="/panel_control/error/",)
 def addcita_cita_usuario(request, id_paciente):
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
@@ -375,8 +375,7 @@ def addcita_cita_usuario(request, id_paciente):
                     '✅ Su cita ha sido registrada'))
                 return render(request, "calendario.html")
         else:
-            messages.error(request, (
-                'No ha guardado'))
+            messages.error(request, ('No ha guardado'))
             data["form"] = formulario
             print('NO ENTRAAAAA')
 
@@ -600,7 +599,7 @@ def cambiarCita_usuario(request, id_cita):
 
 
 # <--Modificar cita-->|Cuando Tiene Usuario --> A nivel SISTEMA CAMBIAR (NO BORRAR )
-def modificar_cita_asistente(request, id_cita):
+def modificar_cita(request, id_cita):
     try:
         cita = Cita.objects.get(id_cita=id_cita)
         cedula = cita.paciente.numero_documento
@@ -611,12 +610,14 @@ def modificar_cita_asistente(request, id_cita):
         paciente = Paciente.objects.get(numero_documento=cedula)
         nombre = persona.nombre + ' ' + persona.apellido
         reservado=cita.estado
-        tratamiento_solicitado= cita.tratamiento_solicitado
+        tratamiento_solicitado= cita.tratamiento_solicitado or cita.tratamiento_simple
+       
         data = {
             'form': CitaUpdateForm(instance=cita),
             'persona': persona,
             'estado':reservado,
             'tratamiento_solicitado': tratamiento_solicitado,
+            
         }
 
         if request.method == "POST":
@@ -658,11 +659,11 @@ def modificar_cita_asistente(request, id_cita):
                                 return render(request, 'horario_reservado.html')
                             else:
                                 # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos
-                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and reservado== False and cita.profesional == c.profesional:
+                                if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and reservado== False and cita.profesional == c.profesional and (cita.tratamiento_solicitado!= c.tratamiento_solicitado or cita.tratamiento_simple!= c.tratamiento_simple  ):
                                     respuesta = "Reservado"
                                     # mensaje = "DUPLICADO"
-                                    messages.success(request, (
-                                        'Reservado en el mismo dia y la misma hora, pero con diferentes Odontólogos'))
+                                    # messages.success(request, (
+                                    #     'Reservado en el mismo dia y la misma hora'))
                                     return render(request, 'horario_duplicado.html')
                         else:
                             if nro_semana >= 5:
@@ -1024,17 +1025,19 @@ def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     )
     paciente_tratamiento = PacienteTratamientoAsignado.objects.filter(paciente=paciente_obt, tratamiento=tratamiento_obt).delete()
 
-def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento):
+def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento, id_categoria_tratamiento):
     """
     Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Confirmado'
     una vez que esl paciente confirma la cita, pero aun no paga por ella
     """
     paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
     tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+   
 
     tratamiento_agendado = TratamientoConfirmado.objects.filter(
                                                                 paciente=paciente_obt,
                                                                 tratamiento=tratamiento_obt,
+                                                               
     )
     tratamiento_agendado.update(estado='Confirmado')
 
