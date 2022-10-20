@@ -53,7 +53,6 @@ class Cita(models.Model):
                                       verbose_name='Nombre del Paciente',null=True)
     apellido_paciente = models.CharField(max_length=40,
                                       verbose_name='Apellido del Paciente',null=True)
-    # LIMIT = obtener_tratamientos_simples()
     tratamiento_solicitado=models.ForeignKey(
                                                 Tratamiento,
                                                 max_length=45,
@@ -61,7 +60,6 @@ class Cita(models.Model):
                                                 blank= False,
                                                 on_delete=models.PROTECT,
                                                 verbose_name='Motivo de consulta',
-                                                # limit_choices_to=LIMIT
     )
     celular = models.ForeignKey(Persona,null= True, max_length=40, on_delete=models.PROTECT,)
    
