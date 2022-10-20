@@ -88,12 +88,7 @@ def listar_tratamiento(request):
                             'descripcion_tratamiento': detalle,
                             'precio':monto,
                            }
-        
         tratamientos.append(lista_tratamientos)
-        
-        
-        
-        
     return render(request, "tratamiento/listar_tratamientos.html", {'tratamientos': tratamientos})
 
 
@@ -246,9 +241,9 @@ def eliminar_tratamiento(request, codigo_tratamiento):
     try:
         tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
         tratamiento.delete()
-        listado_tratamientos = Tratamiento.objects.all()
-        messages.success(request, "Eliminado ❌")
-        return render(request, "tratamiento/listar_tratamientos.html", {'listado_tratamientos': listado_tratamientos})
+        # listado_tratamientos = Tratamiento.objects.all()
+        messages.success(request, "Tratamiento eliminado con exito")
+        return redirect("/tratamiento/listar_tratamiento/")
     except Tratamiento.DoesNotExist:
         raise Http404("No se puede eliminar el Tratamiento indicado. Dado que ya se Elimino")
 
