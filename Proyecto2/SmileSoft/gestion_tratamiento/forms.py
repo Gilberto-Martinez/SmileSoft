@@ -1,4 +1,4 @@
-from dataclasses import field
+from dataclasses import field, fields
 from distutils import text_file
 from email.headerregistry import Group
 from re import U
@@ -122,3 +122,20 @@ class TratamientoInsAsignadoForm(forms.ModelForm):
       #InlineForeignKeyField(Cargo)
    
       label = 'Nombre de los tratamientos'
+
+class TratamientoCategoriaForm(forms.ModelForm):
+    SIMPLE = 'Simple'
+    COMPLEJO = 'Complejo'
+    
+    TIPO = [(SIMPLE, 'Simple'),
+                (COMPLEJO, 'Complejo'),]
+    tipo_categoria = forms.ChoiceField(label='Categoria',
+                                        choices=TIPO, 
+                                        widget = forms.Select (attrs = {'class': 'form-control',})
+                                        )
+
+    class Meta:
+        model = TratamientoCategoria
+        fields = [
+                'tipo_categoria',
+        ]

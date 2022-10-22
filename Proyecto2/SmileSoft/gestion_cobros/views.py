@@ -182,12 +182,13 @@ def ver_detalle_cobro(request, id_cobro_contado):
 #----------------------------------------------#
 def eliminar_tratamiento_confirmado(request, id_tratamiento_confirmado):
     """
-    Elimina de la tabla TratamientoConfirmado el registro correspondiente al tratamiento que
-    el paciente haya agendado, además cambia el estado de la Cita en 'Pendiente'
+    En tabla TratamientoConfirmado el registro correspondiente al tratamiento que
+    el paciente haya decidido no pagar (y selecciona en Eliminar), cambia el estado del 
+    TrattamientoConfirmado 'Agendado' y el estado de la Cita en 'Pendiente'
     """
-    paciente_tratamiento = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_confirmado)
+    paciente_tratamiento = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_confirmado)
     id_paciente = paciente_tratamiento.paciente.get_id()
-    paciente_tratamiento.delete()
+    paciente_tratamiento.update(estado='Agendado')
     return redirect('/cobros/cobrar_tratamiento/%s'%(id_paciente))
 
 #---------------------------- LISTADOS -----------------------------#

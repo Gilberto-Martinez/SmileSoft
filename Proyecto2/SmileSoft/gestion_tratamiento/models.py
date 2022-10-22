@@ -1,5 +1,5 @@
 from django.db import models
-from gestion_administrativo.models import *
+# from gestion_administrativo.models import *
 from gestion_inventario_insumos.models import Insumo
 
 # Create your models here.
