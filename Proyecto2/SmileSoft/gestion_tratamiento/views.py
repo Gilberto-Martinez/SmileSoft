@@ -24,23 +24,28 @@ from gestion_historial_clinico.views import guardar_historial_clinico
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
 def agregar_tratamiento (request):
-    
     data= {
-        'form' : TratamientoForm()
+        'form' : TratamientoForm(),
+        'form2' : TratamientoCategoriaForm()
     }
-    
+
     if request.method== "POST":
-        formulario= TratamientoForm(data = request.POST, files= request.FILES)
-        if formulario.is_valid():
-            formulario.save()
+        form = TratamientoForm(data = request.POST, files= request.FILES)
+        form2 = TratamientoCategoriaForm(data = request.POST, files= request.FILES)
+        if form.is_valid() and form2.is_valid():
+            tratamiento = form.save()
+            categoria = form2.save(commit=False)
+            categoria.tratamiento = tratamiento
+            categoria.save()
             data["mensaje"]="Registrado correctamente"
             messages.success(request,'Agregado correctamente✅')
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
             return redirect('/tratamiento/listar_tratamiento/')
         else:
-            data["form"]=formulario
+            data["form"]=form
+            data["form2"]=form2
             print('NO ENTRAAAAA')
-            
+
     return render(request,"tratamiento/agregar_tratamiento.html",data)
 #------------------------ Lista de pacientes para asignación de tratamientos -----------------------
 class PacienteList2(ListView):
@@ -88,12 +93,7 @@ def listar_tratamiento(request):
                             'descripcion_tratamiento': detalle,
                             'precio':monto,
                            }
-        
         tratamientos.append(lista_tratamientos)
-        
-        
-        
-        
     return render(request, "tratamiento/listar_tratamientos.html", {'tratamientos': tratamientos})
 
 
@@ -214,21 +214,21 @@ class TratamientoCategoriaList (ListView):
 # @permission_required('gestion_tratamiento.modificar_tratamiento', login_url="/panel_control/error/",)
 def modificar_tratamiento(request, codigo_tratamiento):
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+    tratamiento_categoria = TratamientoCategoria.objects.get(tratamiento=tratamiento)
 
     data= {
         'form': TratamientoUpdateForm(instance=tratamiento),
+        'form2' : TratamientoCategoriaForm(instance=tratamiento_categoria),
         'tratamiento': tratamiento
     }
     if request.method == 'POST':
-        formulario = TratamientoForm(
-            data=request.POST, instance=tratamiento, files=request.FILES)
-        if formulario.is_valid():
-            
-            formulario.save()
-            
+        form = TratamientoForm(data=request.POST, instance=tratamiento, files=request.FILES)
+        form2 = TratamientoCategoriaForm(data=request.POST, instance=tratamiento_categoria, files=request.FILES)
+        if form.is_valid() and form2.is_valid():
+            form.save()
+            form2.save()
             messages.success(request, "Modificado ✅")
             print("ENTRA AQUI !!!!!!!!!!!!!!!!!!!!!")
-                  
             data['mensaje'] = "Modificado correctamente"
             return redirect("/tratamiento/listar_tratamiento/")
             
@@ -246,9 +246,9 @@ def eliminar_tratamiento(request, codigo_tratamiento):
     try:
         tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
         tratamiento.delete()
-        listado_tratamientos = Tratamiento.objects.all()
-        messages.success(request, "Eliminado ❌")
-        return render(request, "tratamiento/listar_tratamientos.html", {'listado_tratamientos': listado_tratamientos})
+        # listado_tratamientos = Tratamiento.objects.all()
+        messages.success(request, "Tratamiento eliminado con exito")
+        return redirect("/tratamiento/listar_tratamiento/")
     except Tratamiento.DoesNotExist:
         raise Http404("No se puede eliminar el Tratamiento indicado. Dado que ya se Elimino")
 

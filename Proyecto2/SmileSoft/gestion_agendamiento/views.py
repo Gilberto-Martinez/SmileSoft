@@ -1,19 +1,8 @@
-from genericpath import exists
-from mailbox import NoSuchMailboxError
-from operator import truediv
-from re import U
-from time import gmtime, strftime, strptime
-from urllib import request
 from django.utils.html import conditional_escape as esc
-from itertools import groupby
 from datetime import date, timedelta
 from calendar import HTMLCalendar, day_name
-from ctypes.wintypes import PCHAR
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
-from gestion_administrativo.forms import PersonaPacienteForm
-from gestion_administrativo.forms import PersonaUpdateForm
+from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from webapp.mixins import LoginMixin
@@ -21,8 +10,7 @@ from django.db.models import Q
 from .forms import *
 # Create your views here.
 from django.contrib import messages
-from django.http import (
-    Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
+from django.http import Http404
 from django.contrib.auth.decorators import permission_required
 # ---------Vista Principal-------
 from datetime import datetime
@@ -76,11 +64,10 @@ def agregar_cita(request, id_paciente):
         cedula = paciente.numero_documento
         persona = Persona.objects.get(numero_documento=cedula)
         nombre = persona.nombre + ' ' + persona.apellido
-        ci_persona= persona.numero_documento
-        usuario=Usuario.objects.get(numero_documento=ci_persona)
+        # ci_persona= persona.numero_documento
+        # usuario=Usuario.objects.get(numero_documento=ci_persona)
         nro_telefonico = persona.telefono
         edad = persona.obtener_edad()
-
 
         cita = Cita.objects.all()
         # pk_cita=cita.id_cita
@@ -155,15 +142,22 @@ def agregar_cita(request, id_paciente):
 
                 if respuesta== "NO EXISTE":
                     
-                        cita.paciente = paciente
-                        cita.nombre_paciente = nombre
-                        print("|||||||||||||CITA GUARDADA DEL PACIENTE QUE TIENE USUARIO||||||||||------------------")
-                        # cita.celular = nro_telefonico
-                        
-                        cita.save()
-                        messages.success(request, ('✅Agregado correctamente!'))
-                        print('aquiiiiiiiiiiiiii ENTRAAAAA',)
-                        return redirect("/agendamiento/listado_citas/")
+                    cita.paciente = paciente
+                    cita.nombre_paciente = nombre
+                    codigo_tratamiento = cita.tratamiento_simple.tratamiento.codigo_tratamiento
+                    tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+                    cita.tratamiento_solicitado = tratamiento
+                    
+                    print("|||||||||||||CITA GUARDADA DEL PACIENTE QUE TIENE USUARIO||||||||||------------------")
+                    # cita.celular = nro_telefonico
+                    
+                    cita.save()
+                    agendar_tratamiento_asignado(id_paciente, codigo_tratamiento)
+                    if cita.estado == True:
+                        confirmar_cita_tratamiento(id_paciente, codigo_tratamiento)
+                    messages.success(request, ('✅Agregado correctamente!'))
+                    print('aquiiiiiiiiiiiiii ENTRAAAAA',)
+                    return redirect("/agendamiento/listado_citas/")
                  
             else:
                 messages.error(request, ('La cita no ha sido registrada'))
@@ -183,18 +177,17 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
     un tratamiento que el Odontologo le haya asignado
     """
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+    tratamiento_cat = TratamientoCategoria.objects.get(tratamiento=tratamiento)
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
     nombre = persona.nombre + ' ' + persona.apellido
     # ci_persona= persona.numero_documento
     # usuario=Usuario.objects.get(numero_documento=ci_persona)
-    nro_telefonico = persona.telefono
+    # nro_telefonico = persona.telefono
     edad = persona.obtener_edad()
 
     cita = Cita.objects.all()
-    # pk_cita=cita.id_cita
-    print(nro_telefonico, nombre, "este es el año------------------",edad)
     data = {
         'form': CitaForm2(),
         'persona': persona,
@@ -210,6 +203,7 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
             cita.paciente = paciente
             cita.nombre_paciente = nombre
             cita.tratamiento_solicitado = tratamiento
+            cita.tratamiento_simple = tratamiento_cat
             citas= Cita.objects.all()     
 
             for c in citas:
@@ -268,9 +262,9 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
                 # cita.celular = nro_telefonico
 
                 cita.save()
-                agendar_tratamiento_asignado(id_paciente, codigo_tratamiento)
+                agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, cita.id_cita)
                 if cita.estado == True:
-                    pass
+                    confirmar_cita_tratamiento(id_paciente, codigo_tratamiento)
                 messages.success(request, ('✅Agregado correctamente!'))
                 print('aquiiiiiiiiiiiiii ENTRAAAAA',)
                 return redirect("/agendamiento/listado_citas/")
@@ -478,9 +472,13 @@ def addcita_usuario(request, numero_documento):
                         
             if respuesta== "NO EXISTE" :
                 cita.paciente = paciente
-                cita.nombre_paciente = nombre 
+                cita.nombre_paciente = nombre
+                codigo_tratamiento = cita.tratamiento_simple.tratamiento.codigo_tratamiento
+                tratamiento = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+                cita.tratamiento_solicitado = tratamiento
                 # cita.estado= reservado
                 cita.save()
+                agendar_tratamiento_asignado(id_paciente, codigo_tratamiento)
                 print("###Guarda la CITA  DEL USUARIO REGISTRADO-----------------",cita.estado,"dentro de 6meses" ,fecha_meses, "fecha de CITA", cita.fecha,)
                 messages.success(request, (
                     '✅ Su cita ha sido registrada'))
@@ -601,29 +599,28 @@ def cambiarCita_usuario(request, id_cita):
 # <--Modificar cita-->|Cuando Tiene Usuario --> A nivel SISTEMA CAMBIAR (NO BORRAR )
 def modificar_cita(request, id_cita):
     try:
-        cita = Cita.objects.get(id_cita=id_cita)
-        cedula = cita.paciente.numero_documento
+        cita_actual = Cita.objects.get(id_cita=id_cita)
+        cedula = cita_actual.paciente.numero_documento
         persona = Persona.objects.get(numero_documento=cedula)
         # ci_persona= persona.numero_documento
         # ci_user= Usuario.objects.get(numero_documento=cedula)
         # nro_documento=ci_user.numero_documento
         paciente = Paciente.objects.get(numero_documento=cedula)
         nombre = persona.nombre + ' ' + persona.apellido
-        reservado=cita.estado
-        tratamiento_solicitado= cita.tratamiento_solicitado or cita.tratamiento_simple
+        reservado=cita_actual.estado
+        tratamiento_solicitado= cita_actual.tratamiento_solicitado or cita_actual.tratamiento_simple
        
         data = {
-            'form': CitaUpdateForm(instance=cita),
+            'form': CitaUpdateForm(instance=cita_actual),
             'persona': persona,
             'estado':reservado,
             'tratamiento_solicitado': tratamiento_solicitado,
-            
         }
 
         if request.method == "POST":
-            formulario = CitaUpdateForm(data=request.POST, instance=cita, files=request.FILES)
+            formulario = CitaUpdateForm(data=request.POST, instance=cita_actual, files=request.FILES)
             respuesta= "NO EXISTE"
-            
+
             if formulario.is_valid():
                 cita = formulario.save(commit=False)
                 citas= Cita.objects.all()
@@ -685,9 +682,16 @@ def modificar_cita(request, id_cita):
                     cita.estado=reservado
                     cita.tratamiento_solicitado= tratamiento_tipo
                     cita.save()
+                    codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
                     print("el estado que GUARDA ES", cita.estado)
                     if cita.estado == True:
-                        confirmar_cita_tratamiento(cita.paciente.id_paciente, cita.tratamiento_solicitado.codigo_tratamiento)
+                        # if cita_actual.tratamiento_simple.get_tipo_categoria() == 'Simple':
+                        #     codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
+                        # else:
+                        #     codigo_tratamiento = cita_actual.tratamiento_solicitado.codigo_tratamiento
+                        confirmar_cita_tratamiento(cita.paciente.id_paciente, codigo_tratamiento)
+                    if formulario.has_changed() and cita.estado == False: # Si se realizó algun cambio en el formulario y el estado se cambió a false
+                        desconfirmar_cita_tratamiento(cita.paciente.id_paciente, codigo_tratamiento)
                     messages.success(request, ('✅ Modificado correctamente!'))            
                     return redirect("/agendamiento/listado_citas/", respuesta)                
             else:
@@ -1010,10 +1014,12 @@ def horario_duplicado(request):
     return render(request, "horario_duplicado.html")
 
 ############### A NIVEL SISTEMA ####################################
-def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
+def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, id_cita):
     """
-    Procedimiento que registra el tratamiento que el paciente solicito agendar
-    (copia el registro de PacienteTratamientoAgendado a TratamientoConfirmado, en esta con estado='Agendado')
+    Procedimiento que registra el tratamiento que el paciente solicito agendar:
+    se crea un registro en TratamientoConfirmado con estado='Agendado'.
+    Si existe registro de tratamiento asignado por el odontologo (en PacienteTratmientoAsignado)
+    entonces lo elimina
     """
     paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
     tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
@@ -1021,11 +1027,18 @@ def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     tratamiento_agendado = TratamientoConfirmado.objects.create(
                                                                 paciente=paciente_obt,
                                                                 tratamiento=tratamiento_obt,
-                                                                estado='Agendado'
+                                                                estado='Agendado',
+                                                                id_cita=id_cita
     )
-    paciente_tratamiento = PacienteTratamientoAsignado.objects.filter(paciente=paciente_obt, tratamiento=tratamiento_obt).delete()
 
-def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento, id_categoria_tratamiento):
+    try:
+        paciente_tratamiento = PacienteTratamientoAsignado.objects.filter(paciente=paciente_obt, tratamiento=tratamiento_obt)
+    except paciente_tratamiento.DoesNotExist: # En caso que el paciente se haya autoagendado o lo haya agendado el Asistente y no el Odontologo
+        pass
+    else: # En caso de que el agendamiento se haya dado con un tratamiento que haya sido asignado por el odontologo
+        paciente_tratamiento.delete()
+
+def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento):
     """
     Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Confirmado'
     una vez que esl paciente confirma la cita, pero aun no paga por ella
@@ -1040,6 +1053,25 @@ def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento, id_categoria_tra
                                                                
     )
     tratamiento_agendado.update(estado='Confirmado')
+
+
+def desconfirmar_cita_tratamiento(id_paciente, codigo_tratamiento, id_cita):
+    """
+    Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Agendado'
+    si el estado de la Cita cambia a False
+    """
+    paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
+    tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
+   
+
+    tratamiento_agendado = TratamientoConfirmado.objects.filter(
+                                                                paciente=paciente_obt,
+                                                                tratamiento=tratamiento_obt,
+                                                               
+    )
+    tratamiento_agendado.update(estado='Agendado')
+    cita = Cita.objects.filter(id_cita=id_cita).update(estado= False)
+
 
 def eliminar_tratamiento_asignado(id_paciente, codigo_tratamiento):
     """

@@ -1,8 +1,8 @@
 from django.db import models
 from gestion_tratamiento.models import TratamientoCategoria
 from gestion_administrativo.models import *
-from gestion_administrativo.models import Persona
-from webapp.models import Usuario
+# from gestion_administrativo.models import Persona
+# from webapp.models import Usuario
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Paciente
 # from gestion_agendamiento.models import *
@@ -51,9 +51,6 @@ class Cita(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT)
     nombre_paciente = models.CharField(max_length=40,
                                       verbose_name='Nombre del Paciente',null=True)
-    apellido_paciente = models.CharField(max_length=40,
-                                      verbose_name='Apellido del Paciente',null=True)
-    # LIMIT = obtener_tratamientos_simples()
     tratamiento_solicitado=models.ForeignKey(
                                                 Tratamiento,
                                                 max_length=45,
@@ -61,40 +58,28 @@ class Cita(models.Model):
                                                 blank= False,
                                                 on_delete=models.PROTECT,
                                                 verbose_name='Motivo de consulta',
-                                                # limit_choices_to=LIMIT
-    )
-    celular = models.ForeignKey(Persona,null= True, max_length=40, on_delete=models.PROTECT,)
-   
+    )   
     fecha = models.DateField()
-   # hora = models.TimeField(null=True)
-    
     hora_atencion = models.ForeignKey(Horario, null=True,
                                         on_delete=models.PROTECT,
-                                        verbose_name='Hora de atención')
-    
+                                        verbose_name='Hora de atención'
+                                        )
     estado = models.BooleanField('Confirmar cita', default=False)
-    
     profesional=models.ForeignKey(EspecialistaSalud, max_length=45,
                                                 null=False,
                                                 blank= False,
                                                 on_delete=models.PROTECT,
-                                                verbose_name='Profesional a elegir')
-    
+                                                verbose_name='Profesional a elegir'
+                                    )
 
     tratamiento_simple= models.ForeignKey(TratamientoCategoria, 
                                           on_delete=models.PROTECT,
                                           limit_choices_to={'tipo_categoria': 'Simple'},
                                           null= True)
 
-  
     class Meta(object):
         verbose_name_plural = 'Cita'
         ordering = ['nombre_paciente']
-
-
-    # def obtener_tratamientos_simples():
-    #     tratamientos = Tratamiento.objects.filter(tipo='Tratamiento simple')
-    #     return tratamientos
         
     # def save(self, *args, **kwargs):
     #     cita_reservada = Cita.objects.filter(hora=self.hora,fecha=self.fecha,estado='True')

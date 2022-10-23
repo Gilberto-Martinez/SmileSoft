@@ -1,5 +1,5 @@
 from django.db import models
-from gestion_administrativo.models import *
+# from gestion_administrativo.models import *
 from gestion_inventario_insumos.models import Insumo
 
 # Create your models here.
@@ -15,9 +15,7 @@ class Tratamiento(models.Model):
                                              related_name='tratamiento_set',
                                              blank=True, 
                                              )
-   
 
-  
     class Meta:
         verbose_name = ("tratamiento")
         verbose_name_plural = ("tratamientos")
@@ -38,7 +36,7 @@ class Tratamiento(models.Model):
 
 class TratamientoCategoria(models.Model):
     id_categoria_tratamiento = models.AutoField(primary_key=True,)
-    categoria_tratamiento= models.ForeignKey(Tratamiento,on_delete=models.CASCADE, 
+    tratamiento= models.ForeignKey(Tratamiento,on_delete=models.CASCADE, 
                                                     blank=True, 
                                                     null=True,)
     SIMPLE = 'Simple'
@@ -49,10 +47,10 @@ class TratamientoCategoria(models.Model):
     tipo_categoria = models.CharField(max_length=20,  choices=TIPO, default= COMPLEJO)
     
     def get_tipo_categoria(self):
-        return str(self.tipo_categoria)   
+        return str(self.tipo_categoria)
     
     def __str__(self):
-      return f'{self.categoria_tratamiento}'
+      return f'{self.tratamiento}'
     
 #  return f'{self.categoria_tratamiento} es Tratamiento {self.tipo_categoria}'
     
