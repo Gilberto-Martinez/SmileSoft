@@ -1,7 +1,7 @@
 Modulo agendamiento
 Restricciones
 
-|-Nivel Sistema
+|-Sistema
 Usuario. Asistente/Administrador/Cajero
 -- Debe utilizar el calendario Odontologo, para modificaciones
 1. Add, Mod, Eliminar - Cita/Hora
@@ -12,10 +12,24 @@ Usuario. Asistente/Administrador/Cajero
 
 |-Nivel Usuario
 Restricciones
-1. No puede duplicar su cita / CORRECCIONES-> NO PUEDE REALIZAR MAS DE 1 CITA POR DIA
+1. No puede duplicar su cita 
 2. No puede elegir los fines de semana 
-3. No puede elegir fechas pasadas
-4. No puede elegir una hora del dia que ya pasó
+3. No puede elegir fechas pasadas, No puede elegir una hora del dia que ya pasó
+4. / CORRECCIONES-> NO PUEDE REALIZAR MAS DE 1 CITA POR DIA
 5. No puede reservar si ya fue reservado antes
+6. Salga si no hay cambios
+7. Pasado  6meses ya no puede reservar
+8. Modificar: Solo puede modificar hora y fecha , Tratamiento y Odontologo YA NO
 
-Obs: Add/Modi, cuando es menor de edad en otras templates 
+Obs: Add/Modi, cuando es menor de edad es otras templates 
+
+|-Nivel Sistema
+Restricciones
+1. No puede duplicar su cita (en modificar hay que atender)
+2. No puede elegir los fines de semana 
+3. No puede elegir fechas pasadas, No puede elegir una hora del dia que ya pasó
+4. / CORRECCIONES-> NO PUEDE REALIZAR MAS DE 1 CITA POR DIA
+5. No puede reservar si ya fue reservado antes
+6. Salga si no hay cambios
+7. Modificar: Si se puede modificar el Odontologo, 
+X->NO ESTA restringido la fecha, PORQUE es del lado Sistema

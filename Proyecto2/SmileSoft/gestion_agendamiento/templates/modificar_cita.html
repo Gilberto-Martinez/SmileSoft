@@ -36,8 +36,8 @@
                         <br>
                         <div class="form-group">
 
-                            <label for="tratamiento_solicitado"><b>Motivo de Consulta: </b> </label>
-                                {{tratamiento_solicitado}}<br>
+                            <label for="tratamiento_solicitado"><i style="color:blue";><b>Motivo de Consulta: </label>
+                                {{tratamiento_solicitado}} </b> </i><br>
                         </div>
                         <br>
 
@@ -57,10 +57,13 @@
                         </div>
                         <br>
                       
-                         <div class="form-group">
-                            <label for="{{form.estado.name}}"><b>{{form.estado.label}}: </b></label>
-                                {{form.estado}}
-                        </div> 
+                        {%if perms.gestion_agendamiento.view_cita%}
+                            <div class="form-group">
+                                <label for="{{form.estado.name}}"><b>{{form.estado.label}}</b></label>
+                                    {{form.estado}}
+                            </div> 
+                        {%endif%}
+
                        
                     </div>
                    

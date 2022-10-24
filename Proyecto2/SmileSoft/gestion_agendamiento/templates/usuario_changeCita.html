@@ -34,8 +34,9 @@
                         <div style="margin: 20px;" >
                             <br>
                             <div class="form-group">
-                                <label for="tratamiento_simple"> Motivo de Consulta</label>
-                                    {{form.tratamiento_simple}} <br>
+                              <b>  <label for="tratamiento_solicitado"> Motivo de Consulta :</label>
+                                    {{tratamiento_solicitado}} <br>
+                              </b>
                             </div>
                             <br>
                             <div class="form-group">
@@ -50,8 +51,8 @@
                             </div> 
                             <br>
                             <div class="form-group">
-                            <label for="profesional"> Elegir al Profesional: </label> 
-                                {{form.profesional}}
+                            <label for="profesional"><b> Elegir al Profesional: </label> 
+                                {{profesional}}</b>
                             </div>
                             <br>
                                 {%if perms.gestion_agendamiento.view_cita%}

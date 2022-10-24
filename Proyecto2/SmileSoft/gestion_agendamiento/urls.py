@@ -33,6 +33,7 @@ urlpatterns = [
     #<-- Templates de mensajes
     path('horario_reservado/', horario_reservado, name='horario_reservado'),
     path('horario_duplicado/', horario_duplicado, name='horario_duplicado'),
+    path('roles_multiples/', roles_multiples, name="roles_multiples"),
 
     # <--Horarios-->
     path('agregar_hora/', agregar_hora, name="agregar_hora"),

@@ -109,9 +109,10 @@ def asignar_tratamientos(request, id_paciente):
         if form.is_valid():
             form.save()
             # form.save_m2m()
-            # messages.success(request, (
-            #     'Agregado correctamente!'))
-            return render(request, "mensajes/tratamiento_asignado_exitoso.html")
+            messages.success(request, ('✅'))
+            # return render(request, "tratamiento/listar_tratamientos_asignados/%s"%(id_paciente))
+            return redirect('/tratamiento/listar_tratamientos_asignados/%s'%(id_paciente))
+
         else:
             data["form"]=form
             data['paciente']=paciente
@@ -148,6 +149,7 @@ def listar_tratamiento_asignado(request, id_paciente):
                                                                             'id_paciente_tratamiento':id_paciente_tratamiento,
                                                                             }
                     )
+
 
 def listar_tratamientos_pendientes(request):
     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
