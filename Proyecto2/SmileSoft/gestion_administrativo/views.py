@@ -198,7 +198,6 @@ class PersonaCreate(CreateView):
     #    #aun no termine
         # print("esta es la edad ", edad_persona)
         if form.is_valid():
-            
             # if edad_persona > 4:
                 persona = form.save()
                 messages.success(

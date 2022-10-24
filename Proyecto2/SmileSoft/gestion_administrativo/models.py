@@ -1,3 +1,4 @@
+from enum import unique
 from django.db import models
 from django.db.models.deletion import PROTECT
 # from django.contrib.postgres.fields import ArrayField
@@ -5,8 +6,8 @@ from django.template.defaultfilters import default
 from datetime import date, datetime
 import dateutil.relativedelta
 from dateutil.relativedelta import relativedelta
-from gestion_administrativo.models import *
 from gestion_tratamiento.models import Tratamiento
+# from gestion_agendamiento.models import *
 
 # Create your models here.
 class Persona(models.Model):
@@ -334,7 +335,7 @@ class TratamientoConfirmado(models.Model):
     R = 'Realizado'# Al haberle realizado el tratamiento al paciente
     ESTADOS = ((A, 'Agendado'), (C, 'Confirmado'), (P, 'Pagado'), (R, 'Realizado'), )
     estado = models.CharField(max_length=12, choices=ESTADOS, default='Agendado')
-  
+    id_cita = models.IntegerField(null=True, unique=True)
 
     class Meta:
         db_table = 'TratamientoConfirmado'
