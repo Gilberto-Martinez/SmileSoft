@@ -14,8 +14,30 @@
 {%block content%}
 
 {%if perms.gestion_tratamiento.view_tratamiento%}  
+                      
     <div class="container">
+          <center>
+              {% if messages %}
+                              
+                                
+                                    {% for message in messages %}
+                                    <li>
+                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                        <B><FONT COLOR="blue"> ¡Asignado Correctamente! </FONT> </b>
+                                        
+                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                        {{ message }}
+                                    </li>
+                                    {% endfor %}
+                               
+                        {% endif %} 
+            </center>
+            <br> 
         <div class="card">
+            <br>
+         
             <div class="card-body">
                 
                     <center>
@@ -26,6 +48,7 @@
                     <br>
                     <center> 
                     <h3> <i style="color:green";> Tratamientos asignados</i> </h3>
+                    <br>
                 </center>
 
                 <!--Inicio de la TABLA DE TRATAMIENTOS-->
@@ -83,23 +106,6 @@
                                     </center>
                                 {%endif%}
 
-
-                                {% if messages %}
-                                <ul class="messages">
-                                
-                                    {% for message in messages %}
-                                    <li>
-                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                        <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
-                                        Tratamiento
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
-                                        {{ message }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-center">
@@ -117,9 +123,20 @@
                         &nbsp;
                         <a onclick = "history.back()" class="btn btn-secondary"  >
                             <i class="bi-x-circle"></i> 
-                            Atrás
+                            Atrás <br>
                         </a>
                     </div>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        
+                        <br>
+                        <a type="submit" href="/tratamiento/listar_paciente2/" class="btn btn-primary btn-block txt-white">
+                        <i class="bi-person-lines-fill"> </i>
+                        Listado de Pacientes
+                        </a>
+                    </div>
+                
+
                 </table>
             <!--end TABLA-->
         
