@@ -9,12 +9,12 @@ class InsumoForm(forms.ModelForm):
     precio = forms.IntegerField(
                                     label='Costo Unitario:', 
                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del insumo:'}))
-    fecha_caducidad = forms.DateField(label='Fecha de caducidad', widget=forms.DateInput(attrs={'type': 'date'}))
+    fecha_caducidad = forms.DateField(label='Fecha de Caducidad', widget=forms.DateInput(attrs={'type': 'date'}))
     cantidad_insumo = forms.IntegerField(
                                                    label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
     unidad_x_paquete = forms.IntegerField(
-                                                   label='Unidad por paquete, caja o litro:', 
+                                                   label='Unidad por Paquete, Caja o Litro:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad por paquete del insumo'}))
     cantidad_unitaria = forms.IntegerField(
                                                    label='Cantidad Unitaria:', 
@@ -30,7 +30,7 @@ class InsumoForm(forms.ModelForm):
             (C, 'Caja/s'),
             (L, 'Litro/s')
             ]
-    unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
+    unidad = forms.ChoiceField(label='Unidad de Medida:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
         model = Insumo
        # fields= '__all__'
@@ -53,12 +53,12 @@ class InsumoUpdateForm(forms.ModelForm):
     precio = forms.IntegerField(
                                                    label='Costo Unitario:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese el precio del insumo'}))
-    fecha_caducidad = forms.DateField(label='Fecha de caducidad', widget=forms.NumberInput(attrs={'type': 'date'}))
+    fecha_caducidad = forms.DateField(label='Fecha de Caducidad', widget=forms.NumberInput(attrs={'type': 'date'}))
     cantidad_insumo = forms.IntegerField(
                                                    label='Cantidad del Insumo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la cantidad del insumo'}))
     unidad_x_paquete = forms.IntegerField(
-                                                   label='Unidad por paquete, caja o litro:', 
+                                                   label='Unidad por Paquete, Caja o Litro:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad por paquete del insumo'}))
     cantidad_unitaria = forms.IntegerField(
                                                    label='Cantidad Unitaria:', 
@@ -74,7 +74,7 @@ class InsumoUpdateForm(forms.ModelForm):
             (C, 'Caja/s'),
             (L, 'Litro/s')
             ]
-    unidad = forms.ChoiceField(label='Unidad:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
+    unidad = forms.ChoiceField(label='Unidad de Medida:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     class Meta:
         model = Insumo
         fields= '__all__'

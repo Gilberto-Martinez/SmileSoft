@@ -40,6 +40,8 @@ class Insumo(models.Model):
     L = 'Litro/s'
     UNIDADES = ((P, 'Paquete/s'), (C, 'Caja/s'), (L, 'Litro/s'))
     unidad = models.CharField(max_length=12, choices=UNIDADES, verbose_name='Unidad de medida')
+    stock_minimo = models.IntegerField(default=0, verbose_name= 'Stock Mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
+    #existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
     #id_inventario = models.ForeignKey(inventario)
 
         
