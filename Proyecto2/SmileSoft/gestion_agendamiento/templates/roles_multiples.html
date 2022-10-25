@@ -19,19 +19,21 @@
                     <center> 
                         {% comment %} <h2> ¿Desea modificar su ultima cita {{persona.nombre}} {{persona.apellido}}? </h2> {% endcomment %}
                             <h3> <b>En este usuario <i style="color:blue;" >no posee el permiso</i> para reservar una cita   
-                                 desde este botón</b>  <br> </h3>
+                               <i style="color:blue;" >  desde este botón</b> </i> <br> </h3>
 
                     </center>
                     <br>
                     <b> Reserve su Cita por medio del Listado de Pacientes </b>
             
                     <div class="d-flex justify-content-left">
-                      <li><a  class="btn btn-link" href="/agendamiento/pacientes_cita"> <i class="bi bi-journal-check"></i> Listado de Pacientes</li></a> 
+                      <a  class="btn btn-link" href="/agendamiento/pacientes_cita"> <i class="bi bi-journal-check"></i> Listado de Pacientes</a> 
                     
                     </div>
 
-                    <li><a href="/agendamiento/calendario_usuario" class="btn btn-primary"> <i class="bi bi-calendar-week"></i> Ver calendario
-                        </a></li>
+                    <div class="d-flex justify-content-left">
+                        <a href="/agendamiento/calendario_usuario" class="btn btn-link" > <i class="bi bi-calendar-week"></i> Ver calendario
+                        </a>
+                    </div>
                           
                     {% comment %} <li><a onclick="history.back()" class="btn btn-success">
                           
