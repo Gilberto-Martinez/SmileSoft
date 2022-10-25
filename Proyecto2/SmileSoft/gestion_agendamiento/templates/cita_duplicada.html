@@ -1,0 +1,30 @@
+{%extends 'panel_control/base.html'%}
+{% load static %}
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+    <center>
+                    
+        <br>
+        <strong  style="color:blue; font-size:16px;" >
+            <h2  <i class="bi bi-journal-x"></i><b> Duplicación de Cita</b>
+               <br>
+                <br>La misma cita ya ha sido registrada anteriormente
+            </h2>                                       
+        </strong> <br>
+            <br>
+                    <a href="/agendamiento/calendar" class="btn btn-info">
+                        <i class="bi bi-calendar"></i>
+                        Ver Calendario Odontólogo<br>
+                    </a>
+                    <a onclick="history.back()" class="btn btn-success">
+                        <i class="bi bi-backspace"></i>
+                        Atrás <br>
+                    </a>
+                
+                     
+      
+    </center>
+     
+</form>
+{% endblock %}

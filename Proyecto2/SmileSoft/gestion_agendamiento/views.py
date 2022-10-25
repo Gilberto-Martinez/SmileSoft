@@ -121,14 +121,14 @@ def agregar_cita(request, id_paciente):
                                     if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional :
                                             respuesta = "Reservado"
                                             # mensaje = "DUPLICADO"
-                                            messages.success(request, ('Cita Duplicada'))
-                                            return render(request, 'horario_duplicado.html')
+                                            messages.success(request, ('Cita no registrada'))
+                                            return render(request, 'cita_duplicada.html')
                                     else:
                                            # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual
                                         if paciente== c.paciente and cita.fecha==c.fecha:
                                             respuesta = "Duplicado"
-                                            messages.success(request, ('La cita NO fue registrada'))
-                                            return render(request, 'cita_noReservada.html') 
+                                            messages.success(request, ('Ya se ha reservado con anterioridad en la misma fecha, pero con un odontólogo distinto'))
+                                            return render(request, 'cita_noAutoagendada.html') 
                             else:
                                 if nro_semana >=5: 
                                     #"Si es fin de semana emite el msj"
@@ -247,7 +247,7 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
                                 if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional == c.profesional :
                                     respuesta = "Duplicado"
                                     messages.success(request, ('Cita Duplicada'))
-                                    return render(request, 'horario_duplicado.html')
+                                    return render(request, 'cita_duplicada.html')
                                 else:
                                            # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual, y con Odontologos Diferentes, QUIERE DECIR QUE NO SE AUTOAGENDO EL PACIENTE SINO QUE CEDIO A OTRO, Y COMO ES LA MISMA HORA ES UN CASO IMPOSIBLE
                                         if paciente== c.paciente and cita.fecha==c.fecha and cita.profesional != c.profesional :
@@ -723,8 +723,8 @@ def modificar_cita(request, id_cita):
                                     if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and (cita.tratamiento_solicitado!= c.tratamiento_solicitado or cita.tratamiento_simple!= c.tratamiento_simple  ):
                                         respuesta = "Duplicado"
                                         print ("Llega a tener diferentes odontologos con diferentes tratamientos con hora diferente")
-                                        messages.success(request, ('Cita Duplicada'))
-                                        return render(request, 'horario_duplicado.html')
+                                        messages.success(request, ('Cita no registrada'))
+                                        return render(request, 'cita_duplicada.html')
                                     else:
                                     # Se da Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos EN OTRA CITA YA REGISTRADA
                                         # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual
@@ -733,8 +733,8 @@ def modificar_cita(request, id_cita):
                                             print(
                                                 "Llega a tener diferentes odontologos,sin importar si son tratamientos iguales o distintos")
                                             messages.success(
-                                                request, ('Ya se ha reservado con anterioridad en la misma fecha, pero con un odontólogo distinto'))
-                                            return render(request, 'cita_noReservada.html')
+                                                request, ('Ya se ha reservado en la misma fecha, pero con un odontólogo distinto'))
+                                            return render(request, 'cita_noAutoagendada.html')
                         else:
                             if nro_semana >= 5:
                                 #"Si es fin de semana emite el msj"
