@@ -155,7 +155,7 @@ def agregar_cita(request, id_paciente):
                     # cita.celular = nro_telefonico
                     
                     cita.save()
-                    agendar_tratamiento_asignado(id_paciente, codigo_tratamiento)
+                    agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, cita.id_cita)
                     if cita.estado == True:
                         confirmar_cita_tratamiento(id_paciente, codigo_tratamiento)
                     messages.success(request, ('✅Agregado correctamente!'))
@@ -193,7 +193,7 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
     cita = Cita.objects.all()
 
     print("----------------------Agendamiendo del lado del ODONTÓLOGO-----------------------------")
-    print(nro_telefonico, nombre, "este es el año------------------",edad)
+    print(nombre, "este es el año------------------",edad)
     print("---------------------------------------------------------------------------------------")
 
 
@@ -245,15 +245,15 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
                             else: 
                                 # Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales iguales 
                                 if paciente== c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha==c.fecha and cita.profesional == c.profesional :
-                                    respuesta = "Reservado"
+                                    respuesta = "Duplicado"
                                     messages.success(request, ('Cita Duplicada'))
                                     return render(request, 'horario_duplicado.html')
                                 else:
-                                           # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual
-                                        if paciente== c.paciente and cita.fecha==c.fecha:
-                                            respuesta = "Duplicado"
+                                           # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual, y con Odontologos Diferentes, QUIERE DECIR QUE NO SE AUTOAGENDO EL PACIENTE SINO QUE CEDIO A OTRO, Y COMO ES LA MISMA HORA ES UN CASO IMPOSIBLE
+                                        if paciente== c.paciente and cita.fecha==c.fecha and cita.profesional != c.profesional :
+                                            respuesta = "Reservado"
                                             messages.success(request, ('La cita NO fue registrada'))
-                                            return render(request, 'cita_noReservada.html')               
+                                            return render(request, 'cita_noAutoagendada.html')               
                         else:
                             if nro_semana >=5: 
                                 #"Si es fin de semana emite el msj"
@@ -497,7 +497,7 @@ def addcita_usuario(request, numero_documento):
                     cita.tratamiento_solicitado = tratamiento
                     # cita.estado= reservado
                     cita.save()
-                    agendar_tratamiento_asignado(id_paciente, codigo_tratamiento)
+                    agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, cita.id_cita)
                     print("###Guarda la CITA  DEL USUARIO REGISTRADO-----------------",cita.estado,"dentro de 6meses" ,fecha_meses, "fecha de CITA", cita.fecha,)
                     messages.success(request, ('✅ Su cita ha sido registrada'))
                     return render(request, "calendario.html")
@@ -588,7 +588,7 @@ def cambiarCita_usuario(request, id_cita):
                                 if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and (cita.tratamiento_solicitado== c.tratamiento_solicitado or cita.tratamiento_simple== c.tratamiento_simple  ):
                                     respuesta = "NO EXISTE"
                                     print("PASA AQUI---------PERO SALTA")
-                                    messages.success(request, ('No hubo cambios recientes registrados en la cita'))            
+                                    # messages.success(request, ('No hubo cambios recientes registrados en la cita'))            
                                     # return redirect("/agendamiento/calendario_mensaje/")
                                 else:
                                       # SE DA CUANDO YA EXISTE ANTERIORMENTE REGISTRADO Y se quiere volver a elegir la misma fecha, la misma hora y el mismo odontólogo
@@ -636,7 +636,7 @@ def cambiarCita_usuario(request, id_cita):
                     # cita.estado= cambio_estado
                     cita.save()
                     
-                    messages.success(request, ('✅'))            
+                    messages.success(request, ('✅ Guardado Correctamente'))            
                     return redirect("/agendamiento/calendario_mensaje/")
                
             else:
@@ -716,8 +716,8 @@ def modificar_cita(request, id_cita):
                                      #ACA SI ODONTOLOGOS SON IGUALES,con los criterios anteriores, osea
                                     # MISMA FECHA HORA Y TRATAMIENTO , quiere decir que solo se registro DOBLE entonces es el  mismo que ya esta registrado
                                     print("PASA AQUI---------PERO SALTA")
-                                    messages.success(
-                                        request, ('No hubo cambios recientes registrados en la cita'))
+                                    # messages.success(
+                                    #     request, ('No hubo cambios recientes registrados en la cita'))
                                 else:
                                      # SE DA CUANDO YA EXISTE ANTERIORMENTE REGISTRADO Y se quiere volver a elegir la misma fecha, la misma hora y el mismo odontólogo
                                     if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and (cita.tratamiento_solicitado!= c.tratamiento_solicitado or cita.tratamiento_simple!= c.tratamiento_simple  ):
@@ -764,8 +764,8 @@ def modificar_cita(request, id_cita):
                         #     codigo_tratamiento = cita_actual.tratamiento_solicitado.codigo_tratamiento
                         confirmar_cita_tratamiento(cita.paciente.id_paciente, codigo_tratamiento)
                     if formulario.has_changed() and cita.estado == False: # Si se realizó algun cambio en el formulario y el estado se cambió a false
-                        desconfirmar_cita_tratamiento(cita.paciente.id_paciente, codigo_tratamiento)
-                    messages.success(request, ('✅ Modificado correctamente!'))            
+                        desconfirmar_cita_tratamiento(cita.paciente.id_paciente, codigo_tratamiento, cita.id_cita)
+                    messages.success(request, ('✅ ¡Guardado correctamente!'))            
                     return redirect("/agendamiento/listado_citas/", respuesta)                
             else:
                 messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
