@@ -90,3 +90,6 @@ class Cita(models.Model):
     def __str__(self):
         return f'{self.tratamiento_solicitado}  reservada por {self.paciente}| | {self.nombre_paciente}'
     
+    def get_idcita(self):
+        return str(self.id_cita)
+    

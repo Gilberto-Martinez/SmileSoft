@@ -128,6 +128,7 @@ def listar_tratamiento_asignado(request, id_paciente):
     """
     listado_tratamientos_asig = PacienteTratamientoAsignado.objects.all()
     paciente = Paciente.objects.get(id_paciente=id_paciente)
+  
     tratamientos_asignados = []
     precio_total = 0
     id_paciente_tratamiento = ''
@@ -139,6 +140,8 @@ def listar_tratamiento_asignado(request, id_paciente):
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             precio_total = precio_total + nuevo_tratamieto.precio
             tratamientos_asignados.append(nuevo_tratamieto)
+            
+         
 
     precio_total = '{:,}'.format(precio_total).replace(',','.')
 

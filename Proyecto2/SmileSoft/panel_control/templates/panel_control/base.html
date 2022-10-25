@@ -231,9 +231,9 @@
                                                   <!--Opcion 5.2 -->
                                                   
                                                       <li><a class="dropdown-item" href="/tratamiento/listar_tratamiento/">• Lista de Tratamientos</li></a>
-                                                    {%if perms.gestion_tratamiento.view_tratamientocategoria%}
+                                                    {% comment %} {%if perms.gestion_tratamiento.view_tratamientocategoria%}
                                                       <li><a class="dropdown-item" href="/tratamiento/listar_tratamiento_categoria/">• Categoria</li></a>
-                                                    {%endif%}
+                                                    {%endif%} {% endcomment %}
                                                           {% comment %} <div class="dropdown-divider"></div>  --> {% endcomment %}
                                                     
                                                 <!--Opcion 5.3 -->
@@ -373,9 +373,9 @@
                                                   Cobros</a>
                                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                     <!--Opcion 9.1 -->
-                                                    <li><a class="dropdown-item" href="#"> 
+                                                    {% comment %} <li><a class="dropdown-item" href="#"> 
                                                       <font color="black">  • Servicios brindados a <br>Cuota | Contado</font></a>
-                                                    </li>
+                                                    </li> {% endcomment %}
                                                     <li><a class="dropdown-item" href="/cobros/listar_cobros/"> 
                                                       <font color="black">  • Cobros registrados</font></a>
                                                     </li>

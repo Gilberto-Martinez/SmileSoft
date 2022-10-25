@@ -75,10 +75,19 @@
                                             <td >{{tratamiento.nombre_tratamiento}}</td>
                                             <td >{{tratamiento.precio}}</td>
                                             <td>
-                                                    <a href="/agendamiento/agendar_cita/{{paciente.id_paciente}}/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary">
+                                                    {% comment %} {%if perms.gestion_historial_clinico.add_historialclinico%} {% endcomment %}
+                                                        <a href="/agendamiento/agendar_cita/{{paciente.id_paciente}}/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary">
+                                                            <i class="bi bi-calendar2-week"></i> 
+                                                            Agendar una cita 
+                                                        </a>
+                                                    {% comment %} {%endif%}
+
+                                              {% endcomment %}
+                                                     {% comment %} <a href="/agendamiento/agregar_cita/{{paciente.id_paciente}}" class="btn btn-warning">
                                                         <i class="bi bi-calendar2-week"></i> 
-                                                        Agendar
-                                                    </a>
+                                                        Reservar cita
+                                                    </a> {% endcomment %}
+                                                  
                                                 {%if perms.gestion_historial_clinico.add_historialclinico%}
                                                     <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
                                                         <i class="bi-trash" ></i> 

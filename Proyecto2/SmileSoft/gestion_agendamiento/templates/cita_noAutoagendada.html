@@ -7,23 +7,17 @@
 
         <h2 style="color:black;">
             
-                        <br> Ya se cuenta con una cita <br>en esta fecha                                 
+                        <br> Ya se cuenta con una cita <b>en esta fecha </b>                                
         </h2>
           {% comment %} <img src="{% static 'img/check.PNG' %}" width="120px" alt="auto">  {% endcomment %}
 
                        <center> <small  style="font-size:20px;"><i> La misma ya se habia <b>agendado </b>  con anterioridad</i></small></center>
                        <br>
-                        <center> <small  style="font-size:20px; color:red;"><i> Y se le ha <b>asignado </b> a usted.</i></small></center>
-                       <br>
-                        {% comment %} <button  href="/agendamiento/usuario_addCita/{{user.numero_documento}} " class="btn btn-primary" type="submit" style="margin: 10px;">
-                           Agendar una cita 
-                        </button> {% endcomment %}
-
-                          
-                                <a href="/agendamiento/calendario_usuario" class="btn btn-info">
+                       
+                               <a href="/agendamiento/calendar" class="btn btn-info">
                                     <i class="bi bi-calendar"></i>
-                                   Ver Calendario <br>
-                                </a>
+                                    Ver Calendario Odontólogo<br>
+                               </a>
                                 <a onclick="history.back()" class="btn btn-success">
                                     <i class="bi bi-backspace"></i>
                                     Atrás <br>
