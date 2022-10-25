@@ -53,6 +53,12 @@
                                                     <br>
                                                     <div class="form-group">
                                                         <p>
+                                                            <label for="{{form.unidad.name}}">{{form.unidad.label}}</label></p>
+                                                            {{form.unidad}} </p>
+                                                        </div>
+                                                    <br>
+                                                    <div class="form-group">
+                                                        <p>
                                                             <label for="{{form.unidad_x_paquete.name}}">{{form.unidad_x_paquete.label}}</label></p>
                                                             {{form.unidad_x_paquete}} </p>
                                                         </div>
@@ -65,8 +71,8 @@
                                                     <br>
                                                     <div class="form-group">
                                                         <p>
-                                                            <label for="{{form.unidad.name}}">{{form.unidad.label}}</label></p>
-                                                            {{form.unidad}} </p>
+                                                            <label for="{{form.stock_minimo.name}}">{{form.stock_minimo.label}}</label></p>
+                                                            {{form.stock_minimo}} </p>
                                                         </div>
                                                     <br>
                                                     </Table>
@@ -76,7 +82,7 @@
                                 
                                 <div class="d-flex justify-content-center">
                                     <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
-                                    <a href="/insumo/listar_insumos/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
+                                    <a href="/insumo/listar_insumo/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
                                 </div>
                                 <hr>
                             

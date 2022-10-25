@@ -55,24 +55,59 @@ def agregar_insumo (request):
     return render(request,"insumo/agregar_insumo.html",data)
 
 # -----------------------------------------------------------------------------------------------
-# ***Vista de listar Insumo
+#***Vista de listar Insumo
 
 
-# @permission_required('gestion_inventario_iinsumos.listar_insumo', login_url="/panel_control/error/",)
+@permission_required('gestion_inventario_iinsumos.listar_insumo', login_url="/panel_control/error/",)
+#funciona pero no es lista
+# def listar_insumo(request):
+    
+#     busqueda=request.POST.get("q")
+#     listado_insumos = Insumo.objects.all()
+    
+#     if busqueda:  
+#         listado_insumos =Insumo.objects.filter(Q(nombre_insumo__icontains= busqueda))
+#         print("AQUI ESTA ENTRANDO Y buscando", {'listado_insumos':listado_insumos})
+#     else:                                                              
+#         print("Buscado AQUI",)
+        
+#     return render (request,"insumo/listar_insumos.html",{'listado_insumos':listado_insumos})
+########################################################################################################3
+# -----------------------------------------------------------------------------------------------
+#listar tratamientos en formato lista[]
 def listar_insumo(request):
-    
-    busqueda=request.POST.get("q")
+    busqueda = request.POST.get("q")
     listado_insumos = Insumo.objects.all()
-    
-    if busqueda:  
-        listado_insumos =Insumo.objects.filter(Q(nombre_insumo__icontains= busqueda))
-        print("AQUI ESTA ENTRANDO Y buscando", {'listado_insumos':listado_insumos})
-    else:                                                              
+
+    if busqueda:
+        listado_insumos = Insumo.objects.filter(
+            Q(nombre_insumo__icontains=busqueda))
+        print("AQUI ESTA ENTRANDO Y buscando", {
+              'listado_insumos': listado_insumos})
+    else:
         print("Buscado AQUI",)
         
-    return render (request,"insumo/listar_insumos.html",{'listado_insumos':listado_insumos})
+    insumos=[]
+    for listado in listado_insumos:
+        insumo = Insumo.objects.get(codigo_insumo=listado.codigo_insumo)
+        codigo_insumo = insumo.codigo_insumo
+        nombre=insumo.nombre_insumo
+        # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
+        detalle= insumo.descripcion_insumo
+        monto= '{:,}'.format(insumo.precio).replace(',','.')
+       
+        lista_insumos={ 
+                            'codigo_insumo' : codigo_insumo,
+                            'nombre_insumo': nombre,
+                            'descripcion_insumo': detalle,
+                            'precio':monto,
+                           }
+        
+        insumos.append(lista_insumos)
 
-# -----------------------------------------------------------------------------------------------
+    return render(request, "insumo/listar_insumos.html", {'insumos': insumos})
+   
+
 
 # ***Vista de Modificar Insumos
 
