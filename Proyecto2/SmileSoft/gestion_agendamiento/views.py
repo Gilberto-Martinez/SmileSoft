@@ -157,7 +157,7 @@ def agregar_cita(request, id_paciente):
                     cita.save()
                     agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, cita.id_cita)
                     if cita.estado == True:
-                        confirmar_cita_tratamiento(id_paciente, codigo_tratamiento)
+                        confirmar_cita_tratamiento(cita.id_cita)
                     messages.success(request, ('✅Agregado correctamente!'))
                     print('aquiiiiiiiiiiiiii ENTRAAAAA',)
                     return redirect("/agendamiento/listado_citas/")
@@ -277,7 +277,7 @@ def agendar_cita(request, id_paciente, codigo_tratamiento):
                 cita.save()
                 agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, cita.id_cita)
                 if cita.estado == True:
-                    confirmar_cita_tratamiento(id_paciente, codigo_tratamiento)
+                    confirmar_cita_tratamiento(cita.id_cita)
                 messages.success(request, ('✅Agregado correctamente!'))
                 print('aquiiiiiiiiiiiiii ENTRAAAAA',)
                 return redirect("/agendamiento/listado_citas/")
@@ -389,7 +389,7 @@ def addcita_cita_usuario(request, id_paciente):
 # <--***Agregar cita a un {PACIENTE CON USUARIO}***-->|A nivel USUARIO (Verificado)
 # @permission_required('gestion_agendamiento.addcita_usuario', login_url="/panel_control/error/",)
 def addcita_usuario(request, numero_documento):
-    
+
     """ Esta función permite agregar una cita para todo aquel que cuente con un USUARIO"""
     try:
         persona = Persona.objects.get(numero_documento=numero_documento)
@@ -657,9 +657,6 @@ def modificar_cita(request, id_cita):
         cita_actual = Cita.objects.get(id_cita=id_cita)
         cedula = cita_actual.paciente.numero_documento
         persona = Persona.objects.get(numero_documento=cedula)
-        # ci_persona= persona.numero_documento
-        # ci_user= Usuario.objects.get(numero_documento=cedula)
-        # nro_documento=ci_user.numero_documento
         paciente = Paciente.objects.get(numero_documento=cedula)
         nombre = persona.nombre + ' ' + persona.apellido
         reservado=cita_actual.estado
@@ -758,13 +755,10 @@ def modificar_cita(request, id_cita):
                     codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
                     print("el estado que GUARDA ES", cita.estado)
                     if cita.estado == True:
-                        # if cita_actual.tratamiento_simple.get_tipo_categoria() == 'Simple':
-                        #     codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
-                        # else:
-                        #     codigo_tratamiento = cita_actual.tratamiento_solicitado.codigo_tratamiento
-                        confirmar_cita_tratamiento(cita.paciente.id_paciente, codigo_tratamiento)
+                        print("ENTRA POR AQUI")
+                        confirmar_cita_tratamiento(cita.id_cita)
                     if formulario.has_changed() and cita.estado == False: # Si se realizó algun cambio en el formulario y el estado se cambió a false
-                        desconfirmar_cita_tratamiento(cita.paciente.id_paciente, codigo_tratamiento, cita.id_cita)
+                        desconfirmar_cita_tratamiento(cita.id_cita)
                     messages.success(request, ('✅ ¡Guardado correctamente!'))            
                     return redirect("/agendamiento/listado_citas/", respuesta)                
             else:
@@ -875,10 +869,7 @@ def eliminar_cita(request, id_cita):
     try:
         citas = Cita.objects.get(id_cita=id_cita)
         citas.delete()
-        # listado_citas = Cita.objects.all()
-
         messages.success(request, "❌ Cita Eliminada")
-
         return redirect( "/agendamiento/listado_citas/")
 
     except Cita.DoesNotExist:
@@ -1102,7 +1093,7 @@ def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, id_cita):
     paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
     tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
 
-    tratamiento_agendado = TratamientoConfirmado.objects.create(
+    tratamiento_agendado = TratamientoConfirmado.objects.update_or_create(
                                                                 paciente=paciente_obt,
                                                                 tratamiento=tratamiento_obt,
                                                                 estado='Agendado',
@@ -1117,37 +1108,23 @@ def agendar_tratamiento_asignado(id_paciente, codigo_tratamiento, id_cita):
     else: # En caso de que el agendamiento se haya dado con un tratamiento que haya sido asignado por el odontologo
         paciente_tratamiento.delete()
 
-def confirmar_cita_tratamiento(id_paciente, codigo_tratamiento):
+def confirmar_cita_tratamiento(id_cita):
     """
     Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Confirmado'
     una vez que esl paciente confirma la cita, pero aun no paga por ella
     """
-    paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
-    tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-   
 
-    tratamiento_agendado = TratamientoConfirmado.objects.filter(
-                                                                paciente=paciente_obt,
-                                                                tratamiento=tratamiento_obt,
-                                                               
-    )
+    tratamiento_agendado = TratamientoConfirmado.objects.filter(id_cita=id_cita)
     tratamiento_agendado.update(estado='Confirmado')
 
 
-def desconfirmar_cita_tratamiento(id_paciente, codigo_tratamiento, id_cita):
+def desconfirmar_cita_tratamiento(id_cita):
     """
     Procedimiento que modifica el estado del registro de TratamientoConfirmado a estado='Agendado'
     si el estado de la Cita cambia a False
     """
-    paciente_obt = Paciente.objects.get(id_paciente=id_paciente)
-    tratamiento_obt = Tratamiento.objects.get(codigo_tratamiento=codigo_tratamiento)
-   
 
-    tratamiento_agendado = TratamientoConfirmado.objects.filter(
-                                                                paciente=paciente_obt,
-                                                                tratamiento=tratamiento_obt,
-                                                               
-    )
+    tratamiento_agendado = TratamientoConfirmado.objects.filter(id_cita=id_cita)
     tratamiento_agendado.update(estado='Agendado')
     cita = Cita.objects.filter(id_cita=id_cita).update(estado= False)
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
+from gestion_agendamiento.models import Cita
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento
 from gestion_tratamiento.models import Tratamiento
@@ -14,15 +15,14 @@ def cobrar_tratamiento(request, id_paciente):
 
     tratamientos_agendados = []
     precio_total = 0
-    id_tratamiento_confirmado = ''
     for tratamiento in listado_tratamientos:
         if str(tratamiento.get_paciente()) == str(id_paciente):
-            id_tratamiento_confirmado = tratamiento.id_tratamiento_conf
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             tratamiento_agendado = {
                                     'tratamiento':nuevo_tratamieto,
-                                    'id_tratamiento_confirmado' :id_tratamiento_confirmado
+                                    'id_tratamiento_confirmado' :tratamiento.id_tratamiento_conf,
+                                    'id':tratamiento.id_cita
             }
             precio_total = precio_total + nuevo_tratamieto.precio
             tratamientos_agendados.append(tratamiento_agendado)
@@ -37,7 +37,6 @@ def cobrar_tratamiento(request, id_paciente):
                                                         'tratamientos_agendados':tratamientos_agendados,
                                                         'persona':persona,
                                                         'precio_total':precio_total,
-                                                        'id_tratamiento_confirmado':id_tratamiento_confirmado,
                                                         'menor_edad':menor_edad,
                                                         'id_paciente':id_paciente
                                                     }
@@ -184,11 +183,13 @@ def eliminar_tratamiento_confirmado(request, id_tratamiento_confirmado):
     """
     En tabla TratamientoConfirmado el registro correspondiente al tratamiento que
     el paciente haya decidido no pagar (y selecciona en Eliminar), cambia el estado del 
-    TrattamientoConfirmado 'Agendado' y el estado de la Cita en 'Pendiente'
+    TratamientoConfirmado 'Agendado' y el estado de la Cita en 'Pendiente'
     """
-    paciente_tratamiento = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_confirmado)
-    id_paciente = paciente_tratamiento.paciente.get_id()
-    paciente_tratamiento.update(estado='Agendado')
+    tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_confirmado) #Obtiene una instancia de TratamientoConfirmado
+    id_paciente = tratamiento_conf.paciente.get_id()
+    tratamiento_act = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_confirmado) #Filtra un registro de la tabla Tratamiento confirmado para luego actualizarlo
+    tratamiento_act.update(estado='Agendado') # Realiza una actualización del registro obtenido en la fila de arriba
+    cita = Cita.objects.filter(id_cita=tratamiento_conf.id_cita).update(estado=False) #Filtra un registro de la tabla Cita y lo actualiza
     return redirect('/cobros/cobrar_tratamiento/%s'%(id_paciente))
 
 #---------------------------- LISTADOS -----------------------------#

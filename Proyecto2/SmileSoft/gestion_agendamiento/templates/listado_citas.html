@@ -130,13 +130,6 @@
                                                     {{busqueda}}
                                             {{busqueda}}
                                             <!--OPCIONES Modificar y Eliminar-->
-                                                {% comment %} <td>
-                                                    {%if perms.gestion_agendamiento.change_cita%}
-                                                    <a href="/tratamiento/listar_tratamientos_agendados/45" class="btn btn-info">
-                                                        <i class="bi bi-clipboard2-check" style="font-size:15px"> Tto. Asignado</i>
-                                                    </a>
-                                                    {%endif%}
-                                              </td> {% endcomment %}
                                               <td>
                                                     {%if perms.gestion_agendamiento.change_cita%}
                                                     <a href="/agendamiento/modificar_cita/{{c.id_cita}}" class="btn btn-primary">
