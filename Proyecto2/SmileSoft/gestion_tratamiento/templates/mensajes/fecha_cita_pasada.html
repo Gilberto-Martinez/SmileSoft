@@ -8,24 +8,22 @@
         <div class="card">
             <div class="card-body">
                 <br>
-                {%if id_tratamiento_conf%}
                 <center>
-                    <h3>¿Estas seguro que quieres confirmar 
-                        la realización de este tratamiento?
+                    <h3>
+                        <b>¡La fecha de atención de la cita ya ha pasado con relación a la fecha actual!</b>
                     </h3>
                     <br>
-                    <h4>Una vez confirmada pasará al historial clinico del paciente.</h4>
+                    <h4>¿Desea reagendar la cita?</h4>
                     <br>
-                    <a class="btn btn-primary" href ="/tratamiento/confirmar_tratamientos/{{id_tratamiento_conf}}">
+                    <a class="btn btn-primary" href ="/agendamiento/modificar_cita/{{id_cita}}">
                         <i class="bi bi-check2-circle"></i>
-                        Estoy seguro
+                        Si
                     </a>
-                    <a class= "btn btn-danger" href="/tratamiento/listar_tratamientos_pendientes/">
+                    <a class= "btn btn-danger" onclick="history.back()">
                         <i class="bi bi-x-circle"></i>
-                        Cancelar
+                        No
                     </a>
                 </center>
-                {%endif%}
                 <br>
             </div>
         </div>

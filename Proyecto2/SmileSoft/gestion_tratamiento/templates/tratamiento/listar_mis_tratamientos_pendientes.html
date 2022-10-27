@@ -13,8 +13,15 @@
         <div class="card">
             <div class="card-body">
                 <center> 
-                    <h2>  Tratamientos pendientes </h2>
-                      <h3>  <i class="bi bi-clock-history"></i> </h3>
+                    <h2 style="color: rgba(13, 0, 255, 0.886);"> 
+                        <b>
+                            <i class="bi bi-clock-history"></i>
+                            Tratamientos pendientes
+                        </b>
+                    </h2>
+                    {%if tratamientos_pendientes%}
+                        <h5>A ser realizados por el Odontólogo: <b>{{profesional}}</b></h5>
+                    {%endif%}
                 </center>
                 <br>
                 <table>
@@ -30,7 +37,6 @@
                                     <th>Tratamiento </th>
                                     <th>Fecha</th>
                                     <th>Hora</th>
-                                    <th>Odontólogo</th>
                                     <th>Acciones</th>
                                 {%endif%}
                             </tr>
@@ -46,7 +52,6 @@
                                             <td >{{t.nombre_tratamiento}}</td>
                                             <td >{{t.fecha_atencion}}</td>
                                             <td >{{t.hora}}</td>
-                                            <td >{{t.profesional}}</td>
                                             <!-- Eliminar-->
                                             <!-- {%if perms.gestion_tratamiento.delete_tratamiento%} -->
                                                 <td>
@@ -66,7 +71,7 @@
                                     <center>
                                         <h5>
                                             <i class="bi bi-exclamation-triangle-fill"></i>
-                                            <i>No hay tratamientos pendientes</i> 
+                                            <i>Usted no tiene tratamientos pendientes</i> 
                                             <i class="bi bi-exclamation-triangle-fill"></i>
                                         </h5>
                                     </center>
