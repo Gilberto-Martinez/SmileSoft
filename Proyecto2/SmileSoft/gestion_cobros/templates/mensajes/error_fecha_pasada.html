@@ -1,0 +1,26 @@
+{%extends 'panel_control/base.html'%}
+
+{%load static%}
+
+{%block content%}
+<div class="col-6 col-md-6 offset-md-3">
+    <div class="card">
+        <div class="card-body">
+            <center>
+                <h2>
+                    <b>¡La fecha de atención de la cita ya ha pasado con relación a la fecha actual!</b>
+                </h2>
+                <h5>¿Desea modificarla?</h5>
+            </center>
+            <br>
+            <center>
+                <a type="submit" class="btn btn-success" href="/agendamiento/modificar_cita/{{id_cita}}">
+                    <i class="bi bi-check2-square"></i>
+                    OK
+                </a>
+            </center>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

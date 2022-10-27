@@ -1,5 +1,7 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
+from gestion_agendamiento.models import Cita
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento
 from gestion_tratamiento.models import Tratamiento
@@ -14,15 +16,14 @@ def cobrar_tratamiento(request, id_paciente):
 
     tratamientos_agendados = []
     precio_total = 0
-    id_tratamiento_confirmado = ''
     for tratamiento in listado_tratamientos:
         if str(tratamiento.get_paciente()) == str(id_paciente):
-            id_tratamiento_confirmado = tratamiento.id_tratamiento_conf
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             tratamiento_agendado = {
                                     'tratamiento':nuevo_tratamieto,
-                                    'id_tratamiento_confirmado' :id_tratamiento_confirmado
+                                    'id_tratamiento_confirmado' :tratamiento.id_tratamiento_conf,
+                                    'id_cita':tratamiento.id_cita
             }
             precio_total = precio_total + nuevo_tratamieto.precio
             tratamientos_agendados.append(tratamiento_agendado)
@@ -37,7 +38,6 @@ def cobrar_tratamiento(request, id_paciente):
                                                         'tratamientos_agendados':tratamientos_agendados,
                                                         'persona':persona,
                                                         'precio_total':precio_total,
-                                                        'id_tratamiento_confirmado':id_tratamiento_confirmado,
                                                         'menor_edad':menor_edad,
                                                         'id_paciente':id_paciente
                                                     }
@@ -51,29 +51,58 @@ def registrar_cobro(request, numero_documento):
 
     if precio_total>0:
         cobro_contado = CobroContado.objects.create(
-                                            paciente=paciente,
-                                            numero_documento= numero_documento,
-                                            razon_social=nombre,
-                                            monto_total=precio_total
+                                                paciente=paciente,
+                                                numero_documento= numero_documento,
+                                                razon_social=nombre,
+                                                monto_total=precio_total
+                                            )
+
+        tratamientos_confirmados = obtener_tratamientos(numero_documento)
+        detalle_cobro_nuevo = DetalleCobroContado.objects.create(
+                                                            cobro=cobro_contado,
+                                                            # tratamientos=tratamientos_confirmados
         )
+        # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
+        for tratamiento_conf in tratamientos_confirmados:
+            print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
+            # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
+            detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
+                                                detalle_cobro=detalle_cobro_nuevo,
+                                                tratamiento = tratamiento_conf
+            )
+        pagar_tratamientos(numero_documento)
+    
     else:
         return redirect("/cobros/error_cobro/")
 
-    tratamientos_confirmados = obtener_tratamientos(numero_documento)
-    detalle_cobro_nuevo = DetalleCobroContado.objects.create(
-                                                        cobro=cobro_contado,
-                                                        # tratamientos=tratamientos_confirmados
-    )
-    # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
-    for tratamiento_conf in tratamientos_confirmados:
-        print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
-        # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
-        detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
-                                            detalle_cobro=detalle_cobro_nuevo,
-                                            tratamiento = tratamiento_conf
-        )
-    pagar_tratamientos(numero_documento)
     return redirect("/cobros/mensaje_confirmacion_cobro/")
+
+
+def verificar_fecha_hora_cita(request, numero_documento):
+    paciente = Paciente.objects.get(numero_documento=numero_documento)
+    tratamientos_conf = TratamientoConfirmado.objects.all()
+    now = datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+    respuesta = False
+    for tratamiento_conf in tratamientos_conf:
+        if tratamiento_conf.paciente.id_paciente == paciente.id_paciente and tratamiento_conf.estado == 'Confirmado':
+            id_cita = tratamiento_conf.id_cita
+            cita = Cita.objects.get(id_cita=id_cita)
+            if cita.fecha >= fecha_actual:
+                if cita.hora_atencion.hora > hora_actual:
+                    respuesta = True
+                else:
+                    return render(request, 'mensajes/error_hora_pasada.html',{'id_cita':id_cita})
+            else:
+                return render(request, 'mensajes/error_fecha_pasada.html',{'id_cita':id_cita})
+                    
+    if respuesta == True:
+        return redirect("/cobros/registrar_cobro/%s" %(numero_documento))
+        
+
+    print('respuesta: ',respuesta)
+    return render(request, 'mensajes/pagina_error.html')
 
 
 def registrar_cobro_pendiente(numero_documento):
@@ -148,6 +177,7 @@ def pagar_tratamientos(cedula):
             id_tratamiento_con = tratamiento_conf.id_tratamiento_conf
             tratamiento_pag = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_con).update(estado='Pagado')
 
+
 def ver_detalle_cobro(request, id_cobro_contado):
     cobro = CobroContado.objects.get(id_cobro_contado=id_cobro_contado)
     detalle_cobro = DetalleCobroContado.objects.get(cobro=id_cobro_contado)
@@ -184,11 +214,13 @@ def eliminar_tratamiento_confirmado(request, id_tratamiento_confirmado):
     """
     En tabla TratamientoConfirmado el registro correspondiente al tratamiento que
     el paciente haya decidido no pagar (y selecciona en Eliminar), cambia el estado del 
-    TrattamientoConfirmado 'Agendado' y el estado de la Cita en 'Pendiente'
+    TratamientoConfirmado 'Agendado' y el estado de la Cita en 'Pendiente'
     """
-    paciente_tratamiento = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_confirmado)
-    id_paciente = paciente_tratamiento.paciente.get_id()
-    paciente_tratamiento.update(estado='Agendado')
+    tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_confirmado) #Obtiene una instancia de TratamientoConfirmado
+    id_paciente = tratamiento_conf.paciente.get_id()
+    tratamiento_act = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_confirmado) #Filtra un registro de la tabla Tratamiento confirmado para luego actualizarlo
+    tratamiento_act.update(estado='Agendado') # Realiza una actualización del registro obtenido en la fila de arriba
+    cita = Cita.objects.filter(id_cita=tratamiento_conf.id_cita).update(estado=False) #Filtra un registro de la tabla Cita y lo actualiza
     return redirect('/cobros/cobrar_tratamiento/%s'%(id_paciente))
 
 #---------------------------- LISTADOS -----------------------------#
@@ -230,5 +262,5 @@ class ErrorCobro(TemplateView):
     template_name = "mensajes/error_cobro.html"
 
 class ConfirmacionCobro(TemplateView):
-    template_name = "mensajes/confirmar_cobro.html"
+    template_name = "mensajes/confirmacion_de_cobro.html"
 

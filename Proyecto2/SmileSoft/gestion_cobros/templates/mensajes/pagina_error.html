@@ -1,0 +1,26 @@
+{%extends 'panel_control/base.html'%}
+
+{%load static%}
+
+{%block content%}
+<div class="col-6 col-md-6 offset-md-3">
+    <div class="card">
+        <div class="card-body">
+            <center>
+                <h2>
+                    <b>¡Hubo un error!</b>
+                </h2>
+                <h5>Por favor. Intentelo de nuevo.</h5>
+            </center>
+            <br>
+            <center>
+                <a type="submit" class="btn btn-success" onclick="history.back()">
+                    <i class="bi bi-check2-square"></i>
+                    OK
+                </a>
+            </center>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
