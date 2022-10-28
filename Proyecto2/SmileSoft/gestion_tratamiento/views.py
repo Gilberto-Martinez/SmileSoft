@@ -19,6 +19,7 @@ from gestion_administrativo.forms import *
 from gestion_historial_clinico.views import guardar_historial_clinico
 from gestion_agendamiento.models import Cita
 
+
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
 def agregar_tratamiento (request):
@@ -338,7 +339,17 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 
 
 def ver_mis_tratamientos_pendientes(request, numero_documento):
+    
     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
+      #'filtro de fecha, 
+    filtro = request.POST.get("f")
+  
+    if filtro:
+            print("Buscado AQUI", filtro)
+            tratamientos_pendientes = Cita.objects.filter(
+                Q(fecha__icontains=filtro))
+
+    
     tratamientos_pendientes = []
     odontologo = Persona.objects.get(numero_documento=numero_documento)
     profesional = odontologo.nombre+" "+odontologo.apellido
