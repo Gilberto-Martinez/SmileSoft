@@ -89,13 +89,16 @@ def verificar_fecha_hora_cita(request, numero_documento):
         if tratamiento_conf.paciente.id_paciente == paciente.id_paciente and tratamiento_conf.estado == 'Confirmado':
             id_cita = tratamiento_conf.id_cita
             cita = Cita.objects.get(id_cita=id_cita)
-            if cita.fecha >= fecha_actual:
-                if cita.hora_atencion.hora > hora_actual:
-                    respuesta = True
-                else:
-                    return render(request, 'mensajes/error_hora_pasada.html',{'id_cita':id_cita})
+            if cita.fecha > fecha_actual:
+                respuesta = True
             else:
-                return render(request, 'mensajes/error_fecha_pasada.html',{'id_cita':id_cita})
+                if cita.fecha == fecha_actual:
+                    if cita.hora_atencion.hora > hora_actual:
+                        respuesta = True
+                    else:
+                        return render(request, 'mensajes/error_hora_pasada.html',{'id_cita':id_cita})
+                else:
+                    return render(request, 'mensajes/error_fecha_pasada.html',{'id_cita':id_cita})
                     
     if respuesta == True:
         return redirect("/cobros/registrar_cobro/%s" %(numero_documento))
