@@ -20,6 +20,7 @@ urlpatterns = [
     path('agregar_cita_usuario/<int:id_paciente>/',addcita_cita_usuario, name="agregar_cita_usuario"),
     path('modificar_cita/<int:id_cita>', modificar_cita, name="modificar_cita"),
     path('visualizar_cita/<int:id_cita>', visualizar_cita, name="visualizar_cita"),
+    path('visualizar_datos_cita/<int:id_cita>', visualizar_datos_cita, name="visualizar_datos_cita"),
     path('modificar_cita_usuario/<int:id_cita>', modificar_cita_usuario, name="modificar_cita_usuario"),
     path('eliminar_cita/<int:id_cita>', eliminar_cita, name="eliminar_cita"),
     path('pacientes_cita/', listar_citapaciente, name="pacientes_cita"),

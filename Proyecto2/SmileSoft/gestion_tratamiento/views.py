@@ -167,9 +167,9 @@ def listar_tratamientos_pendientes(request):
         nombre_tratamiento = tratamiento.nombre_tratamiento
         cita = Cita.objects.get(id_cita=tratamiento_conf.id_cita)
         fecha_atencion = cita.fecha
-        
         hora = cita.hora_atencion.hora
         profesional = cita.profesional.numero_documento.nombre+" "+cita.profesional.numero_documento.apellido
+        fecha_pasada = verificar_fecha_hora_agendamiento(cita.id_cita)
         tratamiento_pendiente = {
                                 'id_tratamiento_conf':id_tratamiento_conf,
                                 'numero_documento':numero_documento,
@@ -179,6 +179,8 @@ def listar_tratamientos_pendientes(request):
                                 'fecha_atencion':fecha_atencion,
                                 'hora':hora,
                                 'profesional':profesional,
+                                'fecha_pasada':fecha_pasada,
+                                'id_cita':cita.id_cita
                                 }
         tratamientos_pendientes.append(tratamiento_pendiente)
     return render (request,"tratamiento/listar_tratamientos_pendientes.html",{
@@ -340,8 +342,8 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 def ver_mis_tratamientos_pendientes(request, numero_documento):
     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
     tratamientos_pendientes = []
-    odontologo = Persona.objects.get(numero_documento=numero_documento)
-    profesional = odontologo.nombre+" "+odontologo.apellido
+    odontologo = EspecialistaSalud.objects.get(numero_documento=numero_documento)
+    profesional = odontologo.numero_documento.nombre+" "+odontologo.numero_documento.apellido
 
     for tratamiento_conf in tratamientos_conf:
         id_cita = tratamiento_conf.id_cita
@@ -350,7 +352,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
         if str(cita.profesional.numero_documento) == str(numero_documento):
             id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
             paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
-            numero_documento = paciente.numero_documento
+            cedula = paciente.numero_documento
             nombre = paciente.numero_documento.nombre
             apellido = paciente.numero_documento.apellido
             tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_conf.get_tratamiento())
@@ -358,15 +360,17 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
             # cita = Cita.objects.get(id_cita=tratamiento_conf.id_cita)
             fecha_atencion = cita.fecha
             hora = cita.hora_atencion.hora
-            print('Nombre del Odontologo')
+            fecha_pasada = verificar_fecha_hora_agendamiento(cita.id_cita)
             tratamiento_pendiente = {
                                     'id_tratamiento_conf':id_tratamiento_conf,
-                                    'numero_documento':numero_documento,
+                                    'numero_documento':cedula,
                                     'nombre':nombre,
                                     'apellido':apellido,
                                     'nombre_tratamiento':nombre_tratamiento,
                                     'fecha_atencion':fecha_atencion,
                                     'hora':hora,
+                                    'fecha_pasada':fecha_pasada,
+                                    'id_cita':id_cita,
                                     }
             tratamientos_pendientes.append(tratamiento_pendiente)
     return render (request,"tratamiento/listar_mis_tratamientos_pendientes.html",{
@@ -374,6 +378,30 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
                                                                             'profesional':profesional,
                                                                             }
                     )
+
+def verificar_fecha_hora_agendamiento(id_cita):
+    cita = Cita.objects.get(id_cita=id_cita)
+    now = datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+
+    fecha_cita = str(cita.fecha)
+    fecha_cita = datetime.strptime(fecha_cita, "%Y-%m-%d")
+    resultado = relativedelta( fecha_actual, fecha_cita)
+    horas = resultado.hours
+
+    respuesta = False
+
+    # print('Diferencia entre horas: ', horas)
+
+    if cita.fecha < fecha_actual:
+        respuesta = True
+    else:
+        if cita.fecha == fecha_actual:
+            # if cita.hora_atencion.hora 
+            pass
+
+    return respuesta
 
 # """ #BORRADOR
 # class InsumoAsignado(UpdateView):

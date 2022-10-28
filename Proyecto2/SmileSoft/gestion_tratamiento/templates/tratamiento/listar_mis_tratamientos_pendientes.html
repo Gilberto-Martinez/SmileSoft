@@ -55,11 +55,17 @@
                                             <!-- Eliminar-->
                                             <!-- {%if perms.gestion_tratamiento.delete_tratamiento%} -->
                                                 <td>
-                                                    <!-- <a href="/tratamiento/realizar_pregunta/{t.id}" class="btn btn-success"> -->
-                                                    <a href="/tratamiento/realizar_pregunta/{{t.id_tratamiento_conf}}" class="btn btn-success">
-                                                        <i class="bi bi-check2-circle" ></i> 
-                                                        Confirmar
-                                                    </a>
+                                                    {%if t.fecha_pasada%}
+                                                       <a href="/agendamiento/modificar_cita/{{t.id_cita}}" class="btn btn-warning">
+                                                            <i class="bi bi-check2-circle" ></i> 
+                                                            Reagendar
+                                                        </a>
+                                                    {%else%}
+                                                        <a href="/tratamiento/realizar_pregunta/{{t.id_tratamiento_conf}}" class="btn btn-success">
+                                                            <i class="bi bi-check2-circle" ></i> 
+                                                            Confirmar
+                                                        </a>
+                                                    {%endif%}
                                                 </td>
                                             <!-- {%endif%} -->
                                         </tr>

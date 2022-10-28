@@ -801,6 +801,36 @@ def visualizar_cita(request, id_cita):
 
     return render(request, "visualizar_cita.html", data)
 
+
+# VER EN SOLO LECTURA
+def visualizar_datos_cita(request, id_cita):
+    """
+    Permite visualizar los datos de la cita cuyo tratatmiento ya haya sido pagado
+    (TratamientoConfirmado con estado='Pagado')y se encuentra a la espera de ser realizada 
+    (TratamientoConfirmado con estado='Realizado') pero en solo lectura, es decir, sin poder modificarlos
+    """
+    cita = Cita.objects.get(id_cita=id_cita)
+    profesional = cita.profesional.numero_documento.nombre +" "+ cita.profesional.numero_documento.apellido
+    hora = cita.hora_atencion.hora
+    cedula = cita.paciente.numero_documento
+    persona = Persona.objects.get(numero_documento=cedula)
+    reservado=cita.estado
+    tratamiento_solicitado= cita.tratamiento_solicitado or cita.tratamiento_simple
+    
+    data = {
+        'form': CitaPagadaForm(instance=cita),
+        'persona': persona,
+        'estado':reservado,
+        'tratamiento_solicitado': tratamiento_solicitado,
+        'profesional':profesional,
+        'hora':hora,
+    }
+
+    if request.method == "POST":
+            formulario = CitaPagadaForm(data=request.POST, instance=cita, files=request.FILES)
+
+    return render(request, "visualizar_datos_cita.html", data)
+
 # <--(NO BORRAR, no se usa pero no Borren) ->Modificar cita DE UNA PERSONA SIN USUARIO o MENOR DE EDAD-->|A nivel SISTEMA 
 def modificar_cita_usuario(request, id_cita):
     # try:    
