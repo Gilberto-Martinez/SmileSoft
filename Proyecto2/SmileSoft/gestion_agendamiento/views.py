@@ -754,7 +754,7 @@ def modificar_cita(request, id_cita):
                     cita.tratamiento_solicitado= tratamiento_tipo
                     cita.save()
                     codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
-                    print("el estado que GUARDA ES", cita.estado)
+                   # print("el estado que GUARDA ES", cita.estado)
                     if cita.estado == True:
                         print("ENTRA POR AQUI")
                         confirmar_cita_tratamiento(cita.id_cita)
