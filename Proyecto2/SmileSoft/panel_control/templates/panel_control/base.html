@@ -251,9 +251,13 @@
                                                   <li>
                                                   <!--FALTA*******************EL PERMISO DE ESTE ITEM DEBE SER INTERMEDIO -->
                                                   {% comment %} {%if perms.gestion_tratamiento.view_tratamientopendiente%} {% endcomment %}
-                                                    <a class="dropdown-item" href="/tratamiento/listar_tratamientos_pendientes/">• Tratamientos pendientes</a>
+                                                    <a class="dropdown-item" href="/tratamiento/listar_tratamientos_pendientes/">• Tratamientos a realizar</a>
                                                   </li>
                                                   {% comment %} {%endif%} {% endcomment %}
+                                                  <!--Debe tener un permiso solo para el rol Odontologo -->
+                                                  <li>
+                                                      <a class="dropdown-item" href="/tratamiento/ver_mis_tratamientos_pendientes/{{user.numero_documento}}">• Mis tratamientos a realizar</a>
+                                                    </li>
                                                 </ul>
                                               </li>
                                               {% endif %}

@@ -1,8 +1,6 @@
+from datetime import datetime
 from asyncio.windows_events import NULL
 from django.shortcuts import redirect, render
-
-# Create your views here.
-from email.charset import QP
 from django.shortcuts import render
 from gestion_roles.forms import *
 from webapp.forms import *
@@ -19,7 +17,7 @@ from django.views.generic import ListView, CreateView, TemplateView, UpdateView,
 from gestion_administrativo.models import PacienteTratamientoAsignado
 from gestion_administrativo.forms import *
 from gestion_historial_clinico.views import guardar_historial_clinico
-# from gestion_inventario_insumos.views import asignar_insumos
+from gestion_agendamiento.models import Cita
 
 # ***Vista de Agregar Rol
 # @permission_required('gestion_tratamiento.agregar_tratamiento', login_url="/panel_control/error/",)
@@ -167,12 +165,20 @@ def listar_tratamientos_pendientes(request):
         apellido = paciente.numero_documento.apellido
         tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_conf.get_tratamiento())
         nombre_tratamiento = tratamiento.nombre_tratamiento
+        cita = Cita.objects.get(id_cita=tratamiento_conf.id_cita)
+        fecha_atencion = cita.fecha
+        
+        hora = cita.hora_atencion.hora
+        profesional = cita.profesional.numero_documento.nombre+" "+cita.profesional.numero_documento.apellido
         tratamiento_pendiente = {
                                 'id_tratamiento_conf':id_tratamiento_conf,
                                 'numero_documento':numero_documento,
                                 'nombre':nombre,
                                 'apellido':apellido,
-                                'nombre_tratamiento':nombre_tratamiento
+                                'nombre_tratamiento':nombre_tratamiento,
+                                'fecha_atencion':fecha_atencion,
+                                'hora':hora,
+                                'profesional':profesional,
                                 }
         tratamientos_pendientes.append(tratamiento_pendiente)
     return render (request,"tratamiento/listar_tratamientos_pendientes.html",{
@@ -330,6 +336,45 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 
     return render("tratamiento/mostrar_tratamientos_asignados.html", data)
 
+
+def ver_mis_tratamientos_pendientes(request, numero_documento):
+    tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
+    tratamientos_pendientes = []
+    odontologo = Persona.objects.get(numero_documento=numero_documento)
+    profesional = odontologo.nombre+" "+odontologo.apellido
+
+    for tratamiento_conf in tratamientos_conf:
+        id_cita = tratamiento_conf.id_cita
+        cita = Cita.objects.get(id_cita= id_cita)
+        
+        if str(cita.profesional.numero_documento) == str(numero_documento):
+            id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
+            paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
+            numero_documento = paciente.numero_documento
+            nombre = paciente.numero_documento.nombre
+            apellido = paciente.numero_documento.apellido
+            tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_conf.get_tratamiento())
+            nombre_tratamiento = tratamiento.nombre_tratamiento
+            # cita = Cita.objects.get(id_cita=tratamiento_conf.id_cita)
+            fecha_atencion = cita.fecha
+            hora = cita.hora_atencion.hora
+            print('Nombre del Odontologo')
+            tratamiento_pendiente = {
+                                    'id_tratamiento_conf':id_tratamiento_conf,
+                                    'numero_documento':numero_documento,
+                                    'nombre':nombre,
+                                    'apellido':apellido,
+                                    'nombre_tratamiento':nombre_tratamiento,
+                                    'fecha_atencion':fecha_atencion,
+                                    'hora':hora,
+                                    }
+            tratamientos_pendientes.append(tratamiento_pendiente)
+    return render (request,"tratamiento/listar_mis_tratamientos_pendientes.html",{
+                                                                            'tratamientos_pendientes':tratamientos_pendientes,
+                                                                            'profesional':profesional,
+                                                                            }
+                    )
+
 # """ #BORRADOR
 # class InsumoAsignado(UpdateView):
 #     model = Tratamiento
@@ -404,6 +449,27 @@ def confirmar_tratamiento(request, id_tratamiento_conf):
 
 # ------------- Pantallas de mensajes ------------------------------- #
 def preguntar_confirmacion(request,id_tratamiento_conf):
+    tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
+    cita = Cita.objects.get(id_cita=tratamiento_conf.id_cita)
+
+    now = datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+
+    fecha_cita = str(cita.fecha)
+    fecha_cita = datetime.strptime(fecha_cita, "%Y-%m-%d")
+    resultado = relativedelta( fecha_actual, fecha_cita)
+    horas = resultado.hours
+
+    print('Diferencia entre horas: ', horas)
+
+    if cita.fecha < fecha_actual:
+        return render(request, 'mensajes/fecha_cita_pasada.html',{'id_cita':tratamiento_conf.id_cita})
+    else:
+        if cita.fecha == fecha_actual:
+            # if cita.hora_atencion.hora 
+            pass
+        
     return redirect( '/tratamiento/mostrar_mensaje_confirmacion/%s' %(id_tratamiento_conf))
 
 def mostrar_mensaje_confirmacion(request,id_tratamiento_conf):

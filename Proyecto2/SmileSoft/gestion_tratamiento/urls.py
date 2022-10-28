@@ -18,8 +18,7 @@ urlpatterns = [
             path('listar_tratamientos_pendientes/', listar_tratamientos_pendientes, name="listar_tratamientos_pendientes"),
             path('realizar_pregunta/<str:id_tratamiento_conf>', preguntar_confirmacion, name="realizar_pregunta"),
             path('confirmar_tratamientos/<str:id_tratamiento_conf>', confirmar_tratamiento, name="confirmar_tratamientos"),
-            path('mostrar_mensaje_confirmacion/<str:id_tratamiento_conf>', mostrar_mensaje_confirmacion, name="mostrar_mensaje_confirmacion/"),
+            path('mostrar_mensaje_confirmacion/<str:id_tratamiento_conf>', mostrar_mensaje_confirmacion, name="mostrar_mensaje_confirmacion"),
             # path('tratamiento_asignado_exitoso/', mostrar_mensaje_confirmacion, name="mostrar_mensaje_confirmacion/"),
-           
-            #path('asignar_insumos/<int:codigo_tratamiento>', asignar_insumos, name="asignar_insumos"),
+            path('ver_mis_tratamientos_pendientes/<numero_documento>', ver_mis_tratamientos_pendientes, name="ver_mis_tratamientos_pendientes"),
 ]
