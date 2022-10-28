@@ -728,7 +728,7 @@ def modificar_cita(request, id_cita):
                                     else:
                                     # Se da Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos EN OTRA CITA YA REGISTRADA
                                         # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual
-                                        if paciente == c.paciente and cita.fecha == c.fecha and cita.hora_atencion == c.hora_atencion and cita.profesional != c.profesional :
+                                        if paciente == c.paciente and cita.fecha == c.fecha and cita.hora_atencion == c.hora_atencion and cita.profesional != c.profesional and reservado==False:
                                             respuesta = "Excedido"
                                             print(
                                                 "Llega a tener diferentes odontologos,sin importar si son tratamientos iguales o distintos")

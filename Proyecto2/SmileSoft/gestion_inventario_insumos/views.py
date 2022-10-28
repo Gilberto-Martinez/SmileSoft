@@ -9,6 +9,7 @@ from unicodedata import name
 from django.shortcuts import render
 from httplib2 import RETRIES
 from urllib3 import encode_multipart_formdata
+from gestion_inventario_insumos.utils import render_to_pdf
 #from Proyecto2.SmileSoft.gestion_inventario_insumos.models import Insumo
 # from gestion_roles.models import Rol
 from gestion_roles.forms import *
@@ -17,7 +18,7 @@ from webapp.forms import *
 from django.contrib import messages
 from django.http import (
     Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
-from django.views.generic.list import ListView
+from django.views.generic.list import ListView, View
 from django.contrib.postgres.search import SearchQuery, SearchVector
 from django.db.models import Q 
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
@@ -58,7 +59,7 @@ def agregar_insumo (request):
 #***Vista de listar Insumo
 
 
-@permission_required('gestion_inventario_iinsumos.listar_insumo', login_url="/panel_control/error/",)
+@permission_required('gestion_inventario_insumos.listar_insumo', login_url="/panel_control/error/",)
 #funciona pero no es lista
 # def listar_insumo(request):
     
@@ -106,9 +107,60 @@ def listar_insumo(request):
         insumos.append(lista_insumos)
 
     return render(request, "insumo/listar_insumos.html", {'insumos': insumos})
+  
+#----inicio-------------------------------------------------------------#
+#                     VISTA DE LISTA CLONADA  (lista simple para generar pdf)
+#-----------------------------------------------------------------------#
+def listar_insumo_simple(request):
+    busqueda = request.POST.get("q")
+    listado_insumos = Insumo.objects.all()
+
+    if busqueda:
+        listado_insumos = Insumo.objects.filter(
+            Q(nombre_insumo__icontains=busqueda))
+        print("AQUI ESTA ENTRANDO Y buscando", {
+              'listado_insumos': listado_insumos})
+    else:
+        print("Buscado AQUI",)
+
+    insumos = []
+    for listado in listado_insumos:
+        insumo = Insumo.objects.get(codigo_insumo=listado.codigo_insumo)
+        codigo_insumo = insumo.codigo_insumo
+        nombre = insumo.nombre_insumo
+        # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
+        detalle = insumo.descripcion_insumo
+        monto = '{:,}'.format(insumo.precio).replace(',', '.')
+
+        lista_insumos = {
+            'codigo_insumo': codigo_insumo,
+            'nombre_insumo': nombre,
+            'descripcion_insumo': detalle,
+            'precio': monto,
+        }
+
+        insumos.append(lista_insumos)
+
+    # return render(request, "insumo/listar_insumos.html", {'insumos': insumos})
+    return render(request, "insumo/insumo_lista.html", {'insumos': insumos})
+
+
+  
+#-----Es la vista que LLAMA A LA FUNCION PARA GENERAR PDF
+class ListaInsumoPDF(View):
+    def get(self, request, *args, **kwargs):
+        insumos = Insumo.objects.all()
+        data={
+
+           'insumos':insumos
+        }
+        pdf=render_to_pdf('insumo/insumo_lista.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+#----fin-------------------------------------------------------------#
+#     
+#-----------------------------------------------------------------------#
    
-
-
 # ***Vista de Modificar Insumos
 
 
