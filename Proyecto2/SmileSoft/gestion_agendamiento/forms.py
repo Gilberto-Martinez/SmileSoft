@@ -83,6 +83,34 @@ class CitaRealizadoForm(forms.ModelForm):
         ]
 
 
+class CitaPagadaForm(forms.ModelForm):
+    fecha_meses = (datetime.date.today()) + timedelta(365/2)
+    fecha = forms.DateField(
+        label='Fecha de consulta:',
+        widget=forms.NumberInput(attrs={
+            'type': 'date',
+            'min': "2022-01-01",
+            'max': str(fecha_meses),
+            'readonly':True
+        }
+        )
+    )
+    estado = forms.BooleanField(label='Confirmado',
+                                widget=forms.CheckboxInput(attrs={'readonly':True})
+                                )
+
+    class Meta:
+        model = Cita
+        fields = [
+            # 'tratamiento_solicitado',
+            'fecha',
+            # 'hora',
+            'hora_atencion',
+            'profesional',
+            'estado',
+        ]
+
+
 class CitaForm2(forms.ModelForm):
     fecha = forms.DateField(
         label='Fecha de consulta: ', widget=forms.NumberInput(attrs={'type': 'date'}))
