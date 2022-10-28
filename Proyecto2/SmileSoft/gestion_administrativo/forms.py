@@ -1,10 +1,4 @@
 #from _typeshed import Self
-from cProfile import label
-from multiprocessing.sharedctypes import Value
-from pickle import TRUE
-from re import VERBOSE
-from tkinter import Widget
-from tkinter.font import BOLD
 from django import forms
 from django.contrib import messages
 from .models import *
@@ -14,7 +8,6 @@ from gestion_administrativo.models import Paciente
 from django import forms
 from webapp.models import Usuario
 from .models import *
-from django.utils.translation import gettext_lazy as _
 from datetime import date, datetime
 import dateutil.relativedelta
 from dateutil.relativedelta import relativedelta
