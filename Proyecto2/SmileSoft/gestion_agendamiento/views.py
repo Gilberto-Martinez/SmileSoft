@@ -726,13 +726,15 @@ def modificar_cita(request, id_cita):
                                     else:
                                     # Se da Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos EN OTRA CITA YA REGISTRADA
                                         # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual
-                                        if paciente == c.paciente and cita.fecha == c.fecha and cita.hora_atencion == c.hora_atencion and cita.profesional != c.profesional and reservado==False:
-                                            respuesta = "Excedido"
-                                            print(
-                                                "Llega a tener diferentes odontologos,sin importar si son tratamientos iguales o distintos")
-                                            messages.success(
-                                                request, ('Ya se ha reservado en la misma fecha, pero con un odontólogo distinto'))
-                                            return render(request, 'cita_noAutoagendada.html')
+
+                                        if paciente == c.paciente and cita.fecha == c.fecha and cita.hora_atencion == c.hora_atencion and cita.profesional != c.profesional :
+                                            respuesta = "NO EXISTE"
+                                            print("ESTA CAMBIANDO DE PROFESIONAL")
+                                            # print(
+                                            #     "Llega a tener diferentes odontologos,sin importar si son tratamientos iguales o distintos")
+                                            messages.success(request, ('El odontólogo ha sido cambiado'))
+                                            # return render(request, 'cita_noAutoagendada.html')
+
                         else:
                             if nro_semana >= 5:
                                 #"Si es fin de semana emite el msj"
