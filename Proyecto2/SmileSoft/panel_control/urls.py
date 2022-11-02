@@ -14,6 +14,8 @@ urlpatterns= [
     path('corona_dental/', views.corona_dental, name=" corona_dental"),
     path('blanqueamiento/', views.blanqueamiento, name="blanqueamiento"),
     path('extracciones/', views.extracciones, name="extracciones"),
+
+    path('pagina_error/', views.mostrar_pagina_error, name="extracciones"),
     
     # path('gestion_roles/', views.gestion_roles , name="gestion_roles"),
     # path('gestion_administrativo/', views.gestion_administrativo, name="gestion_administrativo"),

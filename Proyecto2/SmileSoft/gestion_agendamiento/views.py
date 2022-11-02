@@ -773,6 +773,183 @@ def modificar_cita(request, id_cita):
      return redirect("/agendamiento/modificar_cita_usuario/%s" %(id_cita))
 
 
+def modificar_cita2(request, id_cita):
+      
+    """ Esta función permite Modificar del lado Sistema, es la modificación principal"""
+    try:
+        cita_actual = Cita.objects.get(id_cita=id_cita)
+        cedula = cita_actual.paciente.numero_documento
+        persona = Persona.objects.get(numero_documento=cedula)
+        paciente = Paciente.objects.get(numero_documento=cedula)
+        nombre = persona.nombre + ' ' + persona.apellido
+        reservado=cita_actual.estado
+        tratamiento_solicitado= cita_actual.tratamiento_solicitado or cita_actual.tratamiento_simple
+       
+        data = {
+            'form': CitaUpdateForm(instance=cita_actual),
+            'persona': persona,
+            'estado':reservado,
+            'tratamiento_solicitado': tratamiento_solicitado,
+        }
+
+        if request.method == "POST":
+            formulario = CitaUpdateForm(data=request.POST, instance=cita_actual, files=request.FILES)
+            respuesta= "NO EXISTE"
+
+            if formulario.is_valid():
+                if formulario.has_changed(): # Si hay cambios en el formulario
+                    cita = formulario.save(commit=False)
+                    citas= Cita.objects.all()
+                    # reservado=cita.estado
+                    tratamiento_tipo= cita.tratamiento_solicitado 
+                    #---Datos---#
+                    dia=str (cita.fecha)
+                    nro_semana = datetime.datetime.strptime(dia,'%Y-%m-%d').weekday()
+                    dia = calendar.day_name[nro_semana]
+                    #""" 'Fecha actual' """
+                    actual = datetime.datetime.now().strftime("%Y-%m-%d")
+                    #""" 'Fecha que recibe' """
+                    dia_recibido = str(cita.fecha)
+                    #""" 'Hora actual' """
+                    hora_actual = datetime.datetime.now().strftime("%H:%M:%S")
+                    # Imprime la Hora y la fecha actual -> actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    #print("es la hora actual",hora_actual)
+                    #""" 'Hora que recibe' """
+                    hora_recibida = str(cita.hora_atencion)
+                    #-----------#
+                    # c.estado= reservado
+                    if nro_semana <= 4: # Si es un dia laboral
+                        if dia_recibido >= actual:# Si la fecha no es pasada
+                            if dia_recibido == actual: # Si es en el dia actual
+                                if hora_recibida > hora_actual: # Si no es una hora actual
+                                    pass
+                                else: # Si la hora es pasada
+                                    respuesta = "PASADO"
+                                    messages.success(
+                                        request, "Por favor verifique nuevamente")
+                                    return render(request, 'hora_pasada.html')
+                        else: # Si la fecha es pasada
+                            respuesta = "PASADO"
+                            messages.success(
+                            request, "Por favor verifique nuevamente")
+                            return render(request, 'fecha_pasada2.html')
+                        for c in citas:
+                            if paciente == c.paciente: # Si es el mismo paciente
+                                if cita.fecha == c.fecha and cita.hora_atencion == c.hora_atencion and id_cita != c.id_cita: # Si ya tiene una cita para esa fecha y hora
+                                    respuesta = "Solapado"
+                                    messages.success(request, ('Cita no registrada'))
+                                    return render(request, 'cita_solapada.html')
+                                else:
+                                    pass
+                            else: # Si son pacientes distintos
+                                if cita.fecha == c.fecha and cita.hora_atencion == c.hora_atencion and cita.profesional == c.profesional:
+                                #Si ya existe una cita con misma fecha, misma hora y mismo odontologo
+                                    respuesta = "YA EXISTE"
+                                    return render(request, 'horario_reservado_modificar.html')
+                        if respuesta== "NO EXISTE":
+                            cita.paciente = paciente
+                            cita.nombre_paciente = nombre
+                            # cita.estado=reservado
+                            cita.tratamiento_solicitado= tratamiento_tipo
+                            cita.save()
+                            # codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
+                            print("el estado que GUARDA ES", cita.estado)
+                            if cita.estado == True:
+                                confirmar_cita_tratamiento(cita.id_cita)
+                            if formulario.has_changed() and cita.estado == False: # Si se realizó algun cambio en el formulario y el estado se cambió a false
+                                desconfirmar_cita_tratamiento(cita.id_cita)
+                            messages.success(request, ('✅ ¡Guardado correctamente!'))            
+                            return redirect("/agendamiento/listado_citas/", respuesta)
+                    else:
+                        if nro_semana >= 5: #"Si es fin de semana emite el msj"
+                            messages.success(
+                                    request, "Por favor, elija dias entre Lunes a Viernes")
+                            return render(request, 'cerrado.html')
+                else: # Si formulario no tiene cambios
+                    formulario.save()
+                    messages.success(request, ('¡No ha realizado ningun cambio!'))
+                    return redirect("/agendamiento/listado_citas/")
+            else:
+                messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
+        return render(request, "modificar_cita.html", data)
+                    
+        #             if dia_recibido > actual or hora_recibida > hora_actual or c.estado==False:
+        #                 #
+        #                 #''Dias de la semana 5 y 6 es Sabado y Domingo''
+        #                 if nro_semana <= 4:
+        #                     print(
+        #                         "-----------------------------Modificacion a Nivel Sistema---------------------")
+        #                     print("el estado que entra es", reservado)
+        #                     if cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and reservado==False and paciente.numero_documento != c.paciente.numero_documento:
+        #                         #print("el numero de la semana  es", nro_semana)
+        #                         respuesta = "YA EXISTE"
+        #                         return render(request, 'horario_reservado.html')
+        #                     else:
+        #                         #Caso especial
+        #                         if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and (cita.tratamiento_solicitado== c.tratamiento_solicitado or cita.tratamiento_simple== c.tratamiento_simple  ):
+        #                             respuesta = "NO EXISTE"
+        #                              #ACA SI ODONTOLOGOS SON IGUALES,con los criterios anteriores, osea
+        #                             # MISMA FECHA HORA Y TRATAMIENTO , quiere decir que solo se registro DOBLE entonces es el  mismo que ya esta registrado
+        #                             print("PASA AQUI---------PERO SALTA")
+        #                             # messages.success(
+        #                             #     request, ('No hubo cambios recientes registrados en la cita'))
+        #                         else:
+        #                              # SE DA CUANDO YA EXISTE ANTERIORMENTE REGISTRADO Y se quiere volver a elegir la misma fecha, la misma hora y el mismo odontólogo
+        #                             if paciente == c.paciente and cita.hora_atencion == c.hora_atencion and cita.fecha == c.fecha and cita.profesional == c.profesional and (cita.tratamiento_solicitado!= c.tratamiento_solicitado or cita.tratamiento_simple!= c.tratamiento_simple  ):
+        #                                 respuesta = "Duplicado"
+        #                                 print ("Llega a tener diferentes odontologos con diferentes tratamientos con hora diferente")
+        #                                 messages.success(request, ('Cita no registrada'))
+        #                                 return render(request, 'cita_duplicada.html')
+        #                             else:
+        #                             # Se da Cuando se realiza la misma cita con hora y fecha igual pero con Profesionales distintos EN OTRA CITA YA REGISTRADA
+        #                                 # Cuando se realiza MAS DE 1 CITA, la misma cita con hora y fecha igual
+
+        #                                 if paciente == c.paciente and cita.fecha == c.fecha and cita.hora_atencion == c.hora_atencion and cita.profesional != c.profesional :
+        #                                     respuesta = "NO EXISTE"
+        #                                     print("ESTA CAMBIANDO DE PROFESIONAL")
+        #                                     # print(
+        #                                     #     "Llega a tener diferentes odontologos,sin importar si son tratamientos iguales o distintos")
+        #                                     messages.success(request, ('El odontólogo ha sido cambiado'))
+        #                                     # return render(request, 'cita_noAutoagendada.html')
+
+        #                 else:
+        #                     if nro_semana >= 5:
+        #                         #"Si es fin de semana emite el msj"
+        #                         messages.success(
+        #                             request, "Por favor, elija dias entre Lunes a Viernes")
+        #                         return render(request, 'cerrado.html')
+        #             else:
+        #                 if dia_recibido < actual or hora_recibida < hora_actual or reservado== True:
+        #                     print("pasa por aqui primero||||||||||------------------")
+        #                     respuesta = "PASADO"
+        #                     messages.success(
+        #                         request, "Por favor verifique nuevamente")
+        #                     return render(request, 'fecha_pasada.html')
+
+        #         if respuesta== "NO EXISTE":
+        #             cita.paciente = paciente
+        #             cita.nombre_paciente = nombre
+        #             cita.estado=reservado
+        #             cita.tratamiento_solicitado= tratamiento_tipo
+        #             cita.save()
+        #             codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
+        #             print("el estado que GUARDA ES", cita.estado)
+        #             if cita.estado == True:
+        #                 print("ENTRA POR AQUI")
+        #                 confirmar_cita_tratamiento(cita.id_cita)
+        #             if formulario.has_changed() and cita.estado == False: # Si se realizó algun cambio en el formulario y el estado se cambió a false
+        #                 desconfirmar_cita_tratamiento(cita.id_cita)
+        #             messages.success(request, ('✅ ¡Guardado correctamente!'))            
+        #             return redirect("/agendamiento/listado_citas/", respuesta)                
+        #     else:
+        #         messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
+        # return render(request, "modificar_cita.html", data)
+    except Usuario.DoesNotExist:
+            # messages.error(request, " ⚠ Esta persona no cuenta con un usuario propio")
+    # return render(request, "autorizar_modificacion.html")
+     return redirect("/agendamiento/modificar_cita_usuario/%s" %(id_cita))
+
+
 # VER EN SOLO LECTURA
 def visualizar_cita(request, id_cita):
     """
@@ -1092,10 +1269,8 @@ def agregar_hora(request):
         if formulario.is_valid():
             # if formulario.hora <= 21:
             #     messages.success (request,'Las citas no se reservan después de las 21 p.m. del día')
-               
-                
-                data["mensaje"] = "Registrado correctamente"
-                formulario.save()
+            data["mensaje"] = "Registrado correctamente"
+            formulario.save()
         # else:
         #     data["form"] = formulario
 
@@ -1121,7 +1296,7 @@ def eliminar_hora(request, id_hora):
       
         messages.success(request, "Eliminado")
 
-        return render(request, "horarios_lista.html")
+        return redirect("/agendamiento/listar_hora/")
 
     except Horario.DoesNotExist:
         raise Http404(

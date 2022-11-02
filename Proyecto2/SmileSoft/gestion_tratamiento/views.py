@@ -342,8 +342,11 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 def ver_mis_tratamientos_pendientes(request, numero_documento):
     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
     tratamientos_pendientes = []
-    odontologo = EspecialistaSalud.objects.get(numero_documento=numero_documento)
-    profesional = odontologo.numero_documento.nombre+" "+odontologo.numero_documento.apellido
+    try:
+        odontologo = EspecialistaSalud.objects.get(numero_documento=numero_documento)
+        profesional = odontologo.numero_documento.nombre+" "+odontologo.numero_documento.apellido
+    except EspecialistaSalud.DoesNotExist:
+        return redirect('/panel_control/pagina_error/')
 
     for tratamiento_conf in tratamientos_conf:
         id_cita = tratamiento_conf.id_cita

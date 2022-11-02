@@ -170,7 +170,6 @@ class PersonaCreate(CreateView):
     success_url = reverse_lazy('listar_persona')
     form_class = PersonaForm
     second_form_class = FuncionarioForm
-    # third_form_class = PacienteForm
     fourth_form_class = EspecialistaSaludForm
 
     def get_context_data(self, **kwargs):
@@ -179,8 +178,6 @@ class PersonaCreate(CreateView):
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
             context['form2'] = self.second_form_class(self.request.GET)
-        # if 'form3' not in context:
-        #     context['form3'] = self.third_form_class(self.request.GET)
         if 'form4' not in context:
             context['form4'] = self.fourth_form_class(self.request.GET)
         return context
@@ -191,7 +188,6 @@ class PersonaCreate(CreateView):
         # nacimiento=  args['fecha_nacimiento']
         form = self.form_class(request.POST)
         form2 = self.second_form_class(request.POST)
-        # form3 = self.third_form_class(request.POST)
         form4 = self.fourth_form_class(request.POST)
     #     persona = self.form_class(fecha_nacimiento=nacimiento) 
     #     edad_persona= persona.obtener_edad()
@@ -209,10 +205,6 @@ class PersonaCreate(CreateView):
                     form2.save_m2m()
                     cedula = funcionario.numero_documento
                     agregar_como_funcionario(cedula)
-                # if form3.is_valid():
-                #     paciente = form3.save(commit=False)
-                #     paciente.numero_documento = persona
-                #     paciente.save()
                     messages.success(
                         request, " ✅Se ha agregado  correctamente")
                 if form4.is_valid() and form4.has_changed():
@@ -224,7 +216,6 @@ class PersonaCreate(CreateView):
                     agregar_como_especialista(cedula)
                     messages.success(
                         request, " ✅Se ha agregado  correctamente")
-
                 return HttpResponseRedirect(self.success_url)
             # else:
             #     return render(request, 'atencion.html')
@@ -461,10 +452,12 @@ class PacienteCreate(CreateView):
         self.object = self.get_object
         form = self.form_class(request.POST)  # self.form_class
         form2 = self.second_form_class(request.POST)  # self.second_form_class
-        if form.is_valid() and form2.is_valid():
+        if form2.is_valid() and form.is_valid():
+            # form2.save()
             paciente = form.save(commit=False)
             paciente.numero_documento = form2.save()
             paciente.save()
+            # form.save_m2m()
             cedula = paciente.numero_documento
             agregar_como_paciente(cedula)
             messages.success(
@@ -477,10 +470,42 @@ class PacienteCreate(CreateView):
                 print('Formulario de paciente no valido')
             if not form2.is_valid():
                 print('Formulario de persona no valido')
-            messages.error(
-                request, "Ha ocurrido un error, vuelva a intentarlo")
+            if form2.evento == "Cedula ya existe":
+                messages.error(request, form2.mensaje_error)
+            else:
+                messages.error(
+                    request, "Ha ocurrido un error, vuelva a intentarlo")
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
+# def agregar_paciente(request):
+
+#     data = {
+#         'form' : PacienteForm(),
+#         'form2' : PersonaForm2()
+#     }
+
+#     if request.method == 'POST':
+#         form = PacienteForm(data=request.POST, files=request.FILES)
+#         form2 = PersonaForm2(data=request.POST, files=request.FILES)
+#         if form.is_valid() and form2.is_valid():
+#             paciente = form.save(commit=False)
+#             persona = form2.save()
+#             paciente.numero_documento = persona
+#             paciente.save()
+#             cedula = persona.numero_documento
+#             agregar_como_paciente(cedula)
+#             messages.success(
+#                 request, " ✅Se ha agregado  correctamente")
+#             return redirect('/administrativo/listar_paciente/')
+#         else:
+#             messages.error(
+#                 request, "Ha ocurrido un error, vuelva a intentarlo")
+#             if not form.is_valid():
+#                 print('Formulario de paciente no valido')
+#             if not form2.is_valid():
+#                 print('Formulario de persona no valido')
+
+#     return render(request, 'agregar_paciente.html', data)
 
 class PersonaPacienteCreate(CreateView):
     model = Paciente
@@ -779,7 +804,7 @@ class PacienteUpdate(UpdateView):
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
-            cedula = form2.numero_documento
+            cedula = persona.numero_documento
             messages.success(request, " ✅Se ha realizado su cambio")
             return HttpResponseRedirect(self.get_success_url())
         else:

@@ -11,10 +11,10 @@ from gestion_tratamiento.models import Tratamiento
 
 # Create your models here.
 class Persona(models.Model):
-    nombre = models.CharField(max_length=40, verbose_name='Nombre (*)')
-    apellido = models.CharField(max_length=40,  verbose_name='Apellido (*)')
+    nombre = models.CharField(max_length=50, verbose_name='Nombre (*)')
+    apellido = models.CharField(max_length=50,  verbose_name='Apellido (*)')
     numero_documento = models.CharField(primary_key=True, max_length=10, verbose_name='Cedula de identidad')
-    direccion = models.CharField(max_length=40,  verbose_name='Dirección')
+    direccion = models.CharField(max_length=80,  verbose_name='Dirección')
     telefono = models.CharField(max_length=20,  verbose_name='Telefono')
     correo_electronico = models.EmailField(max_length=35,  verbose_name='Correo electrónico')
     fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
@@ -26,7 +26,6 @@ class Persona(models.Model):
     es_funcionario = models.BooleanField(verbose_name='Funcionario', default=False)
     es_especialista_salud = models.BooleanField(verbose_name='Especialista de salud', default=False)
     es_paciente =models.BooleanField(verbose_name='Paciente', default=False)
-    #es_proveedor = models.BooleanField(verbose_name='Proveedor', default=False)
 
     class Meta:
         # ordering = ['nombre']
@@ -35,14 +34,12 @@ class Persona(models.Model):
         db_table = 'Persona'
 
     def __str__(self):
-        # return self.numero_documento
-        return self.numero_documento # self.nombre + ' CI: '+ self.numero_documento
+        return self.numero_documento
 
     def obtener_edad(self):
         fecha_nacimiento = str(self.fecha_nacimiento)
         fecha = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
         edad = relativedelta(datetime.now(), fecha)
-        # print(f"{edad.years} años, {edad.months} meses y {edad.days} días")
         edad = edad.years
 
         return edad
@@ -50,7 +47,6 @@ class Persona(models.Model):
 
 
 class Cargo(models.Model):
-    # cargos = (("O", "Odontologo"), ("A", "Asistente"), ("C", "Cajero"))
     nombre = models.CharField(max_length=25, null=False, blank=False, primary_key=True)
     salario = models.BigIntegerField(null=True, blank=True)
 
@@ -100,30 +96,11 @@ class FuncionarioCargo(models.Model):
         null=True
     )
 
-    # salario = models.BigIntegerField(null=True)
     class Meta:
         db_table = 'FuncionarioCargo'
         verbose_name = 'Cargo de empleado'
         verbose_name = 'Cargos de empleado'
 
-# class Categoria(models.Model):
-#     codigo_categoria= models.AutoField(primary_key=True, verbose_name='codigo')
-#     detalle_tratamiento= models.CharField(max_length=40, verbose_name='detalle')
-#     precio=models.IntegerField( verbose_name='Precio')
-#     codigo_tratamiento = models.ForeignKey(
-#                                             Tratamiento, 
-#                                             null=False, 
-#                                             blank=False, 
-#                                             on_delete=models.CASCADE,
-#                                             verbose_name='Código de tratamiento'
-#                                         )
-#     class Meta:
-#         verbose_name = ("Categoria")
-#         verbose_name_plural = ("Categorias")
-#         db_table = 'Categoria'
-
-#     def __str__(self):
-#         return self.detalle_tratamiento
 
 class Especialidad(models.Model):
     id_especialidad = models.AutoField(primary_key=True)
@@ -145,9 +122,7 @@ class EspecialistaSalud(models.Model):
                                                 null=False, 
                                                 blank= False,
                                                 on_delete=models.PROTECT,
-                                                # verbose_name='Cedula de identidad'
                                             )
-    # trabajos_realizados = models.ManyToManyField(Categoria, through='TrabajoRealizado')
     especialidades = models.ManyToManyField(Especialidad, 
                                     through='EspecialistaEspecialidades',
                                     related_name='especialista_set',
@@ -180,30 +155,6 @@ class EspecialistaEspecialidades(models.Model):
         db_table = 'EspecialistaEspecialidades'
 
 
-# class TrabajoRealizado(models.Model):
-#     especialista_salud = models.ForeignKey(
-#         EspecialistaSalud, 
-#         on_delete=models.PROTECT, 
-#         blank=True, null=True
-#     )
-
-#     categoria= models.ForeignKey(
-#         Categoria,
-#         on_delete=models.PROTECT,
-#         blank=True,
-#         null=True
-#     ) 
-
-    # costo_servicio = models.BigIntegerField(null=True, verbose_name='Costo de servicio')
-    # class Meta:
-    #     db_table = 'TrabajoRealizado'
-    #     verbose_name = 'Trabajo Realizado'
-    #     verbose_name_plural = 'Trabajos Realizados'
-
-# class Farmaco(models.Model):
-#     codigo_farmaco = models.CharField(max_length=50)
-#     nombre = models.CharField(max_length=50)
-
 class Paciente(models.Model):
     id_paciente = models.AutoField(primary_key=True)
     numero_documento = models.OneToOneField(
@@ -212,12 +163,6 @@ class Paciente(models.Model):
                                             blank= False,  
                                             on_delete=models.PROTECT,
                                         )
-    #TratamientosRealizados = models.ManyToManyField(Tratamiento, through='TratamientoRealizado')
-    # historial_clinico = models.ManyToManyField(
-    #                                         Tratamiento, 
-    #                                          through='HistorialClinico',
-    #                                          related_name='paciente_historial_set'
-    #                                     )
     enfermedad_base = models.TextField(max_length=500, verbose_name='Enfermedad de base (*)',null= True,blank=True)
     alergia = models.TextField(max_length=500,  verbose_name='Alergia (*)',null= True, blank=True)
     tolerancia_anestecia = models.BooleanField(verbose_name='¿Es tolerante al uso de Anestecia?', null= True, blank=True)
@@ -226,7 +171,6 @@ class Paciente(models.Model):
     cirugias = models.BooleanField(default=False, verbose_name='Cirugías',null= True, blank=True)
     caries = models.BooleanField(default=False, verbose_name='Caries',null= True, blank=True)
     afeccion_cronica_familiar = models.TextField(max_length=500,  verbose_name='Afección crónica familiar',null= True, blank=True)
-    #afecciones_graves = models.CharField(max_length=500,  verbose_name='Afecciones graves (*)',null= True)
     NN = 'No especificado'
     AP = 'A RH+'
     AN = 'A Rh-'
@@ -253,9 +197,7 @@ class Paciente(models.Model):
                                              through='PacienteTratamientoAsignado',
                                              related_name='paciente_set'
                                          )
-    # farmacos = []
 
-    
     class Meta:
         verbose_name = ("paciente")
         verbose_name_plural = ("pacientes")
@@ -272,7 +214,8 @@ class Paciente(models.Model):
 class PacienteTratamientoAsignado(models.Model):
     """"
     Clase que contiene los tratamientos que son asignados al paciente de parte del Odontologo
-    de manera que el paciente pueda agendar citas para estos tratamientos
+    de manera pueda agendarse citas para estos tratamientos. Esta clase contendrá registros temporales,
+    una vez agendada la cita para el tratamiento en cuestión el registro del mismo es eliminado automaticamente
     """
     id_tratamiento_asig = models.AutoField(primary_key=True)
     paciente = models.ForeignKey(
@@ -289,12 +232,6 @@ class PacienteTratamientoAsignado(models.Model):
         null=True,
         verbose_name='Tratamientos ConsulDent'
     )
-    # AS = 'Asignado'
-    # AG = 'Agendado'
-    # ESTADOS = ( (AS, 'Asignado'),
-    #             (AG, 'Agendado')
-    #             )
-    # estado = models.CharField(max_length=10, choices=ESTADOS, default='Asignado')
 
     class Meta:
         db_table = 'PacienteTratamientoAsignado'
@@ -318,16 +255,23 @@ class TratamientoConfirmado(models.Model):
     id_tratamiento_conf = models.AutoField(primary_key=True)
     paciente = models.ForeignKey(
         Paciente, 
-        on_delete=models.CASCADE, 
+        on_delete=models.PROTECT, 
         blank=False, 
         null=False,
     )
 
     tratamiento = models.ForeignKey(
         Tratamiento,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         blank=False,
         null=False,
+    )
+
+    especialista = models.ForeignKey(
+        EspecialistaSalud,
+        on_delete=models.PROTECT,
+        blank=False,
+        null=True,
     )
     A = 'Agendado' # Cuando el paciente pide una cita para el tratamiento en cuestión 
     C = 'Confirmado' # Cuando el paciente confirma la cita para el tratamiento en cuestión
@@ -393,7 +337,3 @@ class Proveedor(models.Model):
 #         verbose_name_plural = 'Insumos proveidos'
 #         db_table = 'InsumoProveido'
  
-class Servicio(models.Model):
-    # analizar si costo_servicio = models.IntegerField() debe ir aqui 
-    # o en una tabla intermedia
-    pass
