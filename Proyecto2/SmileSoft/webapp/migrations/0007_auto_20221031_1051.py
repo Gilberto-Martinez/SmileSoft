@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0017_auto_20220326_1942'),
+        # ('auth', '0017_auto_20220326_1942'),
         ('webapp', '0006_auto_20220629_1434'),
     ]
 
