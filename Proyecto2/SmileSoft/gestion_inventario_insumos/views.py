@@ -95,6 +95,7 @@ def listar_insumo(request):
         nombre=insumo.nombre_insumo
         # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
         detalle= insumo.descripcion_insumo
+        
         monto= '{:,}'.format(insumo.precio).replace(',','.')
        
         lista_insumos={ 
@@ -109,7 +110,7 @@ def listar_insumo(request):
     return render(request, "insumo/listar_insumos.html", {'insumos': insumos})
   
 #----inicio-------------------------------------------------------------#
-#                     VISTA DE LISTA CLONADA  (lista simple para generar pdf)
+#                     VISTA DE LISTA CLONADA (No hagan caso. Es una prueba) (lista simple para generar pdf)
 #-----------------------------------------------------------------------#
 def listar_insumo_simple(request):
     busqueda = request.POST.get("q")

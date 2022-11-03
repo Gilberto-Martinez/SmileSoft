@@ -161,6 +161,7 @@ class EspecialistaSalud(models.Model):
 
     def __str__(self):
         return str(self.numero_documento.nombre+ ' '+self.numero_documento.apellido)
+   
 
 class EspecialistaEspecialidades(models.Model):
     especialista_salud = models.ForeignKey(
