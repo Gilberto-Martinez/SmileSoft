@@ -64,7 +64,7 @@ class AdminFuncionario(admin.ModelAdmin):
     # list_display = ["nombre", "apellido",]
     # list_filter = ['numero_documento']
     list_display_links = ['numero_documento',]
-    search_fields = ['numero_documento', ]
+    search_fields = ['numero_documento_nombre', ]
     # ordering = ['numero_documento']
 
 # class EspecialistaSaludEspInline(admin.TabularInline):
@@ -78,21 +78,22 @@ class AdminEspecialistaSaludEsp(admin.ModelAdmin):
     #ordering = ['categoria']
 
 
-class AdminEspecialistaSalud(admin.ModelAdmin):
-    # inlines = [EspecialistaSaludEspInline,]
-    fieldsets = (
-        (None, {'fields': ('numero_documento',)}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('numero_documento',),
-        }),
-    )
-    # list_display = ["nombre", "apellido",]
-    # list_filter = ['numero_documento']
-    search_fields = ['numero_documento',]
-    ordering = ['numero_documento']
+# class AdminEspecialistaSalud(admin.ModelAdmin):
+#     # inlines = [EspecialistaSaludEspInline,]
+#     fieldsets = (
+#         (None, {'fields': ('numero_documento',)}),
+#     )
+#     add_fieldsets = (
+#         (None, {
+#             'classes': ('wide',),
+#             'fields': ('numero_documento',),
+#         }),
+#     )
+#     # list_display = ["nombre", "apellido",]
+#     # list_filter = ['numero_documento']
+#     search_fields = ['numero_documento', 'id_especialista_salud','numero_documento_name', 'id_especialista_salud_name']
+#     # search_fields = ['foreign_key__related_fieldname']
+#     ordering = ['numero_documento']
 
 class AdminProveedor(admin.ModelAdmin):
     fieldsets = (
@@ -152,7 +153,14 @@ class AdminProveedor(admin.ModelAdmin):
 #     # list_filter = ['numero_documento']
 #     search_fields = ['numero_documento',]
 #     ordering = ['numero_documento']
+class AdminPaciente(admin.ModelAdmin):
+    search_fields = ['numero_documento_nombre',]
+    
 
+class AdminEspecialistaSalud(admin.ModelAdmin):
+    search_fields = ['numero_documento', 'id_especialista_salud_nombre']
+
+    
 admin.site.site_header = 'Bienvenido a Smilesoft'
 admin.site.site_title = 'SmileSoft'
 

@@ -756,7 +756,7 @@ def modificar_cita(request, id_cita):
                     cita.tratamiento_solicitado= tratamiento_tipo
                     cita.save()
                     codigo_tratamiento = cita_actual.tratamiento_simple.tratamiento.codigo_tratamiento
-                    print("el estado que GUARDA ES", cita.estado)
+                   # print("el estado que GUARDA ES", cita.estado)
                     if cita.estado == True:
                         print("ENTRA POR AQUI")
                         confirmar_cita_tratamiento(cita.id_cita)
@@ -1138,6 +1138,7 @@ def deletecita(request,id_cita):
 def listar_citapaciente(request):
     busqueda = request.POST.get("q")
     paciente_cita = Paciente.objects.all()
+    filtro = request.POST.get("f")
 
     if busqueda:
 
@@ -1145,6 +1146,9 @@ def listar_citapaciente(request):
         #     numero_documento__in=[busqueda])
         paciente_cita = Paciente.objects.filter(
         numero_documento__in=[busqueda])
+        
+    elif filtro:
+        paciente_cita= Paciente.objects.filter(Q(numero_documento__nombre__icontains=filtro))
         # queryset = queryset.filter(nombre__contains=Q, apellido__contains=Q)
         # print("AQUI ESTA ENTRANDO", queryset)
 

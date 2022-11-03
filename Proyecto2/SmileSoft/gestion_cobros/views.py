@@ -7,6 +7,7 @@ from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, Paciente
 from gestion_agendamiento.models import Cita
 from .forms import RazonSocialForm
+from django.db.models import Q
 
 def cobrar_tratamiento(request, id_paciente):
     listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
@@ -287,7 +288,21 @@ def eliminar_tratamiento_confirmado(request, id_tratamiento_confirmado):
 #---------------------------- LISTADOS -----------------------------#
 
 def listar_cobros(request):
+    busqueda = request.POST.get("q")
+      #'filtro de fecha, y nombre 
+    filtro = request.POST.get("f")
+    
     cobros = CobroContado.objects.all()
+    if filtro:
+            print("Buscado AQUI", filtro)
+            cobros = CobroContado.objects.filter(
+                Q(fecha__icontains=filtro))
+
+    elif busqueda:
+        cobros = CobroContado.objects.filter(
+                Q(razon_social__icontains=busqueda))
+  
+    # cobros = CobroContado.objects.all()
     listado_cobros = []
     for cobro in cobros:
         monto_total = '{:,}'.format(cobro.monto_total).replace(',','.')
@@ -306,6 +321,16 @@ def listar_cobros(request):
 def listar_cobros_pendientes(request):
     tratamientos_agendados = TratamientoConfirmado.objects.filter(estado='Confirmado')
     pacientes = Paciente.objects.all()
+   
+    busqueda = request.POST.get("q")
+    #'filtro de nombre
+  
+    if busqueda:
+        pacientes = Paciente.objects.filter(
+           Q(numero_documento__nombre__icontains=busqueda))
+        print('Busca', busqueda)
+    
+    
     lista_pacientes = []
 
     for paciente in pacientes:
