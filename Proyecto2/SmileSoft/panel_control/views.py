@@ -45,6 +45,16 @@ def blanqueamiento(request):
 def extracciones(request):
     return render(request, "panel_control/extracciones.html")
 
+def mostrar_pagina_error(request):
+    return render(request, "mensajes/pagina_error.html")
+
+def mostrar_mensaje(request,titulo , mensaje):
+    return render(request, "mensajes/mostrar_mensaje.html", {
+                                                            'titulo':titulo,
+                                                            'mensaje':mensaje,
+                                                            }
+                )
+
 
 
 

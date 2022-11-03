@@ -1,11 +1,12 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
-from gestion_agendamiento.models import Cita
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, Paciente
+from gestion_agendamiento.models import Cita
+from .forms import RazonSocialForm
 from django.db.models import Q
 
 def cobrar_tratamiento(request, id_paciente):
@@ -65,7 +66,7 @@ def registrar_cobro(request, numero_documento):
         )
         # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
         for tratamiento_conf in tratamientos_confirmados:
-            print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
+            # print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
             # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
             detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
                                                 detalle_cobro=detalle_cobro_nuevo,
@@ -79,7 +80,47 @@ def registrar_cobro(request, numero_documento):
     return redirect("/cobros/mensaje_confirmacion_cobro/")
 
 
-def verificar_fecha_hora_cita(request, numero_documento):
+def registrar_cobro2(request, numero_documento, numero_documento2,razon_social):
+    paciente = Paciente.objects.get(numero_documento=numero_documento)
+    precio_total = obtener_precio_total(numero_documento)
+
+    if precio_total>0:
+        cobro_contado = CobroContado.objects.create(
+                                                paciente=paciente,
+                                                numero_documento= numero_documento2,
+                                                razon_social=razon_social,
+                                                monto_total=precio_total
+                                            )
+
+        tratamientos_confirmados = obtener_tratamientos(numero_documento)
+        detalle_cobro_nuevo = DetalleCobroContado.objects.create(
+                                                            cobro=cobro_contado,
+                                                            # tratamientos=tratamientos_confirmados
+        )
+        # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
+        for tratamiento_conf in tratamientos_confirmados:
+            # print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
+            # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
+            detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
+                                                detalle_cobro=detalle_cobro_nuevo,
+                                                tratamiento = tratamiento_conf
+            )
+        pagar_tratamientos(numero_documento)
+    
+    else:
+        return redirect("/cobros/error_cobro/")
+
+    return redirect("/cobros/mensaje_confirmacion_cobro/")
+
+
+def verificar_datos_cita(request, numero_documento, menor_edad):
+    """
+    Verifica los siguientes datos:
+        -Si la persona (paciente en cuestion) es mayor de edad, en caso contrario se solicitará ingresar el nombre de la razon social
+        -Que la fecha agendada sea mayor o igual a la fecha actual, en caso contrario muestra mensajes de error
+        -Que la hora agendada (si fecha agendad = fecha actual) sea mayor a la hora actual, en caso contrario muestra mensajes de error 
+    """
+
     paciente = Paciente.objects.get(numero_documento=numero_documento)
     tratamientos_conf = TratamientoConfirmado.objects.all()
     now = datetime.now()
@@ -100,47 +141,64 @@ def verificar_fecha_hora_cita(request, numero_documento):
                         return render(request, 'mensajes/error_hora_pasada.html',{'id_cita':id_cita})
                 else:
                     return render(request, 'mensajes/error_fecha_pasada.html',{'id_cita':id_cita})
-                    
+
     if respuesta == True:
+        if menor_edad is True:
+            return redirect("/cobros/solicitar_razon_social/%s" (numero_documento))
         return redirect("/cobros/registrar_cobro/%s" %(numero_documento))
         
 
     print('respuesta: ',respuesta)
     return render(request, 'mensajes/pagina_error.html')
 
+def solicitar_razon_social(request, numero_documento):
+    data ={
+            'form':RazonSocialForm()
+    }
 
-def registrar_cobro_pendiente(numero_documento):
-    paciente = Paciente.objects.get(numero_documento=numero_documento)
-    persona = Persona.objects.get(numero_documento=numero_documento)
-    nombre = str(persona.nombre)+" "+str(persona.apellido)
-    precio_total = obtener_precio_total(numero_documento)
+    if request.method == 'POST':
+        form = RazonSocialForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            datos = form.save(commit=False)
+            razon_social = datos.razon_social
+            numero_documento2 = datos.numero_documento
+            return redirect('/cobros/registrar_cobro2/%s/%s/%s' %(numero_documento, numero_documento2, razon_social))
 
-    if precio_total>0:
-        cobro_contado = CobroContado.objects.create(
-                                            paciente=paciente,
-                                            numero_documento= numero_documento,
-                                            razon_social=nombre,
-                                            monto_total=precio_total,
-                                            estado='Pendiente'
-        )
-    else:
-        return redirect("/cobros/error_cobro/")
+    return render('solicitar_razon_social.html', data)
 
-    tratamientos_confirmados = obtener_tratamientos(numero_documento)
-    detalle_cobro_nuevo = DetalleCobroContado.objects.create(
-                                                        cobro=cobro_contado,
-                                                        # tratamientos=tratamientos_confirmados
-    )
-    # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
-    for tratamiento_conf in tratamientos_confirmados:
-        print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
-        # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
-        detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
-                                            detalle_cobro=detalle_cobro_nuevo,
-                                            tratamiento = tratamiento_conf
-        )
-    pagar_tratamientos(numero_documento)
-    return redirect("/cobros/mensaje_confirmacion_cobro/")
+
+# def registrar_cobro_pendiente(numero_documento):
+#     paciente = Paciente.objects.get(numero_documento=numero_documento)
+#     persona = Persona.objects.get(numero_documento=numero_documento)
+#     nombre = str(persona.nombre)+" "+str(persona.apellido)
+#     precio_total = obtener_precio_total(numero_documento)
+
+#     if precio_total>0:
+#         cobro_contado = CobroContado.objects.create(
+#                                             paciente=paciente,
+#                                             numero_documento= numero_documento,
+#                                             razon_social=nombre,
+#                                             monto_total=precio_total,
+#                                             estado='Pendiente'
+#         )
+#     else:
+#         return redirect("/cobros/error_cobro/")
+
+#     tratamientos_confirmados = obtener_tratamientos(numero_documento)
+#     detalle_cobro_nuevo = DetalleCobroContado.objects.create(
+#                                                         cobro=cobro_contado,
+#                                                         # tratamientos=tratamientos_confirmados
+#     )
+#     # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
+#     for tratamiento_conf in tratamientos_confirmados:
+#         print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
+#         # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
+#         detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
+#                                             detalle_cobro=detalle_cobro_nuevo,
+#                                             tratamiento = tratamiento_conf
+#         )
+#     pagar_tratamientos(numero_documento)
+#     return redirect("/cobros/mensaje_confirmacion_cobro/")
 
 
 def obtener_tratamientos(cedula):
