@@ -264,12 +264,13 @@ def listar_cobros_pendientes(request):
     tratamientos_agendados = TratamientoConfirmado.objects.filter(estado='Confirmado')
     pacientes = Paciente.objects.all()
    
-    # busqueda = request.POST.get("q")
-    # #'filtro de nombre
+    busqueda = request.POST.get("q")
+    #'filtro de nombre
   
-    # if busqueda:
-    #     paciente = Cita.objects.filter(
-    #         Q(nombre_paciente__icontains=busqueda))
+    if busqueda:
+        pacientes = Paciente.objects.filter(
+           Q(numero_documento__nombre__icontains=busqueda))
+        print('Busca', busqueda)
     
     
     lista_pacientes = []

@@ -93,3 +93,10 @@ class Cita(models.Model):
     def get_idcita(self):
         return str(self.id_cita)
     
+    def get_tratamiento(self):
+        return str(self.tratamiento_solicitado.get_codigo_tratamiento())
+
+    
+   
+
+    

@@ -66,7 +66,7 @@ class FuncionarioList(ListView):
     
     def post(self, request, *args, **kwargs):
         busqueda = request.POST.get("q")
-        object_list = Funcionario.objects.filter(Q(numero_documento__in=busqueda))
+        object_list = Funcionario.objects.filter(Q(numero_documento__nombre__icontains=busqueda))
 
         return render(request, "listar_funcionario.html", {'object_list': object_list})
     
@@ -88,7 +88,7 @@ class PacienteList(ListView):
     
     def post(self, request, *args, **kwargs):
         busqueda = request.POST.get("q")
-        object_list = Paciente.objects.filter(Q(nombre__icontains=busqueda))
+        object_list = Paciente.objects.filter(Q(numero_documento__nombre__icontains=busqueda))
         
         return render(request, "listar_paciente.html", {'object_list': object_list}) 
     # @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))

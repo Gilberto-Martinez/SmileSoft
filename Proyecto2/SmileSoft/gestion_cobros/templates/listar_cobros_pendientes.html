@@ -8,11 +8,11 @@
 			
 				<br>
 				<br>
-		
+				{% comment %} <strong>  <FONT COLOR="black" style="font-size: 1.0rem" > &nbsp;  Nro de Documento: </FONT> </strong> {% endcomment %}
 				<form  class="form-inline" method="POST">
 						{% csrf_token %}
 						<div class="input-group">
-							<input type="search" name="q"  class="form-control bg-light border-0 small" placeholder="Buscar nombre del paciente" aria-label="search" value="{{request.POST.buscar}}" >
+							<input type="search" name="q"  class="form-control bg-light border-0 small" placeholder="Buscar por nombre del paciente" aria-label="search" value="{{request.POST.busqueda}}" >
 							<br>
 							<div class="input-group-append">
 								<button  class="btn btn-outline-primary my-2 my-sm-0" type="submit">
@@ -60,7 +60,7 @@
 								</i>
 							</h5>
 							<br>
-							<a onclick="history.back()" class="btn btn-secondary"><i class="bi bi-backspace"></i> Atras</a>
+							<a onclick="history.back()" class="btn btn-secondary"><i class="bi bi-backspace"></i> Atrás</a>
 						</center>
 							
 						{% endif %}

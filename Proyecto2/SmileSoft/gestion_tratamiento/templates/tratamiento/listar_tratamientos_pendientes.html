@@ -13,9 +13,53 @@
         <div class="card">
             <div class="card-body">
                 <center> 
-                    <h2>  Tratamientos pendientes </h2>
-                      <h3>  <i class="bi bi-clock-history"></i> </h3>
+                    <h2> <b> Tratamientos Pendientes </b>
+                     <img class="img-circle"  src="{% static 'img/dentista.png' %}"  width="60px" height="60px"> 
+                     </h2>
                 </center>
+               
+                <strong>  <FONT COLOR="blue" style="font-size: 1.0rem" > &nbsp;  Filtro por fecha</FONT> </strong>
+                    <!--Barra de Busqueda Por Fecha-->
+                <form  class="form-inline" method="POST">
+                    {% csrf_token %}
+
+                
+                    <div class="input-group">
+                        <br><input type="date" name="f"  class="form-control bg-light border-0 small "  aria-label="search" value="{{request.POST.filtro}}" >
+                        <br>
+                            {% comment %} Buscar por fecha: <input type="date" name="f" > {% endcomment %}
+                        <!--<input type="submit" value="{{request.POST.buscar}}" />-->
+                        <div class="input-group-append">
+                            <button  class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="{{request.POST.buscar}}">
+                                <!--ICONO LUPA-->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                                <!--Barra de Busqueda Por nombre-->
+                <strong>  <FONT COLOR="blue" style="font-size: 1.0rem" > &nbsp; Odontólogo</FONT> </strong>
+                <form  class="form-inline" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="search" name="q"  class="form-control bg-light border-0 small" placeholder="Buscar nombre del odontólogo" aria-label="search" value="{{request.POST.busqueda}}" >
+                        <br>
+                        <div class="input-group-append">
+                            <button  class="btn btn-outline-primary my-2 my-sm-0" type="submit" >
+                                <!--ICONO LUPA-->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                        
+                <!--end-->
                 <br>
                 <table>
                     <!--table striped es para que resalte 1 fila y otra no-->
@@ -44,7 +88,7 @@
                                             <td >{{t.numero_documento}}</td>
                                             <td >{{t.nombre}} {{t.apellido}}</td>
                                             <td >{{t.nombre_tratamiento}}</td>
-                                            <td >{{t.fecha_atencion}}</td>
+                                            <td >{{t.fecha}}</td>
                                             <td >{{t.hora}}</td>
                                             <td >{{t.profesional}}</td>
                                             <!-- Eliminar-->
@@ -78,23 +122,6 @@
                                     </center>
                                 {%endif%}
 
-
-                                {% if messages %}
-                                <ul class="messages">
-                                
-                                    {% for message in messages %}
-                                    <li>
-                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                        <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
-                                        Tratamiento
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
-                                        {{ message }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-center">
@@ -104,6 +131,8 @@
                         </a>
                     </div>
                 </table>
+            
+
             </div>
         </div>
     </div>
