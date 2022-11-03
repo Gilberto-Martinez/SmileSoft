@@ -53,7 +53,12 @@ class PacienteList2(ListView):
     # @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))
     # def dispatch(self, *args, **kwargs):
     #     return super(PacienteList2, self).dispatch(*args, **kwargs)
-
+    def post(self, request, *args, **kwargs):
+        busqueda = request.POST.get("q")
+        object_list = Paciente.objects.filter(Q(numero_documento__nombre__icontains=busqueda))
+        
+        return render(request, "listar_paciente2.html", {'object_list': object_list}) 
+    
     def get(self, request, **kwargs):
         # verificamos permisos
         if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
