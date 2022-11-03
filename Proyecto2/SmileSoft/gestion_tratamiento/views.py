@@ -344,9 +344,11 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
     tratamientos_pendientes = []
     try:
         odontologo = EspecialistaSalud.objects.get(numero_documento=numero_documento)
-        profesional = odontologo.numero_documento.nombre+" "+odontologo.numero_documento.apellido
+        odontologo.id_especialista_salud
     except EspecialistaSalud.DoesNotExist:
-        return redirect('/panel_control/pagina_error/')
+        titulo = '¡Atención!'
+        mensaje = 'Usted no es un Odontólogo, por lo tanto no puede ver esta sección.'
+        return redirect('/panel_control/mostrar_mensaje/%s/%s'%(titulo,mensaje))
 
     for tratamiento_conf in tratamientos_conf:
         id_cita = tratamiento_conf.id_cita
@@ -378,7 +380,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
             tratamientos_pendientes.append(tratamiento_pendiente)
     return render (request,"tratamiento/listar_mis_tratamientos_pendientes.html",{
                                                                             'tratamientos_pendientes':tratamientos_pendientes,
-                                                                            'profesional':profesional,
+                                                                            'profesional':odontologo,
                                                                             }
                     )
 
@@ -474,9 +476,11 @@ def verificar_fecha_hora_agendamiento(id_cita):
 
 
 def confirmar_tratamiento(request, id_tratamiento_conf):
+    tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
+    numero_documento = tratamiento_conf.especialista.numero_documento
     resultado = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_conf).update(estado='Realizado')
     guardar_historial_clinico(id_tratamiento_conf)
-    return redirect('/tratamiento/listar_tratamientos_pendientes/')
+    return redirect('/tratamiento/ver_mis_tratamientos_pendientes/%s' %(numero_documento))
 
 # ------------- Pantallas de mensajes ------------------------------- #
 def preguntar_confirmacion(request,id_tratamiento_conf):
@@ -504,7 +508,10 @@ def preguntar_confirmacion(request,id_tratamiento_conf):
     return redirect( '/tratamiento/mostrar_mensaje_confirmacion/%s' %(id_tratamiento_conf))
 
 def mostrar_mensaje_confirmacion(request,id_tratamiento_conf):
-    return render(request,'mensajes/mostrar_mensaje_confirmacion.html',{'id_tratamiento_conf':id_tratamiento_conf}) 
+    return render(request,'mensajes/mostrar_mensaje_confirmacion.html',{
+                                                                        'id_tratamiento_conf':id_tratamiento_conf,
+                                                                        }
+                ) 
 
 
 # #############################################

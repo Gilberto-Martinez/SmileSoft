@@ -10,5 +10,7 @@ urlpatterns = [
     path('error_cobro/', ErrorCobro.as_view(), name="error_cobro"),
     path('mensaje_confirmacion_cobro/', ConfirmacionCobro.as_view(), name="mensaje_confirmacion_cobro"),
     path('ver_detalle_cobro/<int:id_cobro_contado>', ver_detalle_cobro, name="ver_detalle_cobro"),
-    path('verificar_fecha_hora_cita/<numero_documento>', verificar_fecha_hora_cita, name="verificar_fecha_hora_cita"),
+    path('verificar_datos_cita/<numero_documento>/<menor_edad>', verificar_datos_cita, name="verificar_datos_cita"),
+    path('solicitar_razon_social/<numero_documento>', solicitar_razon_social, name="solicitar_razon_social"),
+    path('registrar_cobro2/<numero_documento>/<numero_documento2>/<razon_social>', registrar_cobro2, name="registrar_cobro2"),
 ]

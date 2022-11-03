@@ -15,7 +15,8 @@ urlpatterns= [
     path('blanqueamiento/', views.blanqueamiento, name="blanqueamiento"),
     path('extracciones/', views.extracciones, name="extracciones"),
 
-    path('pagina_error/', views.mostrar_pagina_error, name="extracciones"),
+    path('pagina_error/', views.mostrar_pagina_error, name="pagina_error"),
+    path('mostrar_mensaje/<str:titulo>/<str:mensaje>', views.mostrar_mensaje, name="mostrar_mensaje"),
     
     # path('gestion_roles/', views.gestion_roles , name="gestion_roles"),
     # path('gestion_administrativo/', views.gestion_administrativo, name="gestion_administrativo"),

@@ -48,6 +48,13 @@ def extracciones(request):
 def mostrar_pagina_error(request):
     return render(request, "mensajes/pagina_error.html")
 
+def mostrar_mensaje(request,titulo , mensaje):
+    return render(request, "mensajes/mostrar_mensaje.html", {
+                                                            'titulo':titulo,
+                                                            'mensaje':mensaje,
+                                                            }
+                )
+
 
 
 

@@ -41,6 +41,4 @@ urlpatterns = [
     path('agregar_hora/', agregar_hora, name="agregar_hora"),
     path('eliminar_hora/<int:id_hora>', eliminar_hora, name='eliminar_hora'),
     path('listar_hora/', listar_hora, name="listar_hora"),
-
-
 ]
