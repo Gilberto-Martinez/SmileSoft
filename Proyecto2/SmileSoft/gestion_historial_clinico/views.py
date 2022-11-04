@@ -13,11 +13,17 @@ def guardar_historial_clinico(id_tratamiento_conf):
     tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
     paciente_id = tratamiento_conf.get_paciente()
     tratamiento_id = tratamiento_conf.get_tratamiento()
+    especialista_id = tratamiento_conf.especialista.id_especialista_salud
+
     tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_id)
-
     paciente = Paciente.objects.get(id_paciente=paciente_id)
+    especialista = EspecialistaSalud.objects.get(id_especialista_salud=especialista_id)
 
-    HistorialClinico.objects.create(tratamiento=tratamiento, paciente=paciente)
+    HistorialClinico.objects.create(
+                                    tratamiento=tratamiento, 
+                                    paciente=paciente,
+                                    especialista=especialista
+                                    )
 
 
 def listar_pacientes_historial(request):

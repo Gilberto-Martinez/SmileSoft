@@ -53,7 +53,12 @@ class PacienteList2(ListView):
     # @method_decorator(permission_required('gestion_administrativo.view_paciente', login_url="/panel_control/error/"))
     # def dispatch(self, *args, **kwargs):
     #     return super(PacienteList2, self).dispatch(*args, **kwargs)
-
+    def post(self, request, *args, **kwargs):
+        busqueda = request.POST.get("q")
+        object_list = Paciente.objects.filter(Q(numero_documento__nombre__icontains=busqueda))
+        
+        return render(request, "listar_paciente2.html", {'object_list': object_list}) 
+    
     def get(self, request, **kwargs):
         # verificamos permisos
         if not self.request.user.has_perm('gestion_administrativo.view_paciente'):
@@ -154,11 +159,33 @@ def listar_tratamiento_asignado(request, id_paciente):
 
 
 def listar_tratamientos_pendientes(request):
-    tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
-    tratamientos_pendientes = []
 
+    busqueda = request.POST.get("q")
+    filtro = request.POST.get("f")
+    
+    tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
+    # tratamientos_conf = TratamientoConfirmado.objects.all()
+    # 'filtro de fecha, y nombre
+    #La icontains búsqueda no distingue entre mayúsculas y minúsculas.
+    # if 'q' in request.GET and request.GET['q']:
+    #     q= request.GET['q']
+    #     tratamientos_conf = Cita.objects.filter(
+    #         Q(profesional__busqueda__icontains= "q"))
+    if busqueda:
+      
+        tratamientos_conf = Cita.objects.filter(
+            Q(profesional__numero_documento__nombre__icontains=busqueda))
+        print("Buscado AQUI", busqueda)
+
+    elif filtro:
+        tratamientos_conf = Cita.objects.filter(Q(fecha__icontains=filtro))
+        print("Buscado AQUI", filtro)
+        
+        
+    tratamientos_pendientes = []
+    
     for tratamiento_conf in tratamientos_conf:
-        id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
+        # id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
         paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
         # persona = Persona.objects.get(numero_documento=paciente.numero_documento)
         numero_documento = paciente.numero_documento
@@ -172,12 +199,12 @@ def listar_tratamientos_pendientes(request):
         profesional = cita.profesional.numero_documento.nombre+" "+cita.profesional.numero_documento.apellido
         fecha_pasada = verificar_fecha_hora_agendamiento(cita.id_cita)
         tratamiento_pendiente = {
-                                'id_tratamiento_conf':id_tratamiento_conf,
+                                # 'id_tratamiento_conf':id_tratamiento_conf,
                                 'numero_documento':numero_documento,
                                 'nombre':nombre,
                                 'apellido':apellido,
                                 'nombre_tratamiento':nombre_tratamiento,
-                                'fecha_atencion':fecha_atencion,
+                                'fecha':fecha_atencion,
                                 'hora':hora,
                                 'profesional':profesional,
                                 'fecha_pasada':fecha_pasada,
@@ -343,25 +370,30 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 def ver_mis_tratamientos_pendientes(request, numero_documento):
     
     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
-      #'filtro de fecha, 
+    #   #'filtro de fecha, probar
     filtro = request.POST.get("f")
   
     if filtro:
             print("Buscado AQUI", filtro)
-            tratamientos_pendientes = Cita.objects.filter(
+            tratamientos_conf = Cita.objects.filter(
                 Q(fecha__icontains=filtro))
 
     
     tratamientos_pendientes = []
-    odontologo = EspecialistaSalud.objects.get(numero_documento=numero_documento)
-    profesional = odontologo.numero_documento.nombre+" "+odontologo.numero_documento.apellido
+    try:
+        odontologo = EspecialistaSalud.objects.get(numero_documento=numero_documento)
+        odontologo.id_especialista_salud
+    except EspecialistaSalud.DoesNotExist:
+        titulo = '¡Atención!'
+        mensaje = 'Usted no es un Odontólogo, por lo tanto no puede ver esta sección.'
+        return redirect('/panel_control/mostrar_mensaje/%s/%s'%(titulo,mensaje))
 
     for tratamiento_conf in tratamientos_conf:
         id_cita = tratamiento_conf.id_cita
         cita = Cita.objects.get(id_cita= id_cita)
         
         if str(cita.profesional.numero_documento) == str(numero_documento):
-            id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
+            # id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
             paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
             cedula = paciente.numero_documento
             nombre = paciente.numero_documento.nombre
@@ -373,7 +405,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
             hora = cita.hora_atencion.hora
             fecha_pasada = verificar_fecha_hora_agendamiento(cita.id_cita)
             tratamiento_pendiente = {
-                                    'id_tratamiento_conf':id_tratamiento_conf,
+                                   
                                     'numero_documento':cedula,
                                     'nombre':nombre,
                                     'apellido':apellido,
@@ -386,7 +418,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
             tratamientos_pendientes.append(tratamiento_pendiente)
     return render (request,"tratamiento/listar_mis_tratamientos_pendientes.html",{
                                                                             'tratamientos_pendientes':tratamientos_pendientes,
-                                                                            'profesional':profesional,
+                                                                            'profesional':odontologo,
                                                                             }
                     )
 
@@ -482,9 +514,11 @@ def verificar_fecha_hora_agendamiento(id_cita):
 
 
 def confirmar_tratamiento(request, id_tratamiento_conf):
+    tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
+    numero_documento = tratamiento_conf.especialista.numero_documento
     resultado = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_conf).update(estado='Realizado')
     guardar_historial_clinico(id_tratamiento_conf)
-    return redirect('/tratamiento/listar_tratamientos_pendientes/')
+    return redirect('/tratamiento/ver_mis_tratamientos_pendientes/%s' %(numero_documento))
 
 # ------------- Pantallas de mensajes ------------------------------- #
 def preguntar_confirmacion(request,id_tratamiento_conf):
@@ -512,7 +546,10 @@ def preguntar_confirmacion(request,id_tratamiento_conf):
     return redirect( '/tratamiento/mostrar_mensaje_confirmacion/%s' %(id_tratamiento_conf))
 
 def mostrar_mensaje_confirmacion(request,id_tratamiento_conf):
-    return render(request,'mensajes/mostrar_mensaje_confirmacion.html',{'id_tratamiento_conf':id_tratamiento_conf}) 
+    return render(request,'mensajes/mostrar_mensaje_confirmacion.html',{
+                                                                        'id_tratamiento_conf':id_tratamiento_conf,
+                                                                        }
+                ) 
 
 
 # #############################################

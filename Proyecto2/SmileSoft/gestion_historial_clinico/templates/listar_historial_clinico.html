@@ -18,6 +18,7 @@
 				        <tr>
 					        <th>Número</th>
 					        <th>Tratamiento realizado</th>
+							<th>Odontólogo tratante</th>
 					        <th>Fecha de realización</th>
 				        </tr>	
 			        </thead>
@@ -27,6 +28,7 @@
 				                <tr>
 					                <td >{{forloop.counter}}</td>
 					                <td>{{ h.tratamiento.nombre_tratamiento }}</td>
+									<td>{{h.especialista.numero_documento.nombre}} {{h.especialista.numero_documento.apellido}}</td>
 					                <td>{{ h.fecha_realizacion }}</td>
 				                </tr>
 				            {% endfor %}

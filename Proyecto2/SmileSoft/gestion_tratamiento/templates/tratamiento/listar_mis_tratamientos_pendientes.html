@@ -21,7 +21,10 @@
                     </h2>
                     <br>
                     {%if tratamientos_pendientes%}
-                        <h5>A ser realizados por el Odontólogo: <b>{{profesional}}</b></h5>
+                        <h5>
+                            A ser realizados por el Odontólogo: 
+                            <b>{{profesional.numero_documento.nombre}} {{profesional.numero_documento.apellido}}</b>
+                        </h5>
                     {%endif%}
                 </center>
                 <br>
@@ -127,12 +130,14 @@
                                 {% endif %}
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-center">
-                        <a class="btn btn-secondary" onclick = "history.back ()" >
-                            <i class="bi-x-circle"></i> 
-                            Atrás
-                        </a>
-                    </div>
+                    {%if tratamientos_pendientes%}
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-secondary" onclick = "history.back ()" >
+                                <i class="bi-x-circle"></i> 
+                                Atrás
+                            </a>
+                        </div>
+                    {%endif%}
                 </table>
             </div>
         </div>

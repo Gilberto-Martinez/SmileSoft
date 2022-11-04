@@ -59,25 +59,25 @@ class PersonaForm(forms.ModelForm):
          self.mensaje_error = "Ya existe el número de documento ingresado"
       return numero_documento
 
-   def clean_fecha_nacimiento(self):
-      fecha_nacimiento = self.cleaned_data["fecha_nacimiento"]
-      print(fecha_nacimiento)
+   # def clean_fecha_nacimiento(self):
+   #    fecha_nacimiento = self.cleaned_data["fecha_nacimiento"]
+   #    print(fecha_nacimiento)
 
-      fecha_nacimiento = str(fecha_nacimiento)
-      fecha = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
-      edad = relativedelta(datetime.now(), fecha)
-      print(f"{edad.years} años, {edad.months} meses y {edad.days} días")
-      edad = edad.years
+   #    fecha_nacimiento = str(fecha_nacimiento)
+   #    fecha = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+   #    edad = relativedelta(datetime.now(), fecha)
+   #    print(f"{edad.years} años, {edad.months} meses y {edad.days} días")
+   #    edad = edad.years
 
-      if edad < 18:
-         print ("La persona es menor de edad, no puede ser un funcionario")
-         self.evento = "Menor de edad"
-         self.mensaje_error = "La persona es menor de edad, no puede ser un funcionario"
-      return fecha_nacimiento
+   #    if edad < 18:
+   #       print ("La persona es menor de edad, no puede ser un funcionario")
+   #       self.evento = "Menor de edad"
+   #       self.mensaje_error = "La persona es menor de edad, no puede ser un funcionario"
+   #    return fecha_nacimiento
 
 
-   def get_numero_documento(self):
-      return self.numero_documento
+   # def get_numero_documento(self):
+   #    return self.numero_documento
 
 
 class PersonaPacienteForm(forms.ModelForm):
@@ -94,7 +94,10 @@ class PersonaPacienteForm(forms.ModelForm):
             (M, 'Masculino')
    ]
    sexo = forms.ChoiceField(choices=SEXOS, widget = forms.Select (attrs = {'class': 'form-control',}))
-   fecha_nacimiento = forms.DateField(label='Fecha de nacimiento', widget=forms.DateInput(attrs={'type': 'date'}))
+   fecha_nacimiento = forms.DateField(
+                                       label='Fecha de nacimiento:', 
+                                       widget=forms.NumberInput(attrs={'type': 'date'})
+                                       )
    mensaje_error = ""
    evento = ""
                                       
@@ -106,8 +109,8 @@ class PersonaPacienteForm(forms.ModelForm):
                   'direccion',
                   'telefono',
                   'correo_electronico',
-                  'fecha_nacimiento',
                   'sexo',
+                  'fecha_nacimiento',
                 ]
          # widgets = {
          #             'es_funcionario': HiddenInput(attrs={'required':False}),
@@ -123,8 +126,8 @@ class PersonaPacienteForm(forms.ModelForm):
          self.mensaje_error = "Ya existe el número de documento ingresado"
       return numero_documento
 
-   def get_numero_documento(self):
-      return self.numero_documento
+   # def get_numero_documento(self):
+   #    return self.numero_documento
 
 
 

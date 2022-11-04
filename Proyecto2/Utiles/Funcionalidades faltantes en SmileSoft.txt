@@ -5,21 +5,21 @@ FUNCIONALIDADES QUE FALTAN EN SMILESOFT
 	1.2*En elegir, aun falta implementar
 2-(HECHO) En Especialidad se debe insertar aunque sea una especialidad más
 3-(HECHO) En agregar tratamiento, debe implementarse agregar insumo
-4-En asignar tratamientos>tratamiento asignado, debe permitir imprimir una liquidación previa a la facturación
+4-En función cobrar_tratamientos Cobros>cobros pendientes>Ver detalle>Detalle previo, debe permitir imprimir una liquidación previa a la facturación
 5-(HECHO)En usuario_addCita al intentar un paciente agregar una cita a la misma hora, misma fecha y mismo especialista u otro especialista debe de mostrar el mensaje "Ya cuenta con una cita en esa fecha y en la hora seleccionada"
 6-(HECHO)En citas reservadas, si la fecha de agendamiento y hora de agendamiento es superior a la fecha y hora actual, la cita debe tener estado cancelado o no confirmado
 7-(HECHO)En usuario_addCita y agregar cita al lanzar el error "El horario ya fue reservado" debería tener la opción modificar, que permita modificar la cita no guardada
 8-(HECHO)En agregar horario  corregir el botón Cancelar
 9-En Facturación, debe implementarse emitir factura y pago a proveedores, además agregar la opción pago a funcionarios y a especialidades (analizar si debería estar en una misma función)
 10-En cobrar tratamiento debe validar que si el paciente es menor de edad preguntar por la razón social de la factura
-11-En cobros corregir, ver detalle, ya que no muestra el detalle de cobros
+11-(HECHO) En cobros corregir, ver detalle, ya que no muestra el detalle de cobros
 12-En Lista de cobro, agregar e implementar generación de factura
 13-Para inventario cada vez que un se confirme un tratamiento se resta en los insumos correspondientes
 14-En Administrativo, agregar la opción crear usuario o ver/modificar usuario en Persona, Paciente, Funcionario y Especialista de salud
 15-(HECHO)Agregar mensaje de confirmación o cancelación a la mayoría de los CRUDs 
 
 16- A nivel Usuario -> Falta un items de Mis Tratamientos Pendientes
-17- En modificar cita el Asistente no deberia poder cambiar el motivo de la consulta, solo el odontologo deberia poder realizar esa acción
+17- (HECHO) En modificar cita el Asistente no deberia poder cambiar el motivo de la consulta, solo el odontologo deberia poder realizar esa acción
 
 18- INSUMO/INVENTARIO:
 	18.1- Agregar un atributo cantidad_unitaria que contengan las UNIDADES de los insumos
@@ -28,4 +28,4 @@ FUNCIONALIDADES QUE FALTAN EN SMILESOFT
 	18.4- Columna existencia que diga Disponible - FALTA
 OBS: Agregar estado de cuenta para paciente
 
-19- Falta Validar que el paciente sea mayor a 4años 
+19-(DESCARTADO) Falta Validar que el paciente sea mayor a 4años 

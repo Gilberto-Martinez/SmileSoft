@@ -5,7 +5,7 @@ admin.site.register(Cita)
 # Register your models here.
 class AdminCita(admin.ModelAdmin):
     inlines = [Cita]
-    list_display = ["id_cita","numero_documento"]
+    list_display = ["id_cita","numero_documento","profesional"]
 
     add_fieldsets = (
         (None, {
@@ -23,5 +23,5 @@ class AdminCita(admin.ModelAdmin):
     # list_display = ["nombre", "apellido",]
     # list_filter = ['numero_documento']
     list_display_links = ['numero_documento',]
-    search_fields = ['numero_documento', ]
+    search_fields = ['numero_documento', 'profesional_nombre' ]
     ordering = ['numero_documento']
