@@ -93,7 +93,11 @@ def listar_insumo(request):
         insumo = Insumo.objects.get(codigo_insumo=listado.codigo_insumo)
         codigo_insumo = insumo.codigo_insumo
         nombre=insumo.nombre_insumo
+        cantidad_insumo= insumo.cantidad_insumo
+        unidad_x_paquete=insumo.unidad_x_paquete
+        unidad=insumo.unidad
         # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
+        calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
         detalle= insumo.descripcion_insumo
         monto= '{:,}'.format(insumo.precio).replace(',','.')
        
@@ -102,6 +106,11 @@ def listar_insumo(request):
                             'nombre_insumo': nombre,
                             'descripcion_insumo': detalle,
                             'precio':monto,
+                            'cantidad_insumo':cantidad_insumo,
+                            'unidad':unidad,
+                            'unidad_x_paquete':unidad_x_paquete,
+                            'cantidad_unitaria':calculo_unitario,
+                            
                            }
         
         insumos.append(lista_insumos)

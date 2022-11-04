@@ -32,6 +32,7 @@ class Insumo(models.Model):
     cantidad_insumo = models.IntegerField(default=0, verbose_name= 'Cantidad (*)') #Cantidad_insumo =  5  Paquetes/Cajas/Litros --> se agrega por teclado
     #unidad = models.IntegerField(default=0, verbose_name= 'Unidad (*)')
     unidad_x_paquete = models.IntegerField(default=0, verbose_name= 'Unidad por pcl (*)')#donde pcl es unidad por paquete caja o litro # unidad_x_paquete = 12  --> se agrega por teclado
+    calculo_valor = models.IntegerField(default=0)
     cantidad_unitaria = models.IntegerField(default=0, verbose_name= 'Cantidad unitaria (*)') #cantidad_unitaria = 5 x 12 = 60    unidad --> no se agrega por teclado
     stock_minimo = models.IntegerField(default=0, verbose_name= 'Stock mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
    # existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
@@ -40,7 +41,7 @@ class Insumo(models.Model):
     L = 'Litro/s'
     UNIDADES = ((P, 'Paquete/s'), (C, 'Caja/s'), (L, 'Litro/s'))
     unidad = models.CharField(max_length=12, choices=UNIDADES, verbose_name='Unidad de medida')
-    stock_minimo = models.IntegerField(default=0, verbose_name= 'Stock Mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
+    # stock_minimo = models.IntegerField(default=calculo_valor, verbose_name= 'Stock Mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
     #existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
     #id_inventario = models.ForeignKey(inventario)
 
@@ -62,4 +63,8 @@ class Insumo(models.Model):
     def __str__(self):
         return self.nombre_insumo
 
+    # def get_calculo_valor(self):
+    #     return (self.cantidad_insumo * self.unidad_x_paquete)
+
+    
 #insumo con caducidad
