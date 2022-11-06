@@ -393,7 +393,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
         cita = Cita.objects.get(id_cita= id_cita)
         
         if str(cita.profesional.numero_documento) == str(numero_documento):
-            # id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
+            id_tratamiento_conf = tratamiento_conf.get_id_tratamiento()
             paciente = Paciente.objects.get(id_paciente=tratamiento_conf.paciente.get_id())
             cedula = paciente.numero_documento
             nombre = paciente.numero_documento.nombre
@@ -405,7 +405,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
             hora = cita.hora_atencion.hora
             fecha_pasada = verificar_fecha_hora_agendamiento(cita.id_cita)
             tratamiento_pendiente = {
-                                   
+                                    'id_tratamiento_conf': id_tratamiento_conf,
                                     'numero_documento':cedula,
                                     'nombre':nombre,
                                     'apellido':apellido,
