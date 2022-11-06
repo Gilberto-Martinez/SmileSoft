@@ -19,5 +19,5 @@ urlpatterns = [
             
             
             path('insumo_pdf/', ListaInsumoPDF.as_view(),name="insumo_pdf"),
-            path('insumo_lista/', listar_insumo_simple, name="insumo_lista"),
+            #path('insumo_lista/', listar_insumo_simple, name="insumo_lista"),
 ]

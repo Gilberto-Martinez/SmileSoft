@@ -25,13 +25,25 @@ class InsumoForm(forms.ModelForm):
             (L, 'Litro/s')
             ]
     unidad = forms.ChoiceField(label='Unidad de Medida:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
+    MG = 'mg'
+    ML = 'ml'
+    MM = 'mm'
+    A = 'ampollas'
+    UDS_UNITARIAS = [
+            (MG, 'mg'),
+            (ML, 'ml'),
+            (ML, 'mm'),
+            (A, 'amp/s')
+            ]
+    ud_unitaria = forms.ChoiceField(label='Ud. de Medida Unitaria:', choices=UDS_UNITARIAS, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
+
 
     unidad_x_paquete = forms.IntegerField(
-                                                   label='Unidad por Paquete, Caja o Litro:', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad por paquete del insumo'}))
-    cantidad_unitaria = forms.IntegerField(
-                                                   label='Cantidad Unitaria:', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Cantidad unitaria = cantidad_insumo x unidad_x_paquete'}))
+                                                   label='Ud. Unitaria:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la ud. unitaria del insumo'}))
+    # cantidad_unitaria = forms.IntegerField(
+    #                                                label='Cantidad Unitaria:', 
+    #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Cantidad unitaria = cantidad_insumo x unidad_x_paquete'}))
     stock_minimo = forms.IntegerField(
                                                    label='Stock Mínimo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Stock mínimo del insumo'}))
@@ -47,7 +59,8 @@ class InsumoForm(forms.ModelForm):
             'cantidad_insumo',
             'unidad',
             'unidad_x_paquete',
-            'cantidad_unitaria',
+            'ud_unitaria',
+            #'cantidad_unitaria',
             'stock_minimo',
             #'estado',
         ]
@@ -74,28 +87,43 @@ class InsumoUpdateForm(forms.ModelForm):
             (L, 'Litro/s')
             ]
     unidad = forms.ChoiceField(label='Unidad de Medida:', choices=UNIDADES, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
+    MG = 'mg'
+    ML = 'ml'
+    MM = 'mm'
+    A = 'ampollas'
+    UDS_UNITARIAS = [
+            (MG, 'mg'),
+            (ML, 'ml'),
+            (MM, 'mm'),
+            (A, 'amp/s')
+            ]
+    ud_unitaria = forms.ChoiceField(label='Ud. de Medida Unitaria:', choices=UDS_UNITARIAS, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     unidad_x_paquete = forms.IntegerField(
-                                                   label='Unidad por Paquete, Caja o Litro:', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la unidad por paquete del insumo'}))
-    cantidad_unitaria = forms.IntegerField(
-                                                   label='Cantidad Unitaria:', 
-                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Cantidad unitaria = cantidad_insumo x unidad_x_paquete'}))
+                                                   label='Ud. Unitaria:', 
+                                                   widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la ud. unitaria del insumo'}))
+    # cantidad_unitaria = forms.IntegerField(
+    #                                                label='Cantidad Unitaria:', 
+    #                                                widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Cantidad unitaria = cantidad_insumo x unidad_x_paquete'}))
     stock_minimo = forms.IntegerField(
                                                    label='Stock Mínimo:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Stock mínimo del insumo'}))
     class Meta:
         model = Insumo
-        fields= '__all__'
-        # fields = [
-        #     'codigo_insumo',
-        #     'nombre_insumo',
-        #     'descripcion_insumo',
-        #     'precio',
-        #     'fecha_caducidad',
-        #     'cantidad_insumo'
-        #     'estado',
-        #     'unidad',
-        # ]
+        #fields= '__all__'
+        fields = [
+            'codigo_insumo',
+            'nombre_insumo',
+            'descripcion_insumo',
+            'precio',
+            'fecha_caducidad',
+            'cantidad_insumo',
+            'unidad',
+            'unidad_x_paquete',
+            'ud_unitaria',
+            #'cantidad_unitaria',
+            'stock_minimo',
+            #'estado',
+        ]
 
     def clean_fecha_caducidad(self):
         fecha_caducidad = self.cleaned_data["fecha_caducidad"]

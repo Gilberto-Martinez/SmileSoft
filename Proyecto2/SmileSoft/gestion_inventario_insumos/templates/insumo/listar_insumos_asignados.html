@@ -53,7 +53,7 @@
                                             <td >{{forloop.counter}}</td>
                                             <td >{{c.insumo.nombre_insumo}}</td>
                                             {%if c.tratamiento_insumo_asignado.cantidad%}
-                                                <td >{{c.tratamiento_insumo_asignado.cantidad}} {{c.tratamiento_insumo_asignado.insumo.unidad}}</td>
+                                                <td >{{c.tratamiento_insumo_asignado.cantidad}} {{c.tratamiento_insumo_asignado.insumo.ud_unitaria}}</td>
                                             {%else%}
                                                 <td>0</td>
                                             {%endif%}

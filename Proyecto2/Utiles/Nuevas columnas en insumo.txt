@@ -5,3 +5,14 @@ cantidad_unitaria = 5 x 12 = 60    unidad --> no se agrega por teclado
 unidad de medida unitaria = mg/ml/ampolla
 stock_minimo = 12 --> se agrega por teclado
 existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
+
+
+
+
+       
+        # if insumo.cantidad_unitaria < insumo.stock_minimo 
+        #     insumo.existencia = "En falta"
+        # else:
+        #     insumo.existencia = "Disponible"
+
+        # existencia = insumo.existencia
