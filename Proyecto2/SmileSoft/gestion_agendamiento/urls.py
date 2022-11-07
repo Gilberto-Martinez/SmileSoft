@@ -29,7 +29,7 @@ urlpatterns = [
     
     # <--- A NIVEL Usuario--> Con acceso al sistema
     path('usuario_addCita/<str:numero_documento>/', addcita_usuario, name="usuario_addCita"),
-    path('usuario_changeCita/<int:id_cita>/',cambiarCita_usuario, name="usuario_addCita"),
+    path('usuario_changeCita/<int:id_cita>/',cambiarCita_usuario2, name="usuario_addCita"),
     path('delete_cita/<int:id_cita>', deletecita, name='delete_cita'),
     
     #<-- Templates de mensajes
