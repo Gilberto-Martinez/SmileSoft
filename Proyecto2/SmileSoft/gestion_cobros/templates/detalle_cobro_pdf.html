@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto Dental</title>
+   
+   
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <center> 
+                    <h2 class="bi bi-cash-coin">Presupuesto de Tratamiento/s a ser Realizado/s
+                    </h2>
+                </center>
+                <center> 
+                    <h1 style="color:blue;" > <b> C O N S U L D E N T </b><h1>
+                </center>
+           
+                <table>
+                      
+                    <thead>
+                        <tr style="background-color: black; color:white">
+                            <th>Telefono</th>
+                            <th>Ubicacion</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            
+                            <th> (0985) 571 842</th>
+                        </tr>
+                        <tr>
+                            <th> (0984) 476 557</th>
+                            <th>Fernando de la Mora - Zona-Sur</th>
+                        </tr>
+                        <tr>
+                            <th> Email: consultdent9596@gmail.com</th>
+                          
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                    <center>
+                        <h3>
+                            <b>Datos Personales</b> <i></i>
+                        </h3>
+                    </center>
+
+                <table border="0,3px">
+                    <b>Paciente:</b> &nbsp; <i>{{persona.nombre}} {{persona.apellido}}</i>
+                    <br>
+                    <b>Numero de cedula/RUC: </b> &nbsp; {{persona.numero_documento}}
+                    <br>
+                    <b>Expedido: </b> &nbsp; dd/mm/aaaa
+                    <br>
+                    <b>Fecha: </b> &nbsp;Valido 30 dias</h6>
+                   
+                </table>
+            <br>
+  
+                <!--Inicio de la TABLA DE TRATAMIENTOS-->
+              
+                <table border= "1px">
+                    <thead> 
+                        <tr>
+                            {%if tratamientos_agendados%}
+                                <th><br>Nro Tratamiento</th>
+                                <th><br>Nombre </th>
+                                <th><br>Precio</strong> </th>
+                            {%endif%}
+                        </tr>
+                    </thead>
+
+                    <tbody >
+                        {%for t in tratamientos_agendados%}
+                        <tr>
+                            <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}}</td>
+                            <td><br>&nbsp;&nbsp;&nbsp;{{t.tratamiento.nombre_tratamiento}}</td>
+                            <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento.precio}}</td>
+                            
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th><br> Precio Total</th>
+                            <th></th>
+                            <th><br>{{precio_total}} Gs</th>
+                          
+                        </tr>
+                    </tbody>
+                </table>
+               
+            </div>
+        </div>
+    </div>
+    
+	<!--Pie de pagina -->
+	
+		<div class="col-8 text-length copyright">
+					<samp>
+            <br>
+            <br>
+            <br>
+						<p>Copyright &copy; FP-UNA 2022  </p>
+					</samp>
+				</div>
+			</div>
+
+		</div>
+
+</body>
+</html>
