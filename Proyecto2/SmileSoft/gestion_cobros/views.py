@@ -1,6 +1,8 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, View
+from gestion_cobros.utils import render_to_pdf
+from django.http import (Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento
 from gestion_tratamiento.models import Tratamiento
@@ -342,6 +344,43 @@ def listar_cobros_pendientes(request):
                 break
 
     return render(request,'listar_cobros_pendientes.html', {'pacientes':lista_pacientes})
+
+
+
+
+#------------------PDF-------------------------------------------------#
+
+def detalle_cobro_pdf(request, id_paciente):
+    listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
+    paciente = Paciente.objects.get(id_paciente=id_paciente)
+    cedula = paciente.numero_documento
+    persona = Persona.objects.get(numero_documento=cedula)
+    # id_paciente = paciente.id_paciente
+
+    tratamientos_agendados = []
+    precio_total = 0
+    for tratamiento in listado_tratamientos:
+        if str(tratamiento.get_paciente()) == str(id_paciente):
+            cod_tratamiento = tratamiento.get_tratamiento()
+            nuevo_tratamieto = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
+            tratamiento_agendado = {
+                                    'tratamiento':nuevo_tratamieto,
+                                    'id_tratamiento_confirmado' :tratamiento.id_tratamiento_conf,
+                                    'id_cita':tratamiento.id_cita,
+                                    # 'id_paciente':id_paciente
+            }
+            precio_total = precio_total + nuevo_tratamieto.precio
+            tratamientos_agendados.append(tratamiento_agendado)
+
+    precio_total = '{:,}'.format(precio_total).replace(',','.')
+    
+    pdf = render_to_pdf("detalle_cobro_pdf.html",{
+                                                    'tratamientos_agendados':tratamientos_agendados,
+                                                    'persona':persona,
+                                                    'precio_total':precio_total,
+                                                    
+                                                })
+    return HttpResponse(pdf, content_type='application/pdf')
 
 #------------------------ Vista de mensajes ----------------------------#
 class ErrorCobro(TemplateView):

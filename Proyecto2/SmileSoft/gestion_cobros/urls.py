@@ -13,4 +13,7 @@ urlpatterns = [
     path('verificar_datos_cita/<numero_documento>/<menor_edad>', verificar_datos_cita, name="verificar_datos_cita"),
     path('solicitar_razon_social/<numero_documento>', solicitar_razon_social, name="solicitar_razon_social"),
     path('registrar_cobro2/<numero_documento>/<numero_documento2>/<razon_social>', registrar_cobro2, name="registrar_cobro2"),
+    
+    # path('detalle_cobro_pdf/<int:id_paciente>', DetalleCobroPDF.as_view(),name="detalle_cobro_pdf"),
+    path('detalle_cobro_pdf/<int:id_paciente>', detalle_cobro_pdf ,name="detalle_cobro_pdf"),
 ]
