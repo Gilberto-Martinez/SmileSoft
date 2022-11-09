@@ -87,4 +87,3 @@ class TratamientoInsumoAsignado(models.Model):
 
     def get_insumo(self):
         return self.insumo.codigo_insumo
-
