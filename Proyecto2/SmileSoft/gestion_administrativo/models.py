@@ -6,6 +6,7 @@ from django.template.defaultfilters import default
 from datetime import date, datetime
 import dateutil.relativedelta
 from dateutil.relativedelta import relativedelta
+from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_tratamiento.models import Tratamiento
 # from gestion_agendamiento.models import *
 
@@ -281,6 +282,8 @@ class TratamientoConfirmado(models.Model):
     ESTADOS = ((A, 'Agendado'), (C, 'Confirmado'), (P, 'Pagado'), (R, 'Realizado'), )
     estado = models.CharField(max_length=12, choices=ESTADOS, default='Agendado')
     id_cita = models.IntegerField(null=True, unique=True)
+    
+  
 
     class Meta:
         db_table = 'TratamientoConfirmado'
@@ -290,7 +293,7 @@ class TratamientoConfirmado(models.Model):
 
     def get_tratamiento(self):
         return str(self.tratamiento.get_codigo_tratamiento())
-
+    
     def get_paciente(self):
         return str(self.paciente.id_paciente)
 
@@ -299,6 +302,11 @@ class TratamientoConfirmado(models.Model):
 
     def get_id_tratamiento(self):
         return str(self.id_tratamiento_conf)
+    
+    # def get_insumo_asig(self):
+    #     return str(self.tratamiento.get_insumo_asig)
+
+
 
 
 #####################################################################

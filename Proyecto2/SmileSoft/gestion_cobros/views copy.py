@@ -363,7 +363,9 @@ def detalle_cobro_pdf(request, id_paciente):
     listado_insumos_asig= TratamientoInsumoAsignado.objects.all()
     
     tratamientos_insumos_asignados = []
-    
+    # id_paciente = paciente.id_paciente
+
+    # tratamientos_agendados = []
     precio_total = 0
     insumos=[]
     
@@ -380,14 +382,15 @@ def detalle_cobro_pdf(request, id_paciente):
                     cod_insumo = insumo_asig.get_insumo()
                     nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
                     insumos.append(nuevo_insumo)
-                    # print("Tratamiento: "," ", nuevo_tratamiento.nombre_tratamiento,", INSUMO: ", nuevo_insumo.nombre_insumo)
-            tratamiento_insumo_asig = {
-                                        "insumos":insumos,
-                                        
-                                        "tratamiento":nuevo_tratamiento
-            }
+                    print("Tratamiento: "," ", nuevo_tratamiento.nombre_tratamiento,", INSUMO: ", nuevo_insumo.nombre_insumo)
+                tratamiento_insumo_asig = {
+                                            "insumos":insumos,
+                                            
+                                            "tratamiento":nuevo_tratamiento
+                }
+                print ("AQUI IMPRIME", tratamiento_insumo_asig)
             tratamientos_insumos_asignados.append(tratamiento_insumo_asig)
-            print("Listado de Tratamientos con Insumo",{'tratamientos_insumos_asignados':tratamientos_insumos_asignados })
+            print("el insumo del tratamiento", )
       
             precio_total = int(precio_total) + int(nuevo_tratamiento.precio)
             # tratamientos_agendados.append(tratamiento_agendado)
