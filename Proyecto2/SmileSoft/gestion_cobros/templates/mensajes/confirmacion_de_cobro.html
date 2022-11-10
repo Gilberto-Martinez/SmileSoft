@@ -10,11 +10,17 @@
                 <h2>
                     <b>¡Registrado con exito!</b>
                 </h2>
+                <br>
+                <h4>¿Desea generar una factura?</h4>
             </center>
             <center>
-                <a type="submit" class="btn btn-success" href="/cobros/listar_cobros">
+                <a type="submit" class="btn btn-success" href="/cobros/ingresar_datos_factura/{{id_cobro}}">
                     <i class="bi bi-check2-square"></i>
-                    OK
+                    Si
+                </a>
+                <a type="submit" class="btn btn-danger" href="/cobros/listar_cobros">
+                    <i class="bi bi-x-circle"></i>
+                    No
                 </a>
             </center>
         </div>
