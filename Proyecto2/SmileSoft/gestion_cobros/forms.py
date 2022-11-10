@@ -1,7 +1,6 @@
-from dataclasses import field, fields
-from pyexpat import model
 from django import forms
 from .models import *
+from gestion_administrativo.models import Persona
 
 # class CobroContadoForm(forms.ModelForm):
 #     paciente = forms.CharField(widget=forms.TextInput(attrs={
@@ -58,4 +57,55 @@ class RazonSocialForm(forms.ModelForm):
         fields = [
                     'numero_documento',
                     'razon_social',
+        ]
+
+class FacturaForm(forms.ModelForm):
+    numero_documento = forms.CharField(label="RUC",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el RUC del cliente'
+                                                            }
+                                                    )
+                                )
+    dv = forms.IntegerField(label="DV",
+                                widget=forms.NumberInput(attrs={
+                                                            'class': 'form-control',
+                                                            # 'placeholder': 'Ingrese su nombre'
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(label="Nombre/Razón social",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el nombre del cliente'
+                                                            }
+                                                    )
+                                )
+    # domicilio = forms.CharField(label="Domicilio",
+    #                                 widget=forms.TextInput(attrs={
+    #                                                         'class': 'form-control',
+    #                                                         'placeholder': 'Ingrese el domicilio del cliente'
+    #                                                         }
+    #                                                 )
+    #                             ) 
+
+    class Meta:
+        model = CobroContado
+        fields = [
+                    'numero_documento',
+                    'razon_social',
+        ]
+
+class DomicilioForm(forms.ModelForm):
+    direccion = forms.CharField(label="Domicilio",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el domicilio del cliente'
+                                                            }
+                                                    )
+                                ) 
+    class Meta:
+        model = Persona
+        fields = [
+                'direccion'
         ]

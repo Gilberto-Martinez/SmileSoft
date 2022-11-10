@@ -126,7 +126,6 @@ class CitaForm2(forms.ModelForm):
             'fecha',
             # 'hora',
             'hora_atencion',
-
             'profesional',
             'estado',
         ]
