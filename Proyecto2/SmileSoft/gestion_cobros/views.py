@@ -403,6 +403,63 @@ def detalle_cobro_pdf(request, id_paciente):
                                                 })
     return HttpResponse(pdf, content_type='application/pdf')
 
+
+
+
+
+#--PDF2--PRESUPUESTO---------------------------------------------------#
+def presupuesto_pdf(request, id_paciente):
+    # listado_tratamientos = TratamientoConfirmado.objects.filter(
+    #     estado='Confirmado')
+    listado_tratamientos_asig = PacienteTratamientoAsignado.objects.all()
+    paciente = Paciente.objects.get(id_paciente=id_paciente)
+    cedula = paciente.numero_documento
+    persona = Persona.objects.get(numero_documento=cedula)
+    fecha_actual = (datetime.datetime.now().strftime('%d/%m/%Y'))
+
+    listado_insumos_asig = TratamientoInsumoAsignado.objects.all()
+    tratamientos_insumos_asignados = []
+    precio_total = 0
+    
+    
+    tratamientos_asignados = []
+    id_paciente_tratamiento = ''
+
+    for tratamiento_asig in listado_tratamientos_asig:
+        if str(tratamiento_asig.get_paciente()) == str(id_paciente):
+            id_paciente_tratamiento = tratamiento_asig.id_tratamiento_asig
+            cod_tratamiento = tratamiento_asig.get_tratamiento()
+            nuevo_tratamiento = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
+            nuevo_insumo = []
+            insumos = []
+            # fecha_actual= datetime.datetime.now().strftime('%d/%m/%Y')
+
+            for insumo_asig in listado_insumos_asig:
+                if str(insumo_asig.get_tratamiento()) == str(cod_tratamiento):
+                    # id_tratamiento_insumo = tratamiento.id_insumo_asig
+                    cod_insumo = insumo_asig.get_insumo()
+                    nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
+                    insumos.append(nuevo_insumo)
+                    # print("Tratamiento: "," ", nuevo_tratamiento.nombre_tratamiento,", INSUMO: ", nuevo_insumo.nombre_insumo)
+            tratamiento_insumo_asig = {
+                "insumos": insumos,
+
+                "tratamiento_asig": nuevo_tratamiento
+            }
+            tratamientos_insumos_asignados.append(tratamiento_insumo_asig)
+            # print("Listado de Tratamientos con Insumo", {
+            #         'tratamientos_insumos_asignados': tratamientos_insumos_asignados})
+
+            precio_total = int(precio_total) + int(nuevo_tratamiento.precio)
+
+    pdf = render_to_pdf("presupuesto_pdf.html", {
+        'tratamientos_insumos_asignados': tratamientos_insumos_asignados,
+        'persona': persona,
+        'fecha_actual': fecha_actual,
+        'precio_total': precio_total,
+
+    })
+    return HttpResponse(pdf, content_type='application/pdf')
 #------------------------ Vista de mensajes ----------------------------#
 class ErrorCobro(TemplateView):
     template_name = "mensajes/error_cobro.html"
