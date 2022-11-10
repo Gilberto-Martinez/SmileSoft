@@ -355,43 +355,38 @@ def listar_cobros_pendientes(request):
 #------------------PDF-------------------------------------------------#
 
 def detalle_cobro_pdf(request, id_paciente):
-    listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
+    tratamientos_confirmados = TratamientoConfirmado.objects.filter(estado='Confirmado')
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
     fecha_actual= (datetime.datetime.now().strftime('%d/%m/%Y'))
-   
+    
     listado_insumos_asig= TratamientoInsumoAsignado.objects.all()
     
     tratamientos_insumos_asignados = []
     
     precio_total = 0
-    insumos=[]
     
-    for tratamiento in listado_tratamientos:
+    for tratamiento in tratamientos_confirmados:
         if str(tratamiento.get_paciente()) == str(id_paciente):
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamiento = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             nuevo_insumo= []
-            # fecha_actual= datetime.datetime.now().strftime('%d/%m/%Y')
-            
+            insumos=[]
             for insumo_asig in listado_insumos_asig:
                 if str(insumo_asig.get_tratamiento()) == str(cod_tratamiento):
-                    # id_tratamiento_insumo = tratamiento.id_insumo_asig
                     cod_insumo = insumo_asig.get_insumo()
                     nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
                     insumos.append(nuevo_insumo)
                     # print("Tratamiento: "," ", nuevo_tratamiento.nombre_tratamiento,", INSUMO: ", nuevo_insumo.nombre_insumo)
             tratamiento_insumo_asig = {
+                                        "tratamiento":nuevo_tratamiento,
                                         "insumos":insumos,
-                                        
-                                        "tratamiento":nuevo_tratamiento
             }
             tratamientos_insumos_asignados.append(tratamiento_insumo_asig)
             print("Listado de Tratamientos con Insumo",{'tratamientos_insumos_asignados':tratamientos_insumos_asignados })
       
             precio_total = int(precio_total) + int(nuevo_tratamiento.precio)
-            # tratamientos_agendados.append(tratamiento_agendado)
 
             # precio_total = '{:,}'.format(precio_total).replace(',','.')
         
