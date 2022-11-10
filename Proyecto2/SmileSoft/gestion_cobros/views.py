@@ -10,7 +10,7 @@ from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobr
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, Paciente
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm
+from .forms import RazonSocialForm, FacturaForm, DomicilioForm
 from django.db.models import Q
 from datetime import datetime
 import datetime
@@ -79,10 +79,11 @@ def registrar_cobro(request, numero_documento):
             )
         pagar_tratamientos(numero_documento)
     
+        id_cobro = cobro_contado.id_cobro_contado
     else:
         return redirect("/cobros/error_cobro/")
 
-    return redirect("/cobros/mensaje_confirmacion_cobro/")
+    return redirect("/cobros/mensaje_confirmacion_cobro/%s"%(id_cobro))
 
 
 def registrar_cobro2(request, numero_documento, numero_documento2,razon_social):
@@ -250,7 +251,7 @@ def ver_detalle_cobro(request, id_cobro_contado):
     detalle_cobro = DetalleCobroContado.objects.get(cobro=id_cobro_contado)
     id_detalle_cobro = detalle_cobro.id
     detalle_tratamientos = DetalleCobroTratamiento.objects.all()
-    tratamientos =[]
+    tratamientos =[] 
 
     for detalle_tratamiento in detalle_tratamientos:
         print("id Detalle parametro: ", id_detalle_cobro)
@@ -354,43 +355,38 @@ def listar_cobros_pendientes(request):
 #------------------PDF-------------------------------------------------#
 
 def detalle_cobro_pdf(request, id_paciente):
-    listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
+    tratamientos_confirmados = TratamientoConfirmado.objects.filter(estado='Confirmado')
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
     fecha_actual= (datetime.datetime.now().strftime('%d/%m/%Y'))
-   
+    
     listado_insumos_asig= TratamientoInsumoAsignado.objects.all()
     
     tratamientos_insumos_asignados = []
     
     precio_total = 0
-    insumos=[]
     
-    for tratamiento in listado_tratamientos:
+    for tratamiento in tratamientos_confirmados:
         if str(tratamiento.get_paciente()) == str(id_paciente):
             cod_tratamiento = tratamiento.get_tratamiento()
             nuevo_tratamiento = Tratamiento.objects.get(codigo_tratamiento=cod_tratamiento)
             nuevo_insumo= []
-            # fecha_actual= datetime.datetime.now().strftime('%d/%m/%Y')
-            
+            insumos=[]
             for insumo_asig in listado_insumos_asig:
                 if str(insumo_asig.get_tratamiento()) == str(cod_tratamiento):
-                    # id_tratamiento_insumo = tratamiento.id_insumo_asig
                     cod_insumo = insumo_asig.get_insumo()
                     nuevo_insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
                     insumos.append(nuevo_insumo)
                     # print("Tratamiento: "," ", nuevo_tratamiento.nombre_tratamiento,", INSUMO: ", nuevo_insumo.nombre_insumo)
             tratamiento_insumo_asig = {
+                                        "tratamiento":nuevo_tratamiento,
                                         "insumos":insumos,
-                                        
-                                        "tratamiento":nuevo_tratamiento
             }
             tratamientos_insumos_asignados.append(tratamiento_insumo_asig)
             print("Listado de Tratamientos con Insumo",{'tratamientos_insumos_asignados':tratamientos_insumos_asignados })
       
             precio_total = int(precio_total) + int(nuevo_tratamiento.precio)
-            # tratamientos_agendados.append(tratamiento_agendado)
 
             # precio_total = '{:,}'.format(precio_total).replace(',','.')
         
@@ -466,4 +462,56 @@ class ErrorCobro(TemplateView):
 
 class ConfirmacionCobro(TemplateView):
     template_name = "mensajes/confirmacion_de_cobro.html"
+
+def mostrar_msj_confirmacion_cobro(request,id_cobro):
+    return render(request, 'mensajes/confirmacion_de_cobro.html',{'id_cobro':id_cobro})
+
+#--------------------- Sección de faturación -------------------------------#
+def ingresar_datos_factura(request, id_cobro):
+    cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
+    cedula = cobro.paciente.numero_documento
+    persona = Persona.objects.get(numero_documento=cedula)
+    detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro)
+    id_detalle_cobro = detalle_cobro.id
+    detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+    tratamientos =[]
+
+    for detalle_tratamiento in detalle_tratamientos:
+        print("id Detalle parametro: ", id_detalle_cobro)
+        print("Detalle de cobro en BD: ", detalle_tratamiento.detalle_cobro.id)
+        if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
+            id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
+            tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
+            precio = '{:,}'.format(tratamiento.precio).replace(',','.')
+            tratamiento_tmp = {
+                                'nombre_tratamiento':tratamiento.nombre_tratamiento,
+                                'precio':precio
+            }
+            tratamientos.append(tratamiento_tmp)
+            print("Entra en detalle de cobro")
+
+    monto_total = cobro.monto_total
+    monto_total = '{:,}'.format(monto_total).replace(',','.')
+
+    data = {
+        'form': FacturaForm(instance=cobro),
+        'form2':DomicilioForm(instance=persona)
+    }
+
+    data['tratamientos'] = tratamientos
+    data['monto_total'] = monto_total
+
+    if request.method == 'POST':
+        form = FacturaForm(data=request.POST, files=request.FILES, instance=cobro)
+        form2 = DomicilioForm(data=request.POST, files=request.FILES, instance=persona)
+        if form.is_valid() and form2.is_valid():
+            factura = form.save(commit=False)
+            # factura.domicilio = domicilio
+        else:
+            data = {
+                'form': FacturaForm(),
+                'form2':DomicilioForm()
+            }
+
+    return render(request, 'facturacion/ingresar_datos_factura.html', data)
 
