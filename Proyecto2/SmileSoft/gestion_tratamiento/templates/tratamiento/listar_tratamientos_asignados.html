@@ -130,8 +130,14 @@
                         </a> {% endcomment %}
                         {%endif%}
                         &nbsp;
+                        <a type="submit" href="/cobros/presupuesto_pdf/{{paciente.id_paciente}}" class="btn btn-secondary btn-block txt-primary">
+                            <i class="bi bi-printer"></i>
+                            Presupuesto
+                        </a>
+                        &nbsp;
+                        &nbsp;
                         <a onclick = "history.back()" class="btn btn-secondary"  >
-                            <i class="bi-x-circle"></i> 
+                       <i class="bi bi-arrow-bar-left"></i>
                             Atrás <br>
                         </a>
                     </div>

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Detalle del Cobro </title>
+        <title> Presupuesto Dental </title>
     <style>
         .date {
             font-family:Verdana;
@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-body">
                     <center> 
-                        <h2 class="bi bi-cash-coin">Detalle de Tratamiento/s a ser Realizado/s
+                        <h2 class="bi bi-cash-coin">Presupuesto de Tratamiento/s a ser Realizado/s
                         </h2>
                     </center>
                     <center> 
@@ -89,18 +89,19 @@
                         <tbody>
                             {%for t in tratamientos_insumos_asignados%}
                             <tr>
-                                <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}}</td>
-                                <td><br>&nbsp;&nbsp;&nbsp;<b>{{t.tratamiento.nombre_tratamiento}}</b>
+                                <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}} <br></td>
+                                <td><br>&nbsp;&nbsp;&nbsp;<b>{{t.tratamiento_asig.nombre_tratamiento}} <br> </b>
                                 <br>
                                 {%for i in t.insumos%}
                                     
-                                      <li>&nbsp;&nbsp;&nbsp; {{i.nombre_insumo}}</li>
+                                      <li>&nbsp;&nbsp;&nbsp; {{i.nombre_insumo}} <br></li>
+                                     
                         
                                 {%endfor%}
                                 
                                 </td>
-                                
-                                <td>&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento.precio}} Gs</td>
+                                <br>
+                                <td>&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento_asig.precio}} Gs</td>
                             </tr>
                             {% endfor %}
                             
