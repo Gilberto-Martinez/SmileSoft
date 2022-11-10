@@ -55,49 +55,70 @@
                             <tr>
                                 <th>Nro Insumo</th>
                                 <th>Nombre </th>
-                                <th>Costo Unitario</th>  
-                                <!-- <th>Fecha de Caducidad</th>  -->
-                                <th>Cantidad Insumo</th>
-                                <!-- <th>Unidad por Paquete, Caja o Litro</th> -->
-                                <th>Cantidad Unitaria</th>
-                                <th>Unidad de Medida</th> 
+                                <th>Cantidad Adquirida</th>  
+                                <th>Precio Unitario</th>
+                                {% comment %} <th>Medida </th> {% endcomment %}
+                                <th>Unidades</th> 
+                                <th>Ud. Métrica</th>
+                                <th>Stock Minimo</th>
+                                <th>Existencia</th>
+
+
+                                
                                 <!-- <th>Estado</th>  -->
                                 <th colspan="2"><center>Acciones</center>  </th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {%for c in insumos%}
-                                <tr>
-                                    <td >{{forloop.counter}}</td>
-                                    <td >{{c.nombre_insumo}}</td>
-                                    <td>{{c.precio}} Gs.</td> 
-                                    <!-- <td>{{c.fecha_caducidad}}</td>  -->
-                                    <td>{{c.cantidad_insumo}}</td> 
-                                    <td>{{c.cantidad_unitaria}}</td> 
-                                    <td>{{c.unidad}}</td> 
-                                    <!-- <td>{{c.estado}}</td>  -->
-                                    {{busqueda}}
-                                    <!--OPCIONES Modificar y Eliminar-->
-                                    {%if perms.gestion_inventario_insumos.change_insumo%} 
-                                        <td>
-                                            <a href="/insumo/modificar_insumos/{{c.codigo_insumo}}" class="btn btn-primary">
-                                                <i class="bi-pencil-square"></i>
-                                                Modificar
-                                            </a>
-                                        </td>
-                                    {%endif%}
-                                    <!-- Eliminar-->
-                                    {%if perms.gestion_inventario_insumos.delete_insumo%}          
-                                        <td>
-                                            <a href="/insumo/eliminar_insumo/{{c.codigo_insumo}}" class="btn btn-danger btnEliminacion">
-                                                <i class="bi-trash-fill" ></i> 
-                                                    Eliminar
-                                            </a> 
-                                        </td>
-                                    {%endif%}
-                                </tr>
-                            {% endfor %}
+                            {%if insumos%}
+                                {%for c in insumos%}
+                                    <tr>
+                                        <td >{{forloop.counter}}</td>
+                                        <td >{{c.nombre_insumo}}</td>
+                                        <td>{{c.cantidad_insumo}} {{c.unidad}}</td> 
+                                        <td>{{c.precio}} Gs.</td> 
+                                        <td>{{c.unidad_x_paquete}} u </td> 
+                                        <td>{{c.cantidad_unitaria}} {{c.ud_unitaria}}</td> 
+                                        <td>{{c.stock_minimo}} {{c.ud_unitaria}}</td> 
+                                        <td></td> 
+                                        
+                                        <!-- <td>{{c.estado}}</td>  -->
+                                        {{busqueda}}
+                                        <!--OPCIONES Modificar y Eliminar-->
+                                        {%if perms.gestion_inventario_insumos.change_insumo%} 
+                                            <td>
+                                                <a href="/insumo/modificar_insumos/{{c.codigo_insumo}}" class="btn btn-primary">
+                                                    <i class="bi-pencil-square"></i>
+                                                    Modificar
+                                                </a>
+                                            </td>
+                                        {%endif%}
+                                        <!-- Eliminar-->
+                                        {%if perms.gestion_inventario_insumos.delete_insumo%}          
+                                            <td>
+                                                <a href="/insumo/eliminar_insumo/{{c.codigo_insumo}}" class="btn btn-danger btnEliminacion">
+                                                    <i class="bi-trash-fill" ></i> 
+                                                        Eliminar
+                                                </a> 
+                                            </td>
+                                        {%endif%}
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                    <br>
+                                    <h2>
+                                        <center>No hay registros
+                                            <br>   {%if perms.gestion_agendamiento.view_cita%}
+                                                <!-- Eliminar-->                
+                                                <a href="/insumo/listar_insumos" class="btn btn-info">   
+                                                    Ver Listado de Insumos
+                                                </a> 
+                                                {%endif%}
+                                        </center> 
+                                    </h2>
+
+                                {% endif %}
 
                             {% comment %} {% if messages %}
                                 <ul class="messages">

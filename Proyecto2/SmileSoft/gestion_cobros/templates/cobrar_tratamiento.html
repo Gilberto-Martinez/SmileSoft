@@ -46,7 +46,7 @@
                                 <tr>
                                     <td >{{forloop.counter}}</td>
                                     <td >{{t.tratamiento.nombre_tratamiento}}</td>
-                                    <td >{{t.tratamiento.precio}}</td>
+                                    <td >{{t.tratamiento.precio}} Gs</td>
                                     <td >
                                         <a href="/cobros/eliminar_tratamiento_confirmado/{{t.id_tratamiento_confirmado}}" type="submit" class="btn btn-danger btnEliminacion">
                                             <i class="bi bi-trash3"></i>
@@ -101,7 +101,7 @@
                     </table>
                     <div class="d-flex justify-content-center">
                         {%if tratamientos_agendados%}
-                        <a type="submit" href="#" class="btn btn-secondary btn-block txt-white">
+                        <a type="submit" href="/cobros/detalle_cobro_pdf/{{persona.paciente.id_paciente}}" class="btn btn-secondary btn-block txt-white">
                             <i class="bi bi-printer"></i>
                             Detalle previo
                         </a>

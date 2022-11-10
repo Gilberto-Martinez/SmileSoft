@@ -16,7 +16,7 @@
     <center>
         <FONT size="5" > 
             <b>INSUMO: </b>
-            <b style="color:blue;">{{tratamiento_insumo_asignado.insumo.nombre_insumo}}x</b> 
+            <b style="color:blue;">{{tratamiento_insumo_asignado.insumo.nombre_insumo}} </b> 
         </FONT>
     </center>
     <br>
@@ -35,7 +35,7 @@
                         {% csrf_token %}
                         <center>
                             <h5>
-                                <b>¡Ingrese la cantidad en {{insumo.unidad}}!:</b>
+                                <b>¡Ingrese la cantidad unitaria del Insumo<!-- {{insumo.ud_unitaria}} -->!:</b>
                             </h5>
                         </center>
                         <br>

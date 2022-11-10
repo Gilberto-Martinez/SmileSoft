@@ -46,7 +46,7 @@ def agregar_insumo (request):
             formulario.save()
             data["mensaje"]="Registrado correctamente"
             messages.success(request, (' ✅ Insumo Agregado Correctamente!'))
-            return redirect("/insumo/listar_insumo/")  
+            return redirect("/insumo/listar_insumos/")  
             
             print('aquiiiiiiiiiiiiii ENTRAAAAA')
         else:
@@ -93,7 +93,14 @@ def listar_insumo(request):
         insumo = Insumo.objects.get(codigo_insumo=listado.codigo_insumo)
         codigo_insumo = insumo.codigo_insumo
         nombre=insumo.nombre_insumo
+        cantidad_insumo= insumo.cantidad_insumo
+        unidad=insumo.unidad
+        upcl=insumo.unidad_x_paquete
+        ud_unitaria=insumo.ud_unitaria
+        stock_minimo= insumo.stock_minimo
+    
         # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
+        calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
         detalle= insumo.descripcion_insumo
         
         monto= '{:,}'.format(insumo.precio).replace(',','.')
@@ -103,6 +110,13 @@ def listar_insumo(request):
                             'nombre_insumo': nombre,
                             'descripcion_insumo': detalle,
                             'precio':monto,
+                            'cantidad_insumo':cantidad_insumo,
+                            'unidad':unidad,
+                            'unidad_x_paquete':upcl,
+                            'cantidad_unitaria':calculo_unitario,
+                            'ud_unitaria':ud_unitaria,
+                            'stock_minimo': stock_minimo, 
+                            
                            }
         
         insumos.append(lista_insumos)
@@ -112,38 +126,38 @@ def listar_insumo(request):
 #----inicio-------------------------------------------------------------#
 #                     VISTA DE LISTA CLONADA (No hagan caso. Es una prueba) (lista simple para generar pdf)
 #-----------------------------------------------------------------------#
-def listar_insumo_simple(request):
-    busqueda = request.POST.get("q")
-    listado_insumos = Insumo.objects.all()
+# def listar_insumo_simple(request):
+#     busqueda = request.POST.get("q")
+#     listado_insumos = Insumo.objects.all()
 
-    if busqueda:
-        listado_insumos = Insumo.objects.filter(
-            Q(nombre_insumo__icontains=busqueda))
-        print("AQUI ESTA ENTRANDO Y buscando", {
-              'listado_insumos': listado_insumos})
-    else:
-        print("Buscado AQUI",)
+#     if busqueda:
+#         listado_insumos = Insumo.objects.filter(
+#             Q(nombre_insumo__icontains=busqueda))
+#         print("AQUI ESTA ENTRANDO Y buscando", {
+#               'listado_insumos': listado_insumos})
+#     else:
+#         print("Buscado AQUI",)
 
-    insumos = []
-    for listado in listado_insumos:
-        insumo = Insumo.objects.get(codigo_insumo=listado.codigo_insumo)
-        codigo_insumo = insumo.codigo_insumo
-        nombre = insumo.nombre_insumo
-        # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
-        detalle = insumo.descripcion_insumo
-        monto = '{:,}'.format(insumo.precio).replace(',', '.')
+#     insumos = []
+#     for listado in listado_insumos:
+#         insumo = Insumo.objects.get(codigo_insumo=listado.codigo_insumo)
+#         codigo_insumo = insumo.codigo_insumo
+#         nombre = insumo.nombre_insumo
+#         # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
+#         detalle = insumo.descripcion_insumo
+#         monto = '{:,}'.format(insumo.precio).replace(',', '.')
 
-        lista_insumos = {
-            'codigo_insumo': codigo_insumo,
-            'nombre_insumo': nombre,
-            'descripcion_insumo': detalle,
-            'precio': monto,
-        }
+#         lista_insumos = {
+#             'codigo_insumo': codigo_insumo,
+#             'nombre_insumo': nombre,
+#             'descripcion_insumo': detalle,
+#             'precio': monto,
+#         }
 
-        insumos.append(lista_insumos)
+#         insumos.append(lista_insumos)
 
-    # return render(request, "insumo/listar_insumos.html", {'insumos': insumos})
-    return render(request, "insumo/insumo_lista.html", {'insumos': insumos})
+#     # return render(request, "insumo/listar_insumos.html", {'insumos': insumos})
+#     return render(request, "insumo/insumo_lista.html", {'insumos': insumos})
 
 
   
@@ -180,7 +194,7 @@ def modificar_insumo(request, codigo_insumo):
             formulario.save()
             
             messages.success(request, " Insumo Modificado Correctamente ✅")
-            return redirect("/insumo/listar_insumo/")     
+            return redirect("/insumo/listar_insumos/")     
                 
         else:
             messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
