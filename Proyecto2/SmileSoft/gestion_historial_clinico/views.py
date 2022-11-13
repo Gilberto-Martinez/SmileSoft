@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
+from django.shortcuts import redirect, render
+from django.shortcuts import render
 
 def guardar_historial_clinico(id_tratamiento_conf):
     tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
@@ -49,14 +51,28 @@ def listar_historial_clinico(request, id_paciente):
                                                             }
             )
 
-@permission_required('gestion_historial_clinico.ver_mi_historial_clinico', login_url="/panel_control/error/")
-def ver_mi_historial_clinico(request, numero_documento):
-    paciente = Paciente.objects.get(numero_documento=numero_documento)
-    historial = HistorialClinico.objects.filter(paciente=paciente)
 
-    return render(request, 'ver_historial_clinico.html',{
+def ver_mi_historial_clinico(request, numero_documento):
+   
+    try:
+        paciente = Paciente.objects.get(numero_documento=numero_documento)
+        historial = HistorialClinico.objects.filter(paciente=paciente)
+        
+    except Paciente.DoesNotExist:
+        titulo = '¡Atención!'
+        mensaje = 'No es un Paciente, por lo tanto no puede ver esta sección.'
+        return redirect('/panel_control/mostrar_mensaje/%s/%s'%(titulo,mensaje))
+    return render(request, 'ver_mi_historial_clinico.html',{
                                                             'historial':historial,
                                                             'paciente':paciente
                                                             }
             )
+
+
+def permiso_mensaje(request,titulo , mensaje):
+    return render(request, "permiso_mensaje.html", {
+                                                            'titulo':titulo,
+                                                            'mensaje':mensaje,
+                                                            }
+                )
 
