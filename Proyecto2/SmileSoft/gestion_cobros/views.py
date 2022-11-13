@@ -384,7 +384,7 @@ def detalle_cobro_pdf(request, id_paciente):
                                         "insumos":insumos,
             }
             tratamientos_insumos_asignados.append(tratamiento_insumo_asig)
-            print("Listado de Tratamientos con Insumo",{'tratamientos_insumos_asignados':tratamientos_insumos_asignados })
+            # print("Listado de Tratamientos con Insumo",{'tratamientos_insumos_asignados':tratamientos_insumos_asignados })
       
             precio_total = int(precio_total) + int(nuevo_tratamiento.precio)
 
@@ -398,9 +398,6 @@ def detalle_cobro_pdf(request, id_paciente):
                                                     
                                                 })
     return HttpResponse(pdf, content_type='application/pdf')
-
-
-
 
 
 #--PDF2--PRESUPUESTO---------------------------------------------------#

@@ -11,6 +11,33 @@ from gestion_tratamiento.models import Tratamiento
 # from gestion_agendamiento.models import *
 
 # Create your models here.
+
+
+class Empresa(models.Model):
+    id_empresa = models.AutoField(primary_key=True)
+    nombre_empresa = models.CharField(max_length=40, null=False, verbose_name='Empresa:')
+    direccion = models.CharField(
+        max_length=200, null=True, verbose_name='Dirección:')
+    telefono = models.CharField(
+        max_length=20, null=True, verbose_name='Teléfono:')
+    correo_electronico = models.EmailField(
+        max_length=35,  verbose_name='Correo electrónico:')
+    ruc = models.CharField(max_length=12, null=True)
+    timbrado = models.IntegerField(verbose_name='Timbrado:')
+    f_inicio_vigencia = models.DateField(verbose_name='Fecha Inicio Vigencia:')
+    f_fin_vigencia = models.DateField(verbose_name='Fecha Fin Vigencia:')
+
+    # producto = models.ManyToManyField(Insumo, through='InsumosProveidos')
+
+    class Meta:
+        # ordering = ['nombre']
+        verbose_name_plural = 'Empresa'
+        db_table = 'Empresa'
+
+    def __str__(self):
+        return str(self.ruc)
+    
+    
 class Persona(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre (*)')
     apellido = models.CharField(max_length=50,  verbose_name='Apellido (*)')
@@ -345,4 +372,5 @@ class Proveedor(models.Model):
 #     class Meta:
 #         verbose_name_plural = 'Insumos proveidos'
 #         db_table = 'InsumoProveido'
- 
+
+

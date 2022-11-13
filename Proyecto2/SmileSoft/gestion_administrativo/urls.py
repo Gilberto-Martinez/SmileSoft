@@ -3,6 +3,9 @@ from django.urls.resolvers import URLPattern
 from .views import *
 
 urlpatterns = [
+          
+            path('modificar_empresa/<ruc>/', modificar_empresa, name="modificar_empresa"),
+    # path('datos_empresa/', datos_empresa, name="datos_empresa"),
             path('agregar_persona/', PersonaCreate.as_view(), name="agregar_persona"),
             path('agregar_persona_paciente/<str:pk>', PersonaPacienteCreate.as_view(),  name="agregar_persona_paciente"),
             path('agregar_paciente/', PacienteCreate.as_view(),  name="agregar_paciente"),
