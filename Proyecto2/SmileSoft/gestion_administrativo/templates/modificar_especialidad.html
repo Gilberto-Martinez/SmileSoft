@@ -5,10 +5,13 @@
 <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <br>
-            <center>  <h2>Modificar Especialidad</h2> </center>
-                  <!-- Tooltip. -->
+            <center>
+                <h1 style="font-family: Bodoni;">
+                    <b>Modificar Especialidad</b>
+                </h1>
+            </center>
                 <div class="container mt-3 text-center">
-                    <small> <b>¡ Ingrese los datos de la especialidad ! </b></small>
+                    <i class="bi bi-person-check">¡ Modifique los datos de la especialidad ! </i>
                 </div>
             <div class="card-body">
                 <form method="POST">
@@ -31,7 +34,7 @@
                     <div style="margin: 20px;" >
                         <table>
                             <div class="form-group">
-                                <label for="{{form.nombre.name}}">{{form.nombre.label}}</label>
+                                <label for="{{form.nombre.name}}"><b>{{form.nombre.label}}</b></label>
                                 {{form.nombre}}
                             </div>
                             <br>

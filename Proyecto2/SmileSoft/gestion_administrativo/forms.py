@@ -323,7 +323,7 @@ class EspecialistaSaludForm(forms.ModelForm):
                }
 
 class ProveedorForm(forms.ModelForm):
-   ruc= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el ruc del proveedor'}))
+   ruc= forms.CharField( label='RUC',widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el ruc del proveedor'}))
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del proveedor'}))
    direccion= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese la dirección del proveedor'}))
    telefono= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el telefono del proveedor'}))
@@ -346,11 +346,11 @@ class ProveedorForm(forms.ModelForm):
       #          }
 
 class ProveedorUpdateForm(forms.ModelForm):
-   ruc= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el ruc del proveedor', 'readonly':True}))
+   ruc= forms.CharField(label='RUC', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el ruc del proveedor', 'readonly':True}))
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el nombre del proveedor'}))
-   direccion= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese la dirección del proveedor'}))
-   telefono= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el telefono del proveedor'}))
-   correo_electronico= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el correo electrónico del proveedor'}))
+   direccion= forms.CharField(label='Dirección', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese la dirección del proveedor'}))
+   telefono= forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el telefono del proveedor'}))
+   correo_electronico= forms.CharField(label='Correo electrónico', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese el correo electrónico del proveedor'}))
    class Meta:
       model = Proveedor
       fields = [
