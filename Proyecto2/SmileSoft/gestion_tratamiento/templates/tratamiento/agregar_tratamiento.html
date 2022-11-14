@@ -8,12 +8,11 @@
                     <div class="card">
                         <br>
                         <center>
-                            <h2>
-                                Agregar Tratamiento
-                            </h2>
-                            <br>
-                            <small> <b>¡Ingrese los datos del tratamiento!</b></small>
-                        </center>
+                            <h1 style="font-family: Bodoni;">
+                                <b>Agregar Tratamiento</b>
+                            </h1>
+                            <i class="bi bi-person-plus"> ¡ Ingrese los datos del Tratamiento ! </i>
+                        </center> 
                             <!-- <form method="POST" id="group_form" novalidate=""> -->
                     
                             <form action="" method="post">
@@ -26,22 +25,22 @@
                                     {%endif%}
                                     <table>
                                         <div class="form-group">
-                                            <br><label for="{{form.nombre_tratamiento.name}}">{{form.nombre_tratamiento.label}}</label></br>
+                                            <br><label for="{{form.nombre_tratamiento.name}}"> <b>{{form.nombre_tratamiento.label}}</b></label></br>
                                             {{form.nombre_tratamiento}}
                                         </div>
                                         <br>
                                         <div class="form-group">
-                                            <br><label for="{{form.descripcion_tratamiento.name}}">{{form.descripcion_tratamiento.label}}</label></br>
+                                            <br><label for="{{form.descripcion_tratamiento.name}}"> <b>{{form.descripcion_tratamiento.label}}</b></label></br>
                                             {{form.descripcion_tratamiento}}
                                         </div>
                                         <br>
                                         <div class="form-group">
-                                            <br><label for="{{form.precio.name}}">{{form.precio.label}}</label></br>
+                                            <br><label for="{{form.precio.name}}"> <b>{{form.precio.label}}</b></label></br>
                                             {{form.precio}}
                                         </div>
                                         <br>
                                         <div class="form-group">
-                                            <br><label for="{{form2.tipo_categoria.name}}">{{form2.tipo_categoria.label}}</label></br>
+                                            <br><label for="{{form2.tipo_categoria.name}}"> <b>{{form2.tipo_categoria.label}}</b></label></br>
                                             {{form2.tipo_categoria}}
                                         </div>
                                     </table>
