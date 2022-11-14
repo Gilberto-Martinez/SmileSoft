@@ -20,7 +20,9 @@
             <div class="card">
                 <div class="card-body">
                     <center> 
-                        <h2 <i class="bi bi-calendar"></i> Cita</i> </h2>
+                        <h1 style="font-family: Bodoni;"> 
+                            <b class="bi bi-calendar">Cita</b>
+                        </h1>
                     </center>
                     <br>
                     <center><h5> <b>Paciente:</b> <i>{{persona.nombre}} {{persona.apellido}} </i> </h5></center>
@@ -30,19 +32,19 @@
                         <div style="margin: 20px;" >
                             <br>
                             <div class="form-group">
-                              <b>  <label for="tratamiento_solicitado"> Motivo de Consulta :</label>
+                              <b>  <label for="tratamiento_solicitado"><b>Motivo de Consulta :</b> </label>
                                     {{tratamiento_solicitado}} <br>
                               </b>
                             </div>
                             <br>
                             <div class="form-group">
-                            <label for="{{form.fecha.name}}">{{form.fecha.label}}</label>
+                            <label for="{{form.fecha.name}}"><b>{{form.fecha.label}}</b> </label>
                                 {{form.fecha}}
                             </div>
 
                             <br>
                             <div class="form-group">
-                            <label for="{{form.hora_atencion.name}}"> {{form.hora_atencion.label}}</label>
+                            <label for="{{form.hora_atencion.name}}"><b>{{form.hora_atencion.label}}</b> </label>
                                 {{form.hora_atencion}}
                             </div> 
                             <br>
@@ -53,7 +55,7 @@
                             <br>
                                 {%if perms.gestion_agendamiento.view_cita%}
                                 <div class="form-group">
-                                    <label for="{{form.estado.name}}">{{form.estado.label}}</label>
+                                    <label for="{{form.estado.name}}"><b>{{form.estado.label}}</b> </label>
                                     {{form.estado}}
                                 </div> 
                             {%endif%}
