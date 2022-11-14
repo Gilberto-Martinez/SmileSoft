@@ -50,6 +50,14 @@ class Insumo(models.Model):
     U = 'unidades'
     UDS_UNITARIAS = ((G, 'g'), (MG, 'mg'), (M, 'm'), (C, 'cm'), (MM, 'mm'), (L, 'l'), (ML, 'ml'),(A, 'amp'), (U, 'unidades'))
     ud_unitaria = models.CharField(max_length=12, choices=UDS_UNITARIAS, verbose_name='Ud. Unitaria')
+    LOAN_STATUS = (
+        ('Disponible', 'Disponible'),
+        ('Intermedio', 'Intermedio'),
+        ('En Falta', 'En Falta'),
+    )
+    existencia = models.CharField(max_length=15, choices=LOAN_STATUS, blank=True, default='Disponible', help_text='Disponibilidad del Insumo')
+    
+    
     # stock_minimo = models.IntegerField(default=calculo_valor, verbose_name= 'Stock Mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
     # existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
     # id_inventario = models.ForeignKey(inventario)
