@@ -164,6 +164,28 @@ class EspecialidadList(ListView):
 
 ########################### INSERCION #################################################
 
+@permission_required('gestion_administrativo.change.datos_empresa', login_url="/panel_control/error/",)
+def modificar_empresa(request, ruc):
+    empresa = Empresa.objects.get(ruc=ruc)
+
+    data = {
+        'form': EmpresaForm(instance=empresa),
+        'object':Empresa.objects.get(ruc=ruc)
+    }
+    if request.method == 'POST':
+        formulario = EmpresaForm(
+            data=request.POST, instance=empresa, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data["form"] = formulario
+            messages.success(request, " ✅ Modificación realizada")
+            # return redirect("/modificar_empresa/")
+
+        else:
+            messages.error(request, "Algo ha salido Mal ⚠️")
+    return render(request, "modificar_empresa.html", data)
+
+
 class PersonaCreate(CreateView):
     model = Persona
     template_name = 'agregar_persona.html'

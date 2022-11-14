@@ -1,0 +1,96 @@
+{%extends 'panel_control/base.html'%}
+{%block content%}
+
+{%if perms.gestion_administrativo.change_empresa%}
+        <div class="container">
+            <div class="col-12 col-md-6 offset-md-3">
+                    <div class="card">
+                        <br>
+                       <h2 style="color: white; background-color: lightskyblue;" align="center">
+                            Datos de la Empresa
+                      </h2>
+                        <div class="card-body">
+                            <form method="POST">
+                                {%csrf_token%}
+                                {% comment %} {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                        <li>
+                                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                            <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
+                                            
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                            {{ message }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %} {% endcomment %}
+                                <div style="margin: 20px;" >
+                                    <table>
+                                        <div class="form-group">
+                                            <label for="{{form.ruc.name}}">{{form.ruc.label}}: </label>
+                                            {{form.ruc}}
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="{{form.nombre_empresa.name}}">Empresa: </label>
+                                            {{form.nombre_empresa}}
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="{{form.timbrado.name}}">{{form.timbrado.label}}:</label>
+                                            {{form.timbrado}}
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="{{form.direccion.name}}">Dirección: </label>
+                                            {{form.direccion}}
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="{{form.telefono.name}}">Teléfono:</label>
+                                            {{form.telefono}}
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="{{form.correo_electronico.name}}">Correo Electrónico:</label>
+                                            {{form.correo_electronico}}
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="{{form.f_inicio_vigencia.name}}">Fecha Inicio Vigencia:</label>
+                                            {{form.f_inicio_vigencia}}
+                                        </div>
+                                        <br>
+                                           <div class="form-group">
+                                            <label for="{{form.f_fin_vigencia.name}}">Fecha Fin Vigencia:</label>
+                                            {{form.f_fin_vigencia}}
+                                        </div>
+                                        <br>
+                                       
+                                    </table>
+                                </div>
+                                <hr>
+                              
+                             
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn btn-primary" type="submit" style="margin: 10px;">
+                                        <i class="bi-save"></i>
+                                        Guardar
+                                    </button>
+                                    &nbsp;
+                                    <a onclick = "history.back()" class="btn btn-secondary" style="margin: 10px;" >
+                                       <i class="bi bi-arrow-bar-left"></i>
+                                        Atrás
+                                    </a>
+                                </div>
+                          
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+{%endif%}
+{%endblock%}
