@@ -61,7 +61,7 @@ class InsumoForm(forms.ModelForm):
             'ud_unitaria',
             #'cantidad_unitaria',
             'stock_minimo',
-            #'estado',
+            #'existencia',
         ]
 
 class InsumoUpdateForm(forms.ModelForm):

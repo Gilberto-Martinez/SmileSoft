@@ -81,6 +81,7 @@
                                         <td>{{c.unidad_x_paquete}} u </td> 
                                         <td>{{c.cantidad_unitaria}} {{c.ud_unitaria}}</td> 
                                         <td>{{c.stock_minimo}} {{c.ud_unitaria}}</td> 
+                                        <td >{{c.existencia}}</td>
                                         <td></td> 
                                         
                                         <!-- <td>{{c.estado}}</td>  -->
@@ -97,7 +98,7 @@
                                         <!-- Eliminar-->
                                         {%if perms.gestion_inventario_insumos.delete_insumo%}          
                                             <td>
-                                                <a href="/insumo/eliminar_insumo/{{c.codigo_insumo}}" class="btn btn-danger btnEliminacion">
+                                                <a href="/insumo/eliminar_insumos/{{c.codigo_insumo}}" class="btn btn-danger btnEliminacion">
                                                     <i class="bi-trash-fill" ></i> 
                                                         Eliminar
                                                 </a> 
