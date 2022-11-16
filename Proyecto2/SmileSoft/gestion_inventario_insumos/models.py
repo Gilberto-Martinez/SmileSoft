@@ -50,13 +50,10 @@ class Insumo(models.Model):
     U = 'unidades'
     UDS_UNITARIAS = ((G, 'g'), (MG, 'mg'), (M, 'm'), (C, 'cm'), (MM, 'mm'), (L, 'l'), (ML, 'ml'),(A, 'amp'), (U, 'unidades'))
     ud_unitaria = models.CharField(max_length=12, choices=UDS_UNITARIAS, verbose_name='Ud. Unitaria')
-    LOAN_STATUS = (
-        ('Disponible', 'Disponible'),
-        ('Intermedio', 'Intermedio'),
-        ('En Falta', 'En Falta'),
-    )
-    existencia = models.CharField(max_length=15, choices=LOAN_STATUS, blank=True, default='Disponible', help_text='Disponibilidad del Insumo')
-    
+    D = 'Disponible' # Cuando el stock_minimo es > 0
+    E = 'En Falta' # Cuando el stock minimo es = 0 
+    EXISTENCIAS = ((D, 'Disponible'), (E, 'En Falta'), )
+    existencia = models.CharField(max_length=12, choices=EXISTENCIAS, default='Disponible')
     
     # stock_minimo = models.IntegerField(default=calculo_valor, verbose_name= 'Stock Mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
     # existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
@@ -82,6 +79,7 @@ class Insumo(models.Model):
 
     # def get_calculo_valor(self):
     #     return (self.cantidad_insumo * self.unidad_x_paquete)
-
+    def get_existencia(self):
+        return str(self.existencia)
     
 #insumo con caducidad

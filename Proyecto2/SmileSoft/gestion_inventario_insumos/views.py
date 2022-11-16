@@ -98,24 +98,13 @@ def listar_insumo(request):
         upcl=insumo.unidad_x_paquete
         ud_unitaria=insumo.ud_unitaria
         stock_minimo= insumo.stock_minimo
-       
+        #existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
+        existencia = False
+        if insumo.stock_minimo >= insumo.cantidad_unitaria:
+            existencia = "En Falta"
+        else:
+            existencia = "Disponible"
         
-        # cantidad_insumo = False    
-        # if insumo.cantidad_unitaria < insumo.stock_minimo
-        #     existencia_r = "En falta"
-        # else:
-        #     insumo.existencia_r = "Disponible"
-        # return existencia_r
-        
-
-
-          # if insumo.cantidad_unitaria < insumo.stock_minimo 
-        #     insumo.existencia = "En falta"
-        # else:
-        #     insumo.existencia = "Disponible"
-
-       # existencia=insumo.existencia
-        # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
         calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
         detalle= insumo.descripcion_insumo
         
@@ -131,7 +120,8 @@ def listar_insumo(request):
                             'unidad_x_paquete':upcl,
                             'cantidad_unitaria':calculo_unitario,
                             'ud_unitaria':ud_unitaria,
-                            'stock_minimo': stock_minimo, 
+                            'stock_minimo': stock_minimo,
+                            'existencia': existencia, 
                             
                            }
         
