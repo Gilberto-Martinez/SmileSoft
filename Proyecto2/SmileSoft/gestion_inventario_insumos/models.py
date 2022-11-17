@@ -1,5 +1,3 @@
-from pyexpat import model
-
 from django.db import models
 from gestion_administrativo.models import *
 from gestion_inventario_insumos.models import *
@@ -53,7 +51,7 @@ class Insumo(models.Model):
     D = 'Disponible' # Cuando el stock_minimo es > 0
     E = 'En Falta' # Cuando el stock minimo es = 0 
     EXISTENCIAS = ((D, 'Disponible'), (E, 'En Falta'), )
-    existencia = models.CharField(max_length=12, choices=EXISTENCIAS, default='Disponible')
+    #existencia = models.CharField(max_length=12, choices=EXISTENCIAS, default='Disponible')
     
     # stock_minimo = models.IntegerField(default=calculo_valor, verbose_name= 'Stock Mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
     # existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"

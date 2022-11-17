@@ -38,7 +38,7 @@ class InsumoForm(forms.ModelForm):
 
 
     unidad_x_paquete = forms.IntegerField(
-                                                   label='Ud. Unitaria:', 
+                                                   label='Unidad por Paquete o Caja:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la ud. unitaria del insumo'}))
     # cantidad_unitaria = forms.IntegerField(
     #                                                label='Cantidad Unitaria:', 
@@ -99,7 +99,7 @@ class InsumoUpdateForm(forms.ModelForm):
                      (MM, 'mm'), (L, 'l'), (ML, 'ml'), (A, 'amp'), (U, 'unidades')]
     ud_unitaria = forms.ChoiceField(label='Ud. de Medida Unitaria:', choices=UDS_UNITARIAS, widget = forms.Select (attrs = {'readonly':'true','class': 'form-control',}))
     unidad_x_paquete = forms.IntegerField(
-                                                   label='Ud. Unitaria:', 
+                                                   label='Unidad por Paquete o Caja:', 
                                                    widget = forms.NumberInput(attrs = {'class': 'form-control', 'placeholder': 'Ingrese la ud. unitaria del insumo'}))
     # cantidad_unitaria = forms.IntegerField(
     #                                                label='Cantidad Unitaria:', 

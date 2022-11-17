@@ -1,4 +1,4 @@
-from datetime import datetime
+#from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, View
 from gestion_tratamiento.models import TratamientoInsumoAsignado
@@ -12,7 +12,7 @@ from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, 
 from gestion_agendamiento.models import Cita
 from .forms import RazonSocialForm, FacturaForm, DomicilioForm
 from django.db.models import Q
-from datetime import datetime
+from datetime import datetime as class_datetime
 import datetime
 def cobrar_tratamiento(request, id_paciente):
     listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
@@ -129,7 +129,7 @@ def verificar_datos_cita(request, numero_documento, menor_edad):
 
     paciente = Paciente.objects.get(numero_documento=numero_documento)
     tratamientos_conf = TratamientoConfirmado.objects.all()
-    now = datetime.now()
+    now = class_datetime.now()
     fecha_actual = now.date()
     hora_actual = now.time()
     respuesta = False
