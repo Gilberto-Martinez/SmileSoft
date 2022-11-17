@@ -104,10 +104,13 @@ def listar_insumo(request):
         stock_minimo= insumo.stock_minimo
         #existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
         existencia = "Disponible"
+        disponible = True
         if insumo.cantidad_unitaria >= insumo.stock_minimo:
             existencia = "Disponible"
+            disponible = True
         else:
             existencia = "En Falta"
+            disponible = False
         detalle= insumo.descripcion_insumo
         cantidad_unitaria = insumo.cantidad_insumo
         
@@ -125,6 +128,7 @@ def listar_insumo(request):
                             'ud_unitaria':ud_unitaria,
                             'stock_minimo': stock_minimo,
                             'existencia': existencia, 
+                            'disponible': disponible
                             
                            }
         
