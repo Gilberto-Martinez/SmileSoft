@@ -81,7 +81,11 @@
                                         <td>{{c.unidad_x_paquete}} u </td> 
                                         <td>{{c.cantidad_unitaria}} {{c.ud_unitaria}}</td> 
                                         <td>{{c.stock_minimo}} {{c.ud_unitaria}}</td> 
-                                        <td >{{c.existencia}}</td>
+                                        {%if c.disponible%}
+                                        <td style="background-color: rgba(91, 174, 104, 0.835);">{{c.existencia}}</td>
+                                        {%else%}
+                                        <td style="background-color: rgb(195, 102, 102);">{{c.existencia}}</td>
+                                        {%endif%}
                                         <td></td> 
                                         
                                         <!-- <td>{{c.estado}}</td>  -->
