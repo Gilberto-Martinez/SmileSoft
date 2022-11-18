@@ -12,7 +12,20 @@
 {%endblock%}
 
 {%block content%}
-
+<style>
+    #celda1{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+     #celda2{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+</style>
 {%if perms.gestion_inventario_insumos.add_insumo%}
     <div class="container">
         <div class="card">
@@ -82,12 +95,12 @@
                                         <td>{{c.cantidad_unitaria}} {{c.ud_unitaria}}</td> 
                                         <td>{{c.stock_minimo}} {{c.ud_unitaria}}</td> 
                                         {%if c.disponible%}
-                                        <td style="background-color: rgba(91, 174, 104, 0.835);">{{c.existencia}}</td>
+                                        <td id= "celda2" style="border: 1px solid white; background-color: #68AD22"><p style="color: white;" > <br> &nbsp;{{c.existencia}} </p></td>
                                         {%else%}
-                                        <td style="background-color: rgb(195, 102, 102);">{{c.existencia}}</td>
+                                        <td id= "celda1" style="border: 1px solid white;  background-color:#E47079;"><p style="color: white;" > <br>&nbsp;&nbsp;{{c.existencia}}</p> </td>
                                         {%endif%}
                                         <td></td> 
-                                        
+                                  
                                         <!-- <td>{{c.estado}}</td>  -->
                                         {{busqueda}}
                                         <!--OPCIONES Modificar y Eliminar-->
