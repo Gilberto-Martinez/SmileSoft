@@ -81,11 +81,11 @@ class Factura(models.Model):
     CR = 'Credito'
     CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
     condicion_venta = models.CharField(max_length=12, choices=CONDICIONES,default='Contado' ,verbose_name='Condición de venta')
-    telefono = models.CharField(max_length=20, null=False, blank=False)
+    telefono = models.CharField(max_length=20, null=True, blank=True)
     total_pagar = models.IntegerField()
-    iva_5 = models.FloatField()
-    iva_10= models.FloatField()
-    total_iva = models.FloatField()
+    iva_5 = models.FloatField(null=True)
+    iva_10= models.FloatField(null=True)
+    total_iva = models.FloatField(null=True)
     E = 'Emitido'
     A = 'Anulado'
     ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
