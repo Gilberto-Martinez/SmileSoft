@@ -1,0 +1,10 @@
+p {
+    font-family: Verdana;
+    font-size: 63px;
+    color: red;
+    text-align: right;
+}
+
+h1{
+    color:blue; border: 1px solid blue;
+}

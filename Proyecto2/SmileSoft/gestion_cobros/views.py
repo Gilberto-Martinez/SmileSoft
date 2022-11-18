@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, View
+from gestion_administrativo.models import Empresa
 from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_inventario_insumos.models import Insumo
 from gestion_cobros.utils import render_to_pdf
@@ -10,7 +11,7 @@ from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobr
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, Paciente
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, FacturaForm, DomicilioForm
+from .forms import EmpresaForm, RazonSocialForm, FacturaForm, DomicilioForm
 from django.db.models import Q
 from datetime import datetime
 import datetime
@@ -512,3 +513,38 @@ def ingresar_datos_factura(request, id_cobro):
 
     return render(request, 'facturacion/ingresar_datos_factura.html', data)
 
+
+
+#--->Factura HTML----
+def generar_factura_original(request):
+    return render(request, 'modelos_factura/generar_factura_original.html')
+
+#--->Factura PDF----
+def generar_factura(request,):
+    #--Empresa--#
+    empresa= Empresa.objects.get(id_empresa=1)
+    #--Factura---#
+    # factura= Factura.objects.all()
+    
+    #--Detalles del cobro (valores)---#
+    # cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
+    # detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro)
+    # id_detalle_cobro = detalle_cobro.id
+    # detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+  
+    
+    data = {
+        'empresa': empresa,
+        # 'factura':factura,
+        #'detalle_cobro', detalle_cobro
+    }
+
+  
+    pdf = render_to_pdf("generar_factura.html",data)
+    
+    return HttpResponse(pdf, content_type='application/pdf')
+
+
+#--->Listado de Facturas----#
+def listar_facturas (request):
+    return render(request, 'listar_facturas.html')
