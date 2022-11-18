@@ -66,3 +66,36 @@ class DetalleCobroTratamiento(models.Model):
                                     # blank=False,
                                     on_delete=models.CASCADE
     )
+
+class Factura(models.Model):
+    id_factura = models.AutoField(primary_key=True)
+    sub_nro_factura1 = models.CharField(max_length=3, null=False, blank=True)
+    sub_nro_factura2 = models.CharField(max_length=3, null=False, blank=True)
+    sub_nro_factura3 = models.IntegerField(null=False, blank=True)
+    nro_factura = models.CharField(max_length=60, null=True, blank=True,)
+    numero_documento = models.CharField(max_length=10, null=True)
+    razon_social = models.CharField(max_length=60, null=True, blank=True, verbose_name='Nombre o Razón Social')
+    direccion = models.CharField(max_length=80, null=True, blank=True, verbose_name='Dirección')
+    fecha = models.DateField(auto_now_add=True)
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = models.CharField(max_length=12, choices=CONDICIONES,default='Contado' ,verbose_name='Condición de venta')
+    telefono = models.CharField(max_length=20, null=True, blank=True)
+    total_pagar = models.IntegerField()
+    iva_5 = models.FloatField(null=True)
+    iva_10= models.FloatField(null=True)
+    total_iva = models.FloatField(null=True)
+    E = 'Emitido'
+    A = 'Anulado'
+    ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
+    estado = models.CharField(max_length=12, choices=ESTADOS, verbose_name='Condición de venta')
+
+    class Meta:
+        verbose_name = 'Factura'
+        verbose_name_plural = 'Facturas'
+        # ordering = ["nombre"]
+        # db_table = 'DetalleCobroContado'
+
+    def __str__(self):
+        return self.id_factura

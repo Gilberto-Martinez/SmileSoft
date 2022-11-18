@@ -5,7 +5,11 @@
 <div class= "col-12 col-md-8 offset-md-2" >
         <div class="card">
             <br>
-            <center>  <h2>Asignar Tratamiento</h2> </center>
+            <center>  
+                <h1 style="font-family: Bodoni;">
+                  <b> Asignar Tratamiento</b>
+                </h1> 
+            </center>
             <!-- <div class="card-body"> -->
                 <form method="POST"id="group_form" novalidate="">
                     {%csrf_token%}
@@ -16,9 +20,9 @@
                         {%endif%}
                         <br>
                         <center>
-                            <h5>
+                            <h4 style="font-family: Bodoni;">
                                 <b>Paciente:</b> <i><td>{{ paciente.numero_documento.nombre }} {{paciente.numero_documento.apellido}}</td></i>
-                            </h5>
+                            </h4>
                         </CEnter>
                     <div style="margin: 20px;" >
                         <table>

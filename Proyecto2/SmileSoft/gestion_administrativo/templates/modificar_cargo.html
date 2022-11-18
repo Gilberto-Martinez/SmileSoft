@@ -5,10 +5,14 @@
 <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <br>
-            <center>  <h2>Modificar Cargo</h2> </center>
+            <center>
+                <h1 style="font-family: Bodoni;">
+                    <b>Modificar Cargo</b>
+                </h1>
+            </center>
                   <!-- Tooltip. -->
                 <div class="container mt-3 text-center">
-                    <small> <b>¡ Ingrese los datos del cargo ! </b></small>
+                    <i class="bi bi-person-check">¡ Modifique los datos del cargo ! </i>
                 </div>
             
             <div class="card-body">
@@ -32,12 +36,12 @@
                     <div style="margin: 20px;" >
                         <table>
                             <div class="form-group">
-                                <label for="{{form.nombre.name}}">{{form.nombre.label}}</label>
+                                <label for="{{form.nombre.name}}"><b>{{form.nombre.label}}</b></label>
                                 {{form.nombre}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.salario.name}}">{{form.salario.label}}</label>
+                                <label for="{{form.salario.name}}"><b>{{form.salario.label}}</b></label>
                                 {{form.salario}}
                             </div>
                             <br>

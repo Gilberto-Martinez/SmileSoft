@@ -59,7 +59,7 @@ class RazonSocialForm(forms.ModelForm):
                     'razon_social',
         ]
 
-class FacturaForm(forms.ModelForm):
+class CobroFacturaForm(forms.ModelForm):
     numero_documento = forms.CharField(label="RUC",
                                         widget=forms.TextInput(attrs={
                                                             'class': 'form-control',
@@ -67,13 +67,13 @@ class FacturaForm(forms.ModelForm):
                                                             }
                                                     )
                                 )
-    dv = forms.IntegerField(label="DV",
-                                widget=forms.NumberInput(attrs={
-                                                            'class': 'form-control',
-                                                            # 'placeholder': 'Ingrese su nombre'
-                                                            }
-                                                    )
-                                )
+#     dv = forms.IntegerField(label="DV",
+#                                 widget=forms.NumberInput(attrs={
+#                                                             'class': 'form-control',
+#                                                             # 'placeholder': 'Ingrese su nombre'
+#                                                             }
+#                                                     )
+#                                 )
     razon_social = forms.CharField(label="Nombre/Razón social",
                                     widget=forms.TextInput(attrs={
                                                             'class': 'form-control',
@@ -96,20 +96,28 @@ class FacturaForm(forms.ModelForm):
                     'razon_social',
         ]
 
-class DomicilioForm(forms.ModelForm):
+class DatosFacturaForm(forms.ModelForm):
     direccion = forms.CharField(label="Domicilio",
                                     widget=forms.TextInput(attrs={
                                                             'class': 'form-control',
                                                             'placeholder': 'Ingrese el domicilio del cliente'
                                                             }
                                                     )
-                                ) 
+                                )
+    telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
     class Meta:
         model = Persona
         fields = [
-                'direccion'
+                'direccion',
+                'telefono'
         ]
 
+class FacturaForm(forms.ModelForm):
+    class Meta:
+        model = Factura
+        fields = [
+                'numero_documento'
+        ]
 
 
 class EmpresaForm(forms.ModelForm):

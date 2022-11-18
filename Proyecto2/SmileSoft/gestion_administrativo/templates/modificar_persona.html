@@ -5,10 +5,14 @@
 <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <br>
-            <center>  <h2>Modificar Persona</h2> </center>    
+            <center>
+                <h1 style="font-family: Bodoni;">
+                    <b>Modificar Persona</b>
+                </h1>
+            </center>    
                   <!-- Tooltip. -->
                 <div class="container mt-3 text-center">
-                    <small> <b>   ¡ Ingrese los datos de la persona ! </small>
+                    <i class="bi bi-person-check">¡ Modifique los datos de la persona ! </i>
                 </div>
             
             <div class="card-body">
@@ -18,46 +22,45 @@
                     <div style="margin: 20px;">
                         <table>
                             <div class="form-group">
-                                <label for="{{form.nombre.name}}">{{form.nombre.label}}</label>
+                                <label for="{{form.nombre.name}}"><b>{{form.nombre.label}}</b></label>
                                 {{form.nombre}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.apellido.name}}">{{form.apellido.label}}</label>
+                                <label for="{{form.apellido.name}}"><b>{{form.apellido.label}}</b></label>
                                 {{form.apellido}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.numero_documento.name}}">{{form.numero_documento.label}}</label>
+                                <label for="{{form.numero_documento.name}}"><b>{{form.numero_documento.label}}</b></label>
                                 {{form.numero_documento}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.direccion.name}}">{{form.direccion.label}}</label>
+                                <label for="{{form.direccion.name}}"><b>{{form.direccion.label}}</b></label>
                                 {{form.direccion}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.telefono.name}}">{{form.telefono.label}}</label>
+                                <label for="{{form.telefono.name}}"><b>{{form.telefono.label}}</b></label>
                                 {{form.telefono}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.correo_electronico.name}}">{{form.correo_electronico.label}}</label>
+                                <label for="{{form.correo_electronico.name}}"><b>{{form.correo_electronico.label}}</b></label>
                                 {{form.correo_electronico}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.fecha_nacimiento.name}}">{{form.fecha_nacimiento.label}}</label>
+                                <label for="{{form.fecha_nacimiento.name}}"><b>{{form.fecha_nacimiento.label}}</b></label>
                                 {{form.fecha_nacimiento}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.sexo.name}}">{{form.sexo.label}}</label>
+                                <label for="{{form.sexo.name}}"><b>{{form.sexo.label}}</b></label>
                                 {{form.sexo}}
                             </div>
                             <br>
-                            <!-- Modificar Funcionario -->
                             <div>
                                 <input class="btn btn-outline-secondary" type="button" id="boton_funcionario" value="Ver / Agregar datos de funcionario" onclick="mostrar_ocultar_funcionario()">
                                 </input>
@@ -65,7 +68,7 @@
                             <br>
                             <div id="funcionario" style="display: none;">
                                 <div class="form-group">
-                                    <label for="{{form2.cargos.name}}">{{form2.cargos.label}}</label>
+                                    <label for="{{form2.cargos.name}}"><b>{{form2.cargos.label}}</b></label>
                                     {{form2.cargos}}
                                 </div>
                             </div>
@@ -77,7 +80,7 @@
                             <br>
                             <div id="especialista_salud" style="display: none;">
                                 <div class="form-group">
-                                    <label for="{{form4.especialidades.name}}">{{form4.especialidades.label}}</label>
+                                    <label for="{{form4.especialidades.name}}"><b>{{form4.especialidades.label}}</b></label>
                                     {{form4.especialidades}}
                                 </div>
                             </div>

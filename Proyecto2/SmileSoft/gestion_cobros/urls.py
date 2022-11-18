@@ -22,6 +22,7 @@ urlpatterns = [
     
     #PDF------------------------
     path('detalle_cobro_pdf/<int:id_paciente>', detalle_cobro_pdf ,name="detalle_cobro_pdf"),
+    path('registrar_factura/', registrar_factura ,name="registrar_factura"),
     path('presupuesto_pdf/<int:id_paciente>',  presupuesto_pdf, name="presupuesto_pdf"),
     path('generar_factura/', generar_factura, name="generar_factura"),
 ]
