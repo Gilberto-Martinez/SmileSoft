@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Factura </title>
+        {% comment %} #--EL estilo css no toma el pdf {% endcomment %}
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                   
+                    <center>
+                        <!--Encabezado-->
+                        <table id="tabla_principal" style="border:2px solid black">
+                            <tr>
+                                <th>
+                                    <table id="encabezado" style="border:2px solid black">
+                                        <tr>
+                                            <th style="border:2px solid black">
+                                                <br>  Odontologia 
+                                                {%csrf_token%}
+                                                <div class="form-group">
+                                                    {{ empresa.nombre_empresa}}
+                                                </div> 
+                                                <div class="form-group">
+                                                {{ empresa.direccion}}
+                                                </div>
+                                                <div class="form-group">
+                                                {{ empresa.telefono}}
+                                                </div>
+                                                <div class="form-group">
+                                                {{ empresa.correo_electronico}}
+                                                </div>
+                                                
+                                            </th>
+                                         
+                                            <th>
+                                                <br>
+                                                <!--Secuencia de la Factura-->
+                                                <div class="form-group">
+                                                  Numero de Timbrado {{ empresa.timbrado}}
+                                                </div> 
+                                                <div class="form-group">
+                                                  Fecha inicio Vigencia  {{ empresa.f_inicio_vigencia}}
+                                                </div> 
+                                                <div class="form-group">
+                                                    Fecha fin Vigencia {{ empresa.f_fin_vigencia}}
+                                                </div>
+                                                <div class="form-group">
+                                                  <b> <p style="font-size:12px">RUC  {{ empresa.ruc}}</p></b>
+                                                </div> 
+                                                <b> <p style="font-size:12px">FACTURA</p></b>
+                                                <div class="form-group">
+                                                  <b> <p style="font-size:12px">Nro {{ factura.nro_factura}}</p></b>
+                                                </div> 
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            
+                            </tr>
+                            
+                            <!-- Datos del Cliente-->
+                            <tr>
+                                <td id="nested">
+                                        <br>
+                                    <table id="datos_cliente">
+                                        <tr>
+                                            <th >
+                                                Fecha: <td style="border: 1px solid #dddddd;"> {{factura.fecha}} dd/mm/aaaa</td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;</td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;</td>                              
+                                                <td>
+                                                    <b>Condicion de Pago:</b> 
+                                                    <td id="fila">Contado</td>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp; </td>
+                                                
+                                            </th>
+                                            <!---->
+                                            <tr>
+                                                <th  >
+                                                    Nombre o Razon Social: <td style="border: 1px solid #dddddd;"> {{factura.razon_social}}</td>
+                                                    
+                                                </th>
+                                            </tr>
+                                            <!---->
+                                            <tr>
+                                                <th >
+                                                    RUC o CI: <td style="border: 1px solid #dddddd;">{{factura.ruc}}</td>
+                                                    
+                                                </th>
+                                            </tr>
+                                                <!---->
+                                            <tr>
+                                                <th >
+                                                    Direccion: <td style="border: 1px solid #dddddd;">{{factura.direccion}} </td>
+                                                    
+                                                </th>
+                                            </tr>
+                                            <!---->
+                                            <tr>
+                                                <th >
+                                                    Telefono: <td style="border: 1px solid #dddddd;">{{factura.telefono}}</td>
+                                                </th>
+                                            </tr>
+                                   
+                                    </table>
+                                    <br>
+                                    
+                                </td>
+                            </tr>
+
+                            <!--Encabezados de cada columna del detalle Factura-->
+                            <tr>
+                                <td >
+                                    
+                                    <table id="detalle_factura" style=" border:1px solid black;">
+                                        <thead >
+                                            <tr>
+                                                <th  style=" border:1px solid black; background-color: rgb(186, 234, 248);" > &nbsp;&nbsp;<br>Cantidad&nbsp;&nbsp;</th>
+                                            
+                                                <th  style="border:1px solid black; background-color: rgb(186, 234, 248);" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Descripcion &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                                <th  style="border:1px solid black; background-color: rgb(186, 234, 248);" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Precio Unitario.&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</th>
+                                                <th  style="background-color: rgb(186, 234, 248);" scope="col" colspan="3" >  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Valor de Ventas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; </th>                                           
+                                            </tr>
+                                                <tr>
+                                                
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th style="background-color: rgb(186, 234, 248);" scope="col" >&nbsp;&nbsp;<br>Exentas&nbsp;&nbsp;</th>
+                                                <th style="background-color: rgb(186, 234, 248);" scope="col" >&nbsp;&nbsp;<br>Grav. 5%&nbsp;&nbsp;</th>
+                                                <th style="background-color: rgb(186, 234, 248);" scope="col" >&nbsp;&nbsp;<br>Grav. 10%&nbsp;&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                            <!--Detalle de Valores-->
+                                        <tbody >
+                                            <tr  style="border:1px solid black">
+                                                {% comment %} {%if detalle_cobro%} {% endcomment %}
+                                                {% comment %} {%for c in detalle_cobro%} {% endcomment %}
+                                                    <td  style=" border:1px solid" >&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>{{forloop.counter}} 1</td>
+                                                    <td style=" border:1px solid"> <br>{{c.nombre_tratamiento}}Tratamientos</td>
+                                                    <td style=" border:1px solid"><br>{{c.precio}}Gs.</td>
+                                                    <td style=" border:1px solid"> &nbsp; &nbsp;<br>- &nbsp; &nbsp;</td>
+                                                    <td style=" border:1px solid"> &nbsp; &nbsp;<br>- &nbsp; &nbsp;</td>
+                                                    <td style=" border:1px solid"><br>{{c.iva_10}}</td>
+                                                {% comment %} {%endfor%} {% endcomment %}
+                                              {% comment %}   {%else%}
+                                                    <h5>
+                                                        <!-- No hay valores que mostrar -->
+                                                    </h5>
+                                                {%endif%} {% endcomment %}
+                                            </tr>
+
+                                        </tbody>
+                                        
+                            <!--Es para que tenga mas espacio-->
+                                        <tbody id= "vacio" >
+                                            <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;</td>
+
+                                        </tbody>
+                                    </table>
+                                    
+                                    <br>
+
+                            <!--Total de Factura-->
+                                    <table id="total_pagar" style="border:1px solid black">  
+                                    
+                                        <tr> 
+                                            <th  style="border:1px solid black; text-align: left" >&nbsp;<br> Total a Pagar: </th>
+                                            
+                                            <td id="fila_pagar" style="text-align:right ">
+                                                &nbsp;<b><br>{{monto_total}} Gs. 10.000 </b>  &nbsp;
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    
+                                    <table id="total_iva"  style="border:1px solid black" >
+                                        <tr>
+                                            <th style="border:0px solid black"> 
+                                                <br>Total IVA:  <td id="fila_iva" style="border:0px solid black"><br>Gs.(total_pagar/11)..900,09</td>
+                                            </th>
+                                            
+                                        </tr>
+                                        
+                                    </table>
+                            <br>
+                            <!--Pie  Final de Factura-->
+                                    <table >
+                                        <td id="pie_factura2" > 
+                                            <div class="form-group; " style="text-align:right">
+                                                <strong  style="font-size:9px;">
+                                                    
+                                                    Original: Cliente &nbsp;  <br>
+                                                    
+                                                    Duplicado: Arch. Tributario &nbsp;
+                                                    <br>
+
+                                                </strong> 
+                                            </div>
+                                            <div class="form-group; " style="text-align:right">
+                                            <samp> <b>Copyright SmileSoft &copy; FP-UNA 2022 &nbsp; </b></samp>
+                                            </div>
+                                        </td>
+                                    </table>
+                                
+                                </td>
+                                
+                            </tr>
+                        </table>
+                    <center>
+                
+                </div>
+            </div>
+        </div>
+   </body>
+
+</html>

@@ -4,34 +4,58 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Presupuesto Dental </title>
-    <style>
-    
-        </style>
-    
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+        <style>
+       
+        b{
+            font-family:Verdana;
+            font-size:15px;
+            color:black;
+        } 
+
+        i{
+            font-family:Verdana;
+            font-size:12px;
+            color:black;
+        } 
+       
+        thead{
+            font-size:15px;
+            color:black;
+            {% comment %} border: 1px solid blue; {% endcomment %}
+
+        }
+        th{
+            font-size:12px;
+            color:black;
+            
+        }
+    </style>
     </head>
-    <body style="font-size:13px;" >
+    <body>
         <div class="container">
             <div class="card">
                 <div class="card-body">
                     {% comment %} <center> 
-                        <h2 class="bi bi-cash-coin">Presupuesto de Tratamiento/s a ser Realizado/s
-                        </h2>
+                        <h1>Presupuesto de Tratamiento/s a ser Realizado/s
+                        </h1>
                     </center> {% endcomment %}
                     <center> 
-                        <h1 style="color:blue;" > <b> C O N S U L D E N T </b><h1>
+                        <p style="font-size:20px; color:black;"> C O N S U L D E N T </p>
                     </center>
             
                     <table>
-                        
                         <thead>
-                            <tr style="background-color: skyblue; color:white border: 1px solid black">
+                            <tr style="background-color: skyblue; color:black;  border: 1px solid black;">
                                 <th><br>Telefono</th>
                                 <th><br>Ubicacion</th>
-                            
                             </tr>
+                           
                         </thead>
+                       
                         <tbody>
-                            <tr>
+                             <tr>
                             <tr>
                                 
                                 <th> (0985) 571 842</th>
@@ -48,22 +72,27 @@
                     </table>
                     <br>
                         <center>
-                            <h3 style="font-size:16px;">Datos Personales</h3> 
+                            <h2 style="color:black;  font-size:20px;">
+                                Datos Personales
+                            </h2>
                         </center>
-
-                
-                        <b>Paciente:</b> &nbsp; <i>{{persona.nombre}} {{persona.apellido}}</i>
-                        <br>
-                        <b>Numero de cedula/RUC: </b> &nbsp; {{persona.numero_documento}}
-                        <br>
-                    
-                        <b>Fecha de Expedicion: </b> &nbsp; {{fecha_actual}}
-                        <br>
-                        <b> </b> &nbsp;Valido 30 dias</h6>
-                    
+                    <table style="font-size:16px; border: 1px solid black;">
+                       
+                          
+                                <b>Paciente: </b> &nbsp; <i style="font-size:15px;">{{persona.nombre}} {{persona.apellido}}</i>
+                                <br>
+                                <b>Numero de cedula/RUC: </b> &nbsp; <i style="font-size:15px;"> {{persona.numero_documento}}</i>
+                                <br>
+                            
+                                <b>Fecha de Expedicion: </b> &nbsp; <i style="font-size:15px;"> {{fecha_actual}}</i>
+                                <br>
+                                <b>&nbsp;Valido 30 dias </b> 
+                            
+                        
+                    </table>
                     
                     <br>
-        <br>
+    
                     <!--Inicio de la TABLA DE TRATAMIENTOS-->
                 
                     <table border= "2px">
@@ -80,11 +109,11 @@
                             </tr>
                         </thead>
 
-                        <tbody >
+                        <tbody style="font-size:11px;">
                             {%for t in tratamientos_insumos_asignados%}
                             <tr>
                                 <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}} <br></td>
-                                <td><br>&nbsp;&nbsp;&nbsp;<b>{{t.tratamiento_asig.nombre_tratamiento}} <br> </b>
+                                <td><br>&nbsp;&nbsp;&nbsp;{{t.tratamiento_asig.nombre_tratamiento}} <br>
                                 <br>
                                 {%for i in t.insumos%}
                                     
@@ -95,7 +124,7 @@
                                 
                                 </td>
                              
-                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento_asig.precio}} Gs</td>
+                                <td>&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento_asig.precio}} Gs</td>
                             </tr>
                             {% endfor %}
                             
@@ -116,20 +145,17 @@
  
         <!--Pie de pagina -->
         
-         
         <div class="col-12 text-length copyright">
-                    <samp>
-            <br>
-            <br>
-            <br>
             <center>
-                        <p>Copyright SmileSoft &copy; FP-UNA 2022  </p>
+                <samp>
+                    <br>
+                    <br>
+                    <br>
+                    Copyright  SmileSoft &copy; FP-UNA 2022  
+                </samp>
             </center>
-                    </samp>
-                </div>
-            </div>
-
         </div>
+
    </body>
 
 </html>
