@@ -37,6 +37,7 @@ class Insumo(models.Model):
     C = 'Caja/s'
     UNIDADES = ((P, 'Paquete/s'), (C, 'Caja/s'))
     unidad = models.CharField(max_length=12, choices=UNIDADES, verbose_name='Unidad de medida')
+    U = 'unidades'
     G = 'g'
     MG = 'mg'
     M= 'm'
@@ -45,8 +46,7 @@ class Insumo(models.Model):
     L= 'l'
     ML = 'ml'
     A = 'ampollas'
-    U = 'unidades'
-    UDS_UNITARIAS = ((G, 'g'), (MG, 'mg'), (M, 'm'), (C, 'cm'), (MM, 'mm'), (L, 'l'), (ML, 'ml'),(A, 'amp'), (U, 'unidades'))
+    UDS_UNITARIAS = ((U, 'unidades'), (G, 'g'), (MG, 'mg'), (M, 'm'), (C, 'cm'), (MM, 'mm'), (L, 'l'), (ML, 'ml'),(A, 'amp'))
     ud_unitaria = models.CharField(max_length=12, choices=UDS_UNITARIAS, verbose_name='Ud. Unitaria')
     D = 'Disponible' # Cuando el stock_minimo es > 0
     E = 'En Falta' # Cuando el stock minimo es = 0 
