@@ -11,7 +11,20 @@
 {%endblock%}
 
 {%block content%}
-
+<style>
+    #celda1{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+     #celda2{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+</style>
 {%if perms.gestion_inventario_insumos.add_insumo%}
     <div class="container">
         <div class="card">
@@ -82,8 +95,13 @@
                                         <td>{{c.unidad_x_paquete}} u </td> 
                                         <td>{{c.cantidad_unitaria}} {{c.ud_unitaria}}</td> 
                                         <td>{{c.stock_minimo}} {{c.ud_unitaria}}</td> 
+                                        {%if c.disponible%}
+                                        <td id= "celda2" style="border: 1px solid white; background-color: #68AD22"><p style="color: white;" > <br> &nbsp;{{c.existencia}} </p></td>
+                                        {%else%}
+                                        <td id= "celda1" style="border: 1px solid white;  background-color:#E47079;"><p style="color: white;" > <br>&nbsp;&nbsp;{{c.existencia}}</p> </td>
+                                        {%endif%}
                                         <td></td> 
-                                        
+                                  
                                         <!-- <td>{{c.estado}}</td>  -->
                                         {{busqueda}}
                                         <!--OPCIONES Modificar y Eliminar-->
@@ -98,7 +116,7 @@
                                         <!-- Eliminar-->
                                         {%if perms.gestion_inventario_insumos.delete_insumo%}          
                                             <td>
-                                                <a href="/insumo/eliminar_insumo/{{c.codigo_insumo}}" class="btn btn-danger btnEliminacion">
+                                                <a href="/insumo/eliminar_insumos/{{c.codigo_insumo}}" class="btn btn-danger btnEliminacion">
                                                     <i class="bi-trash-fill" ></i> 
                                                         Eliminar
                                                 </a> 

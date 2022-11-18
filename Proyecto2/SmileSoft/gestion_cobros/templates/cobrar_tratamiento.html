@@ -101,16 +101,19 @@
                     </table>
                     <div class="d-flex justify-content-center">
                         {%if tratamientos_agendados%}
-                        <a type="submit" href="/cobros/detalle_cobro_pdf/{{persona.paciente.id_paciente}}" class="btn btn-secondary btn-block txt-white">
+                        <a type="submit" href="/cobros/detalle_cobro_pdf/{{persona.paciente.id_paciente}}" target="_blank" class="btn btn-secondary btn-block txt-white">
                             <i class="bi bi-printer"></i>
                             Detalle previo
                         </a>
                         &nbsp;
-                        <a type="submit" href="/cobros/verificar_datos_cita/{{persona.numero_documento}}/{{menor_edad}}" class="btn btn-success btn-block txt-white">
-                            <i class="bi bi-check2-square"></i>
-                            Cobrar
-                        </a>
+                     
+                            <a type="submit" href="/cobros/verificar_datos_cita/{{persona.numero_documento}}/{{menor_edad}}" class="btn btn-success btn-block txt-white">
+                                <i class="bi bi-check2-square"></i>
+                                Cobrar
+                            </a>
+                     
                         &nbsp;
+
                         <a href="/cobros/listar_cobros_pendientes/" class="btn btn-danger"  >
                             <i class="bi-x-circle"></i> 
                             Cancelar

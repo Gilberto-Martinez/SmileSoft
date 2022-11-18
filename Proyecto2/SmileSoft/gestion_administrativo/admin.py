@@ -4,6 +4,27 @@ from .models import *
 
 # Register your models here.
 
+
+class AdminEmpresa(admin.ModelAdmin):
+    #add_form_template = PersonForm
+    fieldsets = (
+        (None, {'fields': (
+            'ruc',)}),
+        (('Datos de la Empresa'), {'fields': (
+            'nombre_empresa',
+            'correo_electronico',
+            'direccion',
+            'telefono',
+            'timbrado',
+            'f_inicio_vigencia',
+            'f_fin_vigencia'
+            
+        )
+        }
+        ),
+    )
+   
+
 class AdminPersona(admin.ModelAdmin):
     #add_form_template = PersonForm
     fieldsets = (
@@ -164,6 +185,7 @@ class AdminEspecialistaSalud(admin.ModelAdmin):
 admin.site.site_header = 'Bienvenido a Smilesoft'
 admin.site.site_title = 'SmileSoft'
 
+admin.site.register(Empresa, AdminEmpresa)
 admin.site.register(Persona, AdminPersona)
 admin.site.register(Cargo, AdminFuncionarioCargo)
 # admin.site.register(Categoria, AdminEspecialistaSaludEsp)

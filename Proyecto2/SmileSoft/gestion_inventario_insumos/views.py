@@ -43,7 +43,11 @@ def agregar_insumo (request):
     if request.method== "POST":
         formulario= InsumoForm(data = request.POST, files= request.FILES)
         if formulario.is_valid():
-            formulario.save()
+            insumo = formulario.save(commit=False)
+            #calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
+            calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
+            insumo.cantidad_unitaria = calculo_unitario
+            insumo.save()
             data["mensaje"]="Registrado correctamente"
             messages.success(request, (' ✅ Insumo Agregado Correctamente!'))
             return redirect("/insumo/listar_insumos/")  
@@ -98,10 +102,17 @@ def listar_insumo(request):
         upcl=insumo.unidad_x_paquete
         ud_unitaria=insumo.ud_unitaria
         stock_minimo= insumo.stock_minimo
-    
-        # tratamiento_elegido = lista.tratamiento_solicitado or lista.tratamiento_simple
-        calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
+        #existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
+        existencia = "Disponible"
+        disponible = True
+        if insumo.cantidad_unitaria >= insumo.stock_minimo:
+            existencia = "Disponible"
+            disponible = True
+        else:
+            existencia = "En Falta"
+            disponible = False
         detalle= insumo.descripcion_insumo
+        cantidad_unitaria = insumo.cantidad_insumo
         
         monto= '{:,}'.format(insumo.precio).replace(',','.')
        
@@ -113,9 +124,11 @@ def listar_insumo(request):
                             'cantidad_insumo':cantidad_insumo,
                             'unidad':unidad,
                             'unidad_x_paquete':upcl,
-                            'cantidad_unitaria':calculo_unitario,
+                            'cantidad_unitaria':cantidad_unitaria,
                             'ud_unitaria':ud_unitaria,
-                            'stock_minimo': stock_minimo, 
+                            'stock_minimo': stock_minimo,
+                            'existencia': existencia, 
+                            'disponible': disponible
                             
                            }
         
@@ -191,7 +204,11 @@ def modificar_insumo(request, codigo_insumo):
             data=request.POST, instance=codigo_insumo, files=request.FILES)
         if formulario.is_valid():
             
-            formulario.save()
+            insumo = formulario.save(commit=False)
+            #calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
+            calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
+            insumo.cantidad_unitaria = calculo_unitario
+            insumo.save()
             
             messages.success(request, " Insumo Modificado Correctamente ✅")
             return redirect("/insumo/listar_insumos/")     
@@ -210,9 +227,8 @@ def eliminar_insumo(request, codigo_insumo):
     try:
         insumo = Insumo.objects.get(codigo_insumo=codigo_insumo)
         insumo.delete()
-        listado_insumos = Insumo.objects.all()
         messages.success(request, " Insumo Eliminado ❌")
-        return render(request, "insumo/listar_insumos.html", {'listado_insumos': listado_insumos})
+        return redirect("/insumo/listar_insumos/")
     except Insumo.DoesNotExist:
         raise Http404("No se puede eliminar el Insumo indicado. Dado que ya se Elimino")
 

@@ -1,7 +1,7 @@
 {%extends 'panel_control/base.html'%}
 {% load static %}
 {% block content %}
-	<!-- {%if perms.gestion_administrativo.view_especialistasalud%} -->
+	{%if perms.gestion_cobros.view_cobrocontado%}
 		<div class="container">
 			<div class="card">
 				<div class="card-body">
@@ -75,12 +75,12 @@
 								<td>{{ cobro.fecha }}</td>
                                 <td>{{ cobro.monto_total }} Gs</td>
 								<td>
-									<!-- {%if perms.gestion_administrativo.change_especialista_salud%} -->
+									{%if perms.gestion_cobros.view_cobrocontado%} 
 									<a class="btn btn-primary" href="/cobros/ver_detalle_cobro/{{cobro.id_cobro_contado}}">
 										<i class="bi bi-eye"></i>
 										Ver detalle
 									</a>
-									<!-- {%endif%} -->
+									{%endif%}
 								</td>
 							</tr>
 							{% endfor %}
@@ -99,5 +99,5 @@
 				</table> 
 			</div>
 		</div>
-	<!-- {% endif %} -->
+	{% endif %}
 {% endblock%}

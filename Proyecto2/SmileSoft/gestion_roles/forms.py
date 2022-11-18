@@ -15,7 +15,7 @@ class RolForm(forms.ModelForm):
 
     class Meta:
         proxy = True
-        #   ordering = ['-created']
+        # ordering = ['name']
         model = Group
         fields = '__all__'
         # fields = [

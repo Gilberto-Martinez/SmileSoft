@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Detalle del Cobro </title>
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+        <title> Presupuesto Dental </title>
+    <style>
+    
+        </style>
     
     </head>
     <body style="font-size:13px;" >
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                    <center> 
-                        <h2 class="bi bi-cash-coin">Detalle de Tratamiento/s a ser Realizado/s
+                    {% comment %} <center> 
+                        <h2 class="bi bi-cash-coin">Presupuesto de Tratamiento/s a ser Realizado/s
                         </h2>
-                    </center>
+                    </center> {% endcomment %}
                     <center> 
                         <h1 style="color:blue;" > <b> C O N S U L D E N T </b><h1>
                     </center>
@@ -23,9 +24,9 @@
                     <table>
                         
                         <thead>
-                            <tr style="background-color: skyblue; color:white">
+                            <tr style="background-color: skyblue; color:white border: 1px solid black">
                                 <th><br>Telefono</th>
-                                <th><br> Ubicacion</th>
+                                <th><br>Ubicacion</th>
                             
                             </tr>
                         </thead>
@@ -47,28 +48,22 @@
                     </table>
                     <br>
                         <center>
-                            
-                                <h3 style="font-size:16px;">Datos Personales</h3> 
+                            <h3 style="font-size:16px;">Datos Personales</h3> 
                         </center>
 
-                        {% comment %} <table style="font-size:20px; border: 1px solid black;">
-                            <tr>
-                                <th> {% endcomment %}
-                                    <b>Paciente:</b> &nbsp; <i>{{persona.nombre}} {{persona.apellido}}</i>
-                                    <br>
-                                    <b>Numero de cedula/RUC: </b> &nbsp; {{persona.numero_documento}}
-                                    <br>
-                                
-                                    <b>Fecha de Expedicion: </b> &nbsp; {{fecha_actual}}
-                                    <br>
-                                    <b> </b> &nbsp;Valido 30 dias
-                                {% comment %} </th>
-                            </tr>
-                        </table> {% endcomment %}
-                        
+                
+                        <b>Paciente:</b> &nbsp; <i>{{persona.nombre}} {{persona.apellido}}</i>
                         <br>
+                        <b>Numero de cedula/RUC: </b> &nbsp; {{persona.numero_documento}}
+                        <br>
+                    
+                        <b>Fecha de Expedicion: </b> &nbsp; {{fecha_actual}}
+                        <br>
+                        <b> </b> &nbsp;Valido 30 dias</h6>
+                    
+                    
                     <br>
-    
+        <br>
                     <!--Inicio de la TABLA DE TRATAMIENTOS-->
                 
                     <table border= "2px">
@@ -85,21 +80,22 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody >
                             {%for t in tratamientos_insumos_asignados%}
                             <tr>
-                                <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}}</td>
-                                <td><br>&nbsp;&nbsp;&nbsp;<b>{{t.tratamiento.nombre_tratamiento}}</b>
+                                <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}} <br></td>
+                                <td><br>&nbsp;&nbsp;&nbsp;<b>{{t.tratamiento_asig.nombre_tratamiento}} <br> </b>
                                 <br>
                                 {%for i in t.insumos%}
                                     
-                                      <li>&nbsp;&nbsp;&nbsp; {{i.nombre_insumo}} <br> </li>
+                                      <li>&nbsp;&nbsp;&nbsp; {{i.nombre_insumo}} </li>
+                                     
                         
                                 {%endfor%}
                                 
                                 </td>
-                                
-                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento.precio}} Gs</td>
+                             
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento_asig.precio}} Gs</td>
                             </tr>
                             {% endfor %}
                             
@@ -120,6 +116,7 @@
  
         <!--Pie de pagina -->
         
+         
         <div class="col-12 text-length copyright">
                     <samp>
             <br>

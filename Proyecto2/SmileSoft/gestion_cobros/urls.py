@@ -14,8 +14,15 @@ urlpatterns = [
     path('verificar_datos_cita/<numero_documento>/<menor_edad>', verificar_datos_cita, name="verificar_datos_cita"),
     path('solicitar_razon_social/<numero_documento>', solicitar_razon_social, name="solicitar_razon_social"),
     path('registrar_cobro2/<numero_documento>/<numero_documento2>/<razon_social>', registrar_cobro2, name="registrar_cobro2"),
+
     path('ingresar_datos_factura/<id_cobro>', ingresar_datos_factura, name="ingresar_datos_factura"),
-    # path('detalle_cobro_pdf/<int:id_paciente>', DetalleCobroPDF.as_view(),name="detalle_cobro_pdf"),
+    #Factura_html
+    path('generar_factura_original/', generar_factura_original, name="generar_factura_original"),
+    path('listar_facturas/', listar_facturas, name="listar_facturas"),
+    
+    #PDF------------------------
     path('detalle_cobro_pdf/<int:id_paciente>', detalle_cobro_pdf ,name="detalle_cobro_pdf"),
     path('registrar_factura/', registrar_factura ,name="registrar_factura"),
+    path('presupuesto_pdf/<int:id_paciente>',  presupuesto_pdf, name="presupuesto_pdf"),
+    path('generar_factura/', generar_factura, name="generar_factura"),
 ]

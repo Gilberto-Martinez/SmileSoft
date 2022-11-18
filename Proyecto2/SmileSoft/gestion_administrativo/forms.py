@@ -12,6 +12,33 @@ from datetime import date, datetime
 import dateutil.relativedelta
 from dateutil.relativedelta import relativedelta
 
+class EmpresaForm(forms.ModelForm):
+   ruc = forms.CharField(max_length=12, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese ruc', 'readonly': 'True'}))
+   nombre_empresa = forms.CharField(max_length=25, widget=forms.TextInput(attrs={'class': 'form-control'}))
+   direccion = forms.CharField(max_length=80,  widget=forms.TextInput(attrs={ 'class': 'form-control',}))
+   telefono = forms.CharField(max_length=20,  widget=forms.TextInput(attrs={'class': 'form-control',}  ))
+   correo_electronico = forms.EmailField(max_length=35,  widget=forms.TextInput(attrs={'class': 'form-control',}))
+   timbrado = forms.IntegerField(widget=forms.TextInput(attrs={ 'class': 'form-control', } ))
+   f_inicio_vigencia = forms.DateField(widget=forms.TextInput(attrs={ 'class': 'form-control',} ))
+   f_fin_vigencia = forms.DateField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+ 
+   class Meta:
+        proxy = True
+        model = Empresa
+        fields = [
+            'ruc',
+            'nombre_empresa',
+            'direccion',
+            'telefono', 
+            'correo_electronico',
+            'timbrado',
+            'f_inicio_vigencia', 
+            'f_fin_vigencia',
+
+        ]
+
+
+     
 class PersonaForm(forms.ModelForm):
    nombre= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su nombre'}))
    apellido= forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su apellido'}))

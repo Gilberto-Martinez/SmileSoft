@@ -106,13 +106,17 @@
                                               </a>
                                               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                   <!--Opcion-->
+                                                   {%if perms.gestion_administrativo.modificar_empresa%}
+                                                  <li><a class="dropdown-item" href="/administrativo/modificar_empresa/80000954-1"> <font style="font-style: oblique;" COLOR="blue"> Datos de la Empresa</font> </a></li>
+                                                  <div class="dropdown-divider"></div>
+                                                  {%endif%}
                                                   <li><a class="dropdown-item" href="/modificar_password/"> <FONT COLOR="black"> Modificar/ Contraseña</FONT> </a></li>
                                                   <div class="dropdown-divider"></div>
                                                   <li><a class="dropdown-item" href="/administrativo/editar_persona/{{user.numero_documento}}"> <font color="black">Modificar/ Datos personales </font></a></li></a>
                                                  
-                                                      <div class="dropdown-divider"></div>
+                                                      {% comment %} <div class="dropdown-divider"></div>
                                                         <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> <font color="black">Modificar/ Antecedente Clínico  </font></a></li></a>
-                                                
+                                                 {% endcomment %}
                                                   <div class="dropdown-divider"></div>
                                                     <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: oblique;" COLOR="blue"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
                                                                   
@@ -237,29 +241,30 @@
                                                           {% comment %} <div class="dropdown-divider"></div>  --> {% endcomment %}
                                                     
                                                 <!--Opcion 5.3 -->
-                                                 {%if perms.gestion_historial_clinico.add_historialclinico%}
+                                                 {%if perms.gestion_tratamiento.add_tratamiento%}
                                                     <div class="dropdown-divider"></div>
                                                     <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                       Asignación de Tratamientos a Pacientes 
                                                     </strong>
-                                                  {%endif%}
-                                                  {%if perms.gestion_tratamiento.add_tratamiento%}
-                                                    <li>
-                                                      <a class="dropdown-item" href="/tratamiento/listar_paciente2">• Seleccionar Paciente</a>
-                                                    </li> 
-                                                  {%endif%}
-                                                  <li>
-                                                  <!--FALTA*******************EL PERMISO DE ESTE ITEM DEBE SER INTERMEDIO -->
-                                                  {% comment %} {%if perms.gestion_tratamiento.view_tratamientopendiente%} {% endcomment %}
-                                                    <a class="dropdown-item" href="/tratamiento/listar_tratamientos_pendientes/">• Tratamientos a realizar</a>
-                                                  </li>
-                                                  {% comment %} {%endif%} {% endcomment %}
+                                                
+                                                    <li> <a class="dropdown-item" href="/tratamiento/listar_paciente2">• Seleccionar Paciente</a> </li> 
+                                                 
+                                                    <li><a class="dropdown-item" href="/tratamiento/listar_tratamientos_pendientes/">• Tratamientos a realizar</a></li>
+                                                 {%endif%}   
                                                   <!--Debe tener un permiso solo para el rol Odontologo -->
-                                                  <li>
-                                                      <a class="dropdown-item" href="/tratamiento/ver_mis_tratamientos_pendientes/{{user.numero_documento}}">• Mis tratamientos a realizar</a>
-                                                    </li>
-                                                </ul>
-                                              </li>
+                                                    {%if perms.gestion_historial_clinico.add_historialclinico%} 
+                                                    <div class="dropdown-divider"></div>
+                                                        <li> <strong  class="dropdown-header" style="color:blue; font-size:16px;">
+                                                                  Odontólogo
+                                                          </strong>
+                                                        </li></a>
+                                                      <li>
+                                                          <a class="dropdown-item" href="/tratamiento/ver_mis_tratamientos_pendientes/{{user.numero_documento}}">• Mis tratamientos a realizar</a>
+                                                        </li>
+                                                    {%endif%}
+                                                  </ul>
+                                                
+                                                </li>
                                               {% endif %}
                                               <!--Opcion 6 Agendamiento Para paciente-->
                                             <li class="nav-item dropdown">
@@ -302,45 +307,31 @@
                                                   
                                                 </ul>
                                             </li>
- <!--COMENTADO POR DESARROLOO**********************************-->
-  <!--FALTA DESARROLLAR POR ESO SE OCULTA-->
-                                              <!--Opcion 7-->
+
+                                              <!--Opcion 7 ||| Historial CLINICO-->
+                                           {%if perms.gestion_historial_clinico.view_historialclinico%} 
                                               <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
                                                  role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                  Historial Clínico
                                                 </a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <!--Opcion 7.1 -->
-                                                
-                                                  <!-- {%if perms.gestion_administrativo.change_paciente%}
-                                                    <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                              Antecedente Clínico
-                                                  </strong>
-                                                  <li><a class="dropdown-item" href="/administrativo/editar_antecedente/{{user.numero_documento}}"> 
-                                                    <font color="black"> • Clínico Personal - Familiar</font></a>
-                                                  </li>
-                                                  <li><hr class="dropdown-divider"></li>
-                                                  {%endif%} -->
-                                                  <!--Opcion 7.2 -->
-                                                  {% comment %} <li><a class="dropdown-item" href="#">• Clínico Familiar</a></li> {% endcomment %}
-                                                  
+                                         
                                                   <!--Opcion 7.3 -->
-                                                  
-                                                    <strong class="dropdown-header"  style="color:blue; font-size:16px;" > Tratamientos Realizados</li></strong>
-                                                      {%if perms.gestion_historial_clinico.add_historialclinico%}
-                                                      <li><a class="dropdown-item" href="/historial_clinico/listar_pacientes_historial/">• Listado de Historiales Clínicos</a></li>
-                                                      {%endif%}
-                                                      {%if perms.gestion_historial_clinico.view_historialclinico%}
-                                                      <li><a class="dropdown-item" href="/historial_clinico/ver_mi_historial_clinico/{{user.numero_documento}}">• Mi Historial clínico</a></li> 
-                                                      {%endif%}
-                                                      {% comment %} <li><hr class="dropdown-divider"></li>
-                                                  <li><a class="dropdown-item" href="#">• Asignar un Tratamiento</a></li> {% endcomment %}
+
+                                                  <strong class="dropdown-header"  style="color:blue; font-size:16px;" > Tratamientos Realizados</li></strong>
+                                                  {%if perms.gestion_historial_clinico.add_historialclinico%}
+                                                  <li><a class="dropdown-item" href="/historial_clinico/listar_pacientes_historial/">• Listado de Historiales Clínicos</a></li>
+                                                  {%endif%}
+                                                  {%if perms.gestion_historial_clinico.view_historialclinico%} 
+                                                  <li><a class="dropdown-item" href="/historial_clinico/ver_mi_historial_clinico/{{user.numero_documento}}">• Mi Historial clínico</a></li> 
+                                                  {%endif%}
                                                 </ul>
                                               </li>
+                                          {%endif%} 
                                                    
                                               <!--Opcion 8-->
-                                              {%if perms.permiso.add_permission%}
+                                              {%if perms.gestion_cobros.add_cobrocontado%}
                                                  <li class="nav-item dropdown">
                                                     <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
                                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -349,19 +340,19 @@
                                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                       <!--Opcion 8.1 -->
                                                       <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                            Emitir factura
+                                                            Facturas 
                                                                   </strong>
-                                                      <li><a class="dropdown-item" href="#"> 
-                                                            <font color="black">• Factura</font></a></li>
+                                                      <li><a class="dropdown-item" href="/cobros/listar_facturas/"> 
+                                                            <font color="black">• Listado de Facturas</font></a></li>
                                                             <!--Opcion 8.2 -->
                                                     
-                                                            <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                            {% comment %} <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                               Pagos
                                                             </strong>
                                                                 <!--Opcion 10.1 -->
                                                               <li><a class="dropdown-item" href="#"> 
                                                                 <font color="black">  • Pago a Proveedores </font></a>
-                                                              </li>
+                                                              </li> {% endcomment %}
                                                         </li>
                                                     </ul>
                                                   </li>
@@ -370,7 +361,7 @@
                                           
 
                                             <!--Opcion 9-->
-                                            {%if perms.gestion_tratamiento.add_tratamiento%}
+                                            {%if perms.gestion_cobros.add_cobrocontado%}
                                               <li class="nav-item dropdown">
                                                   <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
                                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">

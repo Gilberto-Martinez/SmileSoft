@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-from gestion_administrativo.models import Persona
+from gestion_administrativo.models import Persona, Empresa
 
 # class CobroContadoForm(forms.ModelForm):
 #     paciente = forms.CharField(widget=forms.TextInput(attrs={
@@ -118,3 +118,25 @@ class FacturaForm(forms.ModelForm):
         fields = [
                 'numero_documento'
         ]
+
+
+class EmpresaForm(forms.ModelForm):
+        # nombre_empresa = models.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+        # direccion=forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control'}))
+
+
+        class Meta:
+                model = Empresa
+                fields = [
+                        'nombre_empresa',
+                        'direccion',
+                        'telefono',
+                        'correo_electronico',
+                        'ruc',
+                        'timbrado',
+                        'f_inicio_vigencia',
+                        'f_fin_vigencia',
+                        
+                ]
+
+

@@ -90,7 +90,7 @@
                                             <td >{{t.hora}}</td>
                                             <td >{{t.profesional}}</td>
                                             <!-- Eliminar-->
-                                            <!-- {%if perms.gestion_tratamiento.delete_tratamiento%} -->
+                                            {%if perms.gestion_agendamiento.add_cita%}
                                                 <td>
                                                     <!-- <a href="/tratamiento/realizar_pregunta/{t.id}" class="btn btn-success"> -->
                                                     {%if t.fecha_pasada%}
@@ -104,7 +104,7 @@
                                                         </a>
                                                     {%endif%}
                                                 </td>
-                                            <!-- {%endif%} -->
+                                           {%endif%} 
                                         </tr>
                                     {% endfor %}
                                 {%else%}

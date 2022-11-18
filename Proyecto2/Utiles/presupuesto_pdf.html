@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Presupuesto Dental </title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+        <style>
+       
+        b{
+            font-family:Verdana;
+            font-size:15px;
+            color:black;
+        } 
+
+        i{
+            font-family:Verdana;
+            font-size:12px;
+            color:black;
+        } 
+       
+        thead{
+            font-size:15px;
+            color:black;
+            {% comment %} border: 1px solid blue; {% endcomment %}
+
+        }
+        th{
+            font-size:12px;
+            color:black;
+            
+        }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    {% comment %} <center> 
+                        <h1>Presupuesto de Tratamiento/s a ser Realizado/s
+                        </h1>
+                    </center> {% endcomment %}
+                    <center> 
+                        <p style="font-size:20px; color:black;"> C O N S U L D E N T </p>
+                    </center>
+            
+                    <table>
+                        <thead>
+                            <tr style="background-color: skyblue; color:black;  border: 1px solid black;">
+                                <th><br>Telefono</th>
+                                <th><br>Ubicacion</th>
+                            </tr>
+                           
+                        </thead>
+                       
+                        <tbody>
+                             <tr>
+                            <tr>
+                                
+                                <th> (0985) 571 842</th>
+                            </tr>
+                            <tr>
+                                <th> (0984) 476 557</th>
+                                <th>Fernando de la Mora - Zona-Sur</th>
+                            </tr>
+                            <tr>
+                                <th> Email: consultdent9596@gmail.com</th>
+                            
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                        <center>
+                            <h2 style="color:black;  font-size:20px;">
+                                Datos Personales
+                            </h2>
+                        </center>
+                    <table style="font-size:16px; border: 1px solid black;">
+                       
+                          
+                                <b>Paciente: </b> &nbsp; <i style="font-size:15px;">{{persona.nombre}} {{persona.apellido}}</i>
+                                <br>
+                                <b>Numero de cedula/RUC: </b> &nbsp; <i style="font-size:15px;"> {{persona.numero_documento}}</i>
+                                <br>
+                            
+                                <b>Fecha de Expedicion: </b> &nbsp; <i style="font-size:15px;"> {{fecha_actual}}</i>
+                                <br>
+                                <b>&nbsp;Valido 30 dias </b> 
+                            
+                        
+                    </table>
+                    
+                    <br>
+    
+                    <!--Inicio de la TABLA DE TRATAMIENTOS-->
+                
+                    <table border= "2px">
+                        <thead> 
+                            <tr>
+                                {%if tratamientos_insumos_asignados%}
+                                    <th><br>Nro Tratamiento</th>
+                                    <th><br>Tratamiento</th>
+                                    {% comment %} <th><br>Materiales/Insumos </th>  {% endcomment %}
+                                    <th><br>Precio </th> 
+                                    
+
+                                {%endif%}
+                            </tr>
+                        </thead>
+
+                        <tbody style="font-size:11px;">
+                            {%for t in tratamientos_insumos_asignados%}
+                            <tr>
+                                <td><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}} <br></td>
+                                <td><br>&nbsp;&nbsp;&nbsp;{{t.tratamiento_asig.nombre_tratamiento}} <br>
+                                <br>
+                                {%for i in t.insumos%}
+                                    
+                                      <li>&nbsp;&nbsp;&nbsp; {{i.nombre_insumo}} </li>
+                                     
+                        
+                                {%endfor%}
+                                
+                                </td>
+                             
+                                <td>&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{t.tratamiento_asig.precio}} Gs</td>
+                            </tr>
+                            {% endfor %}
+                            
+                            <tr>
+                                <th><br> Precio Total</th>
+                                <th></th>
+                                <th><br>{{precio_total}} Gs</th>
+                            
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                
+                </div>
+            </div>
+        </div>
+ 
+        <!--Pie de pagina -->
+        
+        <div class="col-12 text-length copyright">
+            <center>
+                <samp>
+                    <br>
+                    <br>
+                    <br>
+                    Copyright  SmileSoft &copy; FP-UNA 2022  
+                </samp>
+            </center>
+        </div>
+
+   </body>
+
+</html>

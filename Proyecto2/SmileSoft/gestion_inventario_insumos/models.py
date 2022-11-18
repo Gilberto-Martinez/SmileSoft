@@ -1,5 +1,3 @@
-from pyexpat import model
-
 from django.db import models
 from gestion_administrativo.models import *
 from gestion_inventario_insumos.models import *
@@ -39,6 +37,7 @@ class Insumo(models.Model):
     C = 'Caja/s'
     UNIDADES = ((P, 'Paquete/s'), (C, 'Caja/s'))
     unidad = models.CharField(max_length=12, choices=UNIDADES, verbose_name='Unidad de medida')
+    U = 'unidades'
     G = 'g'
     MG = 'mg'
     M= 'm'
@@ -47,9 +46,13 @@ class Insumo(models.Model):
     L= 'l'
     ML = 'ml'
     A = 'ampollas'
-    U = 'unidades'
-    UDS_UNITARIAS = ((G, 'g'), (MG, 'mg'), (M, 'm'), (C, 'cm'), (MM, 'mm'), (L, 'l'), (ML, 'ml'),(A, 'amp'), (U, 'unidades'))
+    UDS_UNITARIAS = ((U, 'unidades'), (G, 'g'), (MG, 'mg'), (M, 'm'), (C, 'cm'), (MM, 'mm'), (L, 'l'), (ML, 'ml'),(A, 'amp'))
     ud_unitaria = models.CharField(max_length=12, choices=UDS_UNITARIAS, verbose_name='Ud. Unitaria')
+    D = 'Disponible' # Cuando el stock_minimo es > 0
+    E = 'En Falta' # Cuando el stock minimo es = 0 
+    EXISTENCIAS = ((D, 'Disponible'), (E, 'En Falta'), )
+    #existencia = models.CharField(max_length=12, choices=EXISTENCIAS, default='Disponible')
+    
     # stock_minimo = models.IntegerField(default=calculo_valor, verbose_name= 'Stock Mínimo (*)') #stock_minimo = 12 --> se agrega por teclado
     # existencia = si cantidad_unitaria < stock_minimo entoces "en falta" sino "disponible"
     # id_inventario = models.ForeignKey(inventario)
@@ -74,6 +77,7 @@ class Insumo(models.Model):
 
     # def get_calculo_valor(self):
     #     return (self.cantidad_insumo * self.unidad_x_paquete)
-
+    def get_existencia(self):
+        return str(self.existencia)
     
 #insumo con caducidad
