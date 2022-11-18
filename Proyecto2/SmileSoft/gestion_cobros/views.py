@@ -10,9 +10,9 @@ from django.http import ( HttpResponse,)
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura
 from gestion_tratamiento.models import Tratamiento
-from gestion_administrativo.models import Persona, Paciente
+from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, CobroFacturaForm, DatosFacturaForm, Fac
+from .forms import RazonSocialForm, CobroFacturaForm, DatosFacturaForm, FacturaForm
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
