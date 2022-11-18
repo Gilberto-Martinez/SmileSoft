@@ -69,17 +69,18 @@ class DetalleCobroTratamiento(models.Model):
 
 class Factura(models.Model):
     id_factura = models.AutoField(primary_key=True)
-    sub_nro_factura1 = models.CharField(max_length=3, null=False, blank=False)
-    sub_nro_factura2 = models.CharField(max_length=3, null=False, blank=False)
-    sub_nro_factura3 = models.IntegerField(max_length=7, null=False, blank=False)
+    sub_nro_factura1 = models.CharField(max_length=3, null=False, blank=True)
+    sub_nro_factura2 = models.CharField(max_length=3, null=False, blank=True)
+    sub_nro_factura3 = models.IntegerField(null=False, blank=True)
     nro_factura = models.CharField(max_length=60, null=True, blank=True,)
+    numero_documento = models.CharField(max_length=10, null=True)
     razon_social = models.CharField(max_length=60, null=True, blank=True, verbose_name='Nombre o Razón Social')
     direccion = models.CharField(max_length=80, null=True, blank=True, verbose_name='Dirección')
     fecha = models.DateField(auto_now_add=True)
     CO = 'Contado'
     CR = 'Credito'
     CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
-    condicion_venta = models.CharField(max_length=12, choices=CONDICIONES, verbose_name='Condición de venta')
+    condicion_venta = models.CharField(max_length=12, choices=CONDICIONES,default='Contado' ,verbose_name='Condición de venta')
     telefono = models.CharField(max_length=20, null=False, blank=False)
     total_pagar = models.IntegerField()
     iva_5 = models.FloatField()
