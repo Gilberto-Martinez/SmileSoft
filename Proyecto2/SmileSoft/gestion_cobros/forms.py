@@ -113,10 +113,35 @@ class DatosFacturaForm(forms.ModelForm):
         ]
 
 class FacturaForm(forms.ModelForm):
+    numero_documento = forms.CharField(label="RUC",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el RUC del cliente'
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(label="Nombre/Razón social",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el nombre del cliente'
+                                                            }
+                                                    )
+                                )
+    direccion = forms.CharField(label="Domicilio",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el domicilio del cliente'
+                                                            }
+                                                    )
+                                )
+    telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
     class Meta:
         model = Factura
         fields = [
-                'numero_documento'
+                'numero_documento',
+                'razon_social',
+                'direccion',
+                'telefono',
         ]
 
 

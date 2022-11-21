@@ -28,6 +28,9 @@ class CobroContado(models.Model):
     def get_fecha(self):
         return self.fecha
 
+    def get_id_cobro(self):
+        return int(self.id_cobro_contado)
+
 class DetalleCobroContado(models.Model):
     cobro = models.ForeignKey(
                                 CobroContado,
@@ -89,7 +92,7 @@ class Factura(models.Model):
     E = 'Emitido'
     A = 'Anulado'
     ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
-    estado = models.CharField(max_length=12, choices=ESTADOS, verbose_name='Condición de venta')
+    estado = models.CharField(max_length=12, choices=ESTADOS,default='Emitido' ,verbose_name='Condición de venta')
 
     class Meta:
         verbose_name = 'Factura'
