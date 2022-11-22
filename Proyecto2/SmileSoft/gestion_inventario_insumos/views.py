@@ -31,6 +31,7 @@ from gestion_administrativo.forms import *
 from gestion_inventario_insumos.forms import *
 from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_tratamiento.forms import TratamientoInsAsignadoForm
+from gestion_tratamiento.models import *
 from django.shortcuts import redirect
 # ***Vista de Agregar Rol
 # @permission_required('gestion_inventario_insumos.agregar_insumo', login_url="/panel_control/error/",)
@@ -316,6 +317,19 @@ def editar_cantidad_insumos_asig(request, id_tratamiento_insumo):
     return render (request,"insumo/agregar_cantidad_insumos.html",data
                     )
 
+##########################################################################################################################
+######RESTAMOS LA CANTIDAD DEL INSUMO En Contrucción
+
+# def update_cantidad_u(request, Insumo.codigo_insumo, TratamientoInsumoAsignado.cantidad, TratamientoConfirmado.estado):
+#         pedido = Pedido.objects.get(id=id_pedido, id_articulo)
+#         stock    = Articulo.objects.get(id=id_articulo)
+#         cant -= stock
+#         stock.save()
+#         # articulo.stock = cant
+#         return HttpResponseRedirect("/solicitar/lista/")
+
+
+
 # def mostrar_insumo_asignado_exitoso(request,codigo_tratamiento):
 #     return render(request,"insumo_asignado_exitoso.html",{"codigo_tratamiento":codigo_tratamiento})
 
@@ -545,4 +559,5 @@ def editar_cantidad_insumos_asig(request, id_tratamiento_insumo):
 #     return redirect( '/tratamiento/mostrar_mensaje_confirmacion/%s' %(id_tratamiento_conf))
 
 # def mostrar_mensaje_confirmacion(request,id_tratamiento_conf):
-#     return render(request,'mensajes/mostrar_mensaje_confirmacion.html',{'id_tratamiento_conf':id_tratamiento_conf}) 
+#     return render(request,'mensajes/mostrar_mensaje_confirmacion.html',{'id_tratamiento_conf':id_tratamiento_conf})
+ 
