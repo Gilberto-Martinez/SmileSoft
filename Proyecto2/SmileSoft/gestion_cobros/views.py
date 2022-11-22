@@ -1,17 +1,18 @@
+
 #from datetime import datetime
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView, View
+from django.views.generic import TemplateView
 from gestion_administrativo.models import Empresa
 from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_inventario_insumos.models import Insumo
 from gestion_cobros.utils import render_to_pdf
-from django.http import (Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect,)
+from django.http import ( HttpResponse,)
 from gestion_administrativo.models import TratamientoConfirmado
-from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento
+from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura
 from gestion_tratamiento.models import Tratamiento
-from gestion_administrativo.models import Persona, PacienteTratamientoAsignado, Paciente
+from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado
 from gestion_agendamiento.models import Cita
-from .forms import EmpresaForm, RazonSocialForm, FacturaForm, DomicilioForm
+from .forms import RazonSocialForm, CobroFacturaForm, DatosFacturaForm, FacturaForm
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
@@ -489,31 +490,87 @@ def ingresar_datos_factura(request, id_cobro):
             print("Entra en detalle de cobro")
 
     monto_total = cobro.monto_total
-    monto_total = '{:,}'.format(monto_total).replace(',','.')
+    monto_total_s= '{:,}'.format(monto_total).replace(',','.')
 
     data = {
-        'form': FacturaForm(instance=cobro),
-        'form2':DomicilioForm(instance=persona)
+        'form': CobroFacturaForm(instance=cobro),
+        'form2': DatosFacturaForm(instance=persona),
+        'form3': FacturaForm()
     }
 
     data['tratamientos'] = tratamientos
-    data['monto_total'] = monto_total
+    data['monto_total'] = monto_total_s
 
     if request.method == 'POST':
-        form = FacturaForm(data=request.POST, files=request.FILES, instance=cobro)
-        form2 = DomicilioForm(data=request.POST, files=request.FILES, instance=persona)
-        if form.is_valid() and form2.is_valid():
-            factura = form.save(commit=False)
-            # factura.domicilio = domicilio
+        form = CobroFacturaForm(data=request.POST, files=request.FILES, instance=cobro)
+        form2 = DatosFacturaForm(data=request.POST, files=request.FILES, instance=persona)
+        form3 = FacturaForm(data=request.POST, files=request.FILES)
+
+        if form.is_valid() and form2.is_valid() and form3.is_valid():
+            factura = form3.save(commit=False)
+            partes_nro_factura = generar_numero_factura()
+            factura.sub_nro_factura1 = partes_nro_factura.sub_nro_1
+            factura.sub_nro_factura2 = partes_nro_factura.sub_nro_2
+            factura.sub_nro_factura3 = partes_nro_factura.sub_nro_3
+            factura.nro_factura = partes_nro_factura.nro_factura
+            factura.total_pagar = monto_total
+            iva_10 = (monto_total / 11)
+            factura.iva_10 = iva_10
+            factura.total_iva = iva_10
+            factura.estado = 'Emitido'
+            factura.save()
+
         else:
             data = {
-                'form': FacturaForm(),
-                'form2':DomicilioForm()
+                'form': CobroFacturaForm(),
+                'form2':DatosFacturaForm(),
+                'form3': FacturaForm()
             }
 
     return render(request, 'facturacion/ingresar_datos_factura.html', data)
 
 
+def generar_numero_factura():
+    try:
+        factura = Factura.objects.first()
+    except Factura.DoesNotExist:
+        sub_nro_fact1 = '001'
+        sub_nro_fact2 = '001'
+        sub_nro_factura3 = 1
+        digitos = len(str(sub_nro_factura3))
+        nro_factura = sub_nro_fact1 +"-"+sub_nro_fact2+"-"
+        cantidad_max = 7
+        cant_digitos = digitos
+        while(cant_digitos < cantidad_max):
+            nro_factura = nro_factura +"0"
+        nro_factura = nro_factura + str(sub_nro_factura3)
+    else:
+        sub_nro_1 = factura.sub_nro_factura1
+        sub_nro_2 = factura.sub_nro_factura2
+        sub_nro_3 = factura.sub_nro_factura3
+        nro_factura = sub_nro_1 +"-"+sub_nro_2+"-"
+
+        digitos = len(str(sub_nro_3))
+        cantidad_max = 7
+        cant_digitos = digitos
+        while(cant_digitos < cantidad_max):
+            nro_factura = nro_factura +"0"
+        nro_factura = nro_factura + str(sub_nro_3)
+
+        partes_nro_factura = {
+                            'sub_nro_1' : sub_nro_1,
+                            'sub_nro_2' : sub_nro_2,
+                            'sub_nro_3' : sub_nro_3,
+                            'nro_factura' : nro_factura,
+        }
+
+    return partes_nro_factura
+
+
+
+
+def registrar_factura():
+    pass
 
 #--->Factura HTML----
 def generar_factura_original(request):

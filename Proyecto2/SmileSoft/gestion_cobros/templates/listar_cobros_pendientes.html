@@ -4,13 +4,17 @@
 	<div class="container">
 		<div class="card">
 			<div class="card-body">
-				<center>  <h2>	 <i class="bi bi-currency-dollar"></i>Pacientes con  <b>Cobros Pendientes</b></i></h2> </center>
+				<center>  
+					<h1 style=" font-family: Lucida Calligraphy;">
+						 <b class="bi bi-currency-dollar">Pacientes con Cobros Pendientes</b>
+						</h1> 
+					</center>
 			
 				<br>
 				<br>
 				{% comment %} <strong>  <FONT COLOR="black" style="font-size: 1.0rem" > &nbsp;  Nro de Documento: </FONT> </strong> {% endcomment %}
 				<form  class="form-inline" method="POST">
-						{% csrf_token %}
+						{% csrf_token %} 
 						<div class="input-group">
 							<input type="search" name="q"  class="form-control bg-light border-0 small" placeholder="Buscar por nombre del paciente" aria-label="search" value="{{request.POST.busqueda}}" >
 							<br>

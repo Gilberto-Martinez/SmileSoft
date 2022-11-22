@@ -6,7 +6,14 @@
   <div class=" col-md-10 offset-md-1" >
         <div class="card">
             <br>
-            <center>  <h2>Agregar Roles</h2> </center>      
+            <center>
+                <h1 style="font-family: Bodoni;">
+                    <b>Agregar Rol</b>
+                </h1> 
+            </center>
+            <div class="container mt-3 text-center">
+                <i class="bi bi-node-plus"> ¡ Ingrese los datos del rol ! </i>
+            </div>
                 <form method="POST" id="group_form" novalidate="">
                     {%csrf_token%}
                         {%if mensaje%}
@@ -15,11 +22,7 @@
                             </div>
                             {%endif%}
                     <div style="margin: 20px;" >
-                     
-                                {{form.as_p}}
-                       
-                            
-                      
+                        {{form.as_p}}
                     </div>
 
                     <div class="d-flex justify-content-center">

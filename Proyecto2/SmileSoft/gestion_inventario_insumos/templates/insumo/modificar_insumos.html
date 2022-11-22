@@ -11,7 +11,14 @@
   <div class=" col-md-10 offset-md-1" >
         <div class="card">
             <br>
-            <center>  <h2> Modificar Insumo</h2> </center>
+            <center>  
+                <h1 style="font-family: Bodoni;"> 
+                   <b>Modificar Insumo</b> 
+                </h1> 
+            </center>
+            <div class="container mt-3 text-center">
+                <i> ¡ Modifique los datos del Insumo ! </i>
+            </div>
             <div class="card-body">
                 <form action="" method="post">
                     {%csrf_token%}
@@ -20,67 +27,65 @@
                     ✅¡Modificación exitosa!
                     </div>
                     {%endif%}
-
-                        <!-- {{form.as_p}} -->
                         <table>
                             <br>
                             <div class="form-group">
                                 <p>
-                                <label for="{{form.nombre_insumo.name}}">{{form.nombre_insumo.label}}</label></p>
+                                <label for="{{form.nombre_insumo.name}}"><b>{{form.nombre_insumo.label}}</b> </label></p>
                                 {{form.nombre_insumo}}</p>
                             </div>
                             <br>
                             <div class="form-group">
                                 <p>
-                                <label for="{{form.descripcion_insumo.name}}">{{form.descripcion_insumo.label}}</label></p>
+                                <label for="{{form.descripcion_insumo.name}}"><b>{{form.descripcion_insumo.label}}</b></label></p>
                                 {{form.descripcion_insumo}}</p>
                             </div>
                             <br>
                             <div class="form-group">
                             <p>
-                                <label for="{{form.precio.name}}">{{form.precio.label}}</label></p>
+                                <label for="{{form.precio.name}}"><b>{{form.precio.label}}</b> </label></p>
                                 {{form.precio}} </p>
                             </div>
                             <br>
                             <p>
                             <div class="form-group">
-                                <label for="{{form.fecha_caducidad.name}}">{{form.fecha_caducidad.label}}</label>
+                                <label for="{{form.fecha_caducidad.name}}"><b>{{form.fecha_caducidad.label}}</b> </label>
                                 {{form.fecha_caducidad}}
                             </div></p>
                             <br>
                             <div class="form-group">
                                 <p>
-                                    <label for="{{form.cantidad_insumo.name}}">{{form.cantidad_insumo.label}}</label></p>
+                                    <label for="{{form.cantidad_insumo.name}}"><b>{{form.cantidad_insumo.label}}</b> </label></p>
                                     {{form.cantidad_insumo}} </p>
                                 </div>
                             <br>
                             <div class="form-group">
                                 <p>
-                                    <label for="{{form.unidad.name}}">{{form.unidad.label}}</label></p>
+                                    <label for="{{form.unidad.name}}"><b>{{form.unidad.label}}</b> </label></p>
                                     {{form.unidad}} </p>
                                 </div>
                             <br>
                             <div class="form-group">
                                 <p>
-                                    <label for="{{form.unidad_x_paquete.name}}">{{form.unidad_x_paquete.label}}</label></p>
+                                    <label for="{{form.unidad_x_paquete.name}}"><b>{{form.unidad_x_paquete.label}}</b> </label></p>
                                     {{form.unidad_x_paquete}} </p>
                                 </div>
                             <br>
                             <div class="form-group">
                                 <p>
-                                    <label for="{{form.cantidad_unitaria.name}}">{{form.cantidad_unitaria.label}}</label></p>
+                                    <label for="{{form.cantidad_unitaria.name}}"><b>{{form.cantidad_unitaria.label}}</b> </label></p>
                                     {{form.cantidad_unitaria}} </p>
                                 </div>
                             <br>
                             <div class="form-group">
                                 <p>
-                                    <label for="{{form.ud_unitaria.name}}">{{form.ud_unitaria.label}}</label></p>
+                                    <label for="{{form.ud_unitaria.name}}"><b>{{form.ud_unitaria.label}}</b> </label></p>
                                     {{form.ud_unitaria}} </p>
                                 </div>
                             <br>
                             <div class="form-group">
                                 <p>
-                                    <label for="{{form.stock_minimo.name}}">{{form.stock_minimo.label}}</label></p>
+                                    <label for="{{form.stock_minimo.name}}"><b>{{form.stock_minimo.label}}</b> </label></p>
                                     {{form.stock_minimo}} </p>
                                 </div>
                             <br>
@@ -112,7 +117,7 @@
                         
                         <table  align="right" >
                             <tr>
-                            <td> <a href="/insumo/listar_insumo/" class="btn btn-info">Ver listado de insumos </a> </td>
+                            <td> <a href="/insumo/listar_insumos/" class="btn btn-info">Ver listado de insumos </a> </td>
                             </tr>
                         </table>
 {%endblock%}

@@ -21,31 +21,29 @@
                 <div style="margin: 20px;">
                     <table>
                         <br>
-                        <tr>
-                            <div class="form-group" style="float: left; width: 80%;">
-                                <label for="{{form.numero_documento.name}}"><b>{{form.numero_documento.label}}</b>  </label>
-                                {{form.numero_documento}}
-                            </div>
-                            <div class="form-group" style="float: right; width: 12%;">
-                                <label for="{{form.dv.name}}"><b>{{form.dv.label}}</b> </label>
-                                {{form.dv}}
-                            </div>
-                        </tr>
+                        <div class="form-group">  <!--style="float: left; width: 80%;"> -->
+                            <label for="{{form.numero_documento.name}}"><b>{{form.numero_documento.label}}</b>  </label>
+                            {{form.numero_documento}}
+                        </div>
                         <br>
+                        <!-- <div class="form-group" style="float: right; width: 12%;">
+                            <label for="{{form.dv.name}}"><b>{{form.dv.label}}</b> </label>
+                            {{form.dv}}
+                        </div> -->
+                        <div class="form-group">
+                            <label for="{{form.razon_social.name}}"><b>{{form.razon_social.label}}</b> </label>
+                            {{form.razon_social}}
+                        </div>
                         <br>
-                        <tr>
-                            <div class="form-group">
-                                <label for="{{form.razon_social.name}}"><b>{{form.razon_social.label}}</b> </label>
-                                {{form.razon_social}}
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
-                                <label for="{{form2.direccion.name}}"><b>{{form2.direccion.label}}</b></label>
-                                {{form2.direccion}}
-                            </div>
-                        </tr>
+                        <div class="form-group">
+                            <label for="{{form2.direccion.name}}"><b>{{form2.direccion.label}}</b></label>
+                            {{form2.direccion}}
+                        </div>
                         <br>
+                        <div class="form-group">
+                            <label for="{{form2.telefono.name}}"><b>{{form2.telefono.label}}</b></label>
+                            {{form2.telefono}}
+                        </div>
                     </table>
                     <br>
                     <h4 style="color: white; background-color: lightskyblue;" align="center">
@@ -83,7 +81,7 @@
                 </div>
             </form>
             <div align="center">
-                <a href="/cobros/generar_factura/" target="_blank" class="btn btn-outline-primary">
+                <a button="submit" href="/cobros/generar_factura/" target="_blank" class="btn btn-outline-primary">
                     <i class="bi bi-file-pdf"></i>
                     Generar factura
                 </a>
