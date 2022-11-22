@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> Historial Clinico</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <body style="font-size:13px;" >
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                            <center> 
+                                <h1 style="color:blue;" > <b> ODONTOLOGIA  CONSULDENT </b><h1>
+                            </center>
+                          
+                        <table >
+                            <thead>
+                                <tr style="background-color: skyblue; color:white">
+                                    <th><br>Telefono</th>
+                                    <th><br> Ubicacion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <tr>
+                                    <th> (0985) 571 842</th>
+                                </tr>
+                                <tr>
+                                    <th> (0984) 476 557</th>
+                                    <th>Fernando de la Mora - Zona-Sur</th>
+                                </tr>
+                                <tr>
+                                    <th> Email: consultdent9596@gmail.com</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <center> 
+                            <p  style= "font-size: 22px"> <b>Historial Clinico de {{persona.nombre}} {{persona.apellido}}</b>
+                            </p>
+                        </center>
+                         
+                            <th> 
+                                <b>Datos Personales</b>
+                                <br>
+                                - Numero de cedula/RUC: &nbsp; {{persona.numero_documento}} <br>
+                                - Telefono: &nbsp; {{persona.telefono}}<br>
+                                - Direccion:  &nbsp; {{persona.direccion}}<br>
+                                - Fecha de Nacimiento: </b> &nbsp; {{persona.fecha_nacimiento}}<br>
+                                - Email: </b> &nbsp; {{persona.correo_electronico}}<br>
+                                <br>
+                        
+                            </th>
+                            <!--Antecedente Clinico-->
+                            <table style=" border:1px solid black;">
+
+                                <thead>
+                                    <tr >
+                                        <th style="font-size: 16px; text-align:center" colspan="2"><br> Antecedente Clinico
+                                        </th>
+                                    </tr>
+                                    <!---->
+                                    <tr>
+                                        <th  style="text-align:ligth" >
+                                            &nbsp; - Grupo Sanguineo <td style="border: 1px solid black; text-align:center"><br>{{paciente.grupo_sanguineo}}</td>
+                                            
+                                        </th>
+                                    </tr>
+                                    <!---->
+                                    <tr>
+                                        <th style="text-align:ligth">
+                                            &nbsp; - Enfermedad de base <td style="border: 1px solid black;text-align:center"><br>{{paciente.enfermedad_base }}</td>
+                                            
+                                        </th>
+                                    </tr>
+                                    <!---->
+                                    <tr>
+                                        <th style="text-align:ligth">
+                                            &nbsp; - Afeccion Cronica Familiar <td style="border: 1px solid black;text-align:center"><br>{{paciente.afeccion_cronica_familiar}} </td>
+                                            
+                                        </th>
+                                    </tr>
+                                        <!---->
+                                    <tr>
+                                        <th style="text-align:ligth">
+                                            &nbsp; - Alergias <td style="border: 1px solid black;text-align:center"><br>{{paciente.alergia}} </td>
+                                            
+                                        </th>
+                                    </tr>
+                                    <!---->
+                             
+                                    <tr>
+                                        <th style="text-align:ligth">
+                                            &nbsp; - Medicamento/s<td style="border: 1px solid black;text-align:center"><br>{{paciente.medicamento}} </td>
+                                            
+                                        </th>
+                                    </tr>
+                                    <!---->
+                             
+                                     <tr>
+                                        <th style="text-align:ligth">
+                                            &nbsp; - Frecuencia higiene bucal<td style="border: 1px solid black;text-align:center"><br>{{paciente.frecuencia_higiene_bucal}} </td>
+                                            
+                                        </th>
+                                    </tr>
+                           
+                            </table>
+                        <!--Inicio de la TABLA DE TRATAMIENTOS REALIZADOS-->
+                        <table style=" border:1px solid black;">
+							<thead  >
+                                <tr >
+                                    <th style="font-size: 16px" colspan="4"><br> Tratamientos Realizados al Paciente
+                                    </th>
+                                </tr>
+								<tr>
+									<th  style="background-color: skyblue; color:black;"> <br> Numero</th>
+									<th  style="background-color: skyblue; color:black;"><br>Tratamiento realizado</th>
+									<th  style="background-color: skyblue; color:black;"><br>Odontologo encargado</th>
+									<th  style="background-color: skyblue; color:black;"><br>Fecha de realizacion</th>
+								</tr>	
+							</thead>
+							<tbody>
+									{% for h in historial %}
+										<tr>
+											<td style="border:1px solid black; text-align: center">{{forloop.counter}}</td> <br>
+											<td style="border:1px solid black; text-align: center"> <br> &nbsp; {{ h.tratamiento.nombre_tratamiento }}</td>
+											<td style="border:1px solid black; text-align: center"><br>{{h.especialista.numero_documento.nombre}} {{h.especialista.numero_documento.apellido}}</td>
+											<td style="border:1px solid black; text-align: center"><br>{{ h.fecha_realizacion }}</td>
+										</tr>
+									{% endfor %}
+							</tbody>
+                        
+                       
+						</table> 
+                    
+                      
+                    </div>
+                </div>
+            </div>
+     
+            <!--Pie de pagina -->
+            
+            <div class="col-12 text-center copyright">
+                <samp>
+                    <br>
+                    <br>
+                    <b>Fecha de Expedicion: </b> &nbsp; {{fecha_actual}}
+                  
+                    <p>Copyright SmileSoft &copy; FP-UNA 2022  </p>
+                
+                </samp>
+                  
+            </div>
+       </body>
+    
+     
+    </body>
+</html>
