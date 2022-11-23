@@ -416,6 +416,11 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
                                     'id_cita':id_cita,
                                     }
             tratamientos_pendientes.append(tratamiento_pendiente)
+        #####PROBANDO RESTAR AQUI
+        # insumo = Insumo.objects.get(id = insumo.codigo_insumo)
+        # tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Realizado")
+        # insumo.cantidad_unitaria -= TratamientoInsumoAsignado.cantidad
+        # insumo.save()
     return render (request,"tratamiento/listar_mis_tratamientos_pendientes.html",{
                                                                             'tratamientos_pendientes':tratamientos_pendientes,
                                                                             'profesional':odontologo,

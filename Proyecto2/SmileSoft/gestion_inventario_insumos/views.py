@@ -33,6 +33,8 @@ from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_tratamiento.forms import TratamientoInsAsignadoForm
 from gestion_tratamiento.models import *
 from django.shortcuts import redirect
+from gestion_agendamiento import *
+from gestion_tratamiento import *
 # ***Vista de Agregar Rol
 # @permission_required('gestion_inventario_insumos.agregar_insumo', login_url="/panel_control/error/",)
 def agregar_insumo (request):
@@ -210,7 +212,6 @@ def modificar_insumo(request, codigo_insumo):
             calculo_unitario = insumo.cantidad_insumo * insumo.unidad_x_paquete
             insumo.cantidad_unitaria = calculo_unitario
             insumo.save()
-            
             messages.success(request, " Insumo Modificado Correctamente ✅")
             return redirect("/insumo/listar_insumos/")     
                 
@@ -219,8 +220,41 @@ def modificar_insumo(request, codigo_insumo):
             print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
 
     return render(request, "insumo/modificar_insumos.html", data)
+#############PROBANDO RESTAR AYUUUUUUUUUDAAAAAAAAAAAA
+# def restar_cantidad_u(request, codigo_insumo):
+#     codigo_insumo = Insumo.objects.get(codigo_insumo=codigo_insumo)
 
+#     data= {
+#         'form': InsumoUpdateForm(instance=codigo_insumo)
+#     }
+#     if request.method == 'POST':
+#         formulario = InsumoForm(
+#             data=request.POST, instance=codigo_insumo, files=request.FILES)
+#         if formulario.is_valid():
+#             insumo = formulario.save(commit=False)
+#             if TratamientoConfirmado.estado == "Realizado":
+#                 resta = insumo.cantidad_unitaria - TratamientoInsumoAsignado.cantidad
+#                 insumo.cantidad_unitaria = resta
+#                 insumo.save()
+#             #messages.success(request, " Insumo Modificado Correctamente ✅")
+#             #return redirect("/insumo/listar_insumos/")     
+                
+#         else:
+#             messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
+#             print("NOOOOOOOOOOO guarda!!!!!!!!!!!!!!!!!!!!!")
+    #return render(request, "insumo/modificar_insumos.html", data)
 
+# def update_cant_unitaria(request,codigo_insumo):
+#     insumo = Insumo.objects.get(id=codigo_insumo)
+#     if TratamientoConfirmado.estado == "Realizado":
+#         resta = insumo.cantidad_unitaria - TratamientoInsumoAsignado.cantidad
+#         insumo.cantidad_unitaria = resta
+#     insumo.cantidad_unitaria -= TratamientoInsumoAsignado.cantidad
+#     insumo.save()
+
+#LA OTRA OPCION ES RESTAR DESDE CITA CONFIRMADA POR EL ODONTÓLOGO
+   
+##########################probando mi resta#################################################
 # -----------------------------------------------------------------------------------------------
 # ***Vista de Eliminar Insumo
 # @permission_required('gestion_inventario_insumo.eliminar_insumo', login_url="/panel_control/error/",)
