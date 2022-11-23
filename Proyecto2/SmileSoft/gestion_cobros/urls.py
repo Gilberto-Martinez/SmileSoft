@@ -19,10 +19,10 @@ urlpatterns = [
     #Factura_html
     path('generar_factura_original/', generar_factura_original, name="generar_factura_original"),
     path('listar_facturas/', listar_facturas, name="listar_facturas"),
+    path('cambiar_estado_factura/<id_factura>', cambiar_estado_factura, name="cambiar_estado_factura"),
     
     #PDF------------------------
     path('detalle_cobro_pdf/<int:id_paciente>', detalle_cobro_pdf ,name="detalle_cobro_pdf"),
-    path('registrar_factura/', registrar_factura ,name="registrar_factura"),
     path('presupuesto_pdf/<int:id_paciente>',  presupuesto_pdf, name="presupuesto_pdf"),
-    path('generar_factura/<id_factura>', generar_factura, name="generar_factura"),
+    path('generar_factura/<int:id_factura>', generar_factura, name="generar_factura"),
 ]

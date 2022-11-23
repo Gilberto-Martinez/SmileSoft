@@ -102,3 +102,28 @@ class Factura(models.Model):
 
     def __str__(self):
         return self.id_factura
+
+
+class DetalleFactura(models.Model):
+    id_detalle_factura = models.AutoField(primary_key=True)
+    id_factura = models.ForeignKey(
+                                Factura,
+                                null=True,
+                                blank=True,
+                                on_delete=models.PROTECT
+    )
+    cantidad = models.IntegerField(default=1)
+    descripcion = models.CharField(max_length=40, null=False, blank=False)
+    precio_unitario = models.IntegerField()
+    exentas = models.IntegerField(null=True)
+    gravado_5_porc = models.IntegerField(null=True)
+    gravado_10_porc = models.IntegerField(null=True)
+
+    class Meta:
+        verbose_name = 'Detalle de Factura'
+        verbose_name_plural = 'Detalles de Factura'
+        # ordering = ["nombre"]
+        # db_table = 'DetalleCobroContado'
+
+    def __str__(self):
+        return self.id_detalle_factura

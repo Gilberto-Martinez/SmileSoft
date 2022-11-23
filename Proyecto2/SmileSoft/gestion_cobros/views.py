@@ -2,17 +2,18 @@
 #from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.contrib import messages
 from gestion_administrativo.models import Empresa
 from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_inventario_insumos.models import Insumo
 from gestion_cobros.utils import render_to_pdf
 from django.http import ( HttpResponse,)
 from gestion_administrativo.models import TratamientoConfirmado
-from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura
+from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura, DetalleFactura
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, CobroFacturaForm, DatosFacturaForm, FacturaForm
+from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
@@ -479,10 +480,12 @@ def ingresar_datos_factura(request, id_cobro):
         if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
             id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
             tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
+            precio_numerico = tratamiento.precio
             precio = '{:,}'.format(tratamiento.precio).replace(',','.')
             tratamiento_tmp = {
                                 'nombre_tratamiento':tratamiento.nombre_tratamiento,
-                                'precio':precio
+                                'precio':precio,
+                                'precio_numerico':precio_numerico
             }
             tratamientos.append(tratamiento_tmp)
 
@@ -521,26 +524,13 @@ def ingresar_datos_factura(request, id_cobro):
         form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
 
         if form.is_valid():
-            print("Entra en Factura")
             form.save()
             fact = Factura.objects.last()
             id_factura = fact.id_factura
+            guardar_detalle_factura(fact, tratamientos)
             return redirect("/cobros/generar_factura/%s" %(id_factura))
         else:
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            print("NO Entra en Factura")
-            data = {
-                'form': FacturaForm()
-            }
+            data['form']=form
     else:
         print("No entra en POST")
 
@@ -597,8 +587,15 @@ def generar_numero_factura():
 
 
 
-def registrar_factura():
-    pass
+def guardar_detalle_factura(fact, tratamientos):
+    print("Entra a guardar detalle de factura")
+    for tratamiento in tratamientos:
+        detalle_factura = DetalleFactura.objects.create(
+                                                    id_factura = fact,
+                                                    descripcion = tratamiento['nombre_tratamiento'],
+                                                    precio_unitario = tratamiento['precio_numerico'],
+                                                    gravado_10_porc = tratamiento['precio_numerico'],
+        )
 
 #--->Factura HTML----
 def generar_factura_original(request):
@@ -609,20 +606,13 @@ def generar_factura(request,id_factura):
     #--Empresa--#
     empresa= Empresa.objects.last()
     factura = Factura.objects.get(id_factura=id_factura)
-    #--Factura---#
-    # factura= Factura.objects.all()
-    
-    #--Detalles del cobro (valores)---#
-    # cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
-    # detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro)
-    # id_detalle_cobro = detalle_cobro.id
-    # detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+    detalle_factura = DetalleFactura.objects.filter(id_factura=id_factura)
   
     
     data = {
         'empresa': empresa,
         'factura':factura,
-        #'detalle_cobro', detalle_cobro
+        'detalle_factura': detalle_factura
     }
 
   
@@ -633,4 +623,27 @@ def generar_factura(request,id_factura):
 
 #--->Listado de Facturas----#
 def listar_facturas (request):
-    return render(request, 'listar_facturas.html')
+    lista_facturas = Factura.objects.all().order_by('nro_factura')
+    return render(request, 'listar_facturas.html', {'lista_facturas':lista_facturas})
+
+def cambiar_estado_factura(request, id_factura):
+    factura = Factura.objects.get(id_factura=id_factura)
+    fecha = factura.fecha
+    print('nro de factura: ', factura.id_factura)
+
+    data={
+        'form':FacturaUpdateForm(instance=factura),
+        'fecha':fecha
+    }
+
+    if request.method == 'POST':
+        form = FacturaUpdateForm(data=request.POST, instance=factura, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Estado cambiado correctamente✅')
+            return redirect('/cobros/listar_facturas/')
+        else:
+            data['form']=form
+            data['fecha']=fecha
+
+    return render(request, 'facturacion/cambiar_estado_factura.html', data)
