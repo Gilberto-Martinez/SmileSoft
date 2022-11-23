@@ -29,7 +29,8 @@
     
         .transformacion3 { text-transform: lowercase;}   
       </style>
-</head>
+     
+  </head>
 
 <body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -86,7 +87,7 @@
             </center> 
             
             <!--Barra 2-> Opciones de Navegacion-->     
-            <nav class="navbar navbar-expand-lg navbar-info bg-light">
+            <nav class="navbar navbar-expand-md navbar-info bg-transparent">
               <div class="container-fluid">
                 <div id="main-menu" class="main-menu">
                       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +96,7 @@
                   <!-- Menu de navegación -->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!--con ml-auto debe mudarse a la derecha-->
-                        <ul class="navbar-nav  me-auto mb-2 mb-lg-0"> 
+                        <ul class="navbar-nav  me-auto mb-4 mb-md-4"> 
                                           <!--Configuración-->
                                           <!--Este modulo tendra acceso a todos los roles-->
                                           <li class="nav-item dropdown">
@@ -406,6 +407,28 @@
                                                </ul>
                                              </li>
                                              {% endif %}
+
+                                            <!--Opcion 12-->
+                                            {%if perms.gestion_inventario_insumos.view_insumo%}
+                                            <li class="nav-item dropdown">
+                                              <a class="nav-link dropdown-toggle" href="insumo" id="navbarDropdown"
+                                              role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Reportes</a>
+                                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                      Tratamientos 
+                                                    </strong>
+                                                <!--Opcion 11.1 -->
+                                                 
+                                                    <li><a class="dropdown-item" href="/reportes/reporte_tratamiento/">• Más Solicitados</li></a>
+                                                  
+                                                    {% comment %} <li><a class="dropdown-item" href="/insumo/listar_insumos/">• Lista de Insumos</li></a> {% endcomment %}
+                                                   
+                                                    <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
+                                                        <div class="dropdown-divider"></div>  -->
+                                              </ul>
+                                            </li>
+                                            {% endif %}
                           </ul>            
                       </div>
                 </div>

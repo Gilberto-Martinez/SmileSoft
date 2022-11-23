@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'gestion_agendamiento',
     'gestion_inventario_insumos',
     'gestion_cobros',
+    'gestion_reporte',
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'

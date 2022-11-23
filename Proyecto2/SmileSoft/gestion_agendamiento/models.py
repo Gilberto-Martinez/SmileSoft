@@ -5,6 +5,8 @@ from gestion_administrativo.models import *
 # from webapp.models import Usuario
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Paciente
+from django.forms import model_to_dict
+
 # from gestion_agendamiento.models import *
 
 # Create your models here.
@@ -95,6 +97,12 @@ class Cita(models.Model):
     
     def get_tratamiento(self):
         return str(self.tratamiento_solicitado.get_codigo_tratamiento())
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['tratamiento_solicitado'] = self.tratamiento_solicitado.toJSON()
+        item['fecha'] = self.fecha.strftime('%d-%m-%Y')
+        return item
 
     
    

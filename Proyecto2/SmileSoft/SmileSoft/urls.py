@@ -53,7 +53,10 @@ urlpatterns = [
 
     #App Historial Clinico
     path('historial_clinico/', include(('gestion_historial_clinico.urls', 'historial_clinico'),)),
+    
 
+    #App Reportes
+    path('reportes/', include(('gestion_reporte.urls', 'reportes'),)),
     # path('accounts/', include ('django.contrib.auth.urls')),
     # path('sesion/', include(('gestion_sesion.urls','sesion'),)),
     # path('base/', include( ('gestion_sesion.urls','sesion'))),
