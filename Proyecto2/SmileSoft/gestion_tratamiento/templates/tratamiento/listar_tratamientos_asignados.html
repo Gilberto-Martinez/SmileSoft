@@ -14,39 +14,33 @@
 {%block content%}
 
 {%if perms.gestion_tratamiento.view_tratamiento%}  
-                      
     <div class="container">
-          <center>
-              {% if messages %}
-                              
-                                
-                                    {% for message in messages %}
-                                    <li>
-                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                        <B><FONT COLOR="blue"> ¡Asignado Correctamente! </FONT> </b>
-                                        
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
-                                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
-                                        {{ message }}
-                                    </li>
-                                    {% endfor %}
-                               
-                        {% endif %} 
+            <center>
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <B><FONT COLOR="blue"> ¡Asignado Correctamente! </FONT> </b>
+                            
+                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+                {% endif %} 
             </center>
             <br> 
         <div class="card">
-            <br>
-         
+            <br> 
             <div class="card-body">
-                
-                    <center>
-                        <strong style= "font-size:25px;">
-                            <b>Paciente:</b> <i>{{paciente.numero_documento.nombre}} {{paciente.numero_documento.apellido}}</i>
-                        </strong>
-                    </center>
-                    <br>
-                    <center> 
+                <center>
+                    <strong style= "font-size:25px;">
+                        <b>Paciente:</b> <i>{{paciente.numero_documento.nombre}} {{paciente.numero_documento.apellido}}</i>
+                    </strong>
+                </center>
+                <br>
+                <center> 
                     <h3> <i style="color:green";> Tratamientos asignados</i> </h3>
                     <br>
                 </center>
@@ -68,93 +62,80 @@
                         </thead>
 
                         <tbody>
-                                {%if tratamientos_asignados%}
-                                    {%for tratamiento in tratamientos_asignados%}
-                                        <tr>
-                                            <td >{{forloop.counter}}</td>
-                                            <td >{{tratamiento.nombre_tratamiento}}</td>
-                                            <td >{{tratamiento.precio}}</td>
-                                            <td>
-                                                    {% comment %} {%if perms.gestion_historial_clinico.add_historialclinico%} {% endcomment %}
-                                                        <a href="/agendamiento/agendar_cita/{{paciente.id_paciente}}/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary">
-                                                            <i class="bi bi-calendar2-week"></i> 
-                                                            Agendar una cita 
-                                                        </a>
-                                                    {% comment %} {%endif%}
-
-                                              {% endcomment %}
-                                                     {% comment %} <a href="/agendamiento/agregar_cita/{{paciente.id_paciente}}" class="btn btn-warning">
-                                                        <i class="bi bi-calendar2-week"></i> 
-                                                        Reservar cita
-                                                    </a> {% endcomment %}
-                                                  
-                                                {%if perms.gestion_historial_clinico.add_historialclinico%}
-                                                    <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
-                                                        <i class="bi-trash" ></i> 
-                                                        Eliminar
-                                                    </a>
-                                                {%endif%}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
+                            {%if tratamientos_asignados%}
+                                {%for tratamiento in tratamientos_asignados%}
                                     <tr>
-                                        <th>Precio Total</th>
-                                        <th></th>
-                                        <th>{{precio_total}} Gs</th>
-                                        <th></th>
+                                        <td >{{forloop.counter}}</td>
+                                        <td >{{tratamiento.nombre_tratamiento}}</td>
+                                        <td >{{tratamiento.precio}}</td>
+                                        <td>
+                                            <!-- {%if perms.gestion_historial_clinico.add_historialclinico%} -->
+                                                <a href="/agendamiento/agendar_cita/{{paciente.id_paciente}}/{{tratamiento.codigo_tratamiento}}" class="btn btn-primary">
+                                                    <i class="bi bi-calendar2-week"></i> 
+                                                    Agendar una cita 
+                                                </a>
+                                            <!-- {%endif%} -->
+                                            {%if perms.gestion_historial_clinico.add_historialclinico%}
+                                                <a href="/tratamiento/eliminar_tratamiento_asignado/{{id_paciente_tratamiento}}/{{paciente.numero_documento}}" class="btn btn-danger btnEliminacion">
+                                                    <i class="bi-trash" ></i> 
+                                                    Eliminar
+                                                </a>
+                                            {%endif%}
+                                        </td>
                                     </tr>
-                                {%else%}
-                                    <br>
-                                 
-                                    <center>
-                                        <h5>
-                                            <i class="bi bi-exclamation-triangle-fill"></i>
-                                            <i>El paciente no tiene tratamientos asignados</i> 
-                                            <i class="bi bi-exclamation-triangle-fill"></i>
-                                        </h5>
-                                    </center>
-                                {%endif%}
-
+                                {% endfor %}
+                                <tr>
+                                    <th>Precio Total</th>
+                                    <th></th>
+                                    <th>{{precio_total}} Gs</th>
+                                    <th></th>
+                                </tr>
+                            {%else%}
+                                <br>
+                                <center>
+                                    <h5>
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                        <i>El paciente no tiene tratamientos asignados</i> 
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </h5>
+                                </center>
+                            {%endif%}
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-center">
                        {%if perms.gestion_historial_clinico.add_historialclinico%}
-                        <a type="submit" href="/tratamiento/asignar_tratamientos/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
-                            <i class="bi bi-plus-circle"></i>
-                            Agregar
-                        </a>
-                        &nbsp;
-                        {% comment %} <a type="submit" href="/cobros/cobrar_tratamiento/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
-                            <i class="bi bi-check2-square"></i>
-                            Confirmar todos
-                        </a> {% endcomment %}
+                            <a type="submit" href="/tratamiento/asignar_tratamientos/{{paciente.id_paciente}}" class="btn btn-success btn-block txt-white">
+                                <i class="bi bi-plus-circle"></i>
+                                Agregar
+                            </a>
+                            &nbsp;
                         {%endif%}
                         &nbsp;
-                        <a type="submit" href="/cobros/presupuesto_pdf/{{paciente.id_paciente}}" target="_blank" class="btn btn-secondary btn-block txt-primary">
-                            <i class="bi bi-printer"></i>
-                            Presupuesto
-                        </a>
+                        {%if tratamientos_asignados%}
+                            <a type="submit" href="/cobros/presupuesto_pdf/{{paciente.id_paciente}}" target="_blank" class="btn btn-secondary btn-block txt-primary">
+                                <i class="bi bi-printer"></i>
+                                Presupuesto
+                            </a>
+                        
+                            &nbsp;
+                        {%endif%}
                         &nbsp;
-                        &nbsp;
-                        <a onclick = "history.back()" class="btn btn-secondary"  >
-                       <i class="bi bi-arrow-bar-left"></i>
-                            Atrás <br>
+                        <a class="btn btn-secondary" onclick = "history.back()">
+                            <i class="bi bi-arrow-bar-left"></i>
+                            Atrás 
+                            <br>
                         </a>
                     </div>
                     <br>
                     <div class="d-flex justify-content-center">
-                        
                         <br>
                         <a type="submit" href="/tratamiento/listar_paciente2/" class="btn btn-primary btn-block txt-white">
                         <i class="bi-person-lines-fill"> </i>
                         Listado de Pacientes
                         </a>
                     </div>
-                
-
                 </table>
             <!--end TABLA-->
-        
             </div>
         </div>
     </div>
@@ -165,12 +146,12 @@
 <!--este funciona NO BORRAR-->
 {% comment %} <script>
     function cancelar() {
-     
-        Swal.fire({
-  icon: 'warning',
-  title: 'Esta eliminando este tratamiento',
- 
-  footer: '<a href="/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}">¡Da click aqui !</a>'
-})
+        Swal.fire(
+                    {
+                        icon: 'warning',
+                        title: 'Esta eliminando este tratamiento',
+                        footer: '<a href="/tratamiento/eliminar_tratamiento/{{c.nombre_tratamiento}}">¡Da click aqui !</a>'
+                    }
+                )
     }
 </script> {% endcomment %}

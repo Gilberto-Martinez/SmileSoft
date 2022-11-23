@@ -5,10 +5,14 @@
 <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <br>
-            <center>  <h2>Datos Personales</h2> </center>    
+            <center>  
+                <h1 style="font-family: Bodoni;">
+                    <b>Datos Personales</b>
+                </h1> 
+            </center>    
                   <!-- Tooltip. -->
                 <div class="container mt-3 text-center">
-                    <small> <b>   ¡ Modificar los datos de {{persona.nombre}} {{persona.apellido}}! </small>
+                    <i class="bi bi-pencil-square">   ¡ Modificar los datos de {{persona.nombre}} {{persona.apellido}}! </i>
                 </div>
             
             <div class="card-body">
@@ -60,8 +64,14 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
-                        <a href="/panel_control/inicio/" class="btn btn-danger" style="margin: 10px;">Cancelar</a>
+                        <button class="btn btn-primary" type="submit" style="margin: 10px;">
+                            <i class="bi bi-save"></i>
+                            Guardar
+                        </button>
+                        <a onclick="history.back()" class="btn btn-danger" style="margin: 10px;">
+                            <i class="bi bi-x-circle"></i>
+                            Cancelar
+                        </a>
                     </div>
                     <hr>
                     {% comment %} <table  align="right" >

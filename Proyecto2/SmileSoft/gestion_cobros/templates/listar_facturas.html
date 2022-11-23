@@ -8,49 +8,55 @@
 					<center>  
 						<h2>  
 							<img class="img-circle"  src="{% static 'img/factura.png' %}"  width="50px" height="50px"> 	 
-							<i>Facturas</i>
+							<b style="font-family: Lucida Calligraphy;">
+								Facturas
+							</b>
 						</h2> 
 					</center>
 					
 				
 					<br>
 					<table class="table table-striped table-hover">
-						<thead style="border: 1cm;">
-							<tr>
-								<th>N°</th>
-								<th>N° Factura</th>
-								<th>Fecha de emisión</th>
-								<th>Cliente</th>
-								<th>Estado</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!--esto es una prueba-->
-							<tr>
-								<td >1{{forloop.counter}}</td>
-								<td>001-001-00001{{ factura.nro_factura }}</td>
-								<td>dd/mm/aaaa{{ factura.fecha }}</td>
-								<td>Administracion{{ factura.numero_documento.nombre }} {{factura.numero_documento.apellido}}</td>
-								<td>Emitido {{factura.estado}}</td>
-								
-							</tr>
-							<!--fin de la pueba-->
-							<!--lISTAR VALORES AQUI ... -->
-							{% if object_list %}
-								{% for factura in object_list %}
-									<tr>
-										<td >{{forloop.counter}}</td>
-										<td>{{ factura.nro_factura }}</td>
-										<td>{{ factura.fecha }}</td>
-										<td>{{ factura.numero_documento.nombre }} {{factura.numero_documento.apellido}}</td>
-										<td>{{factura.estado}}</td>
-									</tr>
-								{% endfor %}
-							{% else %}
-								{% comment %} <h1>No hay registros </h1> {% endcomment %}
-							{% endif %}
+						{%if lista_facturas%}
+							<thead style="border: 1cm;">
+								<tr>
+									<th>N°</th>
+									<th>N° Factura</th>
+									<th>Fecha de emisión</th>
+									<th>Cliente</th>
+									<th>Estado</th>
+									<th>Acción</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!--fin de la pueba-->
+								<!--lISTAR VALORES AQUI ... -->
+								{% if lista_facturas %}
+									{% for factura in lista_facturas %}
+										<tr>
+											<td >{{forloop.counter}}</td>
+											<td>{{ factura.nro_factura }}</td>
+											<td>{{ factura.fecha }}</td>
+											<td>{{ factura.razon_social }}</td>
+											<td>{{factura.estado}}</td>
+											<td>
+												<a href="/cobros/cambiar_estado_factura/{{factura.id_factura}}" type="buttom" class="btn btn-primary">
+													<i class="bi bi-pencil-square"></i>
+													Cambiar estado
+												</a>
+											</td>
+										</tr>
+									{% endfor %}
+								{% else %}
+									{% comment %} <h1>No hay registros </h1> {% endcomment %}
+								{% endif %}
 
-						</tbody>
+							</tbody>
+						{%else%}
+							<h5>
+								No hay valores que mostrar
+							</h5>
+						{%endif%}
 					</table> 
 				</div>
 			</div>

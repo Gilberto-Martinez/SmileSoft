@@ -263,7 +263,7 @@ class PasswordUsuarioForm(forms.Form):
         }
     ))
 
-    password2 = forms.CharField(label='Contraseña nueva (confirmación)', min_length=6, max_length=25, widget=forms.PasswordInput(
+    password2 = forms.CharField(label='Repetir contraseña nueva', min_length=6, max_length=25, widget=forms.PasswordInput(
         attrs={
             'class': 'form-control',
             'placeholder': 'Ingrese nuevamente la nueva contraseña...',
