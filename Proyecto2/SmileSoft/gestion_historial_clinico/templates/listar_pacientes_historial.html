@@ -8,7 +8,7 @@
 				<center> 
 					 <h2 style=" font-family: Lucida Calligraphy;">	
 						 <b class="bi-person-lines-fill">Pacientes con historial clinico</b>
-					</h2>
+					 </h2>
 					 </center>
 				<br>
 				<br>
@@ -19,7 +19,7 @@
 							<th>Número</th>
 							<th>N° de Documento</th>
 							<th>Nombre y apellido</th>
-							<th>Acciones</th>
+							<th colspan="2">Acciones</th>
 						</tr>	
 					</thead>
 					<tbody>
@@ -34,7 +34,12 @@
 											<i class="bi bi-eye"></i>
 											Ver historial
 										</a>
+										<a button="submit" href="/historial_clinico/pdf_historial_clinico/{{paciente.id_paciente}}" target="_blank" class="btn btn-outline-primary">
+											<i class="bi bi-file-pdf"></i>
+											Generar pdf
+										</a>
 									</td>
+									
 								</tr>
 							{% endfor %}
 						{% else %}
