@@ -2,17 +2,18 @@
 #from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.contrib import messages
 from gestion_administrativo.models import Empresa
 from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_inventario_insumos.models import Insumo
 from gestion_cobros.utils import render_to_pdf
 from django.http import ( HttpResponse,)
 from gestion_administrativo.models import TratamientoConfirmado
-from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura
+from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura, DetalleFactura
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, CobroFacturaForm, DatosFacturaForm, FacturaForm
+from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
@@ -256,8 +257,8 @@ def ver_detalle_cobro(request, id_cobro_contado):
     tratamientos =[] 
 
     for detalle_tratamiento in detalle_tratamientos:
-        print("id Detalle parametro: ", id_detalle_cobro)
-        print("Detalle de cobro en BD: ", detalle_tratamiento.detalle_cobro.id)
+        # print("id Detalle parametro: ", id_detalle_cobro)
+        # print("Detalle de cobro en BD: ", detalle_tratamiento.detalle_cobro.id)
         if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
             id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
             tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
@@ -267,7 +268,7 @@ def ver_detalle_cobro(request, id_cobro_contado):
                                 'precio':precio
             }
             tratamientos.append(tratamiento_tmp)
-            print("Entra en detalle de cobro")
+            # print("Entra en detalle de cobro")
 
     monto_total = cobro.monto_total
     monto_total = '{:,}'.format(monto_total).replace(',','.')
@@ -476,74 +477,90 @@ def ingresar_datos_factura(request, id_cobro):
     tratamientos =[]
 
     for detalle_tratamiento in detalle_tratamientos:
-        print("id Detalle parametro: ", id_detalle_cobro)
-        print("Detalle de cobro en BD: ", detalle_tratamiento.detalle_cobro.id)
         if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
             id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
             tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
+            precio_numerico = tratamiento.precio
             precio = '{:,}'.format(tratamiento.precio).replace(',','.')
             tratamiento_tmp = {
                                 'nombre_tratamiento':tratamiento.nombre_tratamiento,
-                                'precio':precio
+                                'precio':precio,
+                                'precio_numerico':precio_numerico
             }
             tratamientos.append(tratamiento_tmp)
-            print("Entra en detalle de cobro")
 
     monto_total = cobro.monto_total
     monto_total_s= '{:,}'.format(monto_total).replace(',','.')
 
+    partes_nro_factura = generar_numero_factura()
+
+    factura = Factura(
+                        sub_nro_factura1 = partes_nro_factura['sub_nro_1'],
+                        sub_nro_factura2 = partes_nro_factura['sub_nro_2'],
+                        sub_nro_factura3 = partes_nro_factura['sub_nro_3'],
+                        nro_factura = partes_nro_factura['nro_factura'],
+                        numero_documento = cobro.numero_documento,
+                        razon_social = cobro.razon_social,
+                        direccion = persona.direccion,
+                        telefono = persona.telefono,
+                        total_pagar = monto_total,
+                        # iva_5 = "",
+                        iva_10= (monto_total / 11),
+                        total_iva = (monto_total / 11),
+                        estado = 'Emitido',
+    )
+
     data = {
-        'form': CobroFacturaForm(instance=cobro),
-        'form2': DatosFacturaForm(instance=persona),
-        'form3': FacturaForm()
+        'form': FacturaForm(instance=factura)
     }
 
     data['tratamientos'] = tratamientos
     data['monto_total'] = monto_total_s
+    data['id_factura'] = factura.id_factura
 
     if request.method == 'POST':
-        form = CobroFacturaForm(data=request.POST, files=request.FILES, instance=cobro)
-        form2 = DatosFacturaForm(data=request.POST, files=request.FILES, instance=persona)
-        form3 = FacturaForm(data=request.POST, files=request.FILES)
+        # form = CobroFacturaForm(data=request.POST, files=request.FILES, instance=cobro)
+        # form2 = DatosFacturaForm(data=request.POST, files=request.FILES, instance=persona)
+        form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
 
-        if form.is_valid() and form2.is_valid() and form3.is_valid():
-            factura = form3.save(commit=False)
-            partes_nro_factura = generar_numero_factura()
-            factura.sub_nro_factura1 = partes_nro_factura.sub_nro_1
-            factura.sub_nro_factura2 = partes_nro_factura.sub_nro_2
-            factura.sub_nro_factura3 = partes_nro_factura.sub_nro_3
-            factura.nro_factura = partes_nro_factura.nro_factura
-            factura.total_pagar = monto_total
-            iva_10 = (monto_total / 11)
-            factura.iva_10 = iva_10
-            factura.total_iva = iva_10
-            factura.estado = 'Emitido'
-            factura.save()
-
+        if form.is_valid():
+            form.save()
+            fact = Factura.objects.last()
+            id_factura = fact.id_factura
+            guardar_detalle_factura(fact, tratamientos)
+            return redirect("/cobros/generar_factura/%s" %(id_factura))
         else:
-            data = {
-                'form': CobroFacturaForm(),
-                'form2':DatosFacturaForm(),
-                'form3': FacturaForm()
-            }
+            data['form']=form
+    else:
+        print("No entra en POST")
 
     return render(request, 'facturacion/ingresar_datos_factura.html', data)
 
 
 def generar_numero_factura():
     try:
-        factura = Factura.objects.first()
-    except Factura.DoesNotExist:
-        sub_nro_fact1 = '001'
-        sub_nro_fact2 = '001'
-        sub_nro_factura3 = 1
-        digitos = len(str(sub_nro_factura3))
-        nro_factura = sub_nro_fact1 +"-"+sub_nro_fact2+"-"
+        factura = Factura.objects.last()
+    except Factura.DoesNotExist: 
+        sub_nro_1 = '001'
+        sub_nro_2 = '001'
+        sub_nro_3 = 1
+        digitos = len(str(sub_nro_3))
+        nro_factura = sub_nro_1 +"-"+sub_nro_2+"-"
         cantidad_max = 7
         cant_digitos = digitos
         while(cant_digitos < cantidad_max):
             nro_factura = nro_factura +"0"
-        nro_factura = nro_factura + str(sub_nro_factura3)
+            cant_digitos = cant_digitos + 1
+        nro_factura = nro_factura + str(sub_nro_3 + 1)
+
+        partes_nro_factura = {
+                        'sub_nro_1' : sub_nro_1,
+                        'sub_nro_2' : sub_nro_2,
+                        'sub_nro_3' : (sub_nro_3+1),
+                        'nro_factura' : nro_factura,
+        }
+
+        return partes_nro_factura
     else:
         sub_nro_1 = factura.sub_nro_factura1
         sub_nro_2 = factura.sub_nro_factura2
@@ -555,45 +572,47 @@ def generar_numero_factura():
         cant_digitos = digitos
         while(cant_digitos < cantidad_max):
             nro_factura = nro_factura +"0"
-        nro_factura = nro_factura + str(sub_nro_3)
+            cant_digitos = cant_digitos + 1
+        nro_factura = nro_factura + str(sub_nro_3 + 1)
 
         partes_nro_factura = {
                             'sub_nro_1' : sub_nro_1,
                             'sub_nro_2' : sub_nro_2,
-                            'sub_nro_3' : sub_nro_3,
+                            'sub_nro_3' : (sub_nro_3+1),
                             'nro_factura' : nro_factura,
         }
-
-    return partes_nro_factura
-
-
+        print('partes_nro_factura: ',partes_nro_factura)
+        return partes_nro_factura
 
 
-def registrar_factura():
-    pass
+
+
+def guardar_detalle_factura(fact, tratamientos):
+    print("Entra a guardar detalle de factura")
+    for tratamiento in tratamientos:
+        detalle_factura = DetalleFactura.objects.create(
+                                                    id_factura = fact,
+                                                    descripcion = tratamiento['nombre_tratamiento'],
+                                                    precio_unitario = tratamiento['precio_numerico'],
+                                                    gravado_10_porc = tratamiento['precio_numerico'],
+        )
 
 #--->Factura HTML----
 def generar_factura_original(request):
     return render(request, 'modelos_factura/generar_factura_original.html')
 
 #--->Factura PDF----
-def generar_factura(request,):
+def generar_factura(request,id_factura):
     #--Empresa--#
-    empresa= Empresa.objects.get(id_empresa=1)
-    #--Factura---#
-    # factura= Factura.objects.all()
-    
-    #--Detalles del cobro (valores)---#
-    # cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
-    # detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro)
-    # id_detalle_cobro = detalle_cobro.id
-    # detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+    empresa= Empresa.objects.last()
+    factura = Factura.objects.get(id_factura=id_factura)
+    detalle_factura = DetalleFactura.objects.filter(id_factura=id_factura)
   
     
     data = {
         'empresa': empresa,
-        # 'factura':factura,
-        #'detalle_cobro', detalle_cobro
+        'factura':factura,
+        'detalle_factura': detalle_factura
     }
 
   
@@ -604,4 +623,27 @@ def generar_factura(request,):
 
 #--->Listado de Facturas----#
 def listar_facturas (request):
-    return render(request, 'listar_facturas.html')
+    lista_facturas = Factura.objects.all().order_by('nro_factura')
+    return render(request, 'listar_facturas.html', {'lista_facturas':lista_facturas})
+
+def cambiar_estado_factura(request, id_factura):
+    factura = Factura.objects.get(id_factura=id_factura)
+    fecha = factura.fecha
+    print('nro de factura: ', factura.id_factura)
+
+    data={
+        'form':FacturaUpdateForm(instance=factura),
+        'fecha':fecha
+    }
+
+    if request.method == 'POST':
+        form = FacturaUpdateForm(data=request.POST, instance=factura, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Estado cambiado correctamente✅')
+            return redirect('/cobros/listar_facturas/')
+        else:
+            data['form']=form
+            data['fecha']=fecha
+
+    return render(request, 'facturacion/cambiar_estado_factura.html', data)

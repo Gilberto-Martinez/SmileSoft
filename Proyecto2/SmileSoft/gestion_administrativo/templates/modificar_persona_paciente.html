@@ -9,10 +9,26 @@
             <br>
             <!-- <center>  <h2>Modificar Paciente</h2> </center>     -->
                   <!-- Tooltip. -->
-                <div class="container mt-3 text-center">
-                        <h4 class="bi bi-person-plus"> 
-                            Ingrese los datos del paciente {{persona.nombre}} {{persona.apellido}} 
-                        </h4>
+                <div class="container mt-3 text-center" style="font-family: Bodoni;">
+                    {%if persona.es_paciente%}
+                        <h1 class="bi bi-pencil-square">
+                            <b>Datos del paciente: </b> 
+                        </h1>
+                        <h3>
+                            {{persona.nombre}} {{persona.apellido}}
+                        </h3>
+                        <div class="container mt-3 text-center">
+                            <i class="bi bi-pencil-square">   ¡ Si desea modificar la información del paciente, por favor modifique sus datos </i>
+                        </div>
+                    {%else%}
+                    <h1 class="bi bi-person-plus"> 
+                        <b>Ingrese los datos del paciente: </b>
+                        <h3>
+                            {{persona.nombre}} {{persona.apellido}}
+                        </h3> 
+                    </h1>
+                    {%endif%}
+                        
                 </div>
             
             <div class="card-body">
@@ -23,49 +39,53 @@
                         <table>
                             </div>
                             <hr>
-                            <center><h4 style="font:italic;">Antecedente clinico</h4></center>
+                            <center>
+                                <h3 style="font-family: Bodoni;">
+                                    <b>Antecedente clinico</b>
+                                </h3>
+                            </center>
                             <div class="form-group">
-                                <label for="{{form.grupo_sanguineo.name}}">{{form.grupo_sanguineo.label}}</label>
+                                <label for="{{form.grupo_sanguineo.name}}"><b>{{form.grupo_sanguineo.label}}</b></label>
                                 {{form.grupo_sanguineo}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.enfermedad_base.name}}">{{form.enfermedad_base.label}}</label>
+                                <label for="{{form.enfermedad_base.name}}"><b>{{form.enfermedad_base.label}}</b></label>
                                 {{form.enfermedad_base}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.alergia.name}}">{{form.alergia.label}}</label>
+                                <label for="{{form.alergia.name}}"><b>{{form.alergia.label}}</b></label>
                                 {{form.alergia}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.intolerancia_anestecia.name}}">{{form.intolerancia_anestecia.label}}</label>
+                                <label for="{{form.intolerancia_anestecia.name}}"><b>{{form.intolerancia_anestecia.label}}</b></label>
                                 {{form.intolerancia_anestecia}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.frecuencia_higiene_bucal.name}}">{{form.frecuencia_higiene_bucal.label}}</label>
+                                <label for="{{form.frecuencia_higiene_bucal.name}}"><b>{{form.frecuencia_higiene_bucal.label}}</b></label>
                                 {{form.frecuencia_higiene_bucal}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.medicamento.name}}">{{form.medicamento.label}}</label>
+                                <label for="{{form.medicamento.name}}"><b>{{form.medicamento.label}}</b></label>
                                 {{form.medicamento}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.cirugias.name}}">{{form.cirugias.label}}</label>
+                                <label for="{{form.cirugias.name}}"><b>{{form.cirugias.label}}</b></label>
                                 {{form.cirugias}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.caries.name}}">{{form.caries.label}}</label>
+                                <label for="{{form.caries.name}}"><b>{{form.caries.label}}</b></label>
                                 {{form.caries}}
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="{{form.afeccion_cronica_familiar.name}}">{{form.afeccion_cronica_familiar.label}}</label>
+                                <label for="{{form.afeccion_cronica_familiar.name}}"><b>{{form.afeccion_cronica_familiar.label}}</b></label>
                                 {{form.afeccion_cronica_familiar}}
                             </div>
                             <br>
@@ -74,29 +94,28 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="submit" style="margin: 10px;">Guardar</button>
-                        <!-- <button href="/administrativo/agregar_antecedente_clinico/ " class="btn btn-success" value="Agregar antecedente clinico" style="margin: 10px;">Agregar antecedente clinico</button> -->
-                        <!-- <input href="/administrativo/agregar_antecedente_clinico/ " type="submit" value="Agregar antecedente clinico" style="margin: 10px;" class= "btn btn-primary btn-block txt-white"> -->
-                        <!-- <a href="/administrativo/listar_paciente/" class="btn btn-danger" style="margin: 10px;">Cancelar</a> -->
-                        <input class="btn btn-danger" type = "button" value = "Cancelar" onclick = "history.back ()" style="margin: 10px;">
+                        <button class="btn btn-primary" type="submit" style="margin: 10px;">
+                            <i class="bi bi-save"></i>
+                            Guardar
+                        </button>
+                        <a class="btn btn-danger" onclick = "history.back ()" style="margin: 10px;">
+                            <i class="bi bi-x-circle"></i>
+                            Cancelar
+                        </a>
                     </div>
     
                     <table  align="right" >
-                        <!-- <tr>
-                            <td> 
-                                <a href="/administrativo/agregar_paciente/" class="btn btn-success">Agregar otro paciente +</a> 
-                            </td>
-                        </tr> -->
                       <div class="container mt-3 text-center">
                                 <a href=" /panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> <i class="bi bi-house-door"></i>Inicio</a>
                             </div>
-                          
                     </table>
-               
                     <table  align="left" >
                         <tr>
                             <td> 
-                                <a href="/administrativo/listar_persona" class="btn btn-info">Ver listado de personas </a> 
+                                <a href="/administrativo/listar_persona" class="btn btn-info">
+                                    <i class="bi bi-view-list"></i>
+                                    Ver listado de personas 
+                                </a> 
                             </td>
                         </tr>
                  

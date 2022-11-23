@@ -67,13 +67,6 @@ class CobroFacturaForm(forms.ModelForm):
                                                             }
                                                     )
                                 )
-#     dv = forms.IntegerField(label="DV",
-#                                 widget=forms.NumberInput(attrs={
-#                                                             'class': 'form-control',
-#                                                             # 'placeholder': 'Ingrese su nombre'
-#                                                             }
-#                                                     )
-#                                 )
     razon_social = forms.CharField(label="Nombre/Razón social",
                                     widget=forms.TextInput(attrs={
                                                             'class': 'form-control',
@@ -113,10 +106,104 @@ class DatosFacturaForm(forms.ModelForm):
         ]
 
 class FacturaForm(forms.ModelForm):
+    numero_documento = forms.CharField(label="RUC",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el RUC del cliente'
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(label="Nombre/Razón social",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el nombre del cliente'
+                                                            }
+                                                    )
+                                )
+    direccion = forms.CharField(label="Domicilio",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el domicilio del cliente'
+                                                            }
+                                                    )
+                                )
+    telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
     class Meta:
         model = Factura
         fields = [
-                'numero_documento'
+                'numero_documento',
+                'razon_social',
+                'direccion',
+                'telefono',
+        ]
+
+
+class FacturaUpdateForm(forms.ModelForm):
+    nro_factura = forms.CharField(label="Número de factura",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+
+    numero_documento = forms.CharField(label="RUC",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(label="Nombre/Razón social",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+    direccion = forms.CharField(label="Domicilio",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+                                                        
+    telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+
+    condicion_venta = forms.CharField(label='Condición de venta', widget = forms.TextInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+    total_pagar = forms.IntegerField(label='Total a pagar', widget = forms.NumberInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+    E = 'Emitido'
+    A = 'Anulado'
+    ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
+    estado = forms.ChoiceField(choices=ESTADOS, widget = forms.Select (attrs = {'class': 'form-control',}))
+    
+    class Meta:
+        model = Factura
+        fields = [
+                'nro_factura',
+                'numero_documento',
+                'razon_social',
+                'direccion',
+                'telefono',
+                'condicion_venta',
+                'total_pagar',
+                'estado',
         ]
 
 
