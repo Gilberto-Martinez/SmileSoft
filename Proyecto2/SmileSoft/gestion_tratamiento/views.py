@@ -18,6 +18,7 @@ from gestion_administrativo.models import PacienteTratamientoAsignado
 from gestion_administrativo.forms import *
 from gestion_historial_clinico.views import guardar_historial_clinico
 from gestion_agendamiento.models import Cita
+from gestion_inventario_insumos.views import restar_cantidad_unitaria
 
 
 # ***Vista de Agregar Rol
@@ -416,6 +417,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
                                     'id_cita':id_cita,
                                     }
             tratamientos_pendientes.append(tratamiento_pendiente)
+
     return render (request,"tratamiento/listar_mis_tratamientos_pendientes.html",{
                                                                             'tratamientos_pendientes':tratamientos_pendientes,
                                                                             'profesional':odontologo,
@@ -517,6 +519,7 @@ def confirmar_tratamiento(request, id_tratamiento_conf):
     tratamiento_conf = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
     numero_documento = tratamiento_conf.especialista.numero_documento
     resultado = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_conf).update(estado='Realizado')
+    restar_cantidad_unitaria(id_tratamiento_conf)
     guardar_historial_clinico(id_tratamiento_conf)
     return redirect('/tratamiento/ver_mis_tratamientos_pendientes/%s' %(numero_documento))
 
