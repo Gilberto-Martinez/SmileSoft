@@ -220,41 +220,19 @@ def modificar_insumo(request, codigo_insumo):
             print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
 
     return render(request, "insumo/modificar_insumos.html", data)
-#############PROBANDO RESTAR AYUUUUUUUUUDAAAAAAAAAAAA
-# def restar_cantidad_u(request, codigo_insumo):
-#     codigo_insumo = Insumo.objects.get(codigo_insumo=codigo_insumo)
-
-#     data= {
-#         'form': InsumoUpdateForm(instance=codigo_insumo)
 #     }
 #     if request.method == 'POST':
-#         formulario = InsumoForm(
-#             data=request.POST, instance=codigo_insumo, files=request.FILES)
-#         if formulario.is_valid():
-#             insumo = formulario.save(commit=False)
-#             if TratamientoConfirmado.estado == "Realizado":
-#                 resta = insumo.cantidad_unitaria - TratamientoInsumoAsignado.cantidad
-#                 insumo.cantidad_unitaria = resta
-#                 insumo.save()
-#             #messages.success(request, " Insumo Modificado Correctamente ✅")
-#             #return redirect("/insumo/listar_insumos/")     
-                
-#         else:
-#             messages.error(request, "Algo ha salido Mal, por favor verifique nuevamente")
-#             print("NOOOOOOOOOOO guarda!!!!!!!!!!!!!!!!!!!!!")
-    #return render(request, "insumo/modificar_insumos.html", data)
-
-# def update_cant_unitaria(request,codigo_insumo):
-#     insumo = Insumo.objects.get(id=codigo_insumo)
-#     if TratamientoConfirmado.estado == "Realizado":
-#         resta = insumo.cantidad_unitaria - TratamientoInsumoAsignado.cantidad
-#         insumo.cantidad_unitaria = resta
-#     insumo.cantidad_unitaria -= TratamientoInsumoAsignado.cantidad
-#     insumo.save()
-
-#LA OTRA OPCION ES RESTAR DESDE CITA CONFIRMADA POR EL ODONTÓLOGO
-   
-##########################probando mi resta#################################################
+###########PROBANDO RESTAR ya andaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#####
+def restar_cantidad_unitaria(id_tratamiento_conf):
+    tratamiento_confirmado = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
+    tratamiento = Tratamiento.objects.get(codigo_tratamiento=tratamiento_confirmado.tratamiento.codigo_tratamiento)
+    tratamiento_insumo_asig = TratamientoInsumoAsignado.objects.filter(tratamiento = tratamiento)
+    for tratamiento_ins in tratamiento_insumo_asig:
+        cod_insumo = tratamiento_ins.insumo.codigo_insumo
+        cantidad = tratamiento_ins.cantidad
+        insumo = Insumo.objects.get(codigo_insumo=cod_insumo)
+        nueva_cantidad = insumo.cantidad_unitaria - cantidad
+        nuevo_insumo = Insumo.objects.filter(codigo_insumo=cod_insumo).update(cantidad_unitaria=nueva_cantidad)
 # -----------------------------------------------------------------------------------------------
 # ***Vista de Eliminar Insumo
 # @permission_required('gestion_inventario_insumo.eliminar_insumo', login_url="/panel_control/error/",)
