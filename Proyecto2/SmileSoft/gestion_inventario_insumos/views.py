@@ -220,8 +220,6 @@ def modificar_insumo(request, codigo_insumo):
             print("NOOOOOOOOOOO modifica!!!!!!!!!!!!!!!!!!!!!")
 
     return render(request, "insumo/modificar_insumos.html", data)
-#     }
-#     if request.method == 'POST':
 ###########PROBANDO RESTAR ya andaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#####
 def restar_cantidad_unitaria(id_tratamiento_conf):
     tratamiento_confirmado = TratamientoConfirmado.objects.get(id_tratamiento_conf=id_tratamiento_conf)
