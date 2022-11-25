@@ -369,15 +369,15 @@ def mostrar_tratamiento_asignado (request, numero_documento):
 
 
 def ver_mis_tratamientos_pendientes(request, numero_documento):
-    
+
     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
     #   #'filtro de fecha, probar
-    filtro = request.POST.get("f")
+    # filtro = request.POST.get("f")
   
-    if filtro:
-            print("Buscado AQUI", filtro)
-            tratamientos_conf = Cita.objects.filter(
-                Q(fecha__icontains=filtro))
+    # if filtro:
+    #         print("Buscado AQUI", filtro)
+    #         tratamientos_conf = Cita.objects.filter(
+    #             Q(fecha__icontains=filtro))
 
     
     tratamientos_pendientes = []
@@ -405,6 +405,8 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
             fecha_atencion = cita.fecha
             hora = cita.hora_atencion.hora
             fecha_pasada = verificar_fecha_hora_agendamiento(cita.id_cita)
+            fecha_futura = verificar_si_fecha_futura(cita.id_cita)
+            print('Fecha futura: ', fecha_futura)
             tratamiento_pendiente = {
                                     'id_tratamiento_conf': id_tratamiento_conf,
                                     'numero_documento':cedula,
@@ -414,6 +416,7 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
                                     'fecha_atencion':fecha_atencion,
                                     'hora':hora,
                                     'fecha_pasada':fecha_pasada,
+                                    'fecha_futura':fecha_futura,
                                     'id_cita':id_cita,
                                     }
             tratamientos_pendientes.append(tratamiento_pendiente)
@@ -443,10 +446,30 @@ def verificar_fecha_hora_agendamiento(id_cita):
         respuesta = True
     else:
         if cita.fecha == fecha_actual:
-            # if cita.hora_atencion.hora 
-            pass
+            if cita.hora_atencion.hora < hora_actual:
+                respuesta = True
 
     return respuesta
+
+def verificar_si_fecha_futura(id_cita):
+    """
+    Verifica si la fecha de la cita es una fecha futura
+    Si es una fecha futura retorna True, en caso contrario retorna false
+    """
+    cita = Cita.objects.get(id_cita=id_cita)
+    now = datetime.now()
+    fecha_actual = now.date()
+    respuesta = False
+    print('Fecha de la cita: ', cita.fecha)
+    print('Fecha actual: ', fecha_actual)
+
+    if cita.fecha > fecha_actual:
+        respuesta = True
+    else:
+        respuesta = False
+
+    return respuesta
+
 
 # """ #BORRADOR
 # class InsumoAsignado(UpdateView):

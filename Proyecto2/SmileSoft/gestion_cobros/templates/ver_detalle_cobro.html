@@ -30,11 +30,12 @@
 				<br>
 				<table class="table table-striped table-hover">
 					<thead style="border: 1cm;">
-						<tr>
-							<th>Nombre del tratamiento</th>
-							<th>Precio</th>
-						</tr>
-						
+						{% if tratamientos %}
+							<tr>
+								<th>Nombre del tratamiento</th>
+								<th>Precio</th>
+							</tr>
+						{%endif%}
 					</thead>
 						<tbody>
 							{% if tratamientos %}
@@ -50,7 +51,9 @@
 								</tr>
 								
 							{% else %}
-								<h1>No hay registros de detalles de cobros</h1>
+								<center>
+									<h4>No hay registros de detalles de cobros</h4>
+								</center>
 							{% endif %}
 						</tbody>
 				</table>
