@@ -1211,7 +1211,7 @@ def listar_cita(request):
     busqueda = request.POST.get("q")
       #'filtro de fecha, y nombre 
     filtro = request.POST.get("f")
-    listado_cita = Cita.objects.all() 
+    listado_cita = Cita.objects.all().order_by("fecha").reverse()
     if filtro:
         print("Buscado AQUI", filtro)
         listado_cita = Cita.objects.filter(Q(fecha__icontains=filtro))

@@ -371,12 +371,12 @@ def ver_mis_tratamientos_pendientes(request, numero_documento):
     
     tratamientos_conf = TratamientoConfirmado.objects.filter(estado="Pagado")
     #   #'filtro de fecha, probar
-    filtro = request.POST.get("f")
+    # filtro = request.POST.get("f")
   
-    if filtro:
-            print("Buscado AQUI", filtro)
-            tratamientos_conf = Cita.objects.filter(
-                Q(fecha__icontains=filtro))
+    # if filtro:
+    #         print("Buscado AQUI", filtro)
+    #         tratamientos_conf = Cita.objects.filter(
+    #             Q(fecha__icontains=filtro))
 
     
     tratamientos_pendientes = []
@@ -441,8 +441,8 @@ def verificar_fecha_hora_agendamiento(id_cita):
         respuesta = True
     else:
         if cita.fecha == fecha_actual:
-            # if cita.hora_atencion.hora 
-            pass
+            if cita.hora_atencion.hora < hora_actual:
+                respuesta = True
 
     return respuesta
 
