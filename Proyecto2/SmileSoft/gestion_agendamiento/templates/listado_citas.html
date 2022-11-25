@@ -89,22 +89,22 @@
                             <!--table striped es para que resalte 1 fila y otra no-->
                             <!--table-bordered para bordes-->
                             <table class="table table-striped table-hover">       
-                                <thead> 
-                                    <tr>
-                                        <th>Nro</th>
-                                        <th>Nombre </th>
-                                        <th>Cédula</th>
-                                        <th>N° telefónico</th>
-                                        <th>Fecha </th>
-                                        <th>Hora</th>
-                                        {% comment %} <th>Hora de Atencion</th> {% endcomment %}
-                                         <th>Tratamiento Solicitado</th> 
-                                        <th>Profesional</th>
-                                        <th> Estado </th>
-                                        <th colspan="3"> Acciones </th> 
-                                      
-                                        
-                                    </tr>
+                                <thead>
+                                    {%if cita_reservadas%}
+                                        <tr>
+                                            <th>Nro</th>
+                                            <th>Nombre </th>
+                                            <th>Cédula</th>
+                                            <th>N° telefónico</th>
+                                            <th>Fecha </th>
+                                            <th>Hora</th>
+                                            {% comment %} <th>Hora de Atencion</th> {% endcomment %}
+                                            <th>Tratamiento Solicitado</th> 
+                                            <th>Profesional</th>
+                                            <th> Estado </th>
+                                            <th colspan="3"> Acciones </th> 
+                                        </tr>
+                                    {%endif%}
                                 </thead>
 
                                 <tbody>

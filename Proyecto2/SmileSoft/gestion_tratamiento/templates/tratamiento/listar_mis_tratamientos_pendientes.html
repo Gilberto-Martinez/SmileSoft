@@ -86,10 +86,17 @@
                                                             Reagendar
                                                         </a>
                                                     {%else%}
-                                                        <a href="/tratamiento/realizar_pregunta/{{t.id_tratamiento_conf}}" class="btn btn-success">
-                                                            <i class="bi bi-check2-circle" ></i> 
-                                                            Confirmar
-                                                        </a>
+                                                        {%if t.fecha_futura%} 
+                                                            <a href="/agendamiento/visualizar_datos_cita/{{t.id_cita}}" class="btn btn-primary">
+                                                                <i class="bi bi-view-stacked"></i> 
+                                                                Visualizar
+                                                            </a>
+                                                        {%else%}
+                                                            <a href="/tratamiento/realizar_pregunta/{{t.id_tratamiento_conf}}" class="btn btn-success">
+                                                                <i class="bi bi-check2-circle" ></i> 
+                                                                Confirmar
+                                                            </a>
+                                                        {%endif%}
                                                     {%endif%}
                                                 </td>
                                             <!-- {%endif%} -->
