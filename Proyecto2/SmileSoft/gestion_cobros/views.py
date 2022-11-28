@@ -13,7 +13,7 @@ from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobr
 from gestion_tratamiento.models import Tratamiento
 from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm
+from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm, FacturaReadOnlyForm
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
@@ -585,8 +585,6 @@ def generar_numero_factura():
         return partes_nro_factura
 
 
-
-
 def guardar_detalle_factura(fact, tratamientos):
     print("Entra a guardar detalle de factura")
     for tratamiento in tratamientos:
@@ -596,6 +594,22 @@ def guardar_detalle_factura(fact, tratamientos):
                                                     precio_unitario = tratamiento['precio_numerico'],
                                                     gravado_10_porc = tratamiento['precio_numerico'],
         )
+
+
+def visualizar_datos_factura(request, id_factura):
+    factura = Factura.objects.get(id_factura=id_factura)
+    fecha = factura.fecha
+
+    data={
+        'form':FacturaReadOnlyForm(instance=factura),
+        'fecha':fecha
+    }
+
+    if request.method == 'POST':
+        form = FacturaReadOnlyForm(data=request.POST, instance=factura, files=request.FILES)
+
+    return render(request, 'facturacion/visualizar_datos_factura.html', data)
+
 
 #--->Factura HTML----
 def generar_factura_original(request):
@@ -623,7 +637,20 @@ def generar_factura(request,id_factura):
 
 #--->Listado de Facturas----#
 def listar_facturas (request):
-    lista_facturas = Factura.objects.all().order_by('nro_factura')
+    facturas = Factura.objects.all().order_by('nro_factura')
+    lista_facturas = []
+    anulado = False
+    for factura in facturas:
+        if factura.estado == 'Anulado':
+            anulado = True
+        else:
+            anulado = False
+        dato_factura = {
+                        'factura': factura,
+                        'anulado': anulado
+        }
+        print('Anulado?: ', anulado)
+        lista_facturas.append(dato_factura)
     return render(request, 'listar_facturas.html', {'lista_facturas':lista_facturas})
 
 def cambiar_estado_factura(request, id_factura):

@@ -207,6 +207,73 @@ class FacturaUpdateForm(forms.ModelForm):
         ]
 
 
+class FacturaReadOnlyForm(forms.ModelForm):
+    nro_factura = forms.CharField(label="Número de factura",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+
+    numero_documento = forms.CharField(label="RUC",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(label="Nombre/Razón social",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+    direccion = forms.CharField(label="Domicilio",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+                                                        
+    telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+
+    condicion_venta = forms.CharField(label='Condición de venta', widget = forms.TextInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+    total_pagar = forms.IntegerField(label='Total a pagar', widget = forms.NumberInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+    estado = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'readonly':True}))
+    
+    class Meta:
+        model = Factura
+        fields = [
+                'nro_factura',
+                'numero_documento',
+                'razon_social',
+                'direccion',
+                'telefono',
+                'condicion_venta',
+                'total_pagar',
+                'estado',
+        ]
+
+
+
 class EmpresaForm(forms.ModelForm):
         # nombre_empresa = models.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
         # direccion=forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control'}))
