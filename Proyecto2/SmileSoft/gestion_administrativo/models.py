@@ -16,12 +16,9 @@ from gestion_tratamiento.models import Tratamiento
 class Empresa(models.Model):
     id_empresa = models.AutoField(primary_key=True)
     nombre_empresa = models.CharField(max_length=40, null=False, verbose_name='Empresa:')
-    direccion = models.CharField(
-        max_length=200, null=True, verbose_name='Dirección:')
-    telefono = models.CharField(
-        max_length=20, null=True, verbose_name='Teléfono:')
-    correo_electronico = models.EmailField(
-        max_length=35,  verbose_name='Correo electrónico:')
+    direccion = models.CharField(max_length=200, null=True, verbose_name='Dirección:')
+    telefono = models.CharField(max_length=20, null=True, verbose_name='Teléfono:')
+    correo_electronico = models.EmailField(max_length=35,  verbose_name='Correo electrónico:')
     ruc = models.CharField(max_length=12, null=True)
     timbrado = models.IntegerField(verbose_name='Timbrado:')
     f_inicio_vigencia = models.DateField(verbose_name='Fecha Inicio Vigencia:')
