@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.shortcuts import redirect, render
+from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
 
@@ -32,6 +33,13 @@ def guardar_historial_clinico(id_tratamiento_conf):
 
 def listar_pacientes_historial(request):
     lista_historial = HistorialClinico.objects.distinct('paciente')
+
+    busqueda = request.POST.get("q")
+    
+    if busqueda:
+        lista_historial = HistorialClinico.objects.filter(
+                Q(paciente__numero_documento__nombre__icontains=busqueda)).distinct('paciente')
+
     lista_pacientes = []
     for historial in lista_historial:
         paciente = Paciente.objects.get(id_paciente=historial.paciente.get_id())
