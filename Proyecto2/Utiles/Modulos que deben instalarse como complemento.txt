@@ -10,3 +10,12 @@ PARA REALIZAR CALCULO DE EDAD Y VALIDAR QUE FUNCIONARIO SEA MAYOR DE EDAD
 
 PARA GENERAR PDF 
     pip install xhtml2pdf
+
+
+PARA LOS GRAFICOS
+    1| Deben instalar el Panda
+        pip install pandas 
+
+    2| Deben instalar la libreria de matplotlib
+        python -m pip install -U pip
+        python -m pip install -U matplotlib
