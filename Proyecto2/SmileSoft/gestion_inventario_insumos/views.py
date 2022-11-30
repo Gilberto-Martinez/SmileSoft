@@ -115,7 +115,8 @@ def listar_insumo(request):
             existencia = "En Falta"
             disponible = False
         detalle= insumo.descripcion_insumo
-        cantidad_unitaria = insumo.cantidad_insumo
+        
+        cantidad_unitaria = insumo.cantidad_unitaria
         
         monto= '{:,}'.format(insumo.precio).replace(',','.')
        

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--titulo de barra-->
+    <title>Reportes</title>
+    <link rel="icon" href="favicon.ico" size="32x32" >
+    {% load static %}
+
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js'>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+
+{%block content%}
+
+    <div class="container">
+     
+    
+        <center> 
+            <h1 style= "font-size:30px"> 
+                <b class="bi bi-list-check"> Reporte de Citas</b> 
+            </h1>
+        </center>
+        {%csrf_token%}
+       <hr>
+       <p style= "font-size:15px">  <b> Cantidades:</b> </p>
+        
+       <p style= "font-size:15px"> {{gf1 | safe}} </p>
+        <hr>
+       <p style= "font-size:15px"> <b>Listado en Porcentaje % </b> </p>
+
+       <!--Es el Grafico-->
+        <center style="width: 350px">
+            <canvas id="myChart" ></canvas>
+            <script src="chart.js"></script>
+            <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data:{
+                datasets: [{
+                            data: {{draw}},
+                backgroundColor: ['#42a5f5','red','green','blue',],
+                label: 'Cantidades'}],
+                labels: ['Realizado','Agendado','Confirmado','Pagado',]},
+                options: {responsive: true}
+                });
+            </script>
+        </center> 
+        
+
+        <p style= "font-size:18px">
+    
+                     {{porcentaje |safe}}
+      
+        </p>
+        <br>
+        <br>
+     
+      
+    </div>
+    <div class="col-12 text-center copyright">
+        <samp style= "font-size:12px">
+            <br>
+            <br>
+            <b>Fecha de Expedicion: </b> &nbsp; {{fecha_actual}}
+          
+            <p>Copyright SmileSoft &copy; FP-UNA 2022  </p>
+        
+        </samp>
+          
+    </div>
+
+{%endblock%}

@@ -29,7 +29,8 @@
     
         .transformacion3 { text-transform: lowercase;}   
       </style>
-</head>
+     
+  </head>
 
 <body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -86,8 +87,9 @@
             </center> 
             
             <!--Barra 2-> Opciones de Navegacion-->     
-            <nav class="navbar navbar-expand-lg navbar-info bg-light">
+            <nav class="navbar navbar-expand-lg navbar-info" style="background-color: #F8F9FA;">
               <div class="container-fluid">
+               
                 <div id="main-menu" class="main-menu">
                       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"> Menú</span>
@@ -95,7 +97,7 @@
                   <!-- Menu de navegación -->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!--con ml-auto debe mudarse a la derecha-->
-                        <ul class="navbar-nav  me-auto mb-2 mb-lg-0"> 
+                        <ul class="navbar-nav  me-auto mb-4 mb-md-4"> 
                                           <!--Configuración-->
                                           <!--Este modulo tendra acceso a todos los roles-->
                                           <li class="nav-item dropdown">
@@ -121,6 +123,8 @@
                                                     <li> <a class="dropdown-item" href="/cerrar_sesion">  <font style="font-style: oblique;" COLOR="blue"> <i class="bi bi-x-square"></i> Cerrar sesión </font></a>
                                                                   
                                               </ul>
+
+                                              
                                           </li>
 
                                           <!--Opcion 1-->
@@ -130,8 +134,8 @@
                                             </a>
                                           </li>  {% endcomment %}
 
-                                        <!--Opcion 2-Roles-->
-                                        {%if perms.group.view_rol%}
+                                        <!--Opcion 2-Roles COMENTADO POR FALTA DE ESPACIO-->
+                                      {% comment %}   {%if perms.group.view_rol%}
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="roles" id="navbarDropdown"
                                                 role="button" COLOR="black" data-bs-toggle="dropdown" aria-expanded="false">
@@ -149,29 +153,44 @@
                                                   {%endif%}  
                                                 </ul>
                                             </li>
-                                        {%endif%}
-                                          <!--Opcion 3 Usuario-->
+                                        {%endif%} {% endcomment %}
+
+                                        <!--Opcion 3 Usuario / ROLES-->
                                         {%if perms.webapp.view_usuario %} 
                                           <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
                                             data-bs-toggle="dropdown" aria-expanded="false">
-                                            Usuarios 
+                                            Usuarios<br>{%if perms.group.view_rol%}|Roles {%endif%}
                                             </a>
                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                                                    <!--Opcion 3.0-->
-                                                    {% comment %} <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                      Registro de Usuarios
-                                                    </strong> {% endcomment %}
-                                                    <!--Opcion 3.1-->
-                                                  {%if perms.webapp.add_usuario %}
-                                                    {% comment %} <div class="dropdown-divider"></div> {% endcomment %}
-                                                    <li class="dropdown-menu-right" aria-labelledby="navbarDropdown"></li>
-                                                    <a class="dropdown-item" href="/agregar_usuario/" > • Agregar usuario</a>
-                                                  {%endif%}
-                                                    <!--Opcion 3.2-->
-                                                  {%if perms.webapp.view_usuario%}
-                                                    <a class="dropdown-item" href="/listar_usuario/"> • Lista de usuario</a> 
-                                                  {%endif%} 
+                                                
+                                                <!--Opcion 3.1-->
+                                              {%if perms.webapp.add_usuario %}
+                                                {% comment %} <div class="dropdown-divider"></div> {% endcomment %}
+                                                <li class="dropdown-menu-right" aria-labelledby="navbarDropdown"></li>
+                                                <a class="dropdown-item" href="/agregar_usuario/" > • Agregar usuario</a>
+                                              {%endif%}
+                                                <!--Opcion 3.2-->
+                                              {%if perms.webapp.view_usuario%}
+                                                <a class="dropdown-item" href="/listar_usuario/"> • Lista de usuario</a> 
+                                              {%endif%} 
+                                              <tr>
+                                              {%if perms.group.view_rol%}
+                                                <div class="dropdown-divider"></div>
+                                                <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                  Roles
+                                                </strong>
+                                                <!--Opcion 4.1 -->
+                                                {%if perms.gestion_roles.add_rol%}
+                                                <li><a class="dropdown-item" href="/roles/agregar_roles/">• Agregar Roles</li></a>
+                                                {%endif%}
+                                                <!--Opcion 4.2 -->
+                                                {%if perms.gestion_roles.view_rol%}
+                                              
+                                                <li><a class="dropdown-item" href="/roles/listar_roles/">• Listar Roles</li></a>
+                                                {%endif%}  
+
+                                              {%endif%}
                                             </ul>
                                           </li>
                                         {%endif%} 
@@ -292,7 +311,7 @@
                                                   {%if perms.gestion_agendamiento.view_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/listado_citas">• Citas Reservadas</li></a>
                                                   {% endif %}
-                                                  {%if perms.gestion_agendamiento.view_cita%}
+                                                  {%if perms.gestion_agendamiento.add_cita%}
                                                   <li><a class="dropdown-item" href="/agendamiento/pacientes_cita">• Pacientes | Reservar una cita</li></a>
                                                   {% endif %}
                                                   
@@ -313,7 +332,7 @@
                                               <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
                                                  role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                 Historial Clínico
+                                                  Historial Clínico
                                                 </a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                          
@@ -330,7 +349,7 @@
                                               </li>
                                           {%endif%} 
                                                    
-                                              <!--Opcion 8-->
+                                              <!--Opcion 8 || Facturacion-->
                                               {%if perms.gestion_cobros.add_cobrocontado%}
                                                  <li class="nav-item dropdown">
                                                     <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
@@ -360,12 +379,12 @@
                                                  
                                           
 
-                                            <!--Opcion 9-->
+                                            <!--Opcion 9 Cobros-->
                                             {%if perms.gestion_cobros.add_cobrocontado%}
                                               <li class="nav-item dropdown">
                                                   <a class="nav-link dropdown-toggle" href="gestion_administrativo" id="navbarDropdown"
                                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                  Cobros</a>
+                                                  Cobros <br>|Caja </a>
                                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                     <!--Opcion 9.1 -->
                                                     {% comment %} <li><a class="dropdown-item" href="#"> 
@@ -380,9 +399,7 @@
                                                   </ul>
                                               </li>
                                             {%endif%}
-                                            <!--Opcion 10-->
-
-                                           
+                                        
                                              <!--Opcion 11-->
                                              {%if perms.gestion_inventario_insumos.view_insumo%}
                                              <li class="nav-item dropdown">
@@ -406,6 +423,41 @@
                                                </ul>
                                              </li>
                                              {% endif %}
+
+                                            <!--Opcion 12-->
+                                            {%if perms.gestion_inventario_insumos.view_insumo%}
+                                            <li class="nav-item dropdown">
+                                              <a class="nav-link dropdown-toggle" href="insumo" id="navbarDropdown"
+                                              role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Reportes</a>
+                                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                      Tratamientos 
+                                                    </strong>
+                                              
+                                                    <li><a class="dropdown-item" href="/reportes/reporte_tratamiento/">• Más Solicitados</li></a>
+                                                  
+                                                <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                      Insumos
+                                                    </strong>
+                                                <!--Opcion 11.1 -->
+                                                 
+                                                    <li><a class="dropdown-item" href="/reportes/insumos_reporte/">• Stock Minimo</li></a>
+                                                    <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                     Cita
+                                                    </strong>
+                                                <!--Opcion 11.2 -->
+                                                    <li><a class="dropdown-item" href="/reportes/reporte_cita/">• Estado de Citas</li></a>
+                                                    
+                                                    {% comment %} <li><a class="dropdown-item" href="/reportes/cita_reporte/">• Estado de Citas</li></a> {% endcomment %}
+                                                  
+                                                    {% comment %} <li><a class="dropdown-item" href="/insumo/listar_insumos/">• Lista de Insumos</li></a> {% endcomment %}
+                                                   
+                                                    <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
+                                                        <div class="dropdown-divider"></div>  -->
+                                              </ul>
+                                            </li>
+                                            {% endif %}
                           </ul>            
                       </div>
                 </div>

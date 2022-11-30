@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--titulo de barra-->
+    <title>APUNTES GRAFICOS</title>
+    <link rel="icon" href="favicon.ico" size="32x32" >
+    {% load static %}
+
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js'>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+{%block content%}
+<style>
+    #celda1{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+     #celda2{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+</style>
+{%if perms.gestion_inventario_insumos.add_insumo%}
+    <div class="container">
+     
+      <br>
+        <center> 
+            <h1 style="font-family: Lucida Calligraphy;"> 
+                <b class="bi bi-list-check"> Reporte de Citas</b> 
+            </h1>
+        </center>
+        {%csrf_token%}
+       <hr>
+       <p style= "font-size:20px">   Total de Cantidades: {{gf1 | safe}}  </p>
+
+       <hr>
+       <h4> Grafico de Citas </h4>
+        <center style="width: 350px">
+            <canvas id="myChart" ></canvas>
+            <script src="chart.js"></script>
+            <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data:{
+                datasets: [{
+                            data: {{draw}},
+                backgroundColor: ['#42a5f5','red','green','blue',],
+                label: 'Cantidades'}],
+                labels: ['Realizado','Agendado','Confirmado','Pagado',]},
+                options: {responsive: true}
+                });
+            </script>
+        </center> 
+        <hr>
+        {{df| safe}}
+        <hr>
+        {{list | safe}}
+        {% comment %} {{df_estado| safe}} {% endcomment %}
+        <hr>
+           <p> El Total Agendado es: {{total_agendado}} </p>
+           <hr>
+           
+           <hr>
+           <p> El Total Confirmado es: {{total_confirmado}} </p>
+           <hr>
+           <p> El Total Realizado es: {{total_realizado}} </p>
+           <hr>
+           <p> El Total Pagado es: {{total_pagado}} </p>
+           <hr>
+       
+           <hr>
+          <br>
+            es conteo
+            {{conteo }}
+
+           <hr>
+           <br>
+           <hr>
+           es grafica
+           {{graficocita |safe }}
+
+          ES DICCIONARIO
+           {% comment %} {{s}} {% endcomment %}
+          
+           {{draw}}
+      
+    </div>
+    <p>CITA</p>
+    <script type="text/javascript">
+        function reporte(url){
+
+            fetch(url, {
+                method: 'get',
+            }).then(function(result){
+                return result.json()
+            }).then(function(data){
+                
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Cita',
+                            data: {{draw}}
+                            backgroundColor: ['#42a5f5', 'red', 'green','blue',],
+                            label: 'Cantidades'}],
+                            labels: ['Realizado','Agendado','Confirmado','Pagado',]},
+                            options: {responsive: true}
+                        }]
+                    },
+                    
+                });
+        
+        
+            })
+          
+        }
+    </script>
+
+
+    <canvas id="myChart" width="250" height="250"></canvas>
+
+
+    
+
+
+
+{%endif%}
+
+{%endblock%}

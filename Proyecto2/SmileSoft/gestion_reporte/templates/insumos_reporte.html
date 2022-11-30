@@ -1,0 +1,86 @@
+{%extends 'panel_control/base.html'%}  
+{% comment %} <!--Gestion de Insumos-->
+<link rel="stylesheet" href= "{% static 'estilo.css'%}"> {% endcomment %}
+
+{%load static%}
+
+
+{% block javascripts%}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{%endblock%}
+
+{%block content%}
+<style>
+    #celda1{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+     #celda2{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+</style>
+{%if perms.gestion_inventario_insumos.add_insumo%}
+    <div class="container ">
+     
+    
+        <center> 
+            <h2 style="font-family: Lucida Calligraphy;"> 
+                <b class="bi bi-list-check"> Reporte de Insumos</b> 
+            </h2>
+        </center>
+        {%csrf_token%}
+
+              {% comment %} {{df | safe}} {% endcomment %}
+
+              <hr>
+              {{describe | safe}}
+
+              <hr>
+              {{df_nombre| safe}}
+              <hr>
+              {{df_stock_minimo| safe}}
+
+       
+                <!--Inicio de la TABLA DE INSUMOS-->
+                <table>
+                    <!--table striped es para que resalte 1 fila y otra no-->
+                    <!--table-bordered para bordes-->
+                    <table class="table table-striped table-hover">
+                        <thead> 
+                            <tr>
+                                <th>Nro Insumo</th>
+                                <th>Nombre </th>
+                                <th>Cantidad Adquirida</th>  
+                                <th>Precio Unitario</th>
+                                {% comment %} <th>Medida </th> {% endcomment %}
+                                <th >Ud. <i>por</i> <br>Paq./Caja</th> 
+                                <th>Total <i>de unidades</i></th> 
+                                <th>Stock Minimo</th>
+                                <th>Existencia</th>
+
+
+                                
+                                <!-- <th>Estado</th>  -->
+                                <th colspan="2"><center>Acciones</center>  </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                          
+                           
+                        </tbody>
+                    </table>
+                </table>
+            <!--end TABLA-->
+           
+      
+    </div>
+{%endif%}
+
+{%endblock%}
