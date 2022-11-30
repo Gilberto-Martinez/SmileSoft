@@ -101,7 +101,9 @@
                                          <th>Tratamiento Solicitado</th> 
                                         <th>Profesional</th>
                                         <th> Estado </th>
+                                        {%if perms.gestion_agendamiento.add_cita%}
                                         <th colspan="3"> Acciones </th> 
+                                        {%endif%}
                                       
                                         
                                     </tr>

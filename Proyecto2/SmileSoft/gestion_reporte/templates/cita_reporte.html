@@ -1,0 +1,55 @@
+
+{%block content%}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+
+    <br>
+    <center> 
+        <h1 style="font-family: Lucida Calligraphy;"> 
+            <b class="bi bi-list-check"> Reporte de Cita </b> 
+        </h1>
+    </center>
+    {%csrf_token%}
+    <hr>
+    <script type="text/javascript">
+        function reporte(url){
+
+            fetch(url, {
+                method: 'get',
+            }).then(function(result){
+                return result.json()
+            }).then(function(data){
+                
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Cita',
+                            data: data.data,
+                            backgroundColor: ['#42a5f5', 'red', 'green','blue',],
+                            label: 'Cantidades'}],
+                            labels: ['Realizado','Agendado','Confirmado','Pagado',]},
+                            options: {responsive: true}
+                        }]
+                    },
+                    
+                });
+        
+        
+            })
+          
+        }
+    </script>
+
+    <script>
+        window.onload = function(e){ reporte('{% url "cita_reporte" %}')}
+    </script>
+
+    <canvas id="myChart" width="250" height="250"></canvas>
+
+
+    
+
+
+{%endblock%}

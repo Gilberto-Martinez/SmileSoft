@@ -72,8 +72,8 @@
                                 <th>Cantidad Adquirida</th>  
                                 <th>Precio Unitario</th>
                                 {% comment %} <th>Medida </th> {% endcomment %}
-                                <th>Unidades</th> 
-                                <th>Ud. Métrica</th>
+                                <th >Ud. <i>por</i> <br>Paq./Caja</th> 
+                                <th>Total <i>de unidades</i></th> 
                                 <th>Stock Minimo</th>
                                 <th>Existencia</th>
 
@@ -93,7 +93,7 @@
                                         <td>{{c.cantidad_insumo}} {{c.unidad}}</td> 
                                         <td>{{c.precio}} Gs.</td> 
                                         <td>{{c.unidad_x_paquete}} u </td> 
-                                        <td>{{c.cantidad_unitaria}} {{c.ud_unitaria}}</td> 
+                                         <td>{{c.cantidad_unitaria}} {{c.ud_unitaria}}</td>  
                                         <td>{{c.stock_minimo}} {{c.ud_unitaria}}</td> 
                                         {%if c.disponible%}
                                         <td id= "celda2" style="border: 1px solid white; background-color: #68AD22"><p style="color: white;" > <br> &nbsp;{{c.existencia}} </p></td>

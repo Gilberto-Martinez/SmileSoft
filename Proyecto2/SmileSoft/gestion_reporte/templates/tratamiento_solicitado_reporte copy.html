@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--titulo de barra-->
+    <title>Reportes</title>
+    <link rel="icon" href="favicon.ico" size="32x32" >
+    {% load static %}
+
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js'>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+{%block content%}
+<style>
+    #celda1{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+     #celda2{
+        width:15px;
+        height:15px;
+        border:3px solid brown;
+        border-radius:22px;
+     }
+</style>
+{%if perms.gestion_inventario_insumos.add_insumo%}
+    <div class="container ">
+     
+    <br>
+        <center> 
+            <h1 style="font-family: Lucida Calligraphy;"> 
+                <b class="bi bi-list-check"> Reporte de Tratamiento</b> 
+            </h1>
+        </center>
+        {%csrf_token%}
+       <hr>
+       <p style= "font-size:20px">   Total de Cantidades: {{gf1 | safe}}  </p>
+
+       <hr>
+       <h4> Grafico de Citas </h4>
+       <center style="width: 350px">
+            <canvas id="myChart" ></canvas>
+            <script src="chart.js"></script>
+            <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data:{
+                datasets: [{
+                            data: [60,18,10, 8, 4],
+                backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
+                label: 'Comparacion de navegadores'}],
+                labels: ['Google Chrome','Safari','Edge','Firefox','Opera']},
+                options: {responsive: true}
+                });
+            </script>
+        </center>
+
+
+       <!---#Grafico torta de prueba-->
+        <script>
+            const labels = ['Enero', 'Febrero', 'Marzo', 'Abril']
+            const colors = ['rgb(69,177,223)', 'rgb(99,201,122)', 'rgb(203,82,82)', 'rgb(229,224,88)'];
+            
+            const graph = document.querySelector("#grafica");
+            
+            const data = {
+                labels: labels,
+                datasets: [{
+                    data: [1, 2, 3, 4],
+                    backgroundColor: colors
+                }]
+            };
+            
+            const config = {
+                type: 'pie',
+                data: data,
+            };
+            
+            new Chart(graph, config);
+        </script>
+
+        
+
+        <hr>
+        {% comment %} {{df| safe}} {% endcomment %}
+        <hr>
+        {% comment %} {{df_estado| safe}} {% endcomment %}
+        <hr>
+           <p> El Total Agendado es: {{total_agendado}} </p>
+           <hr>
+           
+           <hr>
+           <p> El Total Confirmado es: {{total_confirmado}} </p>
+           <hr>
+           <p> El Total Realizado es: {{total_realizado}} </p>
+           <hr>
+           <p> El Total Pagado es: {{total_pagado}} </p>
+           <hr>
+
+
+          
+             
+          
+           
+      
+    </div>
+{%endif%}
+
+{%endblock%}
