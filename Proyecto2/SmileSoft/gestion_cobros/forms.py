@@ -299,7 +299,7 @@ class CajaForm(forms.ModelForm):
 #     hora_apertura = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     # fecha_cierre = models.DateField()
     # hora_cierre = models.TimeField()
-    saldo_anterior = forms.IntegerField( widget=forms.NumberInput(attrs={'class':'form-control'}))
+#     saldo_anterior = forms.IntegerField( widget=forms.NumberInput(attrs={'class':'form-control'}))
     monto_apertura = forms.IntegerField( widget=forms.NumberInput(attrs={'class':'form-control'}))
     # monto_cierre = models.BigIntegerField()
 

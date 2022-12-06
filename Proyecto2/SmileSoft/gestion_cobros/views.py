@@ -711,8 +711,16 @@ def mostrar_caja(request, numero_documento):
     return render(request, 'mostrar_caja.html')
 
 
-def mostrar_msj_caja_cerrada(request):
-    pass
+def mostrar_msj_caja_cerrada(request, numero_documento):
+    data = {
+            'numero_documento':numero_documento,
+    }
+    respuesta = verificar_apertura_caja()
+    if respuesta == "Cerrada":
+        return render(request, 'mensajes/msj_caja_cerrada.html', data)
+
+    return render(request, 'mostrar_caja.html')
+
 
 
 def guardar_datos_apertura_caja(request, numero_documento):
@@ -727,7 +735,7 @@ def guardar_datos_apertura_caja(request, numero_documento):
                     id_cajero = cajero,
                     fecha_apertura = fecha_actual,
                     hora_apertura = hora_actual,
-                    monto_apertura = total_caja['monto_total__sum'],
+                    # saldo_anterior = total_caja['monto_total__sum'],
     )
 
     print("Monto total: ",total_caja['monto_total__sum'])
@@ -736,6 +744,7 @@ def guardar_datos_apertura_caja(request, numero_documento):
             'form':CajaForm(instance=caja_temp),
             'fecha_actual':fecha_actual,
             'hora_actual':hora_actual,
+            'saldo_anterior':total_caja['monto_total__sum'],
     }
 
     if request.method == 'POST':
@@ -745,6 +754,7 @@ def guardar_datos_apertura_caja(request, numero_documento):
             caja.id_cajero = cajero
             caja.fecha_apertura = fecha_actual
             caja.hora_apertura = hora_actual
+            caja.saldo_anterior = total_caja['monto_total__sum']
             caja.save()
             return render(request, 'mostrar_caja.html')
         else:
