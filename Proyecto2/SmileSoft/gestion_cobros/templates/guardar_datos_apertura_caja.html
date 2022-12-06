@@ -1,0 +1,77 @@
+{%extends 'panel_control/base.html'%}
+
+{%load static%}
+
+
+{%block content%}
+<div class="col-12 col-md-6 offset-md-3">
+    <div class="card" >
+        <br>
+        <center>
+            <div style=" color:  rgb(0, 162, 255);">
+                <h2>
+                    <!-- <i class="bi bi-file-text"></i> -->
+                    <b>Datos de apertura de caja</b>
+                </h2>
+            </div>
+        </center>
+        <div class="card-body">
+            <form action="" method="POST">
+                {%csrf_token%}
+                <div style="margin: 20px;">
+                    <br>
+                    <div class="form-group">  <!--style="float: left; width: 80%;"> -->
+                        <label><b>Cajero: </b>  </label>
+                        {{user.numero_documento.nombre}} {{user.numero_documento.apellido}}
+                    </div>
+                    <!-- <div class="form-group" style="float: right; width: 12%;"> -->
+                    <br>
+                    <div class="form-group">
+                        <label><b>Número de documento</b> </label>
+                        {{user.numero_documento}}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label><b>Fecha de apertura: </b> </label>
+                        {{fecha_actual}}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label><b>Hora de apertura</b></label>
+                        {{hora_actual}} hs
+                    </div>
+                    <br>
+                    <div class="form-group" style="width: 60%;">
+                        <label ><b>{{form.monto_apertura.label}} (Gs)</b></label>
+                        {{form.saldo_anterior}}
+                    </div>
+                    <br>
+                    <div class="form-group" style="width: 60%;">
+                        <label for="{{form.monto_apertura.name}}"><b>{{form.monto_apertura.label}} (Gs)</b></label>
+                        {{form.monto_apertura}}
+                    </div>
+                </div>
+
+                <div align="center">
+                    <!-- <a type="submit" href="/cobros/generar_factura/" target="_blank" class="btn btn-outline-primary">
+                        <i class="bi bi-file-pdf"></i>
+                        Generar factura
+                    </a> -->
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-folder2-open"></i>
+                        Abrir caja
+                    </button>
+                    &nbsp;&nbsp;
+                    <a onclick="history.back()" class="btn btn-outline-danger">
+                        <i class="bi bi-back"></i>
+                        Atrás
+                    </a>
+                </div>
+            </form>
+            <br>
+            
+        </div>
+    </div>
+</div>
+
+{%endblock%}

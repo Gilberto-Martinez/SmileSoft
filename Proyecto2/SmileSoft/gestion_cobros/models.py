@@ -2,7 +2,7 @@ from email.policy import default
 from random import choices
 from django.db import models
 from gestion_tratamiento.models import Tratamiento
-from gestion_administrativo.models import Paciente
+from gestion_administrativo.models import Paciente, Funcionario
 
 class CobroContado(models.Model):
     id_cobro_contado = models.AutoField(primary_key=True)
@@ -127,3 +127,57 @@ class DetalleFactura(models.Model):
 
     def __str__(self):
         return self.id_detalle_factura
+
+
+class Caja(models.Model):
+    id_caja = models.AutoField(primary_key=True)
+    id_cajero = models.ForeignKey(
+                                Funcionario,
+                                on_delete=models.PROTECT,
+                                null=False,
+                                blank=True,
+    )
+    fecha_apertura = models.DateField()
+    hora_apertura = models.TimeField()
+    fecha_cierre = models.DateField(null=True, blank=True)
+    hora_cierre = models.TimeField(null=True, blank=True)
+    saldo_anterior = models.BigIntegerField(null=True, blank=True)
+    monto_apertura = models.BigIntegerField()
+    monto_cierre = models.BigIntegerField(null=True, blank=True)
+
+    class Meta:
+        verbose_name='Caja'
+
+    def __str__(self):
+        return self.id_caja
+
+
+class DetalleCaja(models.Model):
+    id_detalle_caja = models.AutoField(primary_key=True)
+    id_caja = models.ForeignKey(
+                                Caja,
+                                on_delete=models.PROTECT,
+                                null=False, 
+                                blank=True,
+    )
+    I = 'Ingreso'
+    E = 'Egreso'
+    TIPOS = (
+              (I, 'Ingreso'),
+              (E, 'Egreso'),
+    )
+    tipo = models.CharField(max_length=7, choices=TIPOS, default='Ingreso')
+    detalle = models.CharField(max_length=100) 
+    id_comprobante = models.ForeignKey(
+                                    Factura,
+                                    on_delete=models.PROTECT,
+                                    null=True,
+                                    blank=True
+    )
+
+    class Meta:
+        verbose_name = 'Detalle de caja'
+        verbose_name_plural = 'Detalles de caja'
+
+    def __str__(self) :
+        return self.id_detalle_caja

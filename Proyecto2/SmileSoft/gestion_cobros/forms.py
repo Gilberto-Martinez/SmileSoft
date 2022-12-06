@@ -275,22 +275,43 @@ class FacturaReadOnlyForm(forms.ModelForm):
 
 
 class EmpresaForm(forms.ModelForm):
-        # nombre_empresa = models.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-        # direccion=forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control'}))
+    # nombre_empresa = models.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    # direccion=forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control'}))
 
 
-        class Meta:
-                model = Empresa
-                fields = [
-                        'nombre_empresa',
-                        'direccion',
-                        'telefono',
-                        'correo_electronico',
-                        'ruc',
-                        'timbrado',
-                        'f_inicio_vigencia',
-                        'f_fin_vigencia',
-                        
-                ]
+    class Meta:
+            model = Empresa
+            fields = [
+                    'nombre_empresa',
+                    'direccion',
+                    'telefono',
+                    'correo_electronico',
+                    'ruc',
+                    'timbrado',
+                    'f_inicio_vigencia',
+                    'f_fin_vigencia',
+                    
+            ]
 
+class CajaForm(forms.ModelForm):
+    # id_cajero = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+#     fecha_apertura = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+#     hora_apertura = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    # fecha_cierre = models.DateField()
+    # hora_cierre = models.TimeField()
+    saldo_anterior = forms.IntegerField( widget=forms.NumberInput(attrs={'class':'form-control'}))
+    monto_apertura = forms.IntegerField( widget=forms.NumberInput(attrs={'class':'form-control'}))
+    # monto_cierre = models.BigIntegerField()
 
+    class Meta:
+        model = Caja
+        fields = [
+                # 'id_cajero',
+                # 'fecha_apertura',
+                # 'hora_apertura',
+                # 'fecha_cierre',
+                # 'hora_cierre',
+                'saldo_anterior',
+                'monto_apertura',
+                # 'monto_cierre',
+        ]

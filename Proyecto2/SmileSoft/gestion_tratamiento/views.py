@@ -433,10 +433,10 @@ def verificar_fecha_hora_agendamiento(id_cita):
     fecha_actual = now.date()
     hora_actual = now.time()
 
-    fecha_cita = str(cita.fecha)
-    fecha_cita = datetime.strptime(fecha_cita, "%Y-%m-%d")
-    resultado = relativedelta( fecha_actual, fecha_cita)
-    horas = resultado.hours
+    # fecha_cita = str(cita.fecha)
+    # fecha_cita = datetime.strptime(fecha_cita, "%Y-%m-%d")
+    # resultado = relativedelta( fecha_actual, fecha_cita)
+    # horas = resultado.hours
 
     respuesta = False
 

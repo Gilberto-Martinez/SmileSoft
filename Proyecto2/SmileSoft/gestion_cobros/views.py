@@ -1,22 +1,23 @@
 
 #from datetime import datetime
+from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib import messages
-from gestion_administrativo.models import Empresa
+from gestion_administrativo.models import Empresa, Funcionario
 from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_inventario_insumos.models import Insumo
 from gestion_cobros.utils import render_to_pdf
 from django.http import ( HttpResponse,)
 from gestion_administrativo.models import TratamientoConfirmado
-from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura, DetalleFactura
-from gestion_tratamiento.models import Tratamiento
-from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado
+from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura, DetalleFactura, Caja
+from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado, Tratamiento
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm, FacturaReadOnlyForm
+from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm, FacturaReadOnlyForm, CajaForm
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
+
 def cobrar_tratamiento(request, id_paciente):
     listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
     paciente = Paciente.objects.get(id_paciente=id_paciente)
@@ -44,12 +45,20 @@ def cobrar_tratamiento(request, id_paciente):
     if edad < 18:
         menor_edad = True
 
+    caja_cerrada = False
+    respuesta = verificar_apertura_caja()
+    if respuesta == 'Cerrada':
+        caja_cerrada = True
+    else:
+        caja_cerrada = False
+
     return render (request,"cobrar_tratamiento.html",{
                                                         'tratamientos_agendados':tratamientos_agendados,
                                                         'persona':persona,
                                                         'precio_total':precio_total,
                                                         'menor_edad':menor_edad,
-                                                        'id_paciente':id_paciente
+                                                        'id_paciente':id_paciente,
+                                                        'caja_cerrada':caja_cerrada
                                                     }
                     )
 
@@ -674,3 +683,77 @@ def cambiar_estado_factura(request, id_factura):
             data['fecha']=fecha
 
     return render(request, 'facturacion/cambiar_estado_factura.html', data)
+
+
+def verificar_apertura_caja ():
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    try:
+        caja = Caja.objects.get(fecha_apertura=fecha_actual)
+    except Caja.DoesNotExist:
+        respuesta = 'Cerrada'
+        return respuesta
+    
+    respuesta = 'Abierta'
+
+    return respuesta
+
+
+def mostrar_caja(request, numero_documento):
+
+    data = {
+            'numero_documento':numero_documento,
+    }
+    respuesta = verificar_apertura_caja()
+    if respuesta == "Cerrada":
+        return render(request, 'mensajes/msj_caja_cerrada.html', data)
+
+    return render(request, 'mostrar_caja.html')
+
+
+def mostrar_msj_caja_cerrada(request):
+    pass
+
+
+def guardar_datos_apertura_caja(request, numero_documento):
+    cajero = Funcionario.objects.get(numero_documento=numero_documento)
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+
+    total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
+
+    caja_temp = Caja(
+                    id_cajero = cajero,
+                    fecha_apertura = fecha_actual,
+                    hora_apertura = hora_actual,
+                    monto_apertura = total_caja['monto_total__sum'],
+    )
+
+    print("Monto total: ",total_caja['monto_total__sum'])
+
+    data = {
+            'form':CajaForm(instance=caja_temp),
+            'fecha_actual':fecha_actual,
+            'hora_actual':hora_actual,
+    }
+
+    if request.method == 'POST':
+        form = CajaForm(data = request.POST, files=request.FILES)
+        if form.is_valid():
+            caja = form.save(commit=False)
+            caja.id_cajero = cajero
+            caja.fecha_apertura = fecha_actual
+            caja.hora_apertura = hora_actual
+            caja.save()
+            return render(request, 'mostrar_caja.html')
+        else:
+            print('form no es valido')
+            data['form'] = CajaForm
+            data['fecha_actual'] = fecha_actual
+            data['hora_actual'] = hora_actual
+    return render(request, 'guardar_datos_apertura_caja.html', data)
+
+
+def msj_caja_cerrada(request, numero_documento):
+    pass

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<architect-project version="1.0" appversion="1.0.9">
+<architect-project version="1.0" appversion="1.0.8">
  <project-name>DER_Smilesoft</project-name>
  <print-settings numCopies="1" zoom="1.0" pageNumbersPrinted="true" orientation="1" paperWidth="612.0" paperHeight="792.0" leftBorder="50.0" rightBorder="50.0" topBorder="50.0" bottomBorder="50.0" />
  <project-data-sources>
@@ -874,10 +874,10 @@
     <column id="COL243" populated="true" UUID="62a78b10-5a1b-43dd-8b5d-c30807ae60c3" autoIncrement="false" autoIncrementSequenceName="DetalleCaja_tipo_seq" defaultValue="" name="tipo" nullable="0" physicalName="tipo" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks>Posibles valores: Ingreso, Egreso</remarks>
     </column>
-    <column id="COL244" populated="true" UUID="460fc920-a460-4e0b-ada3-0d59f15d3edc" autoIncrement="false" autoIncrementSequenceName="DetalleCaja_detalle_seq" defaultValue="" name="detalle" nullable="0" physicalName="detalle" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL244" populated="true" UUID="af8239e2-365a-417d-b20e-272c185b5af1" autoIncrement="false" autoIncrementSequenceName="Factura_numero_factura_seq" defaultValue="" name="id_comprobante" nullable="0" physicalName="id_comprobante" precision="25" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL245" populated="true" UUID="af8239e2-365a-417d-b20e-272c185b5af1" autoIncrement="false" autoIncrementSequenceName="Factura_numero_factura_seq" defaultValue="" name="id_comprobante" nullable="0" physicalName="id_comprobante" precision="25" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL245" populated="true" UUID="5b44bd3e-d25b-4632-bcd3-c48843ea4b45" autoIncrement="false" autoIncrementSequenceName="DetalleCaja_detalle_seq" defaultValue="" name="detalle" nullable="0" physicalName="detalle" precision="100" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
     </folder>
@@ -1116,7 +1116,7 @@
     <column-mapping id="CMP344" populated="true" UUID="44863e13-74f6-4e12-9152-1c5a34d3bd1a" fk-column-ref="COL93" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL98" />
    </relationship>
    <relationship id="REL345" populated="true" UUID="80882de9-66e3-4741-a4e2-de120718af80" deferrability="7" deleteRule="3" fk-table-ref="TAB240" fkCardinality="7" identifying="false" name="Factura_DetalleCaja_fk" physicalName="Factura_DetalleCaja_fk" pk-table-ref="TAB97" pkCardinality="2" updateRule="3" >
-    <column-mapping id="CMP346" populated="true" UUID="b0dc2de3-3451-4f65-b9c8-7af5826d0b6a" fk-column-ref="COL245" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL98" />
+    <column-mapping id="CMP346" populated="true" UUID="b0dc2de3-3451-4f65-b9c8-7af5826d0b6a" fk-column-ref="COL244" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL98" />
    </relationship>
    <relationship id="REL347" populated="true" UUID="45c3554e-882c-411d-beb1-3db5bb8c458c" deferrability="7" deleteRule="3" fk-table-ref="TAB132" fkCardinality="7" identifying="false" name="Categoria_Trabajo_realizado_fk" physicalName="Categoria_Trabajo_realizado_fk" pk-table-ref="TAB117" pkCardinality="2" updateRule="3" >
     <column-mapping id="CMP348" populated="true" UUID="cf7d7f19-a7bb-406f-8e32-c422611e62db" fk-column-ref="COL135" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL118" />
@@ -1153,7 +1153,7 @@
  <ddl-generator type="ca.sqlpower.architect.ddl.GenericDDLGenerator" allow-connection="true"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
- <play-pen zoom="1.1892071150027206" viewportX="781" viewportY="130" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+ <play-pen zoom="1.1892071150027206" viewportX="0" viewportY="505" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
   <table-pane table-ref="TAB1" x="851" y="194" bgColor="0xeec994" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB11" x="1034" y="297" bgColor="0xbfd6ff" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB18" x="849" y="377" bgColor="0xeec994" fgColor="0x000000" rounded="false" dashed="false"/>
@@ -1181,7 +1181,7 @@
   <table-pane table-ref="TAB198" x="1815" y="895" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB218" x="2092" y="871" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB229" x="186" y="520" bgColor="0xeec994" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB240" x="294" y="683" bgColor="0xfbdabb" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB240" x="207" y="698" bgColor="0xfbdabb" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB248" x="273" y="171" bgColor="0xeec994" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB260" x="463" y="20" bgColor="0xeec994" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB266" x="588" y="117" bgColor="0xeec994" fgColor="0x000000" rounded="false" dashed="false"/>
@@ -1224,7 +1224,7 @@
   <table-link relationship-ref="REL359" pkConnection="0.352059925093633" fkConnection="0.8672566371681416" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="33"/>
   <table-link relationship-ref="REL297" pkConnection="0.41544117647058826" fkConnection="0.5676691729323309" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="132"/>
   <table-link relationship-ref="REL361" pkConnection="0.9121951219512195" fkConnection="0.2591093117408907" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="132"/>
-  <table-link relationship-ref="REL345" pkConnection="0.20242914979757085" fkConnection="0.7044534412955465" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL345" pkConnection="0.16312056737588654" fkConnection="0.898989898989899" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="18"/>
   <table-link relationship-ref="REL299" pkConnection="0.6691729323308271" fkConnection="0.3915094339622642" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="72"/>
   <table-link relationship-ref="REL363" pkConnection="0.7687861271676301" fkConnection="0.3160377358490566" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="132"/>
   <table-link relationship-ref="REL311" pkConnection="0.23684210526315788" fkConnection="0.6197183098591549" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="24"/>

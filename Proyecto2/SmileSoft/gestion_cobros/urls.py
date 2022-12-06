@@ -27,4 +27,9 @@ urlpatterns = [
     path('detalle_cobro_pdf/<int:id_paciente>', detalle_cobro_pdf ,name="detalle_cobro_pdf"),
     path('presupuesto_pdf/<int:id_paciente>',  presupuesto_pdf, name="presupuesto_pdf"),
     path('generar_factura/<int:id_factura>', generar_factura, name="generar_factura"),
+
+    # Cobranza --------------------
+    path('mostrar_caja/<str:numero_documento>', mostrar_caja, name="mostrar_caja"),
+    path('datos_apertura_caja/<str:numero_documento>', guardar_datos_apertura_caja, name="datos_apertura_caja"),
+    path('msj_caja_cerrada/<str:numero_documento>', msj_caja_cerrada, name="msj_caja_cerrada"),
 ]
