@@ -2,7 +2,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('cobrar_tratamiento/<int:id_paciente>', cobrar_tratamiento, name="cobrar_tratamiento"),
+    # path('cobrar_tratamiento/<int:id_paciente>', cobrar_tratamiento, name="cobrar_tratamiento"),
+    path('mostrar_tratamientos_cobrar/<int:id_paciente>', mostrar_tratamientos_cobrar, name="mostrar_tratamientos_cobrar"),
     path('registrar_cobro/<str:numero_documento>/', registrar_cobro, name="registrar_cobro"),
     path('listar_cobros/', listar_cobros, name="listar_cobros"),
     path('listar_cobros_pendientes/', listar_cobros_pendientes, name="listar_cobros_pendientes"),
@@ -30,6 +31,6 @@ urlpatterns = [
 
     # Cobranza --------------------
     path('mostrar_caja/<str:numero_documento>', mostrar_caja, name="mostrar_caja"),
-    path('datos_apertura_caja/<str:numero_documento>', guardar_datos_apertura_caja, name="datos_apertura_caja"),
-    path('msj_caja_cerrada/<str:numero_documento>', msj_caja_cerrada, name="msj_caja_cerrada"),
+    path('datos_apertura_caja/<str:numero_documento>/<str:id_paciente>', guardar_datos_apertura_caja, name="datos_apertura_caja"),
+    path('msj_caja_cerrada/<str:id_paciente>/<str:numero_documento>', msj_caja_cerrada, name="msj_caja_cerrada"),
 ]

@@ -18,7 +18,7 @@ from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
 
-def cobrar_tratamiento(request, id_paciente):
+def mostrar_tratamientos_cobrar(request, id_paciente):
     listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
@@ -52,7 +52,7 @@ def cobrar_tratamiento(request, id_paciente):
     else:
         caja_cerrada = False
 
-    return render (request,"cobrar_tratamiento.html",{
+    return render (request,"mostrar_tratamientos_cobrar.html",{
                                                         'tratamientos_agendados':tratamientos_agendados,
                                                         'persona':persona,
                                                         'precio_total':precio_total,
@@ -723,7 +723,7 @@ def mostrar_msj_caja_cerrada(request, numero_documento):
 
 
 
-def guardar_datos_apertura_caja(request, numero_documento):
+def guardar_datos_apertura_caja(request, numero_documento, id_paciente):
     cajero = Funcionario.objects.get(numero_documento=numero_documento)
     now = class_datetime.now()
     fecha_actual = now.date()
@@ -747,6 +747,11 @@ def guardar_datos_apertura_caja(request, numero_documento):
             'saldo_anterior':total_caja['monto_total__sum'],
     }
 
+    data2 = {
+        'numero_documento':numero_documento,
+        'id_paciente':id_paciente
+    }
+
     if request.method == 'POST':
         form = CajaForm(data = request.POST, files=request.FILES)
         if form.is_valid():
@@ -756,7 +761,7 @@ def guardar_datos_apertura_caja(request, numero_documento):
             caja.hora_apertura = hora_actual
             caja.saldo_anterior = total_caja['monto_total__sum']
             caja.save()
-            return render(request, 'mostrar_caja.html')
+            return render(request, 'mensajes/msj_caja_abierta.html', data2)
         else:
             print('form no es valido')
             data['form'] = CajaForm
@@ -765,5 +770,9 @@ def guardar_datos_apertura_caja(request, numero_documento):
     return render(request, 'guardar_datos_apertura_caja.html', data)
 
 
-def msj_caja_cerrada(request, numero_documento):
-    pass
+def msj_caja_cerrada(request, id_paciente, numero_documento):
+    data = {
+            'numero_documento':numero_documento,
+            'id_paciente':id_paciente,
+    }
+    return render(request, 'mensajes/msj_caja_cerrada.html', data)
