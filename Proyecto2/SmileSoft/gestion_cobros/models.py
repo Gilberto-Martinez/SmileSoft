@@ -12,10 +12,10 @@ class CobroContado(models.Model):
                                 blank=True,
                                 on_delete=models.PROTECT
     )
-    numero_documento = models.CharField(max_length=10, verbose_name='numero de documento')
-    razon_social = models.CharField(max_length=100, verbose_name='Nombre o razón social')
-    fecha = models.DateField(auto_now_add=True)
-    monto_total = models.BigIntegerField()
+    numero_documento = models.CharField(max_length=10, verbose_name='numero de documento', null=True, blank=True)
+    razon_social = models.CharField(max_length=100, verbose_name='Nombre o razón social', null=True, blank=True)
+    fecha = models.DateField(auto_now_add=True, null=True, blank=True)
+    monto_total = models.BigIntegerField(null=True, blank=True)
     class Meta:
         verbose_name = 'Cobro al contado'
         verbose_name_plural = 'Cobros al contado'
@@ -31,38 +31,38 @@ class CobroContado(models.Model):
     def get_id_cobro(self):
         return int(self.id_cobro_contado)
 
-class DetalleCobroContado(models.Model):
-    cobro = models.ForeignKey(
-                                CobroContado,
-                                null=False,
-                                blank=False,
-                                on_delete=models.PROTECT
-    )
-    tratamientos = models.ManyToManyField(
-                                                Tratamiento,
-                                                through='DetalleCobroTratamiento',
-                                                related_name='detalle_set',
-                                                # null=True,
-                                                # blank=True
-    )
+# class DetalleCobroContado(models.Model):
+#     cobro = models.ForeignKey(
+#                                 CobroContado,
+#                                 null=False,
+#                                 blank=False,
+#                                 on_delete=models.PROTECT
+#     )
+#     # tratamientos = models.ManyToManyField(
+#     #                                             Tratamiento,
+#     #                                             through='DetalleCobroTratamiento',
+#     #                                             related_name='detalle_set',
+#     #                                             # null=True,
+#     #                                             # blank=True
+#     # )
 
-    class Meta:
-        verbose_name = 'Detalle de cobro al contado'
-        verbose_name_plural = 'Detalles de cobros al contado'
-        # ordering = ["nombre"]
-        db_table = 'DetalleCobroContado'
+#     class Meta:
+#         verbose_name = 'Detalle de cobro al contado'
+#         verbose_name_plural = 'Detalles de cobros al contado'
+#         # ordering = ["nombre"]
+#         db_table = 'DetalleCobroContado'
 
-    def __str__(self):
-        return self.cobro
+#     def __str__(self):
+#         return self.cobro
 
 
-class DetalleCobroTratamiento(models.Model):
-    detalle_cobro = models.ForeignKey(
-                                        DetalleCobroContado,
-                                        # null=False,
-                                        # blank=False,
-                                        on_delete=models.CASCADE
-    )
+class DetalleCobro(models.Model):
+    # detalle_cobro = models.ForeignKey(
+    #                                     DetalleCobroContado,
+    #                                     # null=False,
+    #                                     # blank=False,
+    #                                     on_delete=models.CASCADE
+    # )
     tratamiento = models.ForeignKey(
                                     Tratamiento,
                                     # null=False,
@@ -70,6 +70,12 @@ class DetalleCobroTratamiento(models.Model):
                                     on_delete=models.CASCADE
     )
 
+    cobro_contado = models.ForeignKey(
+                                    CobroContado,
+                                    on_delete=models.PROTECT,
+                                    null=True,
+                                    blank=True,
+    )
 class Factura(models.Model):
     id_factura = models.AutoField(primary_key=True)
     sub_nro_factura1 = models.CharField(max_length=3, null=False, blank=True)
@@ -93,6 +99,12 @@ class Factura(models.Model):
     A = 'Anulado'
     ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
     estado = models.CharField(max_length=12, choices=ESTADOS,default='Emitido' ,verbose_name='Condición de venta')
+    cobro_contado = models.ForeignKey(
+                                    CobroContado,
+                                    on_delete=models.PROTECT,
+                                    null=True,
+                                    blank=True
+    )
 
     class Meta:
         verbose_name = 'Factura'

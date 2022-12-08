@@ -17,6 +17,7 @@ urlpatterns = [
     path('registrar_cobro2/<numero_documento>/<numero_documento2>/<razon_social>', registrar_cobro2, name="registrar_cobro2"),
 
     path('ingresar_datos_factura/<int:id_cobro>', ingresar_datos_factura, name="ingresar_datos_factura"),
+    path('ingresar_datos_cobro/<int:id_paciente>', ingresar_datos_cobro, name="ingresar_datos_cobro"),
     path('visualizar_datos_factura/<int:id_factura>', visualizar_datos_factura, name="visualizar_datos_factura"),
     
     #Factura_html
