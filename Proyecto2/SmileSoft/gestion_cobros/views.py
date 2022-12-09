@@ -10,7 +10,7 @@ from gestion_inventario_insumos.models import Insumo
 from gestion_cobros.utils import render_to_pdf
 from django.http import ( HttpResponse,)
 from gestion_administrativo.models import TratamientoConfirmado
-from gestion_cobros.models import CobroContado, DetalleCobro, Factura, DetalleFactura, Caja
+from gestion_cobros.models import CobroContado, DetalleCobro, Factura, DetalleFactura, Caja, DetalleCaja
 from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado, Tratamiento
 from gestion_agendamiento.models import Cita
 from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm, FacturaReadOnlyForm, CajaForm
@@ -243,19 +243,22 @@ def obtener_precio_total(cedula):
             precio_total = precio_total + nuevo_tratamieto.precio
     return precio_total
 
-def pagar_tratamientos(cedula):
+def pagar_tratamientos(tratamientos):
     """ 
         Cambia el estado de la tabla TratamientoConfirmado
         con estado = 'Pagado'
     """
-    paciente = Paciente.objects.get(numero_documento=cedula)
-    id_paciente = paciente.id_paciente
-    listado_tratamientos_conf = TratamientoConfirmado.objects.filter(estado='Confirmado')
+    # paciente = Paciente.objects.get(numero_documento=cedula)
+    # id_paciente = paciente.id_paciente
+    # listado_tratamientos_conf = TratamientoConfirmado.objects.filter(estado='Confirmado')
 
-    for tratamiento_conf in listado_tratamientos_conf:
-        if str(tratamiento_conf.paciente.id_paciente) == str(id_paciente):
-            id_tratamiento_con = tratamiento_conf.id_tratamiento_conf
-            tratamiento_pag = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_con).update(estado='Pagado')
+    for tratamiento_conf in tratamientos:
+        # tratamiento = TratamientoConfirmado.objects.get()
+        id_tratamiento_con = tratamiento_conf.id_tratamiento_conf
+        tratamiento_pag = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_con).update(estado='Pagado')
+        # if str(tratamiento_conf.paciente.id_paciente) == str(id_paciente):
+            # id_tratamiento_con = tratamiento_conf.id_tratamiento_conf
+            # tratamiento_pag = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_con).update(estado='Pagado')
 
 
 def ver_detalle_cobro(request, id_cobro_contado):
@@ -832,9 +835,25 @@ def ingresar_datos_cobro(request, id_paciente):
             fact = Factura.objects.last()
             # id_factura = fact.id_factura
             guardar_detalle_factura(fact, tratamientos)
+            guardar_detalle_caja(fact, tratamientos)
+            pagar_tratamientos(tratamientos)
+            return redirect('/cobros/confirmacion_de_cobro/%s', (fact.id_factura))
 
-    
     return render(request, 'ingresar_datos_cobro.html', data)
-    
 
 
+def confirmacion_de_cobro(request, id_factura):
+    return render(request, 'mensajes/confirmacion_de_cobro.html', {'id_factura':id_factura})
+
+
+def guardar_detalle_caja(factura, tratamientos):
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    caja = Caja.objects.get(fecha_apertura=fecha_actual)
+
+    for t in tratamientos:
+        detalle_caja = DetalleCaja.objects.create(
+                                            id_caja = caja,
+                                            detalle = t.tratamiento.nombre_tratamiento,
+                                            comprobante_cobro = factura
+        )

@@ -180,7 +180,7 @@ class DetalleCaja(models.Model):
     )
     tipo = models.CharField(max_length=7, choices=TIPOS, default='Ingreso')
     detalle = models.CharField(max_length=100) 
-    id_comprobante = models.ForeignKey(
+    comprobante_cobro = models.ForeignKey(
                                     Factura,
                                     on_delete=models.PROTECT,
                                     null=True,
