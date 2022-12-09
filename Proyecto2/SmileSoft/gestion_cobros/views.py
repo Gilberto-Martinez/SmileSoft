@@ -741,13 +741,13 @@ def guardar_datos_apertura_caja(request, numero_documento, id_paciente):
                     # saldo_anterior = total_caja['monto_total__sum'],
     )
 
-    print("Monto total: ",total_caja['monto_total__sum'])
+    monto_total_s= '{:,}'.format(total_caja['monto_total__sum']).replace(',','.')
 
     data = {
             'form':CajaForm(instance=caja_temp),
             'fecha_actual':fecha_actual,
             'hora_actual':hora_actual,
-            'saldo_anterior':total_caja['monto_total__sum'],
+            'saldo_anterior':monto_total_s,
     }
 
     data2 = {
