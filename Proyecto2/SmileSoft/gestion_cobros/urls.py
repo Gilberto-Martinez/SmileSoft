@@ -15,7 +15,7 @@ urlpatterns = [
     path('verificar_datos_cita/<numero_documento>/<menor_edad>', verificar_datos_cita, name="verificar_datos_cita"),
     path('solicitar_razon_social/<numero_documento>', solicitar_razon_social, name="solicitar_razon_social"),
     path('registrar_cobro2/<numero_documento>/<numero_documento2>/<razon_social>', registrar_cobro2, name="registrar_cobro2"),
-    path('confirmacion_de_cobro/<id_factura>', confirmacion_de_cobro, name="confirmacion_de_cobro"),
+    path('confirmacion_de_cobro/<int:id_factura>', confirmacion_de_cobro, name="confirmacion_de_cobro"),
 
     path('ingresar_datos_factura/<int:id_cobro>', ingresar_datos_factura, name="ingresar_datos_factura"),
     path('ingresar_datos_cobro/<int:id_paciente>', ingresar_datos_cobro, name="ingresar_datos_cobro"),

@@ -4,7 +4,7 @@
 
 
 {%block content%}
-<div class="col-12 col-md-6 offset-md-3">
+<div class="col-12 col-md-8 offset-md-2">
     <div class="card" >
         <br>
         <center>
@@ -19,30 +19,49 @@
             <form action="" method="POST">
                 {%csrf_token%}
                 <div style="margin: 20px;">
-                    <br>
-                    <div class="form-group">  <!--style="float: left; width: 80%;"> -->
-                        <label for="{{form.numero_documento.name}}"><b>{{form.numero_documento.label}}</b>  </label>
-                        {{form.numero_documento}}
+                    <div>
+                        <br>
+                        <div class="form-group" style="width: 25%; float: left">  <!--style="float: left; width: 80%;"> -->
+                            <label for="{{form.fecha.name}}"><b> {{form.fecha.label}}</b>  </label>
+                            <!-- <br> -->
+                            {{form.fecha}}
+                        </div>
+                        <div class="form-group" style="width: 40%; float: right">  <!--style="float: left; width: 80%;"> -->
+                            <label for="{{form.condicion_venta.name}}"><b>{{form.condicion_venta.label}}</b>  </label>
+                            {{form.condicion_venta}}
+                        </div>
                     </div>
                     <br>
-                    <!-- <div class="form-group" style="float: right; width: 12%;">
-                        <label for="{{form.dv.name}}"><b>{{form.dv.label}}</b> </label>
-                        {{form.dv}}
-                    </div> -->
-                    <div class="form-group">
-                        <label for="{{form.razon_social.name}}"><b>{{form.razon_social.label}}</b> </label>
-                        {{form.razon_social}}
+                    <br>
+                    <br>
+                    <div>
+                        <div class="form-group" style="float: left; width: 30%;">  <!--style="float: left; width: 80%;"> -->
+                            <label for="{{form.numero_documento.name}}"><b>{{form.numero_documento.label}}</b>  </label>
+                            {{form.numero_documento}}
+                        </div>
+                        <div class="form-group" style="float: right; width: 70%;">
+                            <label for="{{form.razon_social.name}}"><b>{{form.razon_social.label}}</b> </label>
+                            {{form.razon_social}}
+                        </div>
                     </div>
                     <br>
-                    <div class="form-group">
-                        <label for="{{form.direccion.name}}"><b>{{form.direccion.label}}</b></label>
-                        {{form.direccion}}
-                    </div>
                     <br>
-                    <div class="form-group">
-                        <label for="{{form.telefono.name}}"><b>{{form.telefono.label}}</b></label>
-                        {{form.telefono}}
+                    <br>
+                    <div>
+                        <div class="form-group" style="float: left; width: 75%;">
+                            <label for="{{form.direccion.name}}"><b>{{form.direccion.label}}</b></label>
+                            {{form.direccion}}
+                        </div>
+                        <div class="form-group" style="float: right; width: 25%;">
+                            <label for="{{form.telefono.name}}"><b>{{form.telefono.label}}</b></label>
+                            {{form.telefono}}
+                        </div>
                     </div>
+                    
+                    <br>
+                    <br>
+                    <br>
+                    
                 </div>
                 <h4 style="color: white; background-color: lightskyblue;" align="center">
                     Detalles de Facturación
@@ -54,6 +73,9 @@
                                 <th>Cantidad</th>
                                 <th>Descripción</th>
                                 <th>Precio unitario</th>
+                                <!-- <th>Exentas</th>
+                                <th>IVA 5%</th>
+                                <th>IVA 10%</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -63,11 +85,25 @@
                                     <td>1</td>
                                     <td>{{c.tratamiento.nombre_tratamiento}}</td>
                                     <td>{{c.tratamiento.precio}}</td>
+                                    <!-- <td>{{form.numero_documento}}</td>
+                                    <td>{{form.numero_documento}}</td>
+                                    <td>{{form.numero_documento}}</td> -->
                                 </tr>
                                 {%endfor%}
+                                <!-- <tr>
+                                    <td><b>SubTotales</b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><b>{{monto_total}} Gs</b></td>
+                                    <td><b>{{monto_total}} Gs</b></td>
+                                    <td><b>{{monto_total}} Gs</b></td>
+                                </tr> -->
                                 <tr>
                                     <td><b>Totales</b></td>
                                     <td></td>
+                                    <!-- <td></td> -->
+                                    <!-- <td></td> -->
+                                    <!-- <td></td> -->
                                     <td><b>{{monto_total}} Gs</b></td>
                                 </tr>
                             {%else%}

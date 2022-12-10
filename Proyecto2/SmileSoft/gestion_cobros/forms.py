@@ -128,6 +128,11 @@ class FacturaForm(forms.ModelForm):
                                                     )
                                 )
     telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = forms.ChoiceField(label='Condicón de venta',choices=CONDICIONES, widget = forms.Select (attrs = {'class': 'form-control',}))
+    fecha = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control', 'readonly':True}))
     class Meta:
         model = Factura
         fields = [
@@ -135,6 +140,8 @@ class FacturaForm(forms.ModelForm):
                 'razon_social',
                 'direccion',
                 'telefono',
+                'condicion_venta',
+                'fecha',
         ]
 
 

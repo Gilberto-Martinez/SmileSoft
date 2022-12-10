@@ -792,6 +792,8 @@ def ingresar_datos_cobro(request, id_paciente):
         monto_total = t.tratamiento.precio
 
     monto_total_s= '{:,}'.format(monto_total).replace(',','.')
+    now = class_datetime.now()
+    fecha_actual = now.date()
 
     partes_nro_factura = generar_numero_factura()
     factura = Factura(
@@ -803,6 +805,7 @@ def ingresar_datos_cobro(request, id_paciente):
                         razon_social = paciente.numero_documento.nombre +" "+ paciente.numero_documento.apellido,
                         direccion = paciente.numero_documento.direccion,
                         telefono = paciente.numero_documento.telefono,
+                        fecha = fecha_actual,
                         total_pagar = monto_total,
                         # iva_5 = "",
                         iva_10= (monto_total / 11),
@@ -813,6 +816,7 @@ def ingresar_datos_cobro(request, id_paciente):
     data = {
             'tratamientos':tratamientos,
             'monto_total':monto_total_s,
+            # 'fecha':fecha_actual,
             'form': FacturaForm(instance=factura)
     }
 
@@ -837,7 +841,7 @@ def ingresar_datos_cobro(request, id_paciente):
             guardar_detalle_factura(fact, tratamientos)
             guardar_detalle_caja(fact, tratamientos)
             pagar_tratamientos(tratamientos)
-            return redirect('/cobros/confirmacion_de_cobro/%s', (fact.id_factura))
+            return redirect('/cobros/confirmacion_de_cobro/%s' %(fact.id_factura))
 
     return render(request, 'ingresar_datos_cobro.html', data)
 

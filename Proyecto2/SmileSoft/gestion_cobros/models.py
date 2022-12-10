@@ -85,7 +85,7 @@ class Factura(models.Model):
     numero_documento = models.CharField(max_length=10, null=True)
     razon_social = models.CharField(max_length=60, null=True, blank=True, verbose_name='Nombre o Razón Social')
     direccion = models.CharField(max_length=80, null=True, blank=True, verbose_name='Dirección')
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateField() #(auto_now_add=True)
     CO = 'Contado'
     CR = 'Credito'
     CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
