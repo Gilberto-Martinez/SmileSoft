@@ -1,23 +1,24 @@
 
 #from datetime import datetime
+from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib import messages
-from gestion_administrativo.models import Empresa
+from gestion_administrativo.models import Empresa, Funcionario, TratamientoConfirmado
 from gestion_tratamiento.models import TratamientoInsumoAsignado
 from gestion_inventario_insumos.models import Insumo
 from gestion_cobros.utils import render_to_pdf
 from django.http import ( HttpResponse,)
 from gestion_administrativo.models import TratamientoConfirmado
-from gestion_cobros.models import CobroContado, DetalleCobroContado, DetalleCobroTratamiento, Factura, DetalleFactura
-from gestion_tratamiento.models import Tratamiento
-from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado
+from gestion_cobros.models import CobroContado, DetalleCobro, Factura, DetalleFactura, Caja, DetalleCaja
+from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado, Tratamiento
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm
+from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm, FacturaReadOnlyForm, CajaForm
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
-def cobrar_tratamiento(request, id_paciente):
+
+def mostrar_tratamientos_cobrar(request, id_paciente):
     listado_tratamientos = TratamientoConfirmado.objects.filter(estado='Confirmado')
     paciente = Paciente.objects.get(id_paciente=id_paciente)
     cedula = paciente.numero_documento
@@ -44,12 +45,20 @@ def cobrar_tratamiento(request, id_paciente):
     if edad < 18:
         menor_edad = True
 
-    return render (request,"cobrar_tratamiento.html",{
+    caja_cerrada = False
+    respuesta = verificar_apertura_caja()
+    if respuesta == 'Cerrada':
+        caja_cerrada = True
+    else:
+        caja_cerrada = False
+
+    return render (request,"mostrar_tratamientos_cobrar.html",{
                                                         'tratamientos_agendados':tratamientos_agendados,
                                                         'persona':persona,
                                                         'precio_total':precio_total,
                                                         'menor_edad':menor_edad,
-                                                        'id_paciente':id_paciente
+                                                        'id_paciente':id_paciente,
+                                                        'caja_cerrada':caja_cerrada
                                                     }
                     )
 
@@ -68,18 +77,18 @@ def registrar_cobro(request, numero_documento):
                                             )
 
         tratamientos_confirmados = obtener_tratamientos(numero_documento)
-        detalle_cobro_nuevo = DetalleCobroContado.objects.create(
+        """ detalle_cobro_nuevo = DetalleCobroContado.objects.create(
                                                             cobro=cobro_contado,
                                                             # tratamientos=tratamientos_confirmados
-        )
+        ) """
         # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
         for tratamiento_conf in tratamientos_confirmados:
             # print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
             # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
-            detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
+            """ detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
                                                 detalle_cobro=detalle_cobro_nuevo,
                                                 tratamiento = tratamiento_conf
-            )
+            ) """
         pagar_tratamientos(numero_documento)
     
         id_cobro = cobro_contado.id_cobro_contado
@@ -101,19 +110,19 @@ def registrar_cobro2(request, numero_documento, numero_documento2,razon_social):
                                                 monto_total=precio_total
                                             )
 
-        tratamientos_confirmados = obtener_tratamientos(numero_documento)
+        """ tratamientos_confirmados = obtener_tratamientos(numero_documento)
         detalle_cobro_nuevo = DetalleCobroContado.objects.create(
                                                             cobro=cobro_contado,
                                                             # tratamientos=tratamientos_confirmados
-        )
+        ) """
         # detalle_actualiado =DetalleCobroContado.objects.filter(cobro=cobro_contado).update()
-        for tratamiento_conf in tratamientos_confirmados:
+        """ for tratamiento_conf in tratamientos_confirmados:
             # print("Tratamiento: ",tratamiento_conf.codigo_tratamiento)
             # DetalleCobroContado.objects.filter(cobro=cobro_contado).update(tratamientos=tratamiento_conf)
             detalle_cobro_tratamiento = DetalleCobroTratamiento.objects.create(
                                                 detalle_cobro=detalle_cobro_nuevo,
                                                 tratamiento = tratamiento_conf
-            )
+            ) """
         pagar_tratamientos(numero_documento)
     
     else:
@@ -154,7 +163,7 @@ def verificar_datos_cita(request, numero_documento, menor_edad):
     if respuesta == True:
         if menor_edad is True:
             return redirect("/cobros/solicitar_razon_social/%s" (numero_documento))
-        return redirect("/cobros/registrar_cobro/%s" %(numero_documento))
+        return redirect("/cobros/ingresar_datos_cobro/%s" %(paciente.id_paciente))
         
 
     print('respuesta: ',respuesta)
@@ -234,43 +243,46 @@ def obtener_precio_total(cedula):
             precio_total = precio_total + nuevo_tratamieto.precio
     return precio_total
 
-def pagar_tratamientos(cedula):
+def pagar_tratamientos(tratamientos):
     """ 
         Cambia el estado de la tabla TratamientoConfirmado
         con estado = 'Pagado'
     """
-    paciente = Paciente.objects.get(numero_documento=cedula)
-    id_paciente = paciente.id_paciente
-    listado_tratamientos_conf = TratamientoConfirmado.objects.filter(estado='Confirmado')
+    # paciente = Paciente.objects.get(numero_documento=cedula)
+    # id_paciente = paciente.id_paciente
+    # listado_tratamientos_conf = TratamientoConfirmado.objects.filter(estado='Confirmado')
 
-    for tratamiento_conf in listado_tratamientos_conf:
-        if str(tratamiento_conf.paciente.id_paciente) == str(id_paciente):
-            id_tratamiento_con = tratamiento_conf.id_tratamiento_conf
-            tratamiento_pag = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_con).update(estado='Pagado')
+    for tratamiento_conf in tratamientos:
+        # tratamiento = TratamientoConfirmado.objects.get()
+        id_tratamiento_con = tratamiento_conf.id_tratamiento_conf
+        tratamiento_pag = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_con).update(estado='Pagado')
+        # if str(tratamiento_conf.paciente.id_paciente) == str(id_paciente):
+            # id_tratamiento_con = tratamiento_conf.id_tratamiento_conf
+            # tratamiento_pag = TratamientoConfirmado.objects.filter(id_tratamiento_conf=id_tratamiento_con).update(estado='Pagado')
 
 
 def ver_detalle_cobro(request, id_cobro_contado):
     cobro = CobroContado.objects.get(id_cobro_contado=id_cobro_contado)
-    detalle_cobro = DetalleCobroContado.objects.get(cobro=id_cobro_contado)
-    id_detalle_cobro = detalle_cobro.id
-    detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+    detalles_de_cobros = DetalleCobro.objects.filter(cobro_contado=cobro)
+    # id_detalle_cobro = detalle_cobro.id
+    # detalle_tratamientos = DetalleCobroTratamiento.objects.all()
     tratamientos =[] 
 
-    for detalle_tratamiento in detalle_tratamientos:
+    for detalle_cobro in detalles_de_cobros:
         # print("id Detalle parametro: ", id_detalle_cobro)
         # print("Detalle de cobro en BD: ", detalle_tratamiento.detalle_cobro.id)
-        if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
-            id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
-            tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
-            precio = '{:,}'.format(tratamiento.precio).replace(',','.')
-            tratamiento_tmp = {
-                                'nombre_tratamiento':tratamiento.nombre_tratamiento,
-                                'precio':precio
-            }
-            tratamientos.append(tratamiento_tmp)
+        # if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
+        id_tratamiento = detalle_cobro.tratamiento.get_codigo_tratamiento()
+        tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
+        precio = '{:,}'.format(tratamiento.precio).replace(',','.')
+        tratamiento_tmp = {
+                            'nombre_tratamiento':tratamiento.nombre_tratamiento,
+                            'precio':precio
+        }
+        tratamientos.append(tratamiento_tmp)
             # print("Entra en detalle de cobro")
-
-    monto_total = cobro.monto_total
+    factura = Factura.objects.get(cobro_contado=cobro, estado='Emitido')
+    monto_total = factura.total_pagar
     monto_total = '{:,}'.format(monto_total).replace(',','.')
 
     return render(request, 'ver_detalle_cobro.html',{
@@ -314,15 +326,20 @@ def listar_cobros(request):
     # cobros = CobroContado.objects.all()
     listado_cobros = []
     for cobro in cobros:
-        monto_total = '{:,}'.format(cobro.monto_total).replace(',','.')
-        cobro_tmp = {
-                    'id_cobro_contado' : cobro.id_cobro_contado,
-                    'numero_documento' : cobro.numero_documento,
-					'razon_social' : cobro.razon_social,
-					'fecha' : cobro.fecha,
-                    'monto_total' :monto_total
-        }
-        listado_cobros.append(cobro_tmp)
+        try:
+            factura = Factura.objects.get(cobro_contado=cobro, estado='Emitido')
+        except Factura.DoesNotExist:
+            pass
+        else:
+            monto_total = '{:,}'.format(factura.total_pagar).replace(',','.')
+            cobro_tmp = {
+                        'id_cobro_contado' : cobro.id_cobro_contado,
+                        'numero_documento' : factura.numero_documento,
+                        'razon_social' : factura.razon_social,
+                        'fecha' : factura.fecha,
+                        'monto_total' :monto_total
+            }
+            listado_cobros.append(cobro_tmp)
 
     return render(request, 'listar_cobro_contado.html', {'listado_cobros':listado_cobros})
 
@@ -471,7 +488,7 @@ def ingresar_datos_factura(request, id_cobro):
     cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
     cedula = cobro.paciente.numero_documento
     persona = Persona.objects.get(numero_documento=cedula)
-    detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro)
+    """ detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro) """
     id_detalle_cobro = detalle_cobro.id
     detalle_tratamientos = DetalleCobroTratamiento.objects.all()
     tratamientos =[]
@@ -585,17 +602,31 @@ def generar_numero_factura():
         return partes_nro_factura
 
 
-
-
 def guardar_detalle_factura(fact, tratamientos):
     print("Entra a guardar detalle de factura")
-    for tratamiento in tratamientos:
+    for t in tratamientos:
         detalle_factura = DetalleFactura.objects.create(
                                                     id_factura = fact,
-                                                    descripcion = tratamiento['nombre_tratamiento'],
-                                                    precio_unitario = tratamiento['precio_numerico'],
-                                                    gravado_10_porc = tratamiento['precio_numerico'],
+                                                    descripcion = t.tratamiento.nombre_tratamiento,
+                                                    precio_unitario = t.tratamiento.precio,
+                                                    gravado_10_porc = t.tratamiento.precio,
         )
+
+
+def visualizar_datos_factura(request, id_factura):
+    factura = Factura.objects.get(id_factura=id_factura)
+    fecha = factura.fecha
+
+    data={
+        'form':FacturaReadOnlyForm(instance=factura),
+        'fecha':fecha
+    }
+
+    if request.method == 'POST':
+        form = FacturaReadOnlyForm(data=request.POST, instance=factura, files=request.FILES)
+
+    return render(request, 'facturacion/visualizar_datos_factura.html', data)
+
 
 #--->Factura HTML----
 def generar_factura_original(request):
@@ -623,7 +654,20 @@ def generar_factura(request,id_factura):
 
 #--->Listado de Facturas----#
 def listar_facturas (request):
-    lista_facturas = Factura.objects.all().order_by('nro_factura')
+    facturas = Factura.objects.all().order_by('nro_factura')
+    lista_facturas = []
+    anulado = False
+    for factura in facturas:
+        if factura.estado == 'Anulado':
+            anulado = True
+        else:
+            anulado = False
+        dato_factura = {
+                        'factura': factura,
+                        'anulado': anulado
+        }
+        print('Anulado?: ', anulado)
+        lista_facturas.append(dato_factura)
     return render(request, 'listar_facturas.html', {'lista_facturas':lista_facturas})
 
 def cambiar_estado_factura(request, id_factura):
@@ -647,3 +691,220 @@ def cambiar_estado_factura(request, id_factura):
             data['fecha']=fecha
 
     return render(request, 'facturacion/cambiar_estado_factura.html', data)
+
+
+def verificar_apertura_caja ():
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    try:
+        caja = Caja.objects.get(fecha_apertura=fecha_actual)
+    except Caja.DoesNotExist:
+        respuesta = 'Cerrada'
+        return respuesta
+    
+    respuesta = 'Abierta'
+
+    return respuesta
+
+
+def mostrar_caja(request, numero_documento):
+    data = {
+            'numero_documento':numero_documento,
+    }
+    respuesta = verificar_apertura_caja()
+    if respuesta == "Cerrada":
+        return render(request, 'mensajes/msj_caja_cerrada2.html', data)
+
+    return render(request, 'mensajes/msj_caja_abierta2.html')
+
+
+def mostrar_msj_caja_cerrada(request, numero_documento):
+    data = {
+            'numero_documento':numero_documento,
+    }
+    respuesta = verificar_apertura_caja()
+    if respuesta == "Cerrada":
+        return render(request, 'mensajes/msj_caja_cerrada.html', data)
+
+    return render(request, 'mostrar_caja.html')
+
+
+
+def guardar_datos_apertura_caja(request, numero_documento, id_paciente):
+    cajero = Funcionario.objects.get(numero_documento=numero_documento)
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+
+    total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
+
+    caja_temp = Caja(
+                    id_cajero = cajero,
+                    fecha_apertura = fecha_actual,
+                    hora_apertura = hora_actual,
+                    # saldo_anterior = total_caja['monto_total__sum'],
+    )
+
+    monto_total_s= '{:,}'.format(total_caja['monto_total__sum']).replace(',','.')
+
+    data = {
+            'form':CajaForm(instance=caja_temp),
+            'fecha_actual':fecha_actual,
+            'hora_actual':hora_actual,
+            'saldo_anterior':monto_total_s,
+    }
+
+    data2 = {
+        'id_paciente':id_paciente
+    }
+
+    if request.method == 'POST':
+        form = CajaForm(data = request.POST, files=request.FILES)
+        if form.is_valid():
+            caja = form.save(commit=False)
+            caja.id_cajero = cajero
+            caja.fecha_apertura = fecha_actual
+            caja.hora_apertura = hora_actual
+            caja.save()
+            return render(request, 'mensajes/msj_caja_abierta.html', data2)
+        else:
+            print('form no es valido')
+            data['form'] = CajaForm
+            data['fecha_actual'] = fecha_actual
+            data['hora_actual'] = hora_actual
+    return render(request, 'guardar_datos_apertura_caja.html', data)
+
+
+def guardar_datos_apertura_caja2(request, numero_documento):
+    cajero = Funcionario.objects.get(numero_documento=numero_documento)
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+
+    total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
+
+    caja_temp = Caja(
+                    id_cajero = cajero,
+                    fecha_apertura = fecha_actual,
+                    hora_apertura = hora_actual,
+                    # saldo_anterior = total_caja['monto_total__sum'],
+    )
+
+    monto_total_s= '{:,}'.format(total_caja['monto_total__sum']).replace(',','.')
+
+    data = {
+            'form':CajaForm(instance=caja_temp),
+            'fecha_actual':fecha_actual,
+            'hora_actual':hora_actual,
+            'saldo_anterior':monto_total_s,
+    }
+
+    if request.method == 'POST':
+        form = CajaForm(data = request.POST, files=request.FILES)
+        if form.is_valid():
+            caja = form.save(commit=False)
+            caja.id_cajero = cajero
+            caja.fecha_apertura = fecha_actual
+            caja.hora_apertura = hora_actual
+            caja.save()
+            return render(request, 'mensajes/msj_caja_abierta2.html')
+        else:
+            print('form no es valido')
+            data['form'] = CajaForm
+            data['fecha_actual'] = fecha_actual
+            data['hora_actual'] = hora_actual
+    return render(request, 'guardar_datos_apertura_caja.html', data)
+
+3
+
+def msj_caja_cerrada(request, id_paciente, numero_documento):
+    data = {
+            'numero_documento':numero_documento,
+            'id_paciente':id_paciente,
+    }
+    return render(request, 'mensajes/msj_caja_cerrada.html', data)
+
+def msj_caja_abierta2(request):
+    return render(request, ',mensajes/msj_caja_abierta2.html')
+
+def ingresar_datos_cobro(request, id_paciente):
+    paciente = Paciente.objects.get(id_paciente=id_paciente)
+
+    tratamientos = TratamientoConfirmado.objects.filter(
+                                                        paciente = id_paciente,
+                                                        estado = 'Confirmado'
+    )
+
+    for t in tratamientos:
+        monto_total = t.tratamiento.precio
+
+    monto_total_s= '{:,}'.format(monto_total).replace(',','.')
+    now = class_datetime.now()
+    fecha_actual = now.date()
+
+    partes_nro_factura = generar_numero_factura()
+    factura = Factura(
+                        sub_nro_factura1 = partes_nro_factura['sub_nro_1'],
+                        sub_nro_factura2 = partes_nro_factura['sub_nro_2'],
+                        sub_nro_factura3 = partes_nro_factura['sub_nro_3'],
+                        nro_factura = partes_nro_factura['nro_factura'],
+                        numero_documento = paciente.numero_documento,
+                        razon_social = paciente.numero_documento.nombre +" "+ paciente.numero_documento.apellido,
+                        direccion = paciente.numero_documento.direccion,
+                        telefono = paciente.numero_documento.telefono,
+                        fecha = fecha_actual,
+                        total_pagar = monto_total,
+                        # iva_5 = "",
+                        iva_10= (monto_total / 11),
+                        total_iva = (monto_total / 11),
+                        estado = 'Emitido',
+    )
+
+    data = {
+            'tratamientos':tratamientos,
+            'monto_total':monto_total_s,
+            # 'fecha':fecha_actual,
+            'form': FacturaForm(instance=factura)
+    }
+
+    if request.method == 'POST':
+        form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
+
+        if form.is_valid():
+            cobro = CobroContado.objects.create(
+                                                paciente=paciente 
+            )
+
+            for t in tratamientos:
+                detalle_cobro = DetalleCobro.objects.create(
+                                                    tratamiento=t.tratamiento,
+                                                    cobro_contado=cobro
+                )
+            factura = form.save(commit=False)
+            factura.cobro_contado = cobro
+            factura.save()
+            fact = Factura.objects.last()
+            # id_factura = fact.id_factura
+            guardar_detalle_factura(fact, tratamientos)
+            guardar_detalle_caja(fact, tratamientos)
+            pagar_tratamientos(tratamientos)
+            return redirect('/cobros/confirmacion_de_cobro/%s' %(fact.id_factura))
+
+    return render(request, 'ingresar_datos_cobro.html', data)
+
+
+def confirmacion_de_cobro(request, id_factura):
+    return render(request, 'mensajes/confirmacion_de_cobro.html', {'id_factura':id_factura})
+
+
+def guardar_detalle_caja(factura, tratamientos):
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    caja = Caja.objects.get(fecha_apertura=fecha_actual)
+
+    for t in tratamientos:
+        detalle_caja = DetalleCaja.objects.create(
+                                            id_caja = caja,
+                                            detalle = t.tratamiento.nombre_tratamiento,
+                                            comprobante_cobro = factura
+        )

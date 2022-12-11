@@ -1,0 +1,37 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+<!-- {%if perms.gestion_administrativo.add_cargo%} -->
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>
+            <center>  
+                <h2 style="font-family: Bodoni;">
+                    <b>
+                        ¡Caja abierta!
+                    </b>
+                </h2> 
+                <font size="7" class="bi bi-safe2"></font>
+                <div class="container mt-3 text-center">
+                    <small> <b> ¿Desea realizar el cierre de caja? <br></small>
+                </div>
+            </center>
+                <!-- <div class="container mt-3 text-center">
+                    <small> <b> Aun no ha realizado la apertura de caja, <br> ¿Desea realizarla?  </small>
+                </div> -->
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-primary" style="margin: 10px;" href="#">
+                        <i class="bi bi-check2-square"></i>
+                        SI
+                    </a>
+                    <a class="btn btn-danger" style="margin: 10px;" href="/panel_control/inicio/">
+                        <i class="bi bi-x-circle"></i>
+                        NO
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- {%endif%} -->
+{%endblock%}

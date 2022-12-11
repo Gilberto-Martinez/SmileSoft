@@ -20,9 +20,9 @@
                 </center> -->
                 <div>
 					<h6>
-						<b>Paciente: </b>{{cobro.razon_social}}
+						<b>Paciente: </b>{{cobro.paciente.numero_documento.nombre}} {{cobro.paciente.numero_documento.apellido}}
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<b>Número de documento </b>{{cobro.numero_documento}}
+						<b>Número de documento </b>{{cobro.paciente.numero_documento}}
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<b>Fecha: </b>{{cobro.fecha}}
 					</h6>
@@ -60,11 +60,11 @@
 				<br>
 				<hr>
 				<div align="center">
-					<a  href="/cobros/ingresar_datos_factura/{{cobro.get_id_cobro}}" class="btn btn-primary">
+					<!-- <a  href="/cobros/ingresar_datos_factura/{{cobro.get_id_cobro}}" class="btn btn-primary">
 						<i class="bi bi-printer"></i> 
 						Factura
 				   </a>
-				   &nbsp;&nbsp;
+				   &nbsp;&nbsp; -->
 					<a  onclick="history.back()" class="btn btn-secondary">
 						 <i class="bi bi-backspace"></i> 
 						 Atrás

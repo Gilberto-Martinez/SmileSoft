@@ -19,31 +19,40 @@
 					<table class="table table-striped table-hover">
 						{%if lista_facturas%}
 							<thead style="border: 1cm;">
-								<tr>
-									<th>N°</th>
-									<th>N° Factura</th>
-									<th>Fecha de emisión</th>
-									<th>Cliente</th>
-									<th>Estado</th>
-									<th>Acción</th>
-								</tr>
+								{% if lista_facturas %}
+									<tr>
+										<th>N°</th>
+										<th>N° Factura</th>
+										<th>Fecha de emisión</th>
+										<th>Cliente</th>
+										<th>Estado</th>
+										<th>Acción</th>
+									</tr>
+								{%endif%}
 							</thead>
 							<tbody>
 								<!--fin de la pueba-->
 								<!--lISTAR VALORES AQUI ... -->
 								{% if lista_facturas %}
-									{% for factura in lista_facturas %}
+									{% for f in lista_facturas %}
 										<tr>
 											<td >{{forloop.counter}}</td>
-											<td>{{ factura.nro_factura }}</td>
-											<td>{{ factura.fecha }}</td>
-											<td>{{ factura.razon_social }}</td>
-											<td>{{factura.estado}}</td>
+											<td>{{ f.factura.nro_factura }}</td>
+											<td>{{ f.factura.fecha }}</td>
+											<td>{{ f.factura.razon_social }}</td>
+											<td>{{f.factura.estado}}</td>
 											<td>
-												<a href="/cobros/cambiar_estado_factura/{{factura.id_factura}}" type="buttom" class="btn btn-primary">
-													<i class="bi bi-pencil-square"></i>
-													Cambiar estado
-												</a>
+												{%if f.anulado%}
+													<a href="/cobros/visualizar_datos_factura/{{f.factura.id_factura}}" type="buttom" class="btn btn-secondary">
+														<i class="bi bi-pencil-square"></i>
+														Visualizar datos
+													</a>
+												{%else%}
+													<a href="/cobros/cambiar_estado_factura/{{f.factura.id_factura}}" type="buttom" class="btn btn-primary">
+														<i class="bi bi-pencil-square"></i>
+														Cambiar estado
+													</a>
+												{%endif%}
 											</td>
 										</tr>
 									{% endfor %}

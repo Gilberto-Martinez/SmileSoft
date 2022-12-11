@@ -128,6 +128,11 @@ class FacturaForm(forms.ModelForm):
                                                     )
                                 )
     telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = forms.ChoiceField(label='Condicón de venta',choices=CONDICIONES, widget = forms.Select (attrs = {'class': 'form-control',}))
+    fecha = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control', 'readonly':True}))
     class Meta:
         model = Factura
         fields = [
@@ -135,6 +140,8 @@ class FacturaForm(forms.ModelForm):
                 'razon_social',
                 'direccion',
                 'telefono',
+                'condicion_venta',
+                'fecha',
         ]
 
 
@@ -207,23 +214,111 @@ class FacturaUpdateForm(forms.ModelForm):
         ]
 
 
+class FacturaReadOnlyForm(forms.ModelForm):
+    nro_factura = forms.CharField(label="Número de factura",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+
+    numero_documento = forms.CharField(label="RUC",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(label="Nombre/Razón social",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+    direccion = forms.CharField(label="Domicilio",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'readonly':True,
+                                                            }
+                                                    )
+                                )
+                                                        
+    telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+
+    condicion_venta = forms.CharField(label='Condición de venta', widget = forms.TextInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+    total_pagar = forms.IntegerField(label='Total a pagar', widget = forms.NumberInput (attrs = {
+                                                                                'class': 'form-control',
+                                                                                'readonly':True,
+                                                                                }
+                                                                        )
+                                )
+    estado = forms.CharField( widget = forms.TextInput (attrs = {'class': 'form-control', 'readonly':True}))
+    
+    class Meta:
+        model = Factura
+        fields = [
+                'nro_factura',
+                'numero_documento',
+                'razon_social',
+                'direccion',
+                'telefono',
+                'condicion_venta',
+                'total_pagar',
+                'estado',
+        ]
+
+
+
 class EmpresaForm(forms.ModelForm):
-        # nombre_empresa = models.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-        # direccion=forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control'}))
+    # nombre_empresa = models.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    # direccion=forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control'}))
 
 
-        class Meta:
-                model = Empresa
-                fields = [
-                        'nombre_empresa',
-                        'direccion',
-                        'telefono',
-                        'correo_electronico',
-                        'ruc',
-                        'timbrado',
-                        'f_inicio_vigencia',
-                        'f_fin_vigencia',
-                        
-                ]
+    class Meta:
+            model = Empresa
+            fields = [
+                    'nombre_empresa',
+                    'direccion',
+                    'telefono',
+                    'correo_electronico',
+                    'ruc',
+                    'timbrado',
+                    'f_inicio_vigencia',
+                    'f_fin_vigencia',
+                    
+            ]
 
+class CajaForm(forms.ModelForm):
+    # id_cajero = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+#     fecha_apertura = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+#     hora_apertura = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    # fecha_cierre = models.DateField()
+    # hora_cierre = models.TimeField()
+#     saldo_anterior = forms.IntegerField( widget=forms.NumberInput(attrs={'class':'form-control'}))
+    monto_apertura = forms.IntegerField( widget=forms.NumberInput(attrs={'class':'form-control'}))
+    # monto_cierre = models.BigIntegerField()
 
+    class Meta:
+        model = Caja
+        fields = [
+                # 'id_cajero',
+                # 'fecha_apertura',
+                # 'hora_apertura',
+                # 'fecha_cierre',
+                # 'hora_cierre',
+                'saldo_anterior',
+                'monto_apertura',
+                # 'monto_cierre',
+        ]
