@@ -263,26 +263,26 @@ def pagar_tratamientos(tratamientos):
 
 def ver_detalle_cobro(request, id_cobro_contado):
     cobro = CobroContado.objects.get(id_cobro_contado=id_cobro_contado)
-    """ detalle_cobro = DetalleCobroContado.objects.get(cobro=id_cobro_contado) """
-    id_detalle_cobro = detalle_cobro.id
-    detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+    detalles_de_cobros = DetalleCobro.objects.filter(cobro_contado=cobro)
+    # id_detalle_cobro = detalle_cobro.id
+    # detalle_tratamientos = DetalleCobroTratamiento.objects.all()
     tratamientos =[] 
 
-    for detalle_tratamiento in detalle_tratamientos:
+    for detalle_cobro in detalles_de_cobros:
         # print("id Detalle parametro: ", id_detalle_cobro)
         # print("Detalle de cobro en BD: ", detalle_tratamiento.detalle_cobro.id)
-        if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
-            id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
-            tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
-            precio = '{:,}'.format(tratamiento.precio).replace(',','.')
-            tratamiento_tmp = {
-                                'nombre_tratamiento':tratamiento.nombre_tratamiento,
-                                'precio':precio
-            }
-            tratamientos.append(tratamiento_tmp)
+        # if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
+        id_tratamiento = detalle_cobro.tratamiento.get_codigo_tratamiento()
+        tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
+        precio = '{:,}'.format(tratamiento.precio).replace(',','.')
+        tratamiento_tmp = {
+                            'nombre_tratamiento':tratamiento.nombre_tratamiento,
+                            'precio':precio
+        }
+        tratamientos.append(tratamiento_tmp)
             # print("Entra en detalle de cobro")
-
-    monto_total = cobro.monto_total
+    factura = Factura.objects.get(cobro_contado=cobro, estado='Emitido')
+    monto_total = factura.total_pagar
     monto_total = '{:,}'.format(monto_total).replace(',','.')
 
     return render(request, 'ver_detalle_cobro.html',{
@@ -326,15 +326,20 @@ def listar_cobros(request):
     # cobros = CobroContado.objects.all()
     listado_cobros = []
     for cobro in cobros:
-        monto_total = '{:,}'.format(cobro.monto_total).replace(',','.')
-        cobro_tmp = {
-                    'id_cobro_contado' : cobro.id_cobro_contado,
-                    'numero_documento' : cobro.numero_documento,
-					'razon_social' : cobro.razon_social,
-					'fecha' : cobro.fecha,
-                    'monto_total' :monto_total
-        }
-        listado_cobros.append(cobro_tmp)
+        try:
+            factura = Factura.objects.get(cobro_contado=cobro, estado='Emitido')
+        except Factura.DoesNotExist:
+            pass
+        else:
+            monto_total = '{:,}'.format(factura.total_pagar).replace(',','.')
+            cobro_tmp = {
+                        'id_cobro_contado' : cobro.id_cobro_contado,
+                        'numero_documento' : factura.numero_documento,
+                        'razon_social' : factura.razon_social,
+                        'fecha' : factura.fecha,
+                        'monto_total' :monto_total
+            }
+            listado_cobros.append(cobro_tmp)
 
     return render(request, 'listar_cobro_contado.html', {'listado_cobros':listado_cobros})
 
@@ -703,15 +708,14 @@ def verificar_apertura_caja ():
 
 
 def mostrar_caja(request, numero_documento):
-
     data = {
             'numero_documento':numero_documento,
     }
     respuesta = verificar_apertura_caja()
     if respuesta == "Cerrada":
-        return render(request, 'mensajes/msj_caja_cerrada.html', data)
+        return render(request, 'mensajes/msj_caja_cerrada2.html', data)
 
-    return render(request, 'mostrar_caja.html')
+    return render(request, 'mensajes/msj_caja_abierta2.html')
 
 
 def mostrar_msj_caja_cerrada(request, numero_documento):
@@ -761,7 +765,6 @@ def guardar_datos_apertura_caja(request, numero_documento, id_paciente):
             caja.id_cajero = cajero
             caja.fecha_apertura = fecha_actual
             caja.hora_apertura = hora_actual
-            caja.saldo_anterior = total_caja['monto_total__sum']
             caja.save()
             return render(request, 'mensajes/msj_caja_abierta.html', data2)
         else:
@@ -772,6 +775,48 @@ def guardar_datos_apertura_caja(request, numero_documento, id_paciente):
     return render(request, 'guardar_datos_apertura_caja.html', data)
 
 
+def guardar_datos_apertura_caja2(request, numero_documento):
+    cajero = Funcionario.objects.get(numero_documento=numero_documento)
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+
+    total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
+
+    caja_temp = Caja(
+                    id_cajero = cajero,
+                    fecha_apertura = fecha_actual,
+                    hora_apertura = hora_actual,
+                    # saldo_anterior = total_caja['monto_total__sum'],
+    )
+
+    monto_total_s= '{:,}'.format(total_caja['monto_total__sum']).replace(',','.')
+
+    data = {
+            'form':CajaForm(instance=caja_temp),
+            'fecha_actual':fecha_actual,
+            'hora_actual':hora_actual,
+            'saldo_anterior':monto_total_s,
+    }
+
+    if request.method == 'POST':
+        form = CajaForm(data = request.POST, files=request.FILES)
+        if form.is_valid():
+            caja = form.save(commit=False)
+            caja.id_cajero = cajero
+            caja.fecha_apertura = fecha_actual
+            caja.hora_apertura = hora_actual
+            caja.save()
+            return render(request, 'mensajes/msj_caja_abierta2.html')
+        else:
+            print('form no es valido')
+            data['form'] = CajaForm
+            data['fecha_actual'] = fecha_actual
+            data['hora_actual'] = hora_actual
+    return render(request, 'guardar_datos_apertura_caja.html', data)
+
+3
+
 def msj_caja_cerrada(request, id_paciente, numero_documento):
     data = {
             'numero_documento':numero_documento,
@@ -779,6 +824,8 @@ def msj_caja_cerrada(request, id_paciente, numero_documento):
     }
     return render(request, 'mensajes/msj_caja_cerrada.html', data)
 
+def msj_caja_abierta2(request):
+    return render(request, ',mensajes/msj_caja_abierta2.html')
 
 def ingresar_datos_cobro(request, id_paciente):
     paciente = Paciente.objects.get(id_paciente=id_paciente)

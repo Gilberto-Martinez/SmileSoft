@@ -1,0 +1,30 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+<!-- {%if perms.gestion_administrativo.add_cargo%} -->
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>
+            <center>  
+                <h2 style="font-family: Bodoni;">
+                    <b>
+                        ¡Caja cerrada!
+                    </b>
+                </h2> 
+                <font size="7" class="bi bi-safe2"></font>
+            </center>
+                <div class="container mt-3 text-center">
+                    <small> <b> Aun no ha realizado la apertura de caja, <br> ¿Desea realizarla?  </small>
+                </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-primary" style="margin: 10px;" href="/cobros/datos_apertura_caja2/{{numero_documento}}">
+                        <i class="bi bi-check2-square"></i>
+                        SI
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- {%endif%} -->
+{%endblock%}

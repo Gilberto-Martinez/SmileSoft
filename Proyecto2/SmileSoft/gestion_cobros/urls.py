@@ -34,5 +34,7 @@ urlpatterns = [
     # Cobranza --------------------
     path('mostrar_caja/<str:numero_documento>', mostrar_caja, name="mostrar_caja"),
     path('datos_apertura_caja/<str:numero_documento>/<str:id_paciente>', guardar_datos_apertura_caja, name="datos_apertura_caja"),
+    path('datos_apertura_caja2/<str:numero_documento>', guardar_datos_apertura_caja2, name="datos_apertura_caja2"),
     path('msj_caja_cerrada/<str:id_paciente>/<str:numero_documento>', msj_caja_cerrada, name="msj_caja_cerrada"),
+    path('msj_caja_abierta2/', msj_caja_abierta2, name="msj_caja_abierta2"),
 ]
