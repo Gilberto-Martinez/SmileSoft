@@ -428,7 +428,7 @@
                                              {% endif %}
 
                                             <!--Opcion 12-->
-                                            {%if perms.gestion_inventario_insumos.view_insumo%}
+                                            {%if perms.permiso.add_permission%}
                                             <li class="nav-item dropdown">
                                               <a class="nav-link dropdown-toggle" href="insumo" id="navbarDropdown"
                                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -438,7 +438,8 @@
                                                       Tratamientos 
                                                     </strong>
                                               
-                                                    <li><a class="dropdown-item" href="/reportes/reporte_tratamiento/">• Más Solicitados</li></a>
+                                                    <li><a class="dropdown-item" href="/reportes/tratamiento_mas_solicitado/">• Más Solicitados</li></a>
+                                                    <li><a class="dropdown-item" href="/reportes/reporte_tratamiento/">• Reporte de Ventas</li></a>
                                                   
                                                 <strong class="dropdown-header" style="color:blue; font-size:16px;" >
                                                       Insumos
@@ -452,12 +453,7 @@
                                                 <!--Opcion 11.2 -->
                                                     <li><a class="dropdown-item" href="/reportes/reporte_cita/">• Estado de Citas</li></a>
                                                     
-                                                    {% comment %} <li><a class="dropdown-item" href="/reportes/cita_reporte/">• Estado de Citas</li></a> {% endcomment %}
-                                                  
-                                                    {% comment %} <li><a class="dropdown-item" href="/insumo/listar_insumos/">• Lista de Insumos</li></a> {% endcomment %}
-                                                   
-                                                    <!-- <li><a class="dropdown-item" href="/tratamiento/asignar_tratamiento/">• Asignar Tratamiento a paciente</li></a>
-                                                        <div class="dropdown-divider"></div>  -->
+                                                
                                               </ul>
                                             </li>
                                             {% endif %}

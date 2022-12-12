@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--titulo de barra-->
+    <title>Reportes</title>
+    <link rel="icon" href="favicon.ico" size="32x32" >
+    {% load static %}
+
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js'>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+    
+  
+        <center>
+            <a href="/panel_control/inicio/">  
+            <img src="{% static 'img/favicon.png' %}" width="95px" alt="logo">
+           </a>
+        <center>
+    </head>
+  
+    <body>
+        {%block content%}
+                        <div class="container">
+                                    <center>
+                                    <h2  style="font-family: Lucida Calligraphy; " class="card-title">
+                                        <i class="fas fa-chart-bar"></i>
+                                        {{ title }}
+                                    </h2>
+                                    <br>
+                                    <h3  style="font-family: Lucida Calligraphy; " >
+                                        <b>Tratamientos más solicitados</b>
+                                    </h3>
+                                    </center>
+                                    <br>
+                                    <div class="card">
+
+
+                                    <div  class="card-body">
+                                    
+                                        
+                                            {{data | safe}}
+
+                                            <hr>
+                                            <hr>
+                                            Es lista de repetidos
+                                            {{repeticiones |safe}}
+                                        <br>
+                                                            es mas
+                                        <hr>
+                                        {{es_mayor}}
+                                        <hr>
+                                        <h4> cantidad_veces</h4>
+                                        {{cantidad_veces}}
+                                        <hr>
+                                        <br>
+                                        es MAQYOR
+                                        {{mayor}}
+                        <hr>
+                        <h5>ES LISTA </h5>
+                        {{ lista| safe}}
+                        <hr>
+                        <br>
+                        <hr>
+                        {{resultado}}
+                        <br>
+                        <hr>
+                        <br>
+                        es lista de Cantidades
+                        <br>
+                        <hr>
+                        {{lista_cantidades}}
+                        <br>
+                        es cantidades 
+                        <br>
+                        <hr>
+                        {{cantidades}}
+                        <h5> Grafico de Tratamientos</h5>
+                        <center style="width: 850px">
+                            <canvas id="myChart" ></canvas>
+                            <script src="chart.js"></script>
+                                <script>
+                                    var ctx = document.getElementById('myChart').getContext('2d');
+                                    var chart = new Chart(ctx, {
+                                    type: 'bar', 
+                                    data:{
+                                    datasets: [{
+                                                data: [3, 8, 2, 2, 2],
+                                    backgroundColor: ['#42a5f5','red','yellow','pink','purple','blue','orange'],
+                                    label: 'Cantidades'}],
+                                    labels: ['R','A','b','c','d']},
+                                    options: {responsive: true}
+                            
+                                    });
+                                </script>
+                        </center> 
+                        <hr>
+
+                    <br>
+                    <div class="card-footer">
+                        <right>
+                        <a href="{{ list_url }}" class="btn btn-success btn-flat">
+                            <i class="fas fa-sync"></i> Actualizar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {%endblock%}   
+    </body>     
+   
+</html>

@@ -1,7 +1,5 @@
-import array
 import datetime
 from http.client import HTTPResponse
-from macpath import join
 from django.http import ( HttpResponse,)
 from ipaddress import summarize_address_range
 import json
@@ -130,9 +128,7 @@ def tratamiento_mas_solicitado(request):
         mas= tratamiento_elegido.nombre_tratamiento
         solicitado.append(mas)
         
-        data= pd.DataFrame(solicitado, columns=["Lista de Mas Solicitados"])
-        
-        
+        data= pd.DataFrame(solicitado, columns=["Tratamientos Mas Solicitados"])
         
         #Convierte el Dataframe en lista
         lista= data.to_numpy().tolist()
@@ -148,37 +144,17 @@ def tratamiento_mas_solicitado(request):
             print(resultado)
             
     lista_cantidades= resultado.values
-   
     
-    tabla=pd.DataFrame(resultado, index=['Cantidades'])
-    # t_valores= tabla.tolist()
-
     data_cantidades= pd.DataFrame(resultado, index=[0])
-    
-    columnas= data_cantidades.columns
-    #Son los tratamientos
-    indices= columnas.to_numpy().tolist()
-    print("es columnas", columnas,"\n Es indice", indices)
-    
     cantidades= np.array(data_cantidades)
- 
-    vector=cantidades.tolist()
     
-    #Se debe concatenar la lista para mostrar en el grafico y con li, se logra suprimir un corchete 
-    li=str(vector)[1:-1] 
-    print("es lista",type(lista_cantidades), "Imprime,",li, type(li))
-    es_maximot=max(vector)
-    print("es vector", vector, "es del tipo", type(vector), "es maximo t", es_maximot)
+    grafico= data_cantidades.to_numpy()
+    draw= cantidades.tolist
     
-    #Conversiones a Lista, y son las cantidades
-    grafico= data_cantidades.to_numpy().tolist()
+    g1= grafico.tolist
     
-    valores= data_cantidades.values
-    
-    valores_grafico=valores.tolist()
-
-    #draw= data_cantidades.to_dict()
-    print("es grafico", type(grafico), "son valores", valores, "son los valores", valores_grafico, type(valores_grafico))
+    print("Es tipo", "#Cantidad",type(cantidades), "#draw", type(draw), )
+   
     # mayor=lista.count(tratamiento)
         
         # count = 0
@@ -216,13 +192,8 @@ def tratamiento_mas_solicitado(request):
                 'lista_cantidades': lista_cantidades, 
                 'cantidades':cantidades,
                 'grafico':grafico,
-                'data_cantidades':data_cantidades,
-                'columnas': columnas,
-                'indices':indices, 
-                'valores_grafico': valores_grafico,
-                'li':li,
-                'tabla': tabla.to_html, 
-               
+                'draw':draw,
+                'g1':g1,
                 
                 
     }
@@ -316,7 +287,9 @@ def reporte_cita(request):
     graficocita=data2.to_dict
     conteo= serie.values
     draw= serie.to_numpy().tolist()
-   
+    
+    
+    print("es tipo", type(draw))
     
     print("es agrupado", data2.groupby('estado'))
     
