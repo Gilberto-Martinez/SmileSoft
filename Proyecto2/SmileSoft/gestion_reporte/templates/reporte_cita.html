@@ -38,8 +38,17 @@
             </center>
             {%csrf_token%}
             <hr>
-            <p style= "font-size:20px">   Total de Cantidades: {{gf1 | safe}}  </p>
-
+            <p style= "font-size:20px">  Total de Cantidades  </p>
+{% comment %} #Trae los totales pero no vamos a usar{% endcomment %}
+            {% comment %} {{gf1 | safe}}  {% endcomment %}
+      
+           
+            Realizado: {{total_realizado| safe}}
+            Agendado: {{total_agendado | safe}} 
+           
+            {% comment %} TABLA DE DATOS
+            {{tabla |safe }} {% endcomment %}
+    
             <hr>
             <h4> Grafico de Citas </h4>
             <center style="width: 450px">
@@ -52,9 +61,9 @@
                     data:{
                     datasets: [{
                                 data: {{draw}},
-                    backgroundColor: ['#42a5f5','red','green','blue',],
+                    backgroundColor: ['#42a5f5','red',],
                     label: 'Cantidades'}],
-                    labels: ['Realizado','Agendado','Confirmado','Pagado',]},
+                    labels: ['Realizado','Agendado',]},
                     options: {responsive: true}
                     });
                 </script>
@@ -68,9 +77,9 @@
                     </a>
                 </center>
                 &nbsp;
-                <a href="/reportes/pdf_reporte_cita" class="btn btn-success btn-flat" target="_blank">
+                {% comment %} <a href="/reportes/pdf_reporte_cita" class="btn btn-success btn-flat" target="_blank">
                     <i class="fas fa-sync"></i> Imprimir en pdf
-                </a>
+                </a> {% endcomment %}
 
             </div>
 
