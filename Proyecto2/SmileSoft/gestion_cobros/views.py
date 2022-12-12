@@ -908,3 +908,22 @@ def guardar_detalle_caja(factura, tratamientos):
                                             detalle = t.tratamiento.nombre_tratamiento,
                                             comprobante_cobro = factura
         )
+
+def cerrar_caja(request):
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+    caja = Caja.objects.get(fecha_apertura=fecha_actual)
+
+    detalles_cajas = DetalleCaja.objects.filter(id_caja=caja.id_caja)
+    monto_total = 0
+
+    for detalle_caja in detalles_cajas:
+        factura = Factura.objects.get(id_factura=detalle_caja.comprobante_cobro)
+        monto_total = monto_total + factura.total_pagar
+
+    caja.update(
+                monto_cierre=monto_total,
+                fecha_cierre=fecha_actual,
+                hora_cierre=hora_actual
+    )
