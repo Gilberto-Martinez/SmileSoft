@@ -21,10 +21,9 @@
                 <div style="margin: 20px;">
                     <div>
                         <br>
-                        <div class="form-group" style="width: 25%; float: left">  <!--style="float: left; width: 80%;"> -->
-                            <label for="{{form.fecha.name}}"><b> {{form.fecha.label}}</b>  </label>
-                            <!-- <br> -->
-                            {{form.fecha}}
+                        <div class="form-group" style="width: 30%; float: left">  <!--style="float: left; width: 80%;"> -->
+                            <label><b> Fecha: </b>  </label>
+                            {{fecha_actual}}
                         </div>
                         <div class="form-group" style="width: 40%; float: right">  <!--style="float: left; width: 80%;"> -->
                             <label for="{{form.condicion_venta.name}}"><b>{{form.condicion_venta.label}}</b>  </label>
@@ -36,8 +35,8 @@
                     <br>
                     <div>
                         <div class="form-group" style="float: left; width: 30%;">  <!--style="float: left; width: 80%;"> -->
-                            <label for="{{form.numero_documento.name}}"><b>{{form.numero_documento.label}}</b>  </label>
-                            {{form.numero_documento}}
+                            <label for="{{form.numero_comprobante.name}}"><b>{{form.numero_comprobante.label}}</b>  </label>
+                            {{form.numero_comprobante}}
                         </div>
                         <div class="form-group" style="float: right; width: 70%;">
                             <label for="{{form.razon_social.name}}"><b>{{form.razon_social.label}}</b> </label>
@@ -79,8 +78,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {%if tratamientos%}
-                                {%for c in tratamientos%}
+                            <!-- {%if tratamientos%} -->
+                                <!-- {%for c in tratamientos%} -->
                                 <tr>
                                     <td>1</td>
                                     <td>{{c.tratamiento.nombre_tratamiento}}</td>
@@ -89,7 +88,7 @@
                                     <td>{{form.numero_documento}}</td>
                                     <td>{{form.numero_documento}}</td> -->
                                 </tr>
-                                {%endfor%}
+                                <!-- {%endfor%} -->
                                 <!-- <tr>
                                     <td><b>SubTotales</b></td>
                                     <td></td>
@@ -104,13 +103,13 @@
                                     <!-- <td></td> -->
                                     <!-- <td></td> -->
                                     <!-- <td></td> -->
-                                    <td><b>{{monto_total}} Gs</b></td>
+                                    <td><b>{{form.monto_total}} Gs</b></td>
                                 </tr>
-                            {%else%}
-                                <h5>
+                            <!-- {%else%} -->
+                                <!-- <h5>
                                     No hay valores que mostrar
-                                </h5>
-                            {%endif%}
+                                </h5> -->
+                            <!-- {%endif%} -->
                         </tbody>
                     </table>
                 </div>

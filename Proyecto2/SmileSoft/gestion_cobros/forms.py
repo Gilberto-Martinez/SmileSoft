@@ -323,15 +323,20 @@ class CajaForm(forms.ModelForm):
                 # 'monto_cierre',
         ]
 
-class GastoForm(forms.ModelForm):
-    class Meta:
-        model = Gasto
-        fields = [
-                'monto_total',
-        ]
+# class GastoForm(forms.ModelForm):
+#     class Meta:
+#         model = Gasto
+#         fields = [
+#                 'monto_total',
+#         ]
 
 
 class ComprobanteGastoForm(forms.ModelForm):
+    numero_comprobante = forms.CharField(label='Número de comprobante', widget=forms.TextInput(attrs={'class':'form-control',}))
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = forms.ChoiceField(label='Condición de venta', choices=CONDICIONES, widget=forms.Select(attrs={'class': 'form-control',}))
     class Meta:
         model = ComprobanteGasto
         fields = [
@@ -351,10 +356,10 @@ class DetalleComprobanteForm(forms.ModelForm):
         ]
 
 
-class DetalleGastoForm(forms.ModelForm):
-    class Meta:
-        model = DetalleGasto
-        fields = [
-                'descripcion',
-                'precio_unitario',
-        ]
+# class DetalleGastoForm(forms.ModelForm):
+#     class Meta:
+#         model = DetalleGasto
+#         fields = [
+#                 'descripcion',
+#                 'precio_unitario',
+#         ]

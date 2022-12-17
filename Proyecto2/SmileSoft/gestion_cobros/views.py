@@ -930,14 +930,15 @@ def cerrar_caja(request):
 
 #---------------------- Gastos ----------------------------------#
 def registrar_gasto(request):
+    now = class_datetime.now()
+    fecha_actual = now.date()
     data = {
-            'form':GastoForm(),
-            'form2':ComprobanteGastoForm(),
-            'form3':DetalleComprobanteForm(),
+            'form':ComprobanteGastoForm(),
+            'form2':DetalleComprobanteForm(),
+            'fecha_actual':fecha_actual
     }
     if request.method == 'POST':
-        form = GastoForm(data=request.POST, files=request.files)
-        form2 = ComprobanteGastoForm(data=request.POST, files=request.files)
-        if form.is_valid() and form2.is_valid():
+        form = ComprobanteGastoForm(data=request.POST, files=request.files)
+        if form.is_valid():
             pass
-    return render(request, 'gastos/registrar_gasto.html')
+    return render(request, 'gastos/registrar_gasto.html', data)
