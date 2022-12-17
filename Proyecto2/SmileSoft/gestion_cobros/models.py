@@ -164,6 +164,42 @@ class Caja(models.Model):
         return self.id_caja
 
 
+# class Gasto(models.Model):
+#     id_gasto = models.AutoField(primary_key=True)
+#     monto_total = models.BigIntegerField()
+#     fecha = models.DateField(auto_now=True)
+
+#     class Meta:
+#         verbose_name = 'Gasto'
+#         verbose_name_plural = 'Gastos'
+
+#     def __str__(self) :
+#         return self.id_gasto
+
+
+class ComprobanteGasto(models.Model):
+    id_comprobante = models.AutoField(primary_key=True)
+    razon_social = models.CharField(max_length=60, null=True)
+    numero_comprobante = models.CharField(max_length=25)
+    timbrado = models.BigIntegerField(null=True)
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = models.CharField(max_length=12, choices=CONDICIONES,default='Contado' ,verbose_name='Condición de venta')
+    total_iva_5 = models.FloatField(null=True)
+    total_iva_10 = models.FloatField(null=True)
+    monto_total = models.BigIntegerField()
+    fecha = models.DateField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Comprobante de Gasto'
+        verbose_name_plural = 'Comprobantes de gastos'
+
+    def __str__(self):
+        return self.id_comprobante
+
+
+
 class DetalleCaja(models.Model):
     id_detalle_caja = models.AutoField(primary_key=True)
     id_caja = models.ForeignKey(
@@ -179,12 +215,17 @@ class DetalleCaja(models.Model):
               (E, 'Egreso'),
     )
     tipo = models.CharField(max_length=7, choices=TIPOS, default='Ingreso')
-    detalle = models.CharField(max_length=100) 
     comprobante_cobro = models.ForeignKey(
                                     Factura,
                                     on_delete=models.PROTECT,
                                     null=True,
                                     blank=True
+    )
+    comprobante_pago = models.ForeignKey(
+                                ComprobanteGasto,
+                                on_delete=models.PROTECT,
+                                null=True,
+                                blank=True,
     )
 
     class Meta:
@@ -193,3 +234,41 @@ class DetalleCaja(models.Model):
 
     def __str__(self) :
         return self.id_detalle_caja
+
+
+# class DetalleGasto(models.Model):
+#     id_detalle_gasto = models.AutoField(primary_key=True)
+#     descripcion = models.CharField(max_length=100)
+#     precio_unitario = models.BigIntegerField()
+#     gasto = models.ForeignKey(
+#                                 Gasto,
+#                                 on_delete=models.PROTECT,
+#     )
+
+#     class Meta:
+#         verbose_name = 'Detalle de gasto'
+#         verbose_name_plural = 'Detalles de gasto'
+
+#     def __str__(self):
+#         return self.id_detalle_gasto
+
+
+
+class DetalleComprobante(models.Model):
+    id_detalle_comprobante = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=100)
+    cantidad = models.IntegerField()
+    precio_unitario = models.IntegerField()
+    comprobante = models.ForeignKey(
+                                    ComprobanteGasto,
+                                    on_delete=models.PROTECT,
+    )
+    iva_5 = models.FloatField(null=True)
+    iva_10 = models.FloatField(null=True)
+
+    class Meta:
+        verbose_name = 'Detalle de Comprobante'
+        verbose_name_plural = 'Detalles de comprobante'
+
+    def __str__(self):
+        return self.id_detalle_comprobante

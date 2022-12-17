@@ -38,26 +38,26 @@ from gestion_administrativo.models import Persona, Empresa
 #                     'monto_total',
 #         ]
 
-class RazonSocialForm(forms.ModelForm):
-    numero_documento = forms.CharField(widget=forms.TextInput(attrs={
-                                                            'class': 'form-control',
-                                                            'placeholder': 'Ingrese su nombre'
-                                                            }
-                                                    )
-                                )
-    razon_social = forms.CharField(widget=forms.TextInput(attrs={
-                                                            'class': 'form-control',
-                                                            'placeholder': 'Ingrese su nombre'
-                                                            }
-                                                    )
-                                )
+# class RazonSocialForm(forms.ModelForm):
+#     numero_documento = forms.CharField(widget=forms.TextInput(attrs={
+#                                                             'class': 'form-control',
+#                                                             'placeholder': 'Ingrese su nombre'
+#                                                             }
+#                                                     )
+#                                 )
+#     razon_social = forms.CharField(widget=forms.TextInput(attrs={
+#                                                             'class': 'form-control',
+#                                                             'placeholder': 'Ingrese su nombre'
+#                                                             }
+#                                                     )
+#                                 )
 
-    class Meta:
-        model = CobroContado
-        fields = [
-                    'numero_documento',
-                    'razon_social',
-        ]
+#     class Meta:
+#         model = CobroContado
+#         fields = [
+#                     'numero_documento',
+#                     'razon_social',
+#         ]
 
 class CobroFacturaForm(forms.ModelForm):
     numero_documento = forms.CharField(label="RUC",
@@ -322,3 +322,44 @@ class CajaForm(forms.ModelForm):
                 'monto_apertura',
                 # 'monto_cierre',
         ]
+
+# class GastoForm(forms.ModelForm):
+#     class Meta:
+#         model = Gasto
+#         fields = [
+#                 'monto_total',
+#         ]
+
+
+class ComprobanteGastoForm(forms.ModelForm):
+    numero_comprobante = forms.CharField(label='Número de comprobante', widget=forms.TextInput(attrs={'class':'form-control',}))
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = forms.ChoiceField(label='Condición de venta', choices=CONDICIONES, widget=forms.Select(attrs={'class': 'form-control',}))
+    class Meta:
+        model = ComprobanteGasto
+        fields = [
+                'numero_comprobante', 
+                'condicion_venta',
+        ]
+
+
+class DetalleComprobanteForm(forms.ModelForm):
+    class Meta:
+        model = DetalleComprobante
+        fields = [
+                'descripcion',
+                'cantidad',
+                'precio_unitario',
+                'comprobante',
+        ]
+
+
+# class DetalleGastoForm(forms.ModelForm):
+#     class Meta:
+#         model = DetalleGasto
+#         fields = [
+#                 'descripcion',
+#                 'precio_unitario',
+#         ]

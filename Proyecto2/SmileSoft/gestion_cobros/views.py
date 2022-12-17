@@ -13,7 +13,7 @@ from gestion_administrativo.models import TratamientoConfirmado
 from gestion_cobros.models import CobroContado, DetalleCobro, Factura, DetalleFactura, Caja, DetalleCaja
 from gestion_administrativo.models import Persona, Paciente, PacienteTratamientoAsignado, Tratamiento
 from gestion_agendamiento.models import Cita
-from .forms import RazonSocialForm, FacturaForm, FacturaUpdateForm, FacturaReadOnlyForm, CajaForm
+from .forms import *
 from django.db.models import Q
 from datetime import datetime as class_datetime
 import datetime
@@ -927,3 +927,18 @@ def cerrar_caja(request):
                 fecha_cierre=fecha_actual,
                 hora_cierre=hora_actual
     )
+
+#---------------------- Gastos ----------------------------------#
+def registrar_gasto(request):
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    data = {
+            'form':ComprobanteGastoForm(),
+            'form2':DetalleComprobanteForm(),
+            'fecha_actual':fecha_actual
+    }
+    if request.method == 'POST':
+        form = ComprobanteGastoForm(data=request.POST, files=request.files)
+        if form.is_valid():
+            pass
+    return render(request, 'gastos/registrar_gasto.html', data)

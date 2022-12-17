@@ -38,4 +38,7 @@ urlpatterns = [
     path('msj_caja_cerrada/<str:id_paciente>/<str:numero_documento>', msj_caja_cerrada, name="msj_caja_cerrada"),
     path('msj_caja_abierta2/', msj_caja_abierta2, name="msj_caja_abierta2"),
     path('cerrar_caja/', cerrar_caja, name="cerrar_caja"),
+
+    # Gastos ----------------------------------
+    path('registrar_gasto/', registrar_gasto, name="registrar_gasto"),
 ]
