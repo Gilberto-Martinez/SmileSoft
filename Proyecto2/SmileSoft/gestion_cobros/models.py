@@ -188,8 +188,8 @@ class ComprobanteGasto(models.Model):
     condicion_venta = models.CharField(max_length=12, choices=CONDICIONES,default='Contado' ,verbose_name='Condición de venta')
     total_iva_5 = models.FloatField(null=True)
     total_iva_10 = models.FloatField(null=True)
-    monto_total = models.BigIntegerField()
-    fecha = models.DateField(auto_now=True)
+    monto_total = models.BigIntegerField(null=True)
+    fecha = models.DateField()
 
     class Meta:
         verbose_name = 'Comprobante de Gasto'

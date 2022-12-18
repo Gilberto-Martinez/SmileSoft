@@ -41,4 +41,6 @@ urlpatterns = [
 
     # Gastos ----------------------------------
     path('registrar_gasto/', registrar_gasto, name="registrar_gasto"),
+    path('agregar_detalle_comprobante/<id_comprobante>', agregar_detalle_comprobante, name="agregar_detalle_comprobante"),
+    
 ]

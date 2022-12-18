@@ -934,11 +934,39 @@ def registrar_gasto(request):
     fecha_actual = now.date()
     data = {
             'form':ComprobanteGastoForm(),
-            'form2':DetalleComprobanteForm(),
-            'fecha_actual':fecha_actual
+            # 'form2':DetalleComprobanteForm(),
+            # 'fecha_actual':fecha_actual
     }
     if request.method == 'POST':
-        form = ComprobanteGastoForm(data=request.POST, files=request.files)
+        form = ComprobanteGastoForm(data=request.POST, files=request.FILES)
         if form.is_valid():
-            pass
+            form.save()
+            combrobante_gasto = ComprobanteGasto.objects.last()
+            return redirect('/cobros/agregar_detalle_comprobante/%s'%(combrobante_gasto.id_comprobante))
+        else:
+            print("Form no es valido")
+            data['form'] = ComprobanteGastoForm()
     return render(request, 'gastos/registrar_gasto.html', data)
+
+
+def agregar_detalle_comprobante(request, id_comprobante):
+    comprobante_gasto = ComprobanteGasto.objects.get(id_comprobante=id_comprobante)
+    data = {
+            'form':DetalleComprobanteForm(),
+            'form2':ComprobanteReadOnly(instance=comprobante_gasto)
+    }
+    try:
+        detalles = DetalleComprobante.objects.filter(comprobante=id_comprobante)
+    except DetalleComprobante.DoesNotExist:
+        pass
+    else:
+        data['detalles'] = detalles
+
+    if request.method == 'POST':
+        form = DetalleComprobanteForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            detalle = form.save(commit=False)
+            detalle.comprobante = comprobante_gasto
+            detalle.save()
+            return redirect('/cobros/agregar_detalle_comprobante/%s'%(comprobante_gasto.id_comprobante))
+    return render(request, 'gastos/agregar_detalle_comprobante.html', data)
