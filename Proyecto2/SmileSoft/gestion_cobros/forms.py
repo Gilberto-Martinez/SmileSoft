@@ -377,6 +377,16 @@ class ComprobanteReadOnly(forms.ModelForm):
         ]
 
 
+class ComprobanteMontoForm(forms.ModelForm):
+    class Meta:
+        model = ComprobanteGasto
+        fields = [
+                'total_iva_5',
+                'total_iva_10',
+                'monto_total',
+        ]
+
+
 class DetalleComprobanteForm(forms.ModelForm):
     class Meta:
         model = DetalleComprobante

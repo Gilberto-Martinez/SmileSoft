@@ -82,12 +82,14 @@
                                         </tr>
                                     {%endfor%}
                                 {%endif%}
+                                <tr></tr>
                                 <tr>
-                                    <td id="cantidad">{{form.cantidad}}</td>
-                                    <td id="descripcion">{{form.descripcion}}</td>
-                                    <td id="precio_unitario">{{form.precio_unitario}}</td>
-                                    <td id="iva_5">{{form.iva_5}}</td>
-                                    <td id="iva_10">{{form.iva_10}}</td>
+                                    <td>TOTALES</td>
+                                    <td></td>
+                                    <td>{{form.monto_total}}</td>
+                                    <td>{{form.total_iva_5}}</td>
+                                    <td>{{form.total_iva_10}}</td>
+                                    
                                 </tr>
                             </tbody>
                         </thead>
@@ -98,14 +100,9 @@
                 <br>
                 <div align="center">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-arrow-right-square"></i>
-                        Guardar y agregar siguiente
-                    </button>
-                    &nbsp;&nbsp;
-                    <a type="button" class="btn btn-success" href="/cobros/agregar_monto_total/{{id_comprobante}}">
                         <i class="bi bi-box-arrow-in-down"></i>
-                        Terminar
-                    </a>
+                        Guardar
+                    </button>
                 </div>
                 
             </form>
@@ -114,37 +111,5 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    function cantidad(){
-        var v_cantidad = document.getElementById("cantidad").value;
-        return v_cantidad
-    }
-
-    function descripcion(){
-        var v_descripcion = document.getElementById("descripcion").value;
-        return v_descripcion
-    }
-
-    function precio_unitario(){
-        var v_precio_unitario = document.getElementById("precio_unitario").value;
-        return v_precio_unitario
-    }
-
-    function iva_5(){
-        var v_iva_5 = document.getElementById("iva_5").value;
-        return v_iva_5
-    }
-
-    function iva_10(){
-        var v_iva_10 = document.getElementById("iva_10").value;
-        return v_iva_10
-    }
-    var b_cantidad = cantidad()
-    var b_descripcion = descripcion()
-    var b_precion_unitario = precion_unitario()
-    var b_iva_5 = iva_5()
-    var b_iva_10 = iva_10()
-</script>
 
 {%endblock%}

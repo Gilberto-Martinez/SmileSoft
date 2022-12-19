@@ -953,7 +953,8 @@ def agregar_detalle_comprobante(request, id_comprobante):
     comprobante_gasto = ComprobanteGasto.objects.get(id_comprobante=id_comprobante)
     data = {
             'form':DetalleComprobanteForm(),
-            'form2':ComprobanteReadOnly(instance=comprobante_gasto)
+            'form2':ComprobanteReadOnly(instance=comprobante_gasto),
+            'id_comprobante':id_comprobante,
     }
     try:
         detalles = DetalleComprobante.objects.filter(comprobante=id_comprobante)
@@ -970,3 +971,64 @@ def agregar_detalle_comprobante(request, id_comprobante):
             detalle.save()
             return redirect('/cobros/agregar_detalle_comprobante/%s'%(comprobante_gasto.id_comprobante))
     return render(request, 'gastos/agregar_detalle_comprobante.html', data)
+
+
+def agregar_monto_total(request, id_comprobante):
+    comprobante = ComprobanteGasto.objects.get(id_comprobante=id_comprobante)
+    suma_detalles = DetalleComprobante.objects.filter(comprobante=id_comprobante).aggregate(Sum('precio_unitario'))
+    iva_5_detalles = DetalleComprobante.objects.filter(comprobante=id_comprobante).aggregate(Sum('iva_5'))
+    iva_10_detalles = DetalleComprobante.objects.filter(comprobante=id_comprobante).aggregate(Sum('iva_10'))
+    monto_total = suma_detalles['precio_unitario__sum']
+    d_iva_5 = iva_5_detalles['iva_5__sum']
+    d_iva_10 = iva_10_detalles['iva_10__sum']
+    
+    comprobante_tmp = ComprobanteGasto(
+                                    id_comprobante = comprobante.id_comprobante,
+                                    razon_social = comprobante.razon_social,
+                                    numero_comprobante = comprobante.numero_comprobante,
+                                    timbrado = comprobante.timbrado,
+                                    condicion_venta = comprobante.condicion_venta,
+                                    total_iva_5 = d_iva_5,
+                                    total_iva_10 = d_iva_10,
+                                    monto_total = monto_total,
+                                    fecha = comprobante.fecha,
+    )
+
+    data = {
+            'form2':ComprobanteReadOnly(instance=comprobante),
+            'form':ComprobanteMontoForm(instance=comprobante_tmp)
+    }
+
+    try:
+        detalles = DetalleComprobante.objects.filter(comprobante=id_comprobante)
+    except DetalleComprobante.DoesNotExist:
+        pass
+    else:
+        data['detalles'] = detalles
+
+    if request.method == 'POST':
+        form = ComprobanteMontoForm(data=request.POST, files=request.FILES, instance=comprobante_tmp)
+        if form.is_valid():
+            form.save()
+            registrar_gasto_en_caja(id_comprobante)
+            return redirect('/cobros/listar_gastos/')
+    return render(request, 'gastos/agregar_monto_total.html', data)
+
+
+def listar_gastos(request):
+    gastos = ComprobanteGasto.objects.all()
+    data = {
+            'gastos':gastos
+    }
+    return render(request, 'gastos/listar_gastos.html', data)
+
+
+def registrar_gasto_en_caja(id_comprobante):
+    caja = Caja.objects.last()
+    comprobante = ComprobanteGasto.objects.get(id_comprobante=id_comprobante)
+    detalle_caja = DetalleCaja.objects.create(
+                                            id_caja = caja,
+                                            tipo = 'Egreso',
+                                            comprobante_pago = comprobante,
+    )
+
