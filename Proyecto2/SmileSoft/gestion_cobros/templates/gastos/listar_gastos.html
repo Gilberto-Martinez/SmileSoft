@@ -14,10 +14,18 @@
 						<tr>
 						<td> 
 							{%if perms.gestion_administrativo.add_persona%}
-							<a href="/cobros/registrar_gasto/" class="btn btn-success">
-								<i class="bi bi-coin"></i>
-								Registrar un gasto
-							</a> 
+								{%if caja_cerrada%}
+									<a href="/cobros/mostrar_caja/{{user.numero_documento}}" class="btn btn-success">
+										<i class="bi bi-coin"></i>
+										Registrar un gasto
+									</a> 
+								{%else%}
+									<a href="/cobros/registrar_gasto/" class="btn btn-success">
+										<i class="bi bi-coin"></i>
+										Registrar un gasto
+									</a> 
+								{%endif%}
+							
 							{%endif%}
 						</td>
 						</tr>
@@ -46,7 +54,7 @@
 								<th>Nro</th>
 								<th>N° de comprobante</th>
 								<th>Razón social</th>
-								<td>Monto total</td>
+								<th>Monto total</th>
 								<!-- <td>Especialista de salud</td> -->
 								<!-- <td>Paciente</td> -->
 								<th>Acciones</th>
@@ -60,7 +68,7 @@
 								<td >{{forloop.counter}}</td>
 								<td>{{ g.numero_comprobante }}</td>
 								<td>{{ g.razon_social }}</td>
-								<td>{{ g.monto }}</td>
+								<td>{{ g.monto_total }}</td>
 								<!-- <td>{{ persona.es_especialista_salud }}</td> -->
 								<!-- <td>{{ persona.es_paciente }}</td> -->
 								<td>

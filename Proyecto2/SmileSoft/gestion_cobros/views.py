@@ -930,6 +930,7 @@ def cerrar_caja(request):
 
 #---------------------- Gastos ----------------------------------#
 def registrar_gasto(request):
+
     now = class_datetime.now()
     fecha_actual = now.date()
     data = {
@@ -1016,9 +1017,18 @@ def agregar_monto_total(request, id_comprobante):
 
 
 def listar_gastos(request):
+    respuesta = verificar_apertura_caja()
+    caja_cerrada = False
+
+    if respuesta == 'Cerrada':
+        caja_cerrada = True
+    else:
+        caja_cerrada = False
+
     gastos = ComprobanteGasto.objects.all()
     data = {
-            'gastos':gastos
+            'gastos':gastos,
+            'caja_cerrada':caja_cerrada,
     }
     return render(request, 'gastos/listar_gastos.html', data)
 
@@ -1032,3 +1042,12 @@ def registrar_gasto_en_caja(id_comprobante):
                                             comprobante_pago = comprobante,
     )
 
+
+# def verificar_apertura_caja_gasto():
+#     now = class_datetime.now()
+#     fecha_actual = now.date()
+
+#     try:
+#         caja = Caja.objects.get(fecha_apertura=fecha_actual)
+#     except Caja.DoesNotExist:
+#         return redirect('/cobros/mostrar_ca')
