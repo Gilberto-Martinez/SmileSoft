@@ -923,7 +923,7 @@ def mostar_caja_previa(request):
     gastos = []
 
     for detalle_caja in detalles_cajas:
-        factura = Factura.objects.get(id_factura=detalle_caja.comprobante_cobro)
+        factura = Factura.objects.get(id_factura=detalle_caja.comprobante_cobro.id_factura)
         ingreso_total = ingreso_total + factura.total_pagar
         detalles_factura = DetalleFactura.objects.filter(id_factura=factura)
         for detalle in detalles_factura:
@@ -935,7 +935,7 @@ def mostar_caja_previa(request):
 
 
     for detalle_caja in detalles_cajas:
-        comprobante_gasto = ComprobanteGasto.objects.get(id_comprobante=detalle_caja.comprobante_pago)
+        comprobante_gasto = ComprobanteGasto.objects.get(id_comprobante=detalle_caja.comprobante_pago.id_comprobante)
         gasto_total = gasto_total + comprobante_gasto.monto_total
         detalles_comprobante = DetalleComprobante.objects.filter(comprobante=comprobante_gasto)
         for detalle in detalles_comprobante:
