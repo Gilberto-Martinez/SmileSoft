@@ -905,9 +905,55 @@ def guardar_detalle_caja(factura, tratamientos):
     for t in tratamientos:
         detalle_caja = DetalleCaja.objects.create(
                                             id_caja = caja,
-                                            detalle = t.tratamiento.nombre_tratamiento,
+                                            tipo = 'Ingreso',
                                             comprobante_cobro = factura
         )
+
+
+def mostar_caja_previa(request):
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+    caja = Caja.objects.get(fecha_apertura=fecha_actual)
+
+    detalles_cajas = DetalleCaja.objects.filter(id_caja=caja.id_caja)
+    ingreso_total = 0
+    gasto_total = 0
+    ingresos = []
+    gastos = []
+
+    for detalle_caja in detalles_cajas:
+        factura = Factura.objects.get(id_factura=detalle_caja.comprobante_cobro)
+        ingreso_total = ingreso_total + factura.total_pagar
+        detalles_factura = DetalleFactura.objects.filter(id_factura=factura)
+        for detalle in detalles_factura:
+            ingresos_tmp = {
+                            'descripcion':detalle.descripcion,
+                            'monto':detalle.precio_unitario
+            }
+            ingresos.append(ingresos_tmp)
+
+
+    for detalle_caja in detalles_cajas:
+        comprobante_gasto = ComprobanteGasto.objects.get(id_comprobante=detalle_caja.comprobante_pago)
+        gasto_total = gasto_total + comprobante_gasto.monto_total
+        detalles_comprobante = DetalleComprobante.objects.filter(comprobante=comprobante_gasto)
+        for detalle in detalles_comprobante:
+            gastos_tmp = {
+                            'descripcion':detalle.descripcion,
+                            'monto':detalle.precio_unitario
+            }
+            gastos.append(gastos_tmp)
+
+    data = {
+            'ingreso_total':ingreso_total,
+            'gasto_total':gasto_total,
+            'ingresos':ingresos,
+            'gastos':gastos,
+    }
+
+    return render(request, 'mostrar_caja_previa.html', data)
+
 
 def cerrar_caja(request):
     now = class_datetime.now()
