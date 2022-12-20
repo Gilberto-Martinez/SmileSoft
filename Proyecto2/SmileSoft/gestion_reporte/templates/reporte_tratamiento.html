@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Reporte de Tratamiento</title>
+        <title>Reporte de Ingresos</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
@@ -70,14 +70,14 @@
         {% block content %}
         <div class="container">
             <center>
-            <h2  style="font-family: Lucida Calligraphy; " class="card-title">
+            {% comment %} <h2 class="card-title">
                 <i class="fas fa-chart-bar"></i>
                 {{ title }}
-            </h2>
+            </h2> {% endcomment %}
             <br>
-            <h3  style="font-family: Lucida Calligraphy; " >
-                <b>Tratamientos más solicitados</b>
-            </h3>
+            <h2  style="font-family: Lucida Calligraphy; " >
+                <b>{{ title }}</b>
+            </h2>
             </center>
             <br>
             <div class="card">
@@ -94,21 +94,25 @@
                     </div>
                 </div>
                 <hr>
-                
+                <br>
+           
                 </script>
                 <form action="" method="post">
                     <table class="table table-bordered" id="data">
                         <thead>
                         <tr>
                             <th scope="col">Nro </th>
-                            <th scope="col">Tratamientos</th>
-                            <th scope="col">Agendamiento</th>
+                            <th scope="col">Cantidad</th>
+
+                            <th scope="col">Tratamiento Realizado</th>
+                            <th scope="col">Total </th>
                             {% comment %} <th scope="col">Total</th> {% endcomment %}
                         </tr>
                         </thead>
                         <tbody>
                             {%csrf_token%}
                                 <tr>
+                                    <td ></td>
                                     <td ></td>
                                     <td >{{search.tratamiento_reporte}}</td>
                                     <td >{{search.fecha}}</td>

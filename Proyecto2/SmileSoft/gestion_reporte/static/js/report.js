@@ -13,17 +13,17 @@ function generate_report() {
         parameters['end_date'] = date_range.endDate.format('YYYY-MM-DD');
     }
 
-//    data= $('#data').DataTable({
-//         responsive: true,
-//         autoWidth: false,
-//         destroy: true,
-//         deferRender: true,
-//         ajax: {
-//             url: window.location.pathname,
-//             type: 'POST',
-//             data: parameters,
-//             dataSrc: ""
-//         },
+   $('#data').DataTable({
+        responsive: true,
+        autoWidth: false,
+        destroy: true,
+        deferRender: true,
+        ajax: {
+            url: window.location.pathname,
+            type: 'POST',
+            data: parameters,
+            dataSrc: ""
+        },
 //         columns: [
 //             { "data": "id_cita" },
 //             { "data": "tratamiento_solicitado" },
@@ -41,10 +41,10 @@ function generate_report() {
 //                 }
 //             },
 //         ],
-//         initComplete: function (settings, json) {
+        // initComplete: function (settings, json) {
 
-//         }
-//     });
+        // }
+    });
 }
 
 
@@ -58,7 +58,7 @@ $(function () {
     }).on('apply.daterangepicker', function (ev, picker) {
         date_range = picker;
         generate_report();
-        // console.log(picker.setStartDate.format('YYYY-MM-DD')+'-'+ picker.endDate.format('YYYY-MM-DD'));
+        console.log(picker.setStartDate.format('YYYY-MM-DD')+'-'+ picker.endDate.format('YYYY-MM-DD'));
         
     }).on('cancel.daterangepicker', function (ev, picker) {
         $(this).data('daterangepicker').setStartDate(date_now);

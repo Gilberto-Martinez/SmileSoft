@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--titulo de barra-->
+    <title>Reportes de Ingresos</title>
+    <link rel="icon" href="favicon.ico" size="32x32" >
+    {% load static %}
+
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js'>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+    
+    <head>
+        <center>
+            <a href="/panel_control/inicio/">  
+            <img src="{% static 'img/favicon.png' %}" width="95px" alt="logo">
+           </a>
+        <center>
+    </head>
+    {% comment %} <center> 
+      
+            <FONT COLOR="black" style="font-size: 3.5rem; font-family:Monotype corsiva;" >S m i l e S o f t</FONT> 
+           
+    </center>  {% endcomment %}
+    <body>
+        {%block content%}
+
+        {%if perms.gestion_inventario_insumos.add_insumo%}
+
+        <div class="container">
+            <center> 
+                <h1 style="font-family: Lucida Calligraphy;"> 
+                    <b class="bi bi-list-check"> Reporte de Ingresos</b> 
+                </h1>
+            </center>
+            {%csrf_token%}
+            <br>
+           
+            {% comment %} <br>
+            {{grupo_monto_renombrado |safe}}
+            <br>
+            <hr>
+            {{df |safe}}
+            <br>
+          {% endcomment %}
+            <hr>
+            <p style= "font-size:20px"> 1. - Ingresos Diarios  </p>
+
+          {% comment %}   {{tabla_renombrada | safe }} --> Trae cada dia el monto obtenido
+            <br>
+            <hr>
+            <p style= "font-size:20px">2. - Cantidad por Dia del Mes </p> <br>
+            <br> {% endcomment %}
+            {{tabla_mensual_renombrada |safe}}
+            <br>
+     
+        {% comment %} <p> ES LA TABLA DE MONTO</p>
+
+            {{monto | safe}} {% endcomment %}
+            <hr>
+            
+    
+            <p  style= "font-size:20px; color:blue;"> 2.- Ingresos en General: <p style= "font-size:20px; color:black;"><b>{{caja|safe }} Gs. </b></p> </p> 
+            <hr>
+            <br>
+            <p style= "font-size:20px"> 3. - Ingresos Mensuales</p>
+            {{monto_por_mes_renombrada |safe }} 
+            <br>
+
+            {% comment %}  ES LA 1RA PRUEBA Y TRAE TRUE FALSE
+            {{general |safe}}
+            <br>
+            {{tabla_monto_renombrada |safe}} {% endcomment %}
+            <hr>
+            <p  style= "font-size:20px; color:black;"> 4. - Facturas Ingresadas por día </p>
+ 
+            {{grupo_renombrado | safe}}
+            <hr>
+            <br>
+
+           
+                
+            {% comment %}
+            <h2>MONTO MES</h2>
+            <br>
+            {{guaranies | safe}}
+            <br> {% endcomment %}
+
+
+        </div>
+
+        {%endif%}
+
+        {%endblock%}
+    </body>
+</html>
