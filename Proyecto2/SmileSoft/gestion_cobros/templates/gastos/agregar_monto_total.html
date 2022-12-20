@@ -1,0 +1,115 @@
+{%extends 'panel_control/base.html'%}
+
+{%load static%}
+
+
+{%block content%}
+<div style="margin: 20px;">
+    <div class="card" >
+        <br>
+        <center>
+            <div style=" color:  rgb(0, 162, 255);">
+                <h2>
+                    <!-- <i class="bi bi-file-text"></i> -->
+                    <b>Ingrese el/los detalle/s del comprobante</b>
+                </h2>
+            </div>
+        </center>
+        <div class="card-body">
+            <form action="" method="POST">
+                {%csrf_token%}
+                <center>
+                    <div style="margin: 20px; width: 80%;">
+                        <br>
+                        <center>
+                            <div class="form-group" style="width: 70%;">  <!--style="float: left; width: 80%;"> -->
+                                <label for="{{form2.fecha.name}}" style="float: left;"><b>{{form2.fecha.label}}</b>  </label>
+                                {{form2.fecha}}
+                            </div>
+                        </center>
+                        <div>
+                            <div class="form-group" style="width: 40%; float: left;">  <!--style="float: left; width: 80%;"> -->
+                                <label for="{{form2.timbrado.name}}" style="float: left;"><b>{{form2.timbrado.label}}</b>  </label>
+                                {{form2.timbrado}}
+                            </div>
+                            <div class="form-group" style="width: 40%; float: right;">  <!--style="float: left; width: 80%;"> -->
+                                <label for="{{form2.condicion_venta.name}}" style="float: left;"><b>{{form2.condicion_venta.label}}</b>  </label>
+                                {{form2.condicion_venta}}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group" style="width: 39%; float: left;">  <!--style="float: left; width: 80%;"> -->
+                                <label for="{{form2.numero_comprobante.name}}" style="float: left;"><b>{{form2.numero_comprobante.label}}</b> </label>
+                                {{form2.numero_comprobante}}
+                            </div>
+                            <div class="form-group" style="width: 60%; float: right;">
+                                <label for="{{form2.razon_social.name}}" style="float: left;"><b>{{form2.razon_social.label}}</b> </label>
+                                {{form2.razon_social}}
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                    </div>
+                </center>
+                <br>
+                <br>
+                <br> 
+                <br>
+                <div style="color: white; background-color: lightskyblue;">
+                    <h4 align="center">
+                        Detalles del comprobante
+                    </h4>
+                </div>
+                <div style="margin: 20px;">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Cantidad</th>
+                                <th>Descripción</th>
+                                <th>Precio unitario</th>
+                                <th>IVA 5%</th>
+                                <th>IVA 10%</th>
+                            </tr>
+                            <tbody>
+                                {%if detalles%}
+                                    {%for d in detalles%}
+                                        <tr>
+                                            <td>{{d.cantidad}}</td>
+                                            <td>{{d.descripcion}}</td>
+                                            <td>{{d.precio_unitario}}</td>
+                                            <td>{{d.iva_5}}</td>
+                                            <td>{{d.iva_10}}</td>
+                                        </tr>
+                                    {%endfor%}
+                                {%endif%}
+                                <tr></tr>
+                                <tr>
+                                    <td>TOTALES</td>
+                                    <td></td>
+                                    <td>{{form.monto_total}}</td>
+                                    <td>{{form.total_iva_5}}</td>
+                                    <td>{{form.total_iva_10}}</td>
+                                    
+                                </tr>
+                            </tbody>
+                        </thead>
+
+                    </table>
+
+                </div>
+                <br>
+                <div align="center">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-box-arrow-in-down"></i>
+                        Guardar
+                    </button>
+                </div>
+                
+            </form>
+            <br>
+            
+        </div>
+    </div>
+</div>
+
+{%endblock%}

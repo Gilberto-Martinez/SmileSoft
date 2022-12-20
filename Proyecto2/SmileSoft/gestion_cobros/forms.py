@@ -332,16 +332,58 @@ class CajaForm(forms.ModelForm):
 
 
 class ComprobanteGastoForm(forms.ModelForm):
+    fecha = forms.DateField(label='Fecha de emisión del comprobante', widget=forms.NumberInput(attrs={'class':'form-control', 'type':'date'}))
     numero_comprobante = forms.CharField(label='Número de comprobante', widget=forms.TextInput(attrs={'class':'form-control',}))
+    razon_social = forms.CharField(label='Razón social', widget=forms.TextInput(attrs={'class':'form-control'}))
     CO = 'Contado'
     CR = 'Credito'
     CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
     condicion_venta = forms.ChoiceField(label='Condición de venta', choices=CONDICIONES, widget=forms.Select(attrs={'class': 'form-control',}))
+    timbrado = forms.IntegerField(label='Timbrado', widget=forms.NumberInput(attrs={'class':'form-control'}))
     class Meta:
         model = ComprobanteGasto
         fields = [
-                'numero_comprobante', 
+                'fecha',
+                'numero_comprobante',
+                'razon_social', 
                 'condicion_venta',
+                'timbrado',
+                # 'total_iva_5',
+                # 'total_iva_10',
+                # 'monto_total',
+        ]
+
+
+class ComprobanteReadOnly(forms.ModelForm):
+    fecha = forms.DateField(label='Fecha de emisión del comprobante', widget=forms.NumberInput(attrs={'class':'form-control', 'type':'date', 'readonly':True}))
+    numero_comprobante = forms.CharField(label='Número de comprobante', widget=forms.TextInput(attrs={'class':'form-control','readonly':True}))
+    razon_social = forms.CharField(label='Razón social', widget=forms.TextInput(attrs={'class':'form-control', 'readonly':True}))
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = forms.ChoiceField(label='Condición de venta', choices=CONDICIONES, widget=forms.Select(attrs={'class': 'form-control', 'readonly':True}))
+    timbrado = forms.IntegerField(label='Timbrado', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
+    class Meta:
+        model = ComprobanteGasto
+        fields = [
+                'fecha',
+                'numero_comprobante',
+                'razon_social', 
+                'condicion_venta',
+                'timbrado',
+                # 'total_iva_5',
+                # 'total_iva_10',
+                # 'monto_total',
+        ]
+
+
+class ComprobanteMontoForm(forms.ModelForm):
+    class Meta:
+        model = ComprobanteGasto
+        fields = [
+                'total_iva_5',
+                'total_iva_10',
+                'monto_total',
         ]
 
 
@@ -352,7 +394,8 @@ class DetalleComprobanteForm(forms.ModelForm):
                 'descripcion',
                 'cantidad',
                 'precio_unitario',
-                'comprobante',
+                'iva_5',
+                'iva_10',
         ]
 
 

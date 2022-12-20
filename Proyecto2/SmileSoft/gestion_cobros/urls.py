@@ -41,4 +41,8 @@ urlpatterns = [
 
     # Gastos ----------------------------------
     path('registrar_gasto/', registrar_gasto, name="registrar_gasto"),
+    path('agregar_detalle_comprobante/<int:id_comprobante>', agregar_detalle_comprobante, name="agregar_detalle_comprobante"),
+    path('agregar_monto_total/<int:id_comprobante>', agregar_monto_total, name="agregar_monto_total"),
+    path('listar_gastos/', listar_gastos, name="listar_gastos")
+
 ]
