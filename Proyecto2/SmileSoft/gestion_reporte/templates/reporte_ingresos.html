@@ -47,7 +47,10 @@
             <br>
           {% endcomment %}
             <hr>
-            <p style= "font-size:20px"> 1. - Ingresos Diarios  </p>
+            
+            <p  style= "font-size:20px; color:black;"> 1.- Ingresos en General: <p style= "font-size:20px; color:blue;"><b>{{caja|safe }} Gs. </b></p> </p> 
+            <hr>
+            <p style= "font-size:20px"> 2. - Ingresos Diarios  </p>
 
           {% comment %}   {{tabla_renombrada | safe }} --> Trae cada dia el monto obtenido
             <br>
@@ -62,13 +65,12 @@
             {{monto | safe}} {% endcomment %}
             <hr>
             
-    
-            <p  style= "font-size:20px; color:blue;"> 2.- Ingresos en General: <p style= "font-size:20px; color:black;"><b>{{caja|safe }} Gs. </b></p> </p> 
-            <hr>
-            <br>
             <p style= "font-size:20px"> 3. - Ingresos Mensuales</p>
             {{monto_por_mes_renombrada |safe }} 
             <br>
+{% comment %} {{guaranies |safe}}
+             {% endcomment %}
+            {% comment %} {{monto_por_mes | safe}} --> ESTA TABLA TAMBIEN FUNCIONA PARA EL CONTEO SOLO QUE LAS COLUMNAS ESTAN AL REVEZ {% endcomment %}
 
             {% comment %}  ES LA 1RA PRUEBA Y TRAE TRUE FALSE
             {{general |safe}}
@@ -83,11 +85,44 @@
 
            
                 
-            {% comment %}
-            <h2>MONTO MES</h2>
+            
+            {% comment %} <h2>MONTO MES</h2>
             <br>
             {{guaranies | safe}}
-            <br> {% endcomment %}
+            <br>  {% endcomment %}
+           
+            <h3> Gráfico de Ingresos Mensuales </h3>
+            <center style="width: 450px">
+                <canvas id="myChart" ></canvas>
+                <script src="chart.js"></script>
+                <script>
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var chart = new Chart(ctx, {
+                    type: 'bar', 
+                    data:{
+                    datasets: [{
+                                data: {{draw}},
+                    backgroundColor: ['yellow','pink','purple'],
+                    label: 'Meses'}],
+                    labels: [ 'OCT', 'NOV','DIC']},
+                    options: {responsive: true}
+                    });
+                </script>
+            </center> 
+            <hr>
+
+                <div class="card-footer">
+                    <center>
+                        <a href="{{ list_url }}" class="btn btn-success btn-flat" >
+                            <i class="fas fa-sync"></i> Actualizar
+                        </a>
+                    </center>
+                    &nbsp;
+                    {% comment %} <a href="/reportes/pdf_reporte_cita" class="btn btn-success btn-flat" target="_blank">
+                        <i class="fas fa-sync"></i> Imprimir en pdf
+                    </a> {% endcomment %}
+
+                </div>
 
 
         </div>
