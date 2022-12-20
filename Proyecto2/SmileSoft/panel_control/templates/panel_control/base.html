@@ -391,7 +391,7 @@
                                                       <font color="black">  • Servicios brindados a <br>Cuota | Contado</font></a>
                                                     </li> {% endcomment %}
                                                     <li><a class="dropdown-item" href="/cobros/mostrar_caja/{{user.numero_documento}}"> 
-                                                      <font color="black">  • Caja</font></a>
+                                                      <font color="black">   <strong  style="color:blue; font-size:16px;" >  • Caja </strong> </font></a>
                                                     </li>
                                                     <li><a class="dropdown-item" href="/cobros/listar_cobros/"> 
                                                       <font color="black">  • Cobros registrados</font></a>
@@ -442,19 +442,19 @@
                                                     </strong>
                                               
                                                     <li><a class="dropdown-item" href="/reportes/tratamiento_mas_solicitado/">• Más Solicitados</li></a>
-                                                    <li><a class="dropdown-item" href="/reportes/reporte_tratamiento/">• Reporte de Ventas</li></a>
-                                                  
+                                                    {% comment %} <li><a class="dropdown-item" href="/reportes/reporte_tratamiento/">• Reporte de Ventas</li></a>
+                                                   {% endcomment %}
                                                 <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                      Insumos
-                                                    </strong>
-                                                <!--Opcion 11.1 -->
-                                                 
-                                                    <li><a class="dropdown-item" href="/reportes/insumos_reporte/">• Stock Minimo</li></a>
-                                                    <strong class="dropdown-header" style="color:blue; font-size:16px;" >
-                                                     Cita
-                                                    </strong>
+                                                  Cita
+                                                </strong>
                                                 <!--Opcion 11.2 -->
                                                     <li><a class="dropdown-item" href="/reportes/reporte_cita/">• Estado de Citas</li></a>
+                                                    
+                                                <strong class="dropdown-header" style="color:blue; font-size:16px;" >
+                                                  Ingresos
+                                                </strong>
+                                                <!--Opcion 11.2 -->
+                                                    <li><a class="dropdown-item" href="/reportes/reporte_ingresos/">• Reporte de Ingresos</li></a>
                                                     
                                                 
                                               </ul>

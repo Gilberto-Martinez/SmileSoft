@@ -2,6 +2,8 @@ import array
 import datetime
 from http.client import HTTPResponse
 from macpath import join
+from time import strftime
+from xmlrpc.client import _datetime
 from django.http import ( HttpResponse,)
 from ipaddress import summarize_address_range
 import json
@@ -20,10 +22,12 @@ from gestion_inventario_insumos.models import Insumo
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_agendamiento.models import Cita
 from gestion_reporte.form import ReporteTratamientoForm
-    
+from gestion_cobros.models import CobroContado, Factura
+from django.db.models import Sum
 from django.db.models import Count    
 from collections import Counter
 import numpy as np
+from datetime import date
 
 # Create your views here.
 
@@ -69,7 +73,7 @@ class ReporteTratamientoView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        # data = {}
+        data = {}
         action = request.POST['action']
         if action == 'search_report':
             data = []
@@ -93,7 +97,7 @@ class ReporteTratamientoView(TemplateView):
    # <!-->
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Reporte'
+        context['title'] = 'Reporte de Ingresos'
         context['entity'] = 'Reportes'
         # context['list_url'] = reverse_lazy('reporte_tratamiento')
         context['form'] = ReporteTratamientoForm()
@@ -296,7 +300,7 @@ def reporte_cita(request):
     data_agendado= pd.DataFrame(qa, columns=['Agendado'])
     data_realizado= pd.DataFrame(qr, columns=['Realizado'])
   
-    
+    # grupo= data_agendado.groupby(data_agendado.index.month).tail(1).reset_index()
     
     data_confirmado= pd.DataFrame(qc,)
     data_pagado= pd.DataFrame(qp,)
@@ -353,6 +357,7 @@ def reporte_cita(request):
         'conteo': conteo,
         'draw':draw,
         'porcentaje':porcentaje,
+        # 'grupo':grupo,
         # 'draw2':draw2,
         # 's':s,
      
@@ -495,3 +500,428 @@ def cita_reporte(request):
     
     return HttpResponse(json.dumps(data), content_type='application/json; utf-8') 
 
+
+
+def retorna_total_vendido(request):
+    total = CobroContado.objects.all().aggregate(Sum('monto_total'))['monto_total__sum']
+    if request.method == "GET":
+        return JsonResponse({'total': total})
+
+
+#ES  DE COBRO CONTADO
+# def reporte_ingresos(request):
+#     #Estados de una Cita
+#     qa= TratamientoConfirmado.objects.filter(estado='Agendado')
+#     qr= TratamientoConfirmado.objects.filter(estado='Realizado')
+#     qc= TratamientoConfirmado.objects.filter(estado='Confirmado')
+#     qp= TratamientoConfirmado.objects.filter(estado='Pagado')
+#     #General
+#     cita= TratamientoConfirmado.objects.all().values()
+    
+#     #Ingresos
+#     tabla_ingresos=CobroContado.objects.all().values()
+#     data= CobroContado.objects.all().values()
+#     df = pd.DataFrame(data)
+#     df[['fecha', 'monto_total']]
+#     monto= df[['monto_total']]
+#     fecha_mes= df[['fecha']]
+#     suma_monto=monto.sum()
+
+#     # es_fecha=df.reset_index(col_level='fecha')
+#     # mes=df['fecha'].dt.month
+#     # print("Es la fecha la columna", es_fecha)
+#     # print("es el mes ", mes)
+    
+    
+#     data_fecha= pd.DataFrame(data, columns=['fecha',])
+#     # Trae un datafraem como entre corchete de las fechas (mes)
+#     mes =data_fecha.set_index("fecha")
+    
+#     print(" ES FECHA", mes, "del tipo", type(mes))
+    
+#     # data_fecha=  data_fecha.set_index("index","fecha")
+#     # # data_fecha["Month"]= data_fecha.dt.month
+#     # data_fecha.head()
+    
+#     # print( "####ES DATA FECHA############",data_fecha )
+#     # serie_meses=pd.Series(data)
+#     # lista_fecha= serie_meses.dt.month
+#     # print (" es lista de meses", lista_fecha)
+    
+#     # monto_mes= datetime(date(df[['fecha']])).month== 10
+#     # # filterdate = datetime.date(input())
+#     # d1 = d1[(d1['New_Date'] > '{filterdate}') & (d1['New_Date'] != 'NaT')]
+#     # date_fecha= date(fecha_mes['fecha']).month==10
+#     # es_mes = date(fecha_mes).month==10
+    
+#     # print ("esto muestra", es_mes)
+  
+    
+#     # print("es la tabla cobro", df)
+#     #DataFrame
+#     tabla=pd.Series(tabla_ingresos)
+#     data_agendado= pd.DataFrame(qa, columns=['Agendado'])
+#     data_realizado= pd.DataFrame(qr, columns=['Realizado'])
+#     print ("es del tipo la Tabla..... ", type(tabla))
+    
+#     # grupo= data_agendado.groupby(data_agendado.index.month).tail(1).reset_index()
+    
+#     data_confirmado= pd.DataFrame(qc,)
+#     data_pagado= pd.DataFrame(qp,)
+#     data_pagado=pd.Series(data=qp,)
+#     data2= pd.DataFrame(cita, columns=['estado'], )
+#     data_pagado.index
+    
+#     #Grafico en Serie de Torta
+#     serie= data2['estado'].value_counts()
+#     # serie.plot.pie(autopct='%1.1f%%')
+#     # plt.show()
+#     print(   data_pagado.index)
+#     # s=pd.Series(cita)
+#     # s.to_dict('records')
+#     # print("es diccionario", s)
+#    #Mas pruebas
+#     graficocita=data2.to_dict
+#     conteo= serie.values
+#     draw= serie.to_numpy().tolist()
+   
+    
+    
+#     context={
+#         # 'tabla':tabla,
+#         'df': data2.to_html,
+#         #Trae el conteo de Cantidades gf1
+#         'gf1':serie.to_frame,
+#         # 'df_estado': data2['estado'],
+#         'df_estado':data2.estado,
+#         #
+#         'list': data2.estado.to_string,
+#         'total_agendado': data_agendado.count().values,
+#         'total_realizado': data_realizado.count().values,
+#         'total_confirmado': data_confirmado.count() -1,
+#         'total_pagado': data_pagado.count() -1,
+#         'grafico': serie,
+#         'graficocita':graficocita, 
+#         'conteo': conteo,
+#         'draw':draw,
+#         'tabla':tabla,
+#         'df':df[['fecha', 'monto_total']].to_html,
+#         'monto': monto.to_html,
+#         'suma_monto': suma_monto, 
+#         'mes':mes,
+#         # 'data_fecha': data_fecha,
+#         # 'monto_mes': monto_mes, 
+     
+#         # 'grupo':grupo,
+#         # 'draw2':draw2,
+#         # 's':s,
+     
+        
+#     }
+#     # total=  data.head()
+   
+   
+#     return render(request, 'reporte_ingresos.html', context)
+
+
+
+def reporte_ingresos(request):
+    #Estados de una Cita
+    qa= TratamientoConfirmado.objects.filter(estado='Agendado')
+    qr= TratamientoConfirmado.objects.filter(estado='Realizado')
+    qc= TratamientoConfirmado.objects.filter(estado='Confirmado')
+    qp= TratamientoConfirmado.objects.filter(estado='Pagado')
+    #General
+    cita= TratamientoConfirmado.objects.all().values()
+    
+    #Ingresos
+    tabla_ingresos=CobroContado.objects.all().values()
+    
+    #Tabla de Ingresos y Montos en General
+    
+    data= Factura.objects.all().values()
+    df = pd.DataFrame(data)
+    df[['fecha', 'total_pagar']]
+    tabla_factura = pd.DataFrame(data, columns=['fecha','total_pagar'])
+    tabla_factura_renombrada = tabla_factura.rename({'fecha':'Mes', 'total_pagar': 'total'}, axis=1)
+    tabla_renombrada= tabla_factura.rename({'fecha': 'Fecha', 'total_pagar': 'Monto'}, axis=1)
+    # print("||||||||||||||||||||", tabla_renombrada)
+    data_fecha= pd.DataFrame(data, columns=['fecha'])
+    
+    '''Trae el monto por mes'''
+    
+    tabla_mes_monto=  df[['fecha', 'total_pagar']]
+    
+    tabla_mensual= tabla_mes_monto.groupby(['fecha']).agg({"total_pagar":sum})
+    tabla_mensual_renombrada= tabla_mensual.rename({'fecha': 'Fecha', 'total_pagar': 'Monto'}, axis=1)
+    
+
+    
+    fecha_factura=pd.to_datetime(tabla_factura_renombrada['Mes'])# trae solo la columna fecha
+    '''Trae el nro del mes'''
+    numero_mes= fecha_factura.dt.month #trae el numero del mes 
+    
+    
+    '''POR MES'''
+    mes_monto= fecha_factura.drop_duplicates().groupby(numero_mes).count()
+    print("es general", mes_monto)
+    
+    monto= df[['total_pagar']]
+    
+    # general=  tabla_mensual_renombrada.drop_duplicates().groupby('fecha').count()
+    # general['Total por año'] = general['Monto'].sum()
+    
+    '''Funcion que sumara por mes'''
+    '''EXTRAER MONTOS MENSUALES'''
+    tabla_monto=  df[['fecha']]
+    tabla_monto_renombrada= tabla_monto.rename({'fecha':'MES'})
+    general=tabla_monto_renombrada.drop_duplicates().groupby(numero_mes).count()
+    
+    
+    general['Gs']= tabla_mensual_renombrada['Monto'].sum()
+    tabla_fecha= pd.DataFrame(general, columns=['Mes'])
+    
+    
+    
+    
+    print("ES FECHA", tabla_fecha)
+    
+    tabla_general=tabla_mes_monto.drop_duplicates().groupby(numero_mes).count()
+    
+    tabla_general=general.set_index('Gs')
+    
+    print('es TABLA GENERAL ||||||', tabla_general, '|||||||||')
+    
+
+
+    '''Sale los totales por mes'''
+    # monto_por_mes= tabla_mes_monto.groupby(((numero_mes > 9).any() or (numero_mes< 13).any()), True).sum()
+    monto_por_mes= tabla_mes_monto.groupby(numero_mes).sum()
+  
+    
+    monto_por_mes_renombrada= monto_por_mes.rename({'total_pagar': 'Gs'}, axis=1)
+    guaranies=monto_por_mes_renombrada.set_index('Gs')# trae la columna de totales por mes
+    
+    monto_por_mes_renombrada=monto_por_mes_renombrada.set_index('Gs')# trae la columna de totales por mes
+    '''INSERTA UNA NUEVA COLUMNA'''
+    
+    nombre_de_meses= ['Octubre','Noviembre','Diciembre']
+    nueva_tabla= monto_por_mes_renombrada.insert(loc= 0, column= 'Mes',value=nombre_de_meses)
+
+    
+    
+    
+    '''SERA EL GRAFICO'''
+    grafico_mes= monto_por_mes['total_pagar'].values
+    print("Es del grafico", grafico_mes)
+    # mes_grafico=monto_por_mes_renombrada['Gs'].value_counts()
+
+   
+    draw= grafico_mes.tolist()
+    print('ES GRAFICO CON COMAS', draw)
+    
+    '''Sera la tabla ingresos'''
+    
+    '''INGRESOS'''
+  
+    
+    
+    data_mes= pd.DataFrame(monto_por_mes, index=[1])
+    
+    
+    # data_monto
+    
+    print('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°',data_mes, '°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°')
+    # tabla_monto_por_mes=monto_por_mes.groupby('fecha').total_pagar.sum()
+    #general[numero_mes] = general['total_pagar'].sum() 
+    
+    
+    print("es tabla", general)
+    
+    '''Trae la cantidad por mes'''
+    grupo_factura= tabla_factura.drop_duplicates().groupby('fecha').count()
+    # fecha_factura.loc['Total por mes'] =  grupo_factura['total_pagar'].sum()
+  
+    
+  
+    
+    print("es fecha factura", fecha_factura, "es mes", numero_mes)
+    
+    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+    # print(nuevo)
+    mes_factura= lambda x:x[:7]
+    
+    print("es mes_factura", mes_factura)
+    # tabla_factura["fechaMes"]= tabla_factura[['fecha']].astype(str).map(mes_factura)
+    
+    '''Por mes'''
+    
+    mes_numero= tabla_factura[['fecha']]
+    print("es mes", mes_numero)
+        
+    # tabla_factura['month']= tabla_factura.dt.strftime('%m')
+    tabla_mes=pd.to_datetime(df['fecha']).dt.to_period('D') #solo trae el dia con el año
+    
+    
+    print('es tabla mes', tabla_mes)
+    '''Es una tabla que indica el Grupo por dia del Mes'''
+    grupo_mes= data_fecha.drop_duplicates().groupby('fecha').count()
+    
+   
+    print("es grupo", grupo_mes)
+    '''Hace un conteo por dias de las Facturas'''
+    grupo= tabla_factura.drop_duplicates().groupby('fecha').count()
+    grupo.loc['Total por año'] = grupo['total_pagar'].sum()
+    
+    grupo_renombrado= grupo.rename({'fecha': 'Fecha', 'total_pagar': 'Cantidad'}, axis=1)
+    
+    
+    
+    
+    
+    
+    
+    # data_factura= pd.DataFrame({'Lista de Fechas': pd.to_datetime(data_fecha, format='%Y/%m/%d')})
+    
+    # data_factura= pd.DataFrame({'Lista de Fechas': data_fecha.stack().unstack()})
+   
+    # data_factura= pd.DataFrame({'Lista de Fechas': pd.to_datetime(data_fecha, ).dt.month})
+    
+    # df['Lista de Fechas']= pd.to_datetime(df['Lista de Fechas']) 
+
+    
+    # df['Month'] = data_factura['Lista de Fechas'].dt.month == 12
+    # print(df)
+    
+    # print("es datafactura", data_factura)
+    
+    
+    
+ 
+    # monto= df[['total_pagar']]
+    
+    grupo_monto= tabla_factura
+    grupo_monto_renombrado= tabla_factura.rename({'fecha': 'Fecha', 'total_pagar': 'Monto en Gs'}, axis=1)
+    grupo_monto['Total por dia'] = grupo_monto['total_pagar'].sum()
+    
+  
+  
+    fecha_mes= df[['fecha']]
+    suma_monto=monto.sum()
+    suma= suma_monto.rename({'total_pagar': ''}, axis=1)
+    caja= suma.values
+
+    # es_fecha=df.reset_index(col_level='fecha')
+    # mes=df['fecha'].dt.month
+    # print("Es la fecha la columna", es_fecha)
+    # print("es el mes ", mes)
+    
+    
+    data_fecha= pd.DataFrame(data, columns=['fecha',])
+    # Trae un datafraem como entre corchete de las fechas (mes)
+    mes =data_fecha.set_index("fecha")
+    
+    print(" ES FECHA", mes, "del tipo", type(mes))
+    
+    # data_fecha=  data_fecha.set_index("index","fecha")
+    # # data_fecha["Month"]= data_fecha.dt.month
+    # data_fecha.head()
+    
+    # print( "####ES DATA FECHA############",data_fecha )
+    # serie_meses=pd.Series(data)
+    # lista_fecha= serie_meses.dt.month
+    # print (" es lista de meses", lista_fecha)
+    
+    # monto_mes= datetime(date(df[['fecha']])).month== 10
+    # # filterdate = datetime.date(input())
+    # d1 = d1[(d1['New_Date'] > '{filterdate}') & (d1['New_Date'] != 'NaT')]
+    # date_fecha= date(fecha_mes['fecha']).month==10
+    # es_mes = date(fecha_mes).month==10
+    
+    # print ("esto muestra", es_mes)
+  
+    
+    # print("es la tabla cobro", df)
+    #DataFrame
+    tabla=pd.Series(tabla_ingresos)
+    data_agendado= pd.DataFrame(qa, columns=['Agendado'])
+    data_realizado= pd.DataFrame(qr, columns=['Realizado'])
+    print ("es del tipo la Tabla..... ", type(tabla))
+    
+    # grupo= data_agendado.groupby(data_agendado.index.month).tail(1).reset_index()
+    
+    data_confirmado= pd.DataFrame(qc,)
+    data_pagado= pd.DataFrame(qp,)
+    data_pagado=pd.Series(data=qp,)
+    data2= pd.DataFrame(cita, columns=['estado'], )
+    data_pagado.index
+    
+    #Grafico en Serie de Torta
+    serie= data2['estado'].value_counts()
+    # serie.plot.pie(autopct='%1.1f%%')
+    # plt.show()
+    print(   data_pagado.index)
+    # s=pd.Series(cita)
+    # s.to_dict('records')
+    # print("es diccionario", s)
+   #Mas pruebas
+    # graficocita=data2.to_dict
+    # conteo= serie.values
+    # draw= serie.to_numpy().tolist()
+   
+    
+    
+    context={
+        # 'tabla':tabla,
+        'df': data2.to_html,
+        #Trae el conteo de Cantidades gf1
+        'gf1':serie.to_frame,
+        # 'df_estado': data2['estado'],
+        'df_estado':data2.estado,
+        #
+        'list': data2.estado.to_string,
+        'total_agendado': data_agendado.count().values,
+        'total_realizado': data_realizado.count().values,
+        'total_confirmado': data_confirmado.count() -1,
+        'total_pagado': data_pagado.count() -1,
+        'grafico': serie,
+        'draw':draw,
+        'tabla':tabla,
+        'df':df[['fecha', 'total_pagar']].to_html,
+        'tabla_renombrada':tabla_renombrada.to_html,
+        'monto': monto.to_html,
+        'tabla_monto_renombrada':tabla_monto_renombrada.to_html,
+        'suma_monto': suma_monto, 
+        'suma':suma,
+        'caja': caja,
+        'mes':mes,
+        'grupo_mes': grupo_mes.to_html,
+        'grupo':grupo.to_html,
+        'grupo_renombrado': grupo_renombrado.to_html,
+        'grupo_monto':grupo_monto.to_html,
+        'grupo_monto_renombrado':grupo_monto_renombrado.to_html,
+        'tabla_mes':tabla_mes.to_frame(),
+        'numero_mes': numero_mes,
+        'grupo_factura':grupo_factura.to_html,
+        'tabla_mensual':tabla_mensual.to_html,
+        'tabla_mensual_renombrada':tabla_mensual_renombrada.to_html,
+        'general': general.to_html,
+        'tabla_general':tabla_general.to_html,
+        'tabla_mes': tabla_mes.to_frame,
+        'monto_por_mes':monto_por_mes.to_html,
+        'monto_por_mes_renombrada':monto_por_mes_renombrada.to_html,
+        # 'grafico_mes': grafico_mes,
+        'nueva_tabla': nueva_tabla,
+        'data_mes':data_mes.to_html,
+        'guaranies': guaranies.to_html, 
+        # 'data_mes': data_mes.to_html,
+        # 'ingreso_tabla':ingreso_tabla,
+        
+        # 'draw2':draw2,
+        # 's':s,
+     
+        
+    }
+    # total=  data.head()
+
+    return render(request, 'reporte_ingresos.html', context)
