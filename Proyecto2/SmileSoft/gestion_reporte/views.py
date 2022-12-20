@@ -661,7 +661,7 @@ def reporte_ingresos(request):
     '''Trae el nro del mes'''
     numero_mes= fecha_factura.dt.month #trae el numero del mes 
     
-
+    
     '''POR MES'''
     mes_monto= fecha_factura.drop_duplicates().groupby(numero_mes).count()
     print("es general", mes_monto)
@@ -695,7 +695,8 @@ def reporte_ingresos(request):
 
 
     '''Sale los totales por mes'''
-    monto_por_mes= tabla_mes_monto.groupby(numero_mes==11).sum()
+    # monto_por_mes= tabla_mes_monto.groupby(((numero_mes > 9).any() or (numero_mes< 13).any()), True).sum()
+    monto_por_mes= tabla_mes_monto.groupby(numero_mes).sum()
   
     
     monto_por_mes_renombrada= monto_por_mes.rename({'total_pagar': 'Gs'}, axis=1)
@@ -703,18 +704,21 @@ def reporte_ingresos(request):
     
     monto_por_mes_renombrada=monto_por_mes_renombrada.set_index('Gs')# trae la columna de totales por mes
     '''INSERTA UNA NUEVA COLUMNA'''
-    nombre_de_meses= ['Noviembre', 'Diciembre']
-    nueva_tabla= monto_por_mes_renombrada.insert(loc= 0, column= 'Meses',value=nombre_de_meses)
+    
+    nombre_de_meses= ['Octubre','Noviembre','Diciembre']
+    nueva_tabla= monto_por_mes_renombrada.insert(loc= 0, column= 'Mes',value=nombre_de_meses)
+
+    
     
     
     '''SERA EL GRAFICO'''
-    # grafico_mes= monto_por_mes_renombrada['Gs'].values
-
+    grafico_mes= monto_por_mes['total_pagar'].values
+    print("Es del grafico", grafico_mes)
     # mes_grafico=monto_por_mes_renombrada['Gs'].value_counts()
 
    
-    # draw= grafico_mes.to_numpy().tolist()
-    
+    draw= grafico_mes.tolist()
+    print('ES GRAFICO CON COMAS', draw)
     
     '''Sera la tabla ingresos'''
     
@@ -881,7 +885,7 @@ def reporte_ingresos(request):
         'total_confirmado': data_confirmado.count() -1,
         'total_pagado': data_pagado.count() -1,
         'grafico': serie,
-        # 'draw':draw,
+        'draw':draw,
         'tabla':tabla,
         'df':df[['fecha', 'total_pagar']].to_html,
         'tabla_renombrada':tabla_renombrada.to_html,
