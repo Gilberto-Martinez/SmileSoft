@@ -25,5 +25,6 @@ urlpatterns = [
         
     path('apuntes_graficos/', apuntes_graficos, name='apuntes_graficos'),
    
-   
+   #Ingresos
+    path('reporte_ingresos/', reporte_ingresos, name='reporte_ingresos'),
 ]

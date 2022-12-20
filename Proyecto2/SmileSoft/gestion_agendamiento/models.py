@@ -101,7 +101,7 @@ class Cita(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         item['tratamiento_solicitado'] = self.tratamiento_solicitado.toJSON()
-        item['fecha'] = self.fecha.strftime('%d-%m-%Y')
+        item['fecha'] = self.fecha.strftime('%Y-%m-%d')
         return item
 
     
