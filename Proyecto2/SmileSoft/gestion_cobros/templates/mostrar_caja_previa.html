@@ -1,0 +1,33 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+<!-- {%if perms.gestion_administrativo.add_cargo%} -->
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>
+            <center>  
+                <h2 style="font-family: Bodoni;">
+                    <b>
+                        Movimientos de la caja
+                    </b>
+                </h2> 
+            </center>
+            <h4>
+                <b>Ingresos del día</b> 
+            </h4>
+            {%if ingresos%}
+                {%for i in ingresos%}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                    </table>
+                {%endfor%}
+            {%endif%}
+
+        </div>
+    </div>
+<!-- {%endif%} -->
+{%endblock%}
