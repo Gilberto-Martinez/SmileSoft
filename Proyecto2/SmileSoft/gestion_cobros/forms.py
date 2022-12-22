@@ -2,20 +2,21 @@ from django import forms
 from .models import *
 from gestion_administrativo.models import Persona, Empresa
 
-class CobroContadoForm(forms.ModelForm):
-    numero_documento = forms.CharField(widget=forms.TextInput(attrs={
-                                                            'class': 'form-control',
-                                                            'placeholder': 'Ingrese su nombre'
-                                                            }
-                                                    )
-                                )
-    razon_social = forms.CharField(widget=forms.TextInput(attrs={
-                                                            'class': 'form-control',
-                                                            'placeholder': 'Ingrese su nombre'
-                                                            }
-                                                    )
-                                )
-    fecha = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+class CobroMontoForm(forms.ModelForm):
+    monto_efectivo = forms.IntegerField(widget=forms.NumberInput(attrs={
+                                                                    'class': 'form-control',
+                                                                    'placeholder': 'Ingrese el monto en efecivo'
+                                                                    }
+                                                            )
+                                    )
+    class Meta:
+        model = CobroContado
+        fields = [
+                    'monto_efectivo',
+        ]
+
+
+class CobroEfectivoForm(forms.ModelForm):
     monto_efectivo = forms.IntegerField(widget=forms.NumberInput(attrs={
                                                                     'class': 'form-control',
                                                                     'placeholder': 'Ingrese el monto en efecivo'
@@ -33,6 +34,7 @@ class CobroContadoForm(forms.ModelForm):
                     'monto_efectivo',
                     'vuelto',
         ]
+
 
 # class RazonSocialForm(forms.ModelForm):
 #     numero_documento = forms.CharField(widget=forms.TextInput(attrs={
@@ -273,6 +275,46 @@ class FacturaReadOnlyForm(forms.ModelForm):
                 'condicion_venta',
                 'total_pagar',
                 'estado',
+        ]
+
+
+class CobroTemporalForm(forms.ModelForm):
+    numero_documento = forms.CharField(label="RUC",
+                                        widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el RUC del cliente'
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(label="Nombre/Razón social",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el nombre del cliente'
+                                                            }
+                                                    )
+                                )
+    direccion = forms.CharField(label="Domicilio",
+                                    widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese el domicilio del cliente'
+                                                            }
+                                                    )
+                                )
+    telefono = forms.CharField(label='Teléfono', widget = forms.TextInput (attrs = {'class': 'form-control', 'placeholder': 'Ingrese su numero de telefono'}))
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = forms.ChoiceField(label='Condicón de venta',choices=CONDICIONES, widget = forms.Select (attrs = {'class': 'form-control',}))
+    fecha = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control', 'readonly':True}))
+    class Meta:
+        model = CobroContado
+        fields = [
+                'numero_documento',
+                'razon_social',
+                'direccion',
+                'telefono',
+                'condicion_venta',
+                'fecha',
         ]
 
 

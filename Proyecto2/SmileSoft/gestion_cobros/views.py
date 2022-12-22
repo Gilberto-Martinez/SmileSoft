@@ -1,5 +1,6 @@
 
 #from datetime import datetime
+from ast import If
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -866,35 +867,104 @@ def ingresar_datos_cobro(request, id_paciente):
             'monto_total':monto_total_s,
             # 'fecha':fecha_actual,
             'form': FacturaForm(instance=factura),
-            'form2':CobroContadoForm()
+            'form2':CobroTemporalForm()
     }
 
     if request.method == 'POST':
-        form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
-        form2 = CobroContadoForm(data=request.POST, files=request.FILES)
+        form = CobroTemporalForm(data=request.POST, files=request.FILES, instance=factura)
+        # form2 = CobroContadoForm(data=request.POST, files=request.FILES)
 
-        if form.is_valid() and form2.is_valid():
-            cobro = CobroContado.objects.create(
-                                                paciente=paciente 
-            )
+        if form.is_valid():
+            cobro_form = form.save(commit=False)
+            cobro = CobroContado.objects.last()
+            # cobro = CobroContado.objects.create(
+            #                                     paciente=paciente 
+            # )
 
             for t in tratamientos:
                 detalle_cobro = DetalleCobro.objects.create(
                                                     tratamiento=t.tratamiento,
                                                     cobro_contado=cobro
                 )
+            return redirect('/cobros/solicitar_monto_efectivo/%s'%(cobro.id_cobro))
 
-            factura = form.save(commit=False)
-            factura.cobro_contado = cobro
-            factura.save()
-            fact = Factura.objects.last()
-            # id_factura = fact.id_factura
-            guardar_detalle_factura(fact, tratamientos)
-            guardar_detalle_caja(fact, tratamientos)
-            pagar_tratamientos(tratamientos)
-            return redirect('/cobros/confirmacion_de_cobro/%s' %(fact.id_factura))
+            # factura = form.save(commit=False)
+            # factura.cobro_contado = cobro
+            # factura.save()
+            # fact = Factura.objects.last()
+            # # id_factura = fact.id_factura
+            # guardar_detalle_factura(fact, tratamientos)
+            # guardar_detalle_caja(fact, tratamientos)
+            # pagar_tratamientos(tratamientos)
+            # return redirect('/cobros/confirmacion_de_cobro/%s' %(fact.id_factura))
 
     return render(request, 'ingresar_datos_cobro.html', data)
+
+
+def solicitar_monto_efectivo(request, id_cobro):
+    cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
+    data = {
+            'form':CobroMontoForm(instance=cobro)
+    }
+
+    if request.method == 'POST':
+        form = CobroMontoForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            cobro_monto = form.save(commit=False)
+            monto = cobro_monto.monto_efectivo
+            cobro_monto.save()
+            return redirect('/cobros/mostrar_montos/%s/%s'%(id_cobro) %(monto))
+    return render(request, 'solicitar_monto_efectivo.html', data)
+
+def mostrar_vuelto(request, id_cobro):
+    cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
+    data = {
+            'form':CobroEfectivoForm(instance=cobro)
+    }
+
+    if request.method == 'POST':
+        form = CobroEfectivoForm(data=request.POST, files=request.FILES, instance=cobro)
+        if form.is_valid():
+            form.save()
+            id_factura = cobrar(id_cobro)
+            return redirect('/cobros/confirmacion_de_cobro/%s' %(id_factura))
+
+    return render(request, 'mostrar_vuelto.html', data)
+
+
+def cobrar(id_cobro):
+    cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
+    factura = Factura.objects.create(
+                                    sub_nro_factura1 = '',
+                                    sub_nro_factura2 = '',
+                                    sub_nro_factura3 = '',
+                                    nro_factura = '',
+                                    numero_documento = '',
+                                    razon_social = models.CharField(max_length=60, null=True, blank=True, verbose_name='Nombre o Razón Social')
+    direccion = models.CharField(max_length=80, null=True, blank=True, verbose_name='Dirección')
+    fecha = models.DateField() #(auto_now_add=True)
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = models.CharField(max_length=12, choices=CONDICIONES,default='Contado' ,verbose_name='Condición de venta')
+    telefono = models.CharField(max_length=20, null=True, blank=True)
+    total_pagar = models.IntegerField()
+    iva_5 = models.FloatField(null=True)
+    iva_10= models.FloatField(null=True)
+    total_iva = models.FloatField(null=True)
+    E = 'Emitido'
+    A = 'Anulado'
+    ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
+    estado = models.CharField(max_length=12, choices=ESTADOS,default='Emitido' ,verbose_name='Condición de venta')
+    cobro_contado = models.
+    )
+    # factura.cobro_contado = cobro
+    # factura.save()
+    # fact = Factura.objects.last()
+    # # id_factura = fact.id_factura
+    # guardar_detalle_factura(fact, tratamientos)
+    # guardar_detalle_caja(fact, tratamientos)
+    # pagar_tratamientos(tratamientos)
 
 
 def confirmacion_de_cobro(request, id_factura):
