@@ -47,6 +47,5 @@ urlpatterns = [
     path('cerrar_caja/', cerrar_caja, name="cerrar_caja"),
     path('mostar_caja_previa/', mostar_caja_previa, name="mostar_caja_previa"),
     path('apertura_exitosa/', mostar_apertura_exitosa_caja, name="apertura_exitosa"),
-    
-
+    path('solicitar_monto_efectivo/<int:id_cobro>', solicitar_monto_efectivo, name="solicitar_monto_efectivo"),
 ]
