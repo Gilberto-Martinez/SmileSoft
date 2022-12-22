@@ -85,25 +85,11 @@
                                     <td>1</td>
                                     <td>{{c.tratamiento.nombre_tratamiento}}</td>
                                     <td>{{c.tratamiento.precio}}</td>
-                                    <!-- <td>{{form.numero_documento}}</td>
-                                    <td>{{form.numero_documento}}</td>
-                                    <td>{{form.numero_documento}}</td> -->
                                 </tr>
                                 {%endfor%}
-                                <!-- <tr>
-                                    <td><b>SubTotales</b></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><b>{{monto_total}} Gs</b></td>
-                                    <td><b>{{monto_total}} Gs</b></td>
-                                    <td><b>{{monto_total}} Gs</b></td>
-                                </tr> -->
                                 <tr>
                                     <td><b>Totales</b></td>
                                     <td></td>
-                                    <!-- <td></td> -->
-                                    <!-- <td></td> -->
-                                    <!-- <td></td> -->
                                     <td><b>{{monto_total}} Gs</b></td>
                                 </tr>
                             {%else%}
@@ -115,13 +101,9 @@
                     </table>
                 </div>
                 <div align="center">
-                    <!-- <a type="submit" href="/cobros/generar_factura/" target="_blank" class="btn btn-outline-primary">
-                        <i class="bi bi-file-pdf"></i>
-                        Generar factura
-                    </a> -->
                     <button type="submit" target="_blank" class="btn btn-outline-primary">
                         <i class="bi bi-box-arrow-in-down"></i>
-                        Cobrar
+                        Cobrar en efectivo
                     </button>
                     &nbsp;&nbsp;
                     <a onclick="history.back()" class="btn btn-outline-danger">

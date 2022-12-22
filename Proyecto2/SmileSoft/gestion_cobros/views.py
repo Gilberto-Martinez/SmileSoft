@@ -169,20 +169,20 @@ def verificar_datos_cita(request, numero_documento, menor_edad):
     print('respuesta: ',respuesta)
     return render(request, 'mensajes/pagina_error.html')
 
-def solicitar_razon_social(request, numero_documento):
-    data ={
-            'form':RazonSocialForm()
-    }
+# def solicitar_razon_social(request, numero_documento):
+#     data ={
+#             'form':RazonSocialForm()
+#     }
 
-    if request.method == 'POST':
-        form = RazonSocialForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            datos = form.save(commit=False)
-            razon_social = datos.razon_social
-            numero_documento2 = datos.numero_documento
-            return redirect('/cobros/registrar_cobro2/%s/%s/%s' %(numero_documento, numero_documento2, razon_social))
+#     if request.method == 'POST':
+#         form = RazonSocialForm(data=request.POST, files=request.FILES)
+#         if form.is_valid():
+#             datos = form.save(commit=False)
+#             razon_social = datos.razon_social
+#             numero_documento2 = datos.numero_documento
+#             return redirect('/cobros/registrar_cobro2/%s/%s/%s' %(numero_documento, numero_documento2, razon_social))
 
-    return render('solicitar_razon_social.html', data)
+#     return render('solicitar_razon_social.html', data)
 
 
 # def registrar_cobro_pendiente(numero_documento):
@@ -484,74 +484,74 @@ def mostrar_msj_confirmacion_cobro(request,id_cobro):
     return render(request, 'mensajes/confirmacion_de_cobro.html',{'id_cobro':id_cobro})
 
 #--------------------- Sección de faturación -------------------------------#
-def ingresar_datos_factura(request, id_cobro):
-    cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
-    cedula = cobro.paciente.numero_documento
-    persona = Persona.objects.get(numero_documento=cedula)
-    """ detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro) """
-    id_detalle_cobro = detalle_cobro.id
-    detalle_tratamientos = DetalleCobroTratamiento.objects.all()
-    tratamientos =[]
+# def ingresar_datos_factura(request, id_cobro):
+#     cobro = CobroContado.objects.get(id_cobro_contado=id_cobro)
+#     cedula = cobro.paciente.numero_documento
+#     persona = Persona.objects.get(numero_documento=cedula)
+#     """ detalle_cobro = DetalleCobroContado.objects.get(cobro=cobro) """
+#     id_detalle_cobro = detalle_cobro.id
+#     detalle_tratamientos = DetalleCobroTratamiento.objects.all()
+#     tratamientos =[]
 
-    for detalle_tratamiento in detalle_tratamientos:
-        if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
-            id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
-            tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
-            precio_numerico = tratamiento.precio
-            precio = '{:,}'.format(tratamiento.precio).replace(',','.')
-            tratamiento_tmp = {
-                                'nombre_tratamiento':tratamiento.nombre_tratamiento,
-                                'precio':precio,
-                                'precio_numerico':precio_numerico
-            }
-            tratamientos.append(tratamiento_tmp)
+#     for detalle_tratamiento in detalle_tratamientos:
+#         if detalle_tratamiento.detalle_cobro.id == id_detalle_cobro:
+#             id_tratamiento = detalle_tratamiento.tratamiento.get_codigo_tratamiento()
+#             tratamiento = Tratamiento.objects.get(codigo_tratamiento=id_tratamiento)
+#             precio_numerico = tratamiento.precio
+#             precio = '{:,}'.format(tratamiento.precio).replace(',','.')
+#             tratamiento_tmp = {
+#                                 'nombre_tratamiento':tratamiento.nombre_tratamiento,
+#                                 'precio':precio,
+#                                 'precio_numerico':precio_numerico
+#             }
+#             tratamientos.append(tratamiento_tmp)
 
-    monto_total = cobro.monto_total
-    monto_total_s= '{:,}'.format(monto_total).replace(',','.')
+#     monto_total = cobro.monto_total
+#     monto_total_s= '{:,}'.format(monto_total).replace(',','.')
 
-    partes_nro_factura = generar_numero_factura()
+#     partes_nro_factura = generar_numero_factura()
 
-    factura = Factura(
-                        sub_nro_factura1 = partes_nro_factura['sub_nro_1'],
-                        sub_nro_factura2 = partes_nro_factura['sub_nro_2'],
-                        sub_nro_factura3 = partes_nro_factura['sub_nro_3'],
-                        nro_factura = partes_nro_factura['nro_factura'],
-                        numero_documento = cobro.numero_documento,
-                        razon_social = cobro.razon_social,
-                        direccion = persona.direccion,
-                        telefono = persona.telefono,
-                        total_pagar = monto_total,
-                        # iva_5 = "",
-                        iva_10= (monto_total / 11),
-                        total_iva = (monto_total / 11),
-                        estado = 'Emitido',
-    )
+#     factura = Factura(
+#                         sub_nro_factura1 = partes_nro_factura['sub_nro_1'],
+#                         sub_nro_factura2 = partes_nro_factura['sub_nro_2'],
+#                         sub_nro_factura3 = partes_nro_factura['sub_nro_3'],
+#                         nro_factura = partes_nro_factura['nro_factura'],
+#                         numero_documento = cobro.numero_documento,
+#                         razon_social = cobro.razon_social,
+#                         direccion = persona.direccion,
+#                         telefono = persona.telefono,
+#                         total_pagar = monto_total,
+#                         # iva_5 = "",
+#                         iva_10= (monto_total / 11),
+#                         total_iva = (monto_total / 11),
+#                         estado = 'Emitido',
+#     )
 
-    data = {
-        'form': FacturaForm(instance=factura)
-    }
+#     data = {
+#         'form': FacturaForm(instance=factura)
+#     }
 
-    data['tratamientos'] = tratamientos
-    data['monto_total'] = monto_total_s
-    data['id_factura'] = factura.id_factura
+#     data['tratamientos'] = tratamientos
+#     data['monto_total'] = monto_total_s
+#     data['id_factura'] = factura.id_factura
 
-    if request.method == 'POST':
-        # form = CobroFacturaForm(data=request.POST, files=request.FILES, instance=cobro)
-        # form2 = DatosFacturaForm(data=request.POST, files=request.FILES, instance=persona)
-        form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
+#     if request.method == 'POST':
+#         # form = CobroFacturaForm(data=request.POST, files=request.FILES, instance=cobro)
+#         # form2 = DatosFacturaForm(data=request.POST, files=request.FILES, instance=persona)
+#         form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
 
-        if form.is_valid():
-            form.save()
-            fact = Factura.objects.last()
-            id_factura = fact.id_factura
-            guardar_detalle_factura(fact, tratamientos)
-            return redirect("/cobros/generar_factura/%s" %(id_factura))
-        else:
-            data['form']=form
-    else:
-        print("No entra en POST")
+#         if form.is_valid():
+#             form.save()
+#             fact = Factura.objects.last()
+#             id_factura = fact.id_factura
+#             guardar_detalle_factura(fact, tratamientos)
+#             return redirect("/cobros/generar_factura/%s" %(id_factura))
+#         else:
+#             data['form']=form
+#     else:
+#         print("No entra en POST")
 
-    return render(request, 'facturacion/ingresar_datos_factura.html', data)
+#     return render(request, 'facturacion/ingresar_datos_factura.html', data)
 
 
 def generar_numero_factura():
@@ -781,7 +781,7 @@ def guardar_datos_apertura_caja2(request, numero_documento):
     fecha_actual = now.date()
     hora_actual = now.time()
 
-    total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
+    # total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
 
     caja_temp = Caja(
                     id_cajero = cajero,
@@ -790,13 +790,13 @@ def guardar_datos_apertura_caja2(request, numero_documento):
                     # saldo_anterior = total_caja['monto_total__sum'],
     )
 
-    monto_total_s= '{:,}'.format(total_caja['monto_total__sum']).replace(',','.')
+    # monto_total_s= '{:,}'.format(total_caja['monto_total__sum']).replace(',','.')
 
     data = {
             'form':CajaForm(instance=caja_temp),
             'fecha_actual':fecha_actual,
             'hora_actual':hora_actual,
-            'saldo_anterior':monto_total_s,
+            # 'saldo_anterior':monto_total_s,
     }
 
     if request.method == 'POST':
@@ -807,7 +807,7 @@ def guardar_datos_apertura_caja2(request, numero_documento):
             caja.fecha_apertura = fecha_actual
             caja.hora_apertura = hora_actual
             caja.save()
-            return render(request, 'mensajes/msj_caja_abierta2.html')
+            return redirect('/cobros/apertura_exitosa/')
         else:
             print('form no es valido')
             data['form'] = CajaForm
@@ -835,8 +835,9 @@ def ingresar_datos_cobro(request, id_paciente):
                                                         estado = 'Confirmado'
     )
 
+    monto_total = 0
     for t in tratamientos:
-        monto_total = t.tratamiento.precio
+        monto_total = monto_total + t.tratamiento.precio
 
     monto_total_s= '{:,}'.format(monto_total).replace(',','.')
     now = class_datetime.now()
@@ -864,11 +865,13 @@ def ingresar_datos_cobro(request, id_paciente):
             'tratamientos':tratamientos,
             'monto_total':monto_total_s,
             # 'fecha':fecha_actual,
-            'form': FacturaForm(instance=factura)
+            'form': FacturaForm(instance=factura),
+            'form2':EfectivoForm()
     }
 
     if request.method == 'POST':
         form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
+        form2 = EfectivoForm(data=request.POST, files=request.FILES)
 
         if form.is_valid():
             cobro = CobroContado.objects.create(
@@ -880,6 +883,7 @@ def ingresar_datos_cobro(request, id_paciente):
                                                     tratamiento=t.tratamiento,
                                                     cobro_contado=cobro
                 )
+            form2.monto_efectivo.clean()
             factura = form.save(commit=False)
             factura.cobro_contado = cobro
             factura.save()
@@ -1088,6 +1092,10 @@ def registrar_gasto_en_caja(id_comprobante):
                                             comprobante_pago = comprobante,
     )
 
+
+
+def mostar_apertura_exitosa_caja(request):
+    return render(request, 'mensajes/msj_caja_abierta3.html')
 
 # def verificar_apertura_caja_gasto():
 #     now = class_datetime.now()

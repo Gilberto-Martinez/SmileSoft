@@ -398,6 +398,8 @@ class DetalleComprobanteForm(forms.ModelForm):
                 'iva_10',
         ]
 
+class EfectivoForm(forms.Form):
+    monto_efectivo = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control'}))
 
 # class DetalleGastoForm(forms.ModelForm):
 #     class Meta:
