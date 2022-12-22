@@ -16,6 +16,8 @@ class CobroContado(models.Model):
     razon_social = models.CharField(max_length=100, verbose_name='Nombre o razón social', null=True, blank=True)
     fecha = models.DateField(auto_now_add=True, null=True, blank=True)
     monto_total = models.BigIntegerField(null=True, blank=True)
+    monto_efectivo = models.IntegerField(null=True)
+    vuelto = models.IntegerField(null=True)
     class Meta:
         verbose_name = 'Cobro al contado'
         verbose_name_plural = 'Cobros al contado'

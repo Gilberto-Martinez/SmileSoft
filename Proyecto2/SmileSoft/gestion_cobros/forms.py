@@ -2,41 +2,37 @@ from django import forms
 from .models import *
 from gestion_administrativo.models import Persona, Empresa
 
-# class CobroContadoForm(forms.ModelForm):
-#     paciente = forms.CharField(widget=forms.TextInput(attrs={
-#                                                         'class': 'form-control',
-#                                                             'placeholder': 'Ingrese su nombre'
-#                                                             }
-#                                                     )
-#                                 )
-#     numero_documento = forms.CharField(widget=forms.TextInput(attrs={
-#                                                             'class': 'form-control',
-#                                                             'placeholder': 'Ingrese su nombre'
-#                                                             }
-#                                                     )
-#                                 )
-#     razon_social = forms.CharField(widget=forms.TextInput(attrs={
-#                                                             'class': 'form-control',
-#                                                             'placeholder': 'Ingrese su nombre'
-#                                                             }
-#                                                     )
-#                                 )
-#     fecha = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-#     monto_total = forms.IntegerField(widget=forms.NumberInput(attrs={
-#                                                                     'class': 'form-control',
-#                                                                     'placeholder': 'Ingrese su nombre'
-#                                                                     }
-#                                                             )
-#                                     )
-#     class Meta:
-#         model = CobroContado
-#         fields = [
-#                     'paciente',
-#                     'numero_documento',
-#                     'razon_social',
-#                     'fecha',
-#                     'monto_total',
-#         ]
+class CobroContadoForm(forms.ModelForm):
+    numero_documento = forms.CharField(widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese su nombre'
+                                                            }
+                                                    )
+                                )
+    razon_social = forms.CharField(widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Ingrese su nombre'
+                                                            }
+                                                    )
+                                )
+    fecha = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    monto_efectivo = forms.IntegerField(widget=forms.NumberInput(attrs={
+                                                                    'class': 'form-control',
+                                                                    'placeholder': 'Ingrese el monto en efecivo'
+                                                                    }
+                                                            )
+                                    )
+    vuelto = forms.IntegerField(widget=forms.NumberInput(attrs={
+                                                                    'class': 'form-control',
+                                                                    }
+                                                            )
+                                    )
+    class Meta:
+        model = CobroContado
+        fields = [
+                    'monto_efectivo',
+                    'vuelto',
+        ]
 
 # class RazonSocialForm(forms.ModelForm):
 #     numero_documento = forms.CharField(widget=forms.TextInput(attrs={
@@ -398,8 +394,6 @@ class DetalleComprobanteForm(forms.ModelForm):
                 'iva_10',
         ]
 
-class EfectivoForm(forms.Form):
-    monto_efectivo = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control'}))
 
 # class DetalleGastoForm(forms.ModelForm):
 #     class Meta:

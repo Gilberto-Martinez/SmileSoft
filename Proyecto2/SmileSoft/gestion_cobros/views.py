@@ -866,14 +866,14 @@ def ingresar_datos_cobro(request, id_paciente):
             'monto_total':monto_total_s,
             # 'fecha':fecha_actual,
             'form': FacturaForm(instance=factura),
-            'form2':EfectivoForm()
+            'form2':CobroContadoForm()
     }
 
     if request.method == 'POST':
         form = FacturaForm(data=request.POST, files=request.FILES, instance=factura)
-        form2 = EfectivoForm(data=request.POST, files=request.FILES)
+        form2 = CobroContadoForm(data=request.POST, files=request.FILES)
 
-        if form.is_valid():
+        if form.is_valid() and form2.is_valid():
             cobro = CobroContado.objects.create(
                                                 paciente=paciente 
             )
@@ -883,7 +883,7 @@ def ingresar_datos_cobro(request, id_paciente):
                                                     tratamiento=t.tratamiento,
                                                     cobro_contado=cobro
                 )
-            form2.monto_efectivo.clean()
+
             factura = form.save(commit=False)
             factura.cobro_contado = cobro
             factura.save()
