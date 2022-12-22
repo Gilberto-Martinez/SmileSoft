@@ -9,6 +9,7 @@
     <title>Reportes de Ingresos</title>
     <link rel="icon" href="favicon.ico" size="32x32" >
     {% load static %}
+  
 
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js'>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
@@ -38,7 +39,7 @@
             </center>
             {%csrf_token%}
             <br>
-           
+            {{df |safe}}
             {% comment %} <br>
             {{grupo_monto_renombrado |safe}}
             <br>
