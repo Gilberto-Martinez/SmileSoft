@@ -4,7 +4,7 @@ from gestion_reporte.views import *
 
 urlpatterns = [
     #Reportes
-    path('reporte_tratamiento/', ReporteTratamientoView.as_view(), name='reporte_tratamiento'),
+    path('reporte_factura/', ReporteFacturaView.as_view(), name='reporte_factura'),
     
     # path("reporte_tratamiento/", tratamiento_reporte , name="reporte_tratamiento "),
     

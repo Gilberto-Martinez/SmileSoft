@@ -41,9 +41,9 @@ function generate_report() {
 //                 }
 //             },
 //         ],
-        // initComplete: function (settings, json) {
+        initComplete: function (settings, json) {
 
-        // }
+        }
     });
 }
 
@@ -51,21 +51,22 @@ function generate_report() {
 $(function () {
     $('input[name="date_range"]').daterangepicker({
          locale : {
-             format: 'YYYY-MM-DD',
-             applyLabel: '<i class="fas fa-chart-pie"></i> Aplicar',
+            format: 'YYYY-MM-DD',
+            applyLabel: '<i class="fas fa-chart-pie"></i> Apli',
             cancelLabel: '<i class="fas fa-times"></i> Cancelar',
-         }
-    }).on('apply.daterangepicker', function (ev, picker) {
-        date_range = picker;
-        generate_report();
-        console.log(picker.setStartDate.format('YYYY-MM-DD')+'-'+ picker.endDate.format('YYYY-MM-DD'));
-        
-    }).on('cancel.daterangepicker', function (ev, picker) {
-        $(this).data('daterangepicker').setStartDate(date_now);
-        $(this).data('daterangepicker').setEndDate(date_now);
-        date_range = picker;
-        generate_report();
+        }
     });
+    // }).on('apply.daterangepicker', function (ev, picker) {
+    //     date_range = picker;
+    //     generate_report();
+    //     console.log(picker.setStartDate.format('YYYY-MM-DD')+'-'+ picker.endDate.format('YYYY-MM-DD'));
+        
+    // }).on('cancel.daterangepicker', function (ev, picker) {
+    //     $(this).data('daterangepicker').setStartDate(date_now);
+    //     $(this).data('daterangepicker').setEndDate(date_now);
+    //     date_range = picker;
+    //     generate_report();
+    // });
 
     generate_report();
 });

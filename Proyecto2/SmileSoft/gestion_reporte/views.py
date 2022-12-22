@@ -16,12 +16,13 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from gestion_reporte.form import ReporteFacturaForm
 from gestion_tratamiento.models import Tratamiento
 from gestion_reporte.utils import render_to_pdf
 from gestion_inventario_insumos.models import Insumo
 from gestion_administrativo.models import TratamientoConfirmado
 from gestion_agendamiento.models import Cita
-from gestion_reporte.form import ReporteTratamientoForm
+
 from gestion_cobros.models import CobroContado, Factura
 from django.db.models import Sum
 from django.db.models import Count    
@@ -65,8 +66,8 @@ class ListadoTratamientoView(ListView):
 
 
 
-class ReporteTratamientoView(TemplateView):
-    template_name = 'reporte_tratamiento.html'
+class ReporteFacturaView(TemplateView):
+    template_name = 'reporte_factura.html'
     
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -74,33 +75,39 @@ class ReporteTratamientoView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         data = {}
-        action = request.POST['action']
-        if action == 'search_report':
-            data = []
-            start_date = request.POST.get('start_date', '')
-            end_date = request.POST.get('end_date', '')
-            search = Cita.objects.all()
-            if len(start_date) and len(end_date):
-                search = search.filter(fecha__range=[start_date, end_date])
-            for s in search:
-                
-                data.append([
-                    s.id_cita,
-                    s.tratamiento_solicitado,
-                    s.fecha.strftime('%Y-%m-%d'),
-                   
-                ])
-        else:
-            data['error'] = 'Ha ocurrido un error'
+        try:
+            
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = Factura.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(fecha__range=[start_date, end_date])
+                    indice=0
+                for s in search:
+                    indice=indice+1
+                    
+                    data.append([
+                        s.indice,
+                        s.fecha.strftime('%Y-%m-%d'),
+                        format(s.total_pagar, '.2f'),
+                    
+                    ])
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
      
-        return render(request, "reporte_tratamiento.html", data, safe=False)
+        # return render(request, "reporte_factura.html", data, safe=False)
    # <!-->
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Reporte de Ingresos'
         context['entity'] = 'Reportes'
-        # context['list_url'] = reverse_lazy('reporte_tratamiento')
-        context['form'] = ReporteTratamientoForm()
+        context['form'] = ReporteFacturaForm()
         return context
 
 def cantidad_veces (lista, x): 
@@ -154,12 +161,15 @@ def tratamiento_mas_solicitado(request):
     lista_cantidades= resultado.values
    
     
-    tabla=pd.DataFrame(resultado, index=['Cantidades'])
+    tabla=pd.DataFrame(resultado, index=['Cantidades'] )
+    
     # t_valores= tabla.tolist()
 
-    data_cantidades= pd.DataFrame(resultado, index=[0])
-    
+    data_cantidades= pd.DataFrame(resultado, index=['Tratamientos'])
+   
+   
     columnas= data_cantidades.columns
+    
     #Son los tratamientos
     indices= columnas.to_numpy().tolist()
     print("es columnas", columnas,"\n Es indice", indices)
@@ -181,6 +191,10 @@ def tratamiento_mas_solicitado(request):
     
     valores_grafico=valores.tolist()
 
+
+    servicios= pd.DataFrame(indices, index= vector, columns=['Tratamiento'])
+    servicios_renombrado= servicios.rename({'': 'Cantidad', '0': 'Tratamientos'}, axis=1)
+    
     #draw= data_cantidades.to_dict()
     print("es grafico", type(grafico), "son valores", valores, "son los valores", valores_grafico, type(valores_grafico))
     # mayor=lista.count(tratamiento)
@@ -226,6 +240,8 @@ def tratamiento_mas_solicitado(request):
                 'valores_grafico': valores_grafico,
                 'li':li,
                 'tabla': tabla.to_html, 
+                'servicios': servicios.to_html,
+                'servicios_renombrado': servicios_renombrado.to_html,
                
                 
                 
@@ -626,14 +642,6 @@ def retorna_total_vendido(request):
 
 
 def reporte_ingresos(request):
-    #Estados de una Cita
-    qa= TratamientoConfirmado.objects.filter(estado='Agendado')
-    qr= TratamientoConfirmado.objects.filter(estado='Realizado')
-    qc= TratamientoConfirmado.objects.filter(estado='Confirmado')
-    qp= TratamientoConfirmado.objects.filter(estado='Pagado')
-    #General
-    cita= TratamientoConfirmado.objects.all().values()
-    
     #Ingresos
     tabla_ingresos=CobroContado.objects.all().values()
     
@@ -681,9 +689,6 @@ def reporte_ingresos(request):
     general['Gs']= tabla_mensual_renombrada['Monto'].sum()
     tabla_fecha= pd.DataFrame(general, columns=['Mes'])
     
-    
-    
-    
     print("ES FECHA", tabla_fecha)
     
     tabla_general=tabla_mes_monto.drop_duplicates().groupby(numero_mes).count()
@@ -692,8 +697,6 @@ def reporte_ingresos(request):
     
     print('es TABLA GENERAL ||||||', tabla_general, '|||||||||')
     
-
-
     '''Sale los totales por mes'''
     # monto_por_mes= tabla_mes_monto.groupby(((numero_mes > 9).any() or (numero_mes< 13).any()), True).sum()
     monto_por_mes= tabla_mes_monto.groupby(numero_mes).sum()
@@ -707,9 +710,6 @@ def reporte_ingresos(request):
     
     nombre_de_meses= ['Octubre','Noviembre','Diciembre']
     nueva_tabla= monto_por_mes_renombrada.insert(loc= 0, column= 'Mes',value=nombre_de_meses)
-
-    
-    
     
     '''SERA EL GRAFICO'''
     grafico_mes= monto_por_mes['total_pagar'].values
@@ -719,18 +719,9 @@ def reporte_ingresos(request):
    
     draw= grafico_mes.tolist()
     print('ES GRAFICO CON COMAS', draw)
-    
-    '''Sera la tabla ingresos'''
-    
-    '''INGRESOS'''
   
-    
-    
     data_mes= pd.DataFrame(monto_por_mes, index=[1])
-    
-    
-    # data_monto
-    
+
     print('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°',data_mes, '°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°')
     # tabla_monto_por_mes=monto_por_mes.groupby('fecha').total_pagar.sum()
     #general[numero_mes] = general['total_pagar'].sum() 
@@ -741,17 +732,11 @@ def reporte_ingresos(request):
     '''Trae la cantidad por mes'''
     grupo_factura= tabla_factura.drop_duplicates().groupby('fecha').count()
     # fecha_factura.loc['Total por mes'] =  grupo_factura['total_pagar'].sum()
-  
-    
-  
-    
+
     print("es fecha factura", fecha_factura, "es mes", numero_mes)
     
     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-    # print(nuevo)
-    mes_factura= lambda x:x[:7]
-    
-    print("es mes_factura", mes_factura)
+
     # tabla_factura["fechaMes"]= tabla_factura[['fecha']].astype(str).map(mes_factura)
     
     '''Por mes'''
@@ -774,10 +759,6 @@ def reporte_ingresos(request):
     grupo.loc['Total por año'] = grupo['total_pagar'].sum()
     
     grupo_renombrado= grupo.rename({'fecha': 'Fecha', 'total_pagar': 'Cantidad'}, axis=1)
-    
-    
-    
-    
     
     
     
@@ -841,26 +822,7 @@ def reporte_ingresos(request):
     # print ("esto muestra", es_mes)
   
     
-    # print("es la tabla cobro", df)
-    #DataFrame
-    tabla=pd.Series(tabla_ingresos)
-    data_agendado= pd.DataFrame(qa, columns=['Agendado'])
-    data_realizado= pd.DataFrame(qr, columns=['Realizado'])
-    print ("es del tipo la Tabla..... ", type(tabla))
-    
-    # grupo= data_agendado.groupby(data_agendado.index.month).tail(1).reset_index()
-    
-    data_confirmado= pd.DataFrame(qc,)
-    data_pagado= pd.DataFrame(qp,)
-    data_pagado=pd.Series(data=qp,)
-    data2= pd.DataFrame(cita, columns=['estado'], )
-    data_pagado.index
-    
-    #Grafico en Serie de Torta
-    serie= data2['estado'].value_counts()
-    # serie.plot.pie(autopct='%1.1f%%')
-    # plt.show()
-    print(   data_pagado.index)
+  
     # s=pd.Series(cita)
     # s.to_dict('records')
     # print("es diccionario", s)
@@ -872,21 +834,8 @@ def reporte_ingresos(request):
     
     
     context={
-        # 'tabla':tabla,
-        'df': data2.to_html,
-        #Trae el conteo de Cantidades gf1
-        'gf1':serie.to_frame,
-        # 'df_estado': data2['estado'],
-        'df_estado':data2.estado,
-        #
-        'list': data2.estado.to_string,
-        'total_agendado': data_agendado.count().values,
-        'total_realizado': data_realizado.count().values,
-        'total_confirmado': data_confirmado.count() -1,
-        'total_pagado': data_pagado.count() -1,
-        'grafico': serie,
         'draw':draw,
-        'tabla':tabla,
+    
         'df':df[['fecha', 'total_pagar']].to_html,
         'tabla_renombrada':tabla_renombrada.to_html,
         'monto': monto.to_html,
