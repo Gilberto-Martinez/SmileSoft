@@ -704,9 +704,10 @@ def verificar_apertura_caja ():
     else:
         if not caja.fecha_cierre is None:
             respuesta = 'Cerrada por hoy'
-        return respuesta
-    
-    respuesta = 'Abierta'
+            return respuesta
+        else:
+            if caja.fecha_cierre is None:
+                respuesta = 'Abierta'
 
     return respuesta
 
@@ -716,6 +717,7 @@ def mostrar_caja(request, numero_documento):
             'numero_documento':numero_documento,
     }
     respuesta = verificar_apertura_caja()
+    print('Respuesta: ', respuesta)
     if respuesta == "Cerrada":
         return render(request, 'mensajes/msj_caja_cerrada2.html', data)
     else:
