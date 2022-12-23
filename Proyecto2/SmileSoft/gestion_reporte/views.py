@@ -29,6 +29,7 @@ from django.db.models import Count
 from collections import Counter
 import numpy as np
 from datetime import date
+from django.db.models import Q
 
 # Create your views here.
 
@@ -56,15 +57,6 @@ class ListadoTratamientoView(ListView):
     
     
 
-# def tratamiento_reporte (request):
-#     tratamiento_reporte= TratamientoConfirmado.objects.filter(estado='Agendado')
-  
-    # print (tratamiento_reporte,' es AGENDADO......', conteo)
-    
-    # return render('reporte_tratamiento.html',conteo)
-
-
-
 
 class ReporteFacturaView(TemplateView):
     template_name = 'reporte_factura.html'
@@ -87,14 +79,22 @@ class ReporteFacturaView(TemplateView):
                     search = search.filter(fecha__range=[start_date, end_date])
                     indice=0
                 for s in search:
-                    indice=indice+1
+                
                     
                     data.append([
-                        s.indice,
+                      
                         s.fecha.strftime('%Y-%m-%d'),
                         format(s.total_pagar, '.2f'),
                     
                     ])
+                total_pagar = search.aggregate((Sum('total_pagar'), 0))
+             
+                data.append([
+                    '---',
+                    '---',
+                    '---',
+                    format(total_pagar, '.2f'),
+                ])
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -259,20 +259,77 @@ def tratamiento_mas_solicitado(request):
     return render(request, "tratamiento_mas_solicitado.html", context)
 
 
-# def tratamiento_mas_solicitado(request):
-#     solicitado= TratamientoConfirmado.objects.filter(estado="Realizado")
-#     lista_solicidados=[]
+def ingreso_diario(request):
+    busqueda = request.POST.get("q")
+      #'filtro de fecha, y nombre 
+    filtro = request.POST.get("f")
+    listado_diario = Factura.objects.all().order_by("fecha")
+    if filtro:
+        print("Buscado AQUI", filtro)
+        listado_diario= Factura.objects.filter(Q(fecha__icontains=filtro))
+
     
-#     for lista in solicitado:
-#         cod_tratamiento = lista.get_tratamiento()
+    diario=[]
+    suma_diaria=0
+    for lista in listado_diario:
+        ingreso= Factura.objects.get(id_factura=lista.id_factura)
+        monto=ingreso.total_pagar
+        fecha= ingreso.fecha
+        suma_diaria= suma_diaria+monto
         
+        dia_dia= {
+            'monto':monto,
+            'fecha': fecha,
+           
+        }
         
+        diario.append(dia_dia)
+    suma_diaria = '{:,}'.format(suma_diaria).replace(',','.')
     
-#     lista_solicidados.append(cod_tratamiento)
+    return render(request, "ingreso_diario.html", {'diario':diario,
+                                                   'suma_diaria':suma_diaria,
+                                                   })
+
+def ingreso_mensual(request):
+    busqueda = request.POST.get("q")
+      #'filtro de fecha, y nombre 
+    filtro = request.POST.get("f")
+    listado_diario = Factura.objects.all().order_by("fecha")
+   
+    if filtro:
+        print("Buscado AQUI", filtro)
+       
+        listado_diario= Factura.objects.filter(Q(fecha__icontains=filtro))
+
+    
+  
+    diario=[]
+    suma_mensual=0
+    for lista in listado_diario:
+     
+        ingreso= Factura.objects.get(id_factura=lista.id_factura)
+        monto=ingreso.total_pagar
+        fecha= ingreso.fecha
+        mes= fecha.strftime('%m-%Y')
+       
+        print('es mes',  mes)
         
-#     print("es lista", {'lista_solicidados': lista_solicidados})
+        suma_mensual= suma_mensual+monto
         
-#     return render(request, "tratamiento_mas_solicitado.html",{'lista_solicidados.': lista_solicidados})
+        dia_dia= {
+            'monto':monto,
+            'fecha': fecha,
+            'mes':mes,
+           
+        }
+        
+        diario.append(dia_dia)
+    suma_mensual = '{:,}'.format(suma_mensual).replace(',','.')
+    
+    return render(request, "ingreso_mensual.html", {'diario':diario,
+                                                   'suma_mensual':suma_mensual,
+                                                   })
+
 
 def insumos_reporte(request):
     qs= Insumo.objects.all().values()
@@ -522,123 +579,6 @@ def retorna_total_vendido(request):
     total = CobroContado.objects.all().aggregate(Sum('monto_total'))['monto_total__sum']
     if request.method == "GET":
         return JsonResponse({'total': total})
-
-
-#ES  DE COBRO CONTADO
-# def reporte_ingresos(request):
-#     #Estados de una Cita
-#     qa= TratamientoConfirmado.objects.filter(estado='Agendado')
-#     qr= TratamientoConfirmado.objects.filter(estado='Realizado')
-#     qc= TratamientoConfirmado.objects.filter(estado='Confirmado')
-#     qp= TratamientoConfirmado.objects.filter(estado='Pagado')
-#     #General
-#     cita= TratamientoConfirmado.objects.all().values()
-    
-#     #Ingresos
-#     tabla_ingresos=CobroContado.objects.all().values()
-#     data= CobroContado.objects.all().values()
-#     df = pd.DataFrame(data)
-#     df[['fecha', 'monto_total']]
-#     monto= df[['monto_total']]
-#     fecha_mes= df[['fecha']]
-#     suma_monto=monto.sum()
-
-#     # es_fecha=df.reset_index(col_level='fecha')
-#     # mes=df['fecha'].dt.month
-#     # print("Es la fecha la columna", es_fecha)
-#     # print("es el mes ", mes)
-    
-    
-#     data_fecha= pd.DataFrame(data, columns=['fecha',])
-#     # Trae un datafraem como entre corchete de las fechas (mes)
-#     mes =data_fecha.set_index("fecha")
-    
-#     print(" ES FECHA", mes, "del tipo", type(mes))
-    
-#     # data_fecha=  data_fecha.set_index("index","fecha")
-#     # # data_fecha["Month"]= data_fecha.dt.month
-#     # data_fecha.head()
-    
-#     # print( "####ES DATA FECHA############",data_fecha )
-#     # serie_meses=pd.Series(data)
-#     # lista_fecha= serie_meses.dt.month
-#     # print (" es lista de meses", lista_fecha)
-    
-#     # monto_mes= datetime(date(df[['fecha']])).month== 10
-#     # # filterdate = datetime.date(input())
-#     # d1 = d1[(d1['New_Date'] > '{filterdate}') & (d1['New_Date'] != 'NaT')]
-#     # date_fecha= date(fecha_mes['fecha']).month==10
-#     # es_mes = date(fecha_mes).month==10
-    
-#     # print ("esto muestra", es_mes)
-  
-    
-#     # print("es la tabla cobro", df)
-#     #DataFrame
-#     tabla=pd.Series(tabla_ingresos)
-#     data_agendado= pd.DataFrame(qa, columns=['Agendado'])
-#     data_realizado= pd.DataFrame(qr, columns=['Realizado'])
-#     print ("es del tipo la Tabla..... ", type(tabla))
-    
-#     # grupo= data_agendado.groupby(data_agendado.index.month).tail(1).reset_index()
-    
-#     data_confirmado= pd.DataFrame(qc,)
-#     data_pagado= pd.DataFrame(qp,)
-#     data_pagado=pd.Series(data=qp,)
-#     data2= pd.DataFrame(cita, columns=['estado'], )
-#     data_pagado.index
-    
-#     #Grafico en Serie de Torta
-#     serie= data2['estado'].value_counts()
-#     # serie.plot.pie(autopct='%1.1f%%')
-#     # plt.show()
-#     print(   data_pagado.index)
-#     # s=pd.Series(cita)
-#     # s.to_dict('records')
-#     # print("es diccionario", s)
-#    #Mas pruebas
-#     graficocita=data2.to_dict
-#     conteo= serie.values
-#     draw= serie.to_numpy().tolist()
-   
-    
-    
-#     context={
-#         # 'tabla':tabla,
-#         'df': data2.to_html,
-#         #Trae el conteo de Cantidades gf1
-#         'gf1':serie.to_frame,
-#         # 'df_estado': data2['estado'],
-#         'df_estado':data2.estado,
-#         #
-#         'list': data2.estado.to_string,
-#         'total_agendado': data_agendado.count().values,
-#         'total_realizado': data_realizado.count().values,
-#         'total_confirmado': data_confirmado.count() -1,
-#         'total_pagado': data_pagado.count() -1,
-#         'grafico': serie,
-#         'graficocita':graficocita, 
-#         'conteo': conteo,
-#         'draw':draw,
-#         'tabla':tabla,
-#         'df':df[['fecha', 'monto_total']].to_html,
-#         'monto': monto.to_html,
-#         'suma_monto': suma_monto, 
-#         'mes':mes,
-#         # 'data_fecha': data_fecha,
-#         # 'monto_mes': monto_mes, 
-     
-#         # 'grupo':grupo,
-#         # 'draw2':draw2,
-#         # 's':s,
-     
-        
-#     }
-#     # total=  data.head()
-   
-   
-#     return render(request, 'reporte_ingresos.html', context)
-
 
 
 def reporte_ingresos(request):

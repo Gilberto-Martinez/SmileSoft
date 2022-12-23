@@ -6,7 +6,8 @@ urlpatterns = [
     #Reportes
     path('reporte_factura/', ReporteFacturaView.as_view(), name='reporte_factura'),
     
-    # path("reporte_tratamiento/", tratamiento_reporte , name="reporte_tratamiento "),
+    path("ingreso_diario/", ingreso_diario , name="ingreso_diario"),
+    path("ingreso_mensual/", ingreso_mensual , name="ingreso_mensual"),
     
     path('tratamiento_cita/', ListadoTratamientoView.as_view(), name='tratamiento_cita'),
     
