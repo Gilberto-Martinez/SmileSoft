@@ -822,7 +822,6 @@ def guardar_datos_apertura_caja2(request, numero_documento):
             data['hora_actual'] = hora_actual
     return render(request, 'guardar_datos_apertura_caja.html', data)
 
-3
 
 def msj_caja_cerrada(request, id_paciente, numero_documento):
     data = {
@@ -1092,6 +1091,83 @@ def mostar_caja_previa(request):
 
     return render(request, 'mostrar_caja_previa.html', data)
 
+#--Mostrar como pdf-->
+
+def pdf_movimiento_caja(request):
+    now = class_datetime.now()
+    fecha_actual = now.date()
+    hora_actual = now.time()
+    caja = Caja.objects.get(fecha_apertura=fecha_actual)
+
+    ingreso_total = 0
+    hubo_ingresos = True
+    hubo_gastos = True
+    gasto_total = 0
+    ingresos = []
+    gastos = []
+
+    try:
+        detalles_ingresos = DetalleCaja.objects.filter(id_caja=caja.id_caja, tipo='Ingreso')
+    except DetalleCaja.DoesNotExist:
+        hubo_ingresos = False
+    else:
+        for detalle_caja in detalles_ingresos:
+            factura = Factura.objects.get(id_factura=detalle_caja.comprobante_cobro.id_factura)
+            ingreso_total = ingreso_total + factura.total_pagar
+            cobro = CobroContado.objects.get(id_cobro_contado=factura.cobro_contado.id_cobro_contado)
+            detalles_factura = DetalleFactura.objects.filter(id_factura=factura)
+            ingresos_tmp = {
+                            'total_pagar': '{:,}'.format(factura.total_pagar).replace(',','.'),
+                            'detalles_factura':detalles_factura,
+                            'monto_efectivo':'{:,}'.format(cobro.monto_efectivo).replace(',','.'),
+                            'vuelto':'{:,}'.format(cobro.vuelto).replace(',','.'),
+            }
+            ingresos.append(ingresos_tmp)
+        hubo_ingresos = True
+    
+    try:
+        detalles_egresos = DetalleCaja.objects.filter(id_caja=caja.id_caja, tipo='Egreso')
+    except DetalleCaja.DoesNotExist:
+        hubo_gastos = False
+    else:
+        for detalle_caja in detalles_egresos:
+            comprobante_gasto = ComprobanteGasto.objects.get(id_comprobante=detalle_caja.comprobante_pago.id_comprobante)
+            gasto_total = gasto_total + comprobante_gasto.monto_total
+            detalles_comprobante = DetalleComprobante.objects.filter(comprobante=comprobante_gasto)
+            gastos_tmp = {
+                            'total_pagado':'{:,}'.format(comprobante_gasto.monto_total).replace(',','.'),
+                            'detalles_comprobante':detalles_comprobante
+            }
+            gastos.append(gastos_tmp)
+        hubo_gastos = True
+
+    ingreso_total_s= '{:,}'.format(ingreso_total).replace(',','.')
+    gasto_total_s= '{:,}'.format(gasto_total).replace(',','.')
+
+    monto_cierre = caja.monto_apertura + ingreso_total -gasto_total
+    monto_cierre_s= '{:,}'.format(monto_cierre).replace(',','.')
+
+    cerrar_caja(monto_cierre)
+    caja_cerrada = Caja.objects.get(id_caja = caja.id_caja)
+
+    monto_apertura = '{:,}'.format(caja.monto_apertura).replace(',','.')
+
+    data = {
+            'ingreso_total':ingreso_total_s,
+            'gasto_total':gasto_total_s,
+            'ingresos':ingresos,
+            'gastos':gastos,
+            'hubo_gastos':hubo_gastos,
+            'hubo_ingresos':hubo_ingresos,
+            'monto_cierre':monto_cierre_s,
+            'monto_apertura':monto_apertura,
+            'caja_cerrada':caja_cerrada,
+
+    }
+
+    pdf = render_to_pdf("pdf_movimiento_caja.html",data)
+    
+    return HttpResponse(pdf, content_type='application/pdf')
 
 def cerrar_caja(monto_cierre_v):
     now = class_datetime.now()
