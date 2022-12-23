@@ -13,11 +13,11 @@ urlpatterns = [
     path('mensaje_confirmacion_cobro/<id_cobro>', mostrar_msj_confirmacion_cobro, name="mensaje_confirmacion_cobro"),
     path('ver_detalle_cobro/<int:id_cobro_contado>', ver_detalle_cobro, name="ver_detalle_cobro"),
     path('verificar_datos_cita/<numero_documento>/<menor_edad>', verificar_datos_cita, name="verificar_datos_cita"),
-    path('solicitar_razon_social/<numero_documento>', solicitar_razon_social, name="solicitar_razon_social"),
+    # path('solicitar_razon_social/<numero_documento>', solicitar_razon_social, name="solicitar_razon_social"),
     path('registrar_cobro2/<numero_documento>/<numero_documento2>/<razon_social>', registrar_cobro2, name="registrar_cobro2"),
     path('confirmacion_de_cobro/<int:id_factura>', confirmacion_de_cobro, name="confirmacion_de_cobro"),
 
-    path('ingresar_datos_factura/<int:id_cobro>', ingresar_datos_factura, name="ingresar_datos_factura"),
+    # path('ingresar_datos_factura/<int:id_cobro>', ingresar_datos_factura, name="ingresar_datos_factura"),
     path('ingresar_datos_cobro/<int:id_paciente>', ingresar_datos_cobro, name="ingresar_datos_cobro"),
     path('visualizar_datos_factura/<int:id_factura>', visualizar_datos_factura, name="visualizar_datos_factura"),
     
@@ -45,6 +45,8 @@ urlpatterns = [
     path('agregar_monto_total/<int:id_comprobante>', agregar_monto_total, name="agregar_monto_total"),
     path('listar_gastos/', listar_gastos, name="listar_gastos"),
     path('cerrar_caja/', cerrar_caja, name="cerrar_caja"),
-    path('mostar_caja_previa/', mostar_caja_previa, name="mostar_caja_previa")
-
+    path('mostar_caja_previa/', mostar_caja_previa, name="mostar_caja_previa"),
+    path('apertura_exitosa/', mostar_apertura_exitosa_caja, name="apertura_exitosa"),
+    path('solicitar_monto_efectivo/<int:id_cobro>', solicitar_monto_efectivo, name="solicitar_monto_efectivo"),
+    path('mostrar_montos/<int:id_cobro>', mostrar_vuelto, name="mostrar_montos"),
 ]

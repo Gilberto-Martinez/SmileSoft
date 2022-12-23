@@ -1,0 +1,41 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+<!-- {%if perms.gestion_administrativo.add_cargo%} -->
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <br>
+            <center>  
+                <h1 style="font-family: Bodoni;">
+                    <b>
+                        Ingrese el monto en efectivo
+                    </b>
+                </h1> 
+            </center>
+            <div class="card-body">
+                <form method="POST">
+                    {%csrf_token%}
+                    <div style="margin: 20px;">
+                        <div class="form-group">
+                            <label ><b>Monto a pagar: </b></label>
+                            {{monto_total}} Gs
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="{{form.monto_efectivo.name}}"><b>{{form.monto_efectivo.label}} en Gs</b></label>
+                            {{form.monto_efectivo}}
+                        </div>
+                        <br>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary" style="margin: 10px;">
+                                <i class="bi bi-check2-square"></i>
+                                Calcular vuelto
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- {%endif%} -->
+{%endblock%}

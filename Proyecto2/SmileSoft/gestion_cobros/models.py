@@ -14,8 +14,28 @@ class CobroContado(models.Model):
     )
     numero_documento = models.CharField(max_length=10, verbose_name='numero de documento', null=True, blank=True)
     razon_social = models.CharField(max_length=100, verbose_name='Nombre o razón social', null=True, blank=True)
-    fecha = models.DateField(auto_now_add=True, null=True, blank=True)
+    fecha = models.DateField( null=True, blank=True)
     monto_total = models.BigIntegerField(null=True, blank=True)
+    monto_efectivo = models.IntegerField(null=True)
+    vuelto = models.IntegerField(null=True)
+
+    sub_nro_factura1 = models.CharField(max_length=3, null=True, blank=True)
+    sub_nro_factura2 = models.CharField(max_length=3, null=True, blank=True)
+    sub_nro_factura3 = models.IntegerField(null=True, blank=True)
+    nro_factura = models.CharField(max_length=60, null=True, blank=True,)
+    direccion = models.CharField(max_length=80, null=True, blank=True, verbose_name='Dirección')
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = models.CharField(max_length=12, choices=CONDICIONES,default='Contado' ,verbose_name='Condición de venta')
+    telefono = models.CharField(max_length=20, null=True, blank=True)
+    iva_5 = models.FloatField(null=True)
+    iva_10= models.FloatField(null=True)
+    total_iva = models.FloatField(null=True)
+    E = 'Emitido'
+    A = 'Anulado'
+    ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
+    estado = models.CharField(max_length=12, choices=ESTADOS,default='Emitido' ,verbose_name='Condición de venta')
     class Meta:
         verbose_name = 'Cobro al contado'
         verbose_name_plural = 'Cobros al contado'

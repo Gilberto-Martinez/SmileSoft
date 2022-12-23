@@ -4,29 +4,130 @@
 <!-- {%if perms.gestion_administrativo.add_cargo%} -->
     <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
-            <br>
-            <center>  
-                <h2 style="font-family: Bodoni;">
-                    <b>
-                        Movimientos de la caja
-                    </b>
-                </h2> 
-            </center>
-            <h4>
-                <b>Ingresos del día</b> 
-            </h4>
-            {%if ingresos%}
-                {%for i in ingresos%}
-                    <table>
-                        <thead>
+            <div>
+                <br>
+                <center>  
+                    <h2 style="font-family: Bodoni; margin: 1cm;">
+                        <b>
+                            Movimientos de la caja
+                        </b>
+                    </h2> 
+                </center>
+                <div>
+                    <div style="float: left;">
+                        <h6 style="margin-left: 1cm;"> <b>Fecha de apertura:</b> {{caja_cerrada.fecha_apertura}} </h6>
+                    </div>
+                    <div style="float: right; margin-right: 1cm;">
+                        <h6 style="margin-left: 1cm;"> <b>Hora de apertura:</b> {{caja_cerrada.hora_apertura}} hs</h6>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div>
+                    <div style="float: left;">
+                        <h6 style="margin-left: 1cm;"> <b>Fecha de cierre:</b> {{caja_cerrada.fecha_cierre}} </h6>
+                    </div>
+                    <div style="float: right; margin-right: 1cm;">
+                        <h6 style="margin-left: 1cm;"> <b>Hora de cierre:</b> {{caja_cerrada.hora_cierre}} hs </h6>
+                    </div>
+                </div>
+                
+                <br>
+                <hr>
+                <h4 style="margin: 1cm;">
+                    <b>Ingresos del día</b> 
+                </h4>
+                {%if hubo_ingresos%}
+                    <table class="table table-striped table-hover">
+                        <thead style="border: 1cm;">
                             <tr>
                                 <th>Descripción</th>
+                                <th>Monto cobrado</th>
+                                <th>Monto en efectivo</th>
+                                <th>Vuelto</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            {%for i in ingresos%}
+                                <tr>
+                                    <td>
+                                        {%for d in i.detalles_factura%}
+                                            {{d.descripcion}}
+                                        {%endfor%}
+                                    </td>
+                                    <td>{{i.total_pagar}}</td>
+                                    <td>{{i.monto_efectivo}}</td>
+                                    <td>{{i.vuelto}}</td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
                     </table>
-                {%endfor%}
-            {%endif%}
-
+                {%else%}
+                    <h6>No hubo ingresos en este día</h6>
+                {%endif%}
+                <br>
+                <h6 style="margin-left: 1cm;"> <b>Total de ingresos del día:</b> {{ingreso_total}} Gs</h6>
+                <hr>
+                <h4 style="margin: 1cm;">
+                    <b>Gastos del día</b> 
+                </h4>
+                {%if hubo_gastos%}
+                    <table class="table table-striped table-hover">
+                        <thead style="border: 1cm;">
+                            <tr>
+                                <th>Descripción</th>
+                                <th>Total pagado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for g in gastos%}
+                                
+                                    <tr>
+                                        <td>
+                                            {%for d in g.detalles_comprobante%}
+                                            {{d.descripcion}}
+                                            {%endfor%}
+                                        </td>
+                                        <td>{{g.total_pagado}} Gs</td>
+                                    </tr>
+                                
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                {%else%}
+                    <h6>No hubo gastos en este día</h6>
+                {%endif%}
+                <br>
+                <h6 style="margin-left: 1cm;"> <b>Total de gastos del día:</b> {{gasto_total}} Gs</h6>
+                <hr>
+                <center>
+                    <h5>
+                        <b>Datos finales</b>
+                    </h5>
+                </center>
+                <br>
+                <div>
+                    <div style="float: left;">
+                        <h6 style="margin-left: 1cm;"> <b>Monto de apertura:</b> {{monto_apertura}} Gs</h6>
+                    </div>
+                    <div style="float: right; margin-right: 1cm;">
+                        <h6 style="margin-left: 1cm;"> <b>Monto de cierre:</b> {{monto_cierre}} Gs</h6>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="text-center"> 
+                    <button type="button" class="btn btn-outline-success" onclick="hisrory.back()">
+                        <i class="bi bi-check2-circle"></i>
+                        Listo
+                    </button>
+                    <button type="submit" target="_blank" class="btn btn-outline-primary">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        Generar PDF
+                    </button>
+                </div>
+                <br>
+            </div>
         </div>
     </div>
 <!-- {%endif%} -->

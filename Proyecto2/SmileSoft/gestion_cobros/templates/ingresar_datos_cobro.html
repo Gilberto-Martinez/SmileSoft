@@ -16,7 +16,7 @@
             </div>
         </center>
         <div class="card-body">
-            <form action="" method="POST">
+            <form method="POST">
                 {%csrf_token%}
                 <div style="margin: 20px;">
                     <div>
@@ -85,25 +85,11 @@
                                     <td>1</td>
                                     <td>{{c.tratamiento.nombre_tratamiento}}</td>
                                     <td>{{c.tratamiento.precio}}</td>
-                                    <!-- <td>{{form.numero_documento}}</td>
-                                    <td>{{form.numero_documento}}</td>
-                                    <td>{{form.numero_documento}}</td> -->
                                 </tr>
                                 {%endfor%}
-                                <!-- <tr>
-                                    <td><b>SubTotales</b></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><b>{{monto_total}} Gs</b></td>
-                                    <td><b>{{monto_total}} Gs</b></td>
-                                    <td><b>{{monto_total}} Gs</b></td>
-                                </tr> -->
                                 <tr>
                                     <td><b>Totales</b></td>
                                     <td></td>
-                                    <!-- <td></td> -->
-                                    <!-- <td></td> -->
-                                    <!-- <td></td> -->
                                     <td><b>{{monto_total}} Gs</b></td>
                                 </tr>
                             {%else%}
@@ -115,21 +101,52 @@
                     </table>
                 </div>
                 <div align="center">
-                    <!-- <a type="submit" href="/cobros/generar_factura/" target="_blank" class="btn btn-outline-primary">
-                        <i class="bi bi-file-pdf"></i>
-                        Generar factura
-                    </a> -->
-                    <button type="submit" target="_blank" class="btn btn-outline-primary">
+                    <button type="submit" class="btn btn-outline-primary" id="boton_cobrar">
                         <i class="bi bi-box-arrow-in-down"></i>
-                        Cobrar
+                        Cobrar en efectivo
                     </button>
-                    &nbsp;&nbsp;
+                    <!-- &nbsp;&nbsp;
                     <a onclick="history.back()" class="btn btn-outline-danger">
                         <i class="bi bi-back"></i>
                         Atrás
-                    </a>
+                    </a> -->
                 </div>
-                
+                <!-- <script type="text/javascript">
+                    function mostrar_efectivo(){
+                        document.getElementById('monto_efectivo').style.display = 'block';
+                    }
+                    // function ocultar_efectivo(){
+                    //     document.getElementById('funcionario').style.display = 'none';
+                    // }
+                    // function mostrar_ocultar_funcionario(){
+                    //     var funcionario = document.getElementById('funcionario');
+                    //         if(funcionario.style.display == 'none'){
+                    //             mostrar_funcionario()
+                    //             document.getElementById('boton_funcionario').value = 'Ocultar';
+                    //         }
+                    //         else{
+                    //             ocultar_funcionario()
+                    //             document.getElementById('boton_funcionario').value = '+ Agregar como funcionario';
+                    //         }
+                    // }
+                </script> -->
+                <!-- <br>
+                <hr>
+                <div class="text-center" id="monto_efectivo" style="display: none;">
+                    <h3><b>Ingrese el monto en efectivo</b></h3>
+                    <br>
+                    <center>
+                        <div class="form-group" style=" width: 70%;">
+                            <label for="{{form2.monto_efectivo.name}}" style="float: left;"><b>{{form2.monto_efectivo.label}} en Gs</b> </label>
+                            {{form2.monto_efectivo}}
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-box-arrow-in-down"></i>
+                            Guardar
+                        </button>
+                    </center> -->
+                </div>
             </form>
             <br>
             
