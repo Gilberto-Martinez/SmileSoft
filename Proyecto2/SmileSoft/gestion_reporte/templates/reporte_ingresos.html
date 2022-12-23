@@ -39,7 +39,7 @@
             </center>
             {%csrf_token%}
             <br>
-            {{df |safe}}
+            {% comment %} {{df |safe}} {% endcomment %}
             {% comment %} <br>
             {{grupo_monto_renombrado |safe}}
             <br>
@@ -51,6 +51,7 @@
             
             <p  style= "font-size:20px; color:black;"> 1.- Ingresos en General: <p style= "font-size:20px; color:blue;"><b>{{caja|safe }} Gs. </b></p> </p> 
             <hr>
+            
             <p style= "font-size:20px"> 2. - Ingresos Diarios  </p>
 
           {% comment %}   {{tabla_renombrada | safe }} --> Trae cada dia el monto obtenido
@@ -78,10 +79,11 @@
             <br>
             {{tabla_monto_renombrada |safe}} {% endcomment %}
             <hr>
+            {% comment %} FUNCIONA EL CONTEO DE FACTURA PERO NO COINCIDE
             <p  style= "font-size:20px; color:black;"> 4. - Facturas cobradas por día </p>
  
             {{grupo_renombrado | safe}}
-            <hr>
+            <hr> {% endcomment %}
             <br>
 
            
