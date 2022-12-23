@@ -132,7 +132,7 @@ class Factura(models.Model):
     # Nov='Noviembre'
     # Dic='Diciembre'
     # NOMBRE_MES=((Ene,'Enero'),(Feb,'Febrero'),(Mar,'Marzo'),(Abr,'Abril'),(May,'Mayo'),(Jun,'Junio'),(Jul,'Julio'),(Agost,'Agosto'),(Sep,'Septiembre'),(Oct,'Octubre'),(Nov,'Noviembre'),(Dic,'Diciembre'))
-    nombre_mes= models.CharField(max_length=20, null=True, blank=True, verbose_name='Mes')
+    # nombre_mes= models.CharField(max_length=20, null=True, blank=True, verbose_name='Mes')
     cobro_contado = models.ForeignKey(
                                     CobroContado,
                                     on_delete=models.PROTECT,
