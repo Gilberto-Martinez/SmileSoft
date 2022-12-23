@@ -1,0 +1,2 @@
+SELECT id_cobro_contado, numero_documento, razon_social, fecha, monto_total, paciente_id, monto_efectivo, vuelto, condicion_venta, direccion, estado, iva_10, iva_5, nro_factura, sub_nro_factura1, sub_nro_factura2, sub_nro_factura3, telefono, total_iva
+	FROM public."CobroContado";

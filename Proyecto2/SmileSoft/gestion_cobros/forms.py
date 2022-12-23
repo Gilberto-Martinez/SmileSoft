@@ -3,16 +3,23 @@ from .models import *
 from gestion_administrativo.models import Persona, Empresa
 
 class CobroMontoForm(forms.ModelForm):
-    monto_efectivo = forms.IntegerField(widget=forms.NumberInput(attrs={
+    monto_efectivo = forms.IntegerField(label='Monto en efectivo', widget=forms.NumberInput(attrs={
                                                                     'class': 'form-control',
                                                                     'placeholder': 'Ingrese el monto en efecivo'
                                                                     }
                                                             )
                                     )
+    # monto_total = forms.IntegerField(label='Monto a pagar', widget=forms.NumberInput(attrs={
+    #                                                                 'class': 'form-control',
+    #                                                                 'readonly':True,
+    #                                                                 }
+    #                                                         )
+    #                                 )
     class Meta:
         model = CobroContado
         fields = [
                     'monto_efectivo',
+                    # 'monto_total',
         ]
 
 
