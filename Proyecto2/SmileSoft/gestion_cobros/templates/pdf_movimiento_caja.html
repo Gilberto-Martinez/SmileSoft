@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> Movimientos | Caja</title>
+         {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body style="font-size:13px;" >
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                      
+                    <table >
+                        <thead>
+                            <tr style="background-color: skyblue; color:black; font-family: Bodoni;">
+                                
+                                <th><p style="font-size:18px"> <br>Movimientos de la Caja<p></th>
+                            
+                            </tr>
+                        </thead>
+                     
+                    </table>
+                
+                    <div>
+                        <br>
+                      
+                        <table style=" border:1px solid white">
+                            <tr>
+                                <th style="border:1px solid white">
+                                    
+                                    <br> <b>Fecha de apertura:</b> {{caja_cerrada.fecha_apertura}} 
+                                    <br> <b>Hora de apertura:</b> {{caja_cerrada.hora_apertura}} hs 
+                                   
+                                </th>
+                                <th>
+                                    <br> <b>Fecha de cierre:</b> {{caja_cerrada.fecha_cierre}} 
+                         
+                                    <br> <b>Hora de cierre:</b> {{caja_cerrada.hora_cierre}} hs 
+                    
+                                </th>
+                            </tr>
+                        </table>
+                        <br>
+                        
+                        <p style="font-size: 16px">
+                            <b> <u>Ingresos del dia</u></b> 
+                        </p>
+                        {%if hubo_ingresos%}
+                            <table  style=" border:1px solid black;">
+                                <thead>
+                                    <tr>
+                                        <th > <br>Descripcion</th>
+                                        <th><br> Monto cobrado</th>
+                                        <th> <br>Monto en efectivo</th>
+                                        <th> <br>Vuelto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%for i in ingresos%}
+                                        <tr>
+                                            <td style=" border:1px solid black;">
+                                                {%for d in i.detalles_factura%}
+                                               <br> &nbsp; &nbsp;{{d.descripcion}} 
+                                                {%endfor%}
+                                                
+                                            </td>
+                                            <td style=" border:1px solid black;"> <br>  &nbsp; &nbsp;{{i.total_pagar}}</td>
+                                            <td style=" border:1px solid black;"><br> &nbsp; &nbsp;{{i.monto_efectivo}}</td>
+                                            <td style=" border:1px solid black;"><br> &nbsp; &nbsp;{{i.vuelto}}</td>
+                                        </tr>
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                        {%else%}
+                            <h6>No hubo ingresos en este dia</h6>
+                        {%endif%}
+                        <br>
+                        <left>
+                        <p style="margin-left: 1cm; color:blue; font-size: 14px"> <b>Total de ingresos del dia:</b> {{ingreso_total}} Gs</p>
+                        </left>
+                        <hr>
+                        <p style="font-size: 16px">
+                            <b> <u>Gastos</u></b> 
+                        </p>
+                        {%if hubo_gastos%}
+                            <table style=" border:1px solid black;">
+                                <thead style="border: 1cm;">
+                                    <tr>
+                                        <th> <br>Descripcion</th>
+                                        <th><br>Total pagado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%for g in gastos%}
+                                        
+                                            <tr>
+                                                <td>
+                                                    {%for d in g.detalles_comprobante%}
+                                                   <br> {{d.descripcion}}
+                                                    {%endfor%}
+                                                </td>
+                                                <td style=" border:1px solid black;"> <br>  &nbsp; &nbsp; {{g.total_pagado}} Gs</td>
+                                            </tr>
+                                        
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                        {%else%}
+                            <h6>No hubo gastos en este día</h6>
+                        {%endif%}
+                        <br>
+                        <p style="margin-left: 1cm; color:red; font-size: 14px"><b>Total de gastos del dia:</b> {{gasto_total}} Gs</h6>
+                        <hr>
+                        <br>
+                        <center>
+                            <p style="font-size: 16px">
+                                <u><b>Datos finales</b></u>
+                            </p>
+                        </center>
+                        <br>
+                        <table style=" border:1px solid black;">
+                            <thead style="border: 1cm;">
+                                <tr>
+                                    <th> <br><b>Monto de apertura:</b> {{monto_apertura}} Gs</th>
+                                    <th><br><b>Monto de cierre:</b> {{monto_cierre}} Gs</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+            </div>
+              
+            <div class="col-12 text-center copyright">
+                <samp>
+                    <br>
+                    <p>Copyright SmileSoft &copy; FP-UNA 2022  </p>
+                
+                </samp>
+                  
+            </div>
+        </div>
+    </body>
+</html>
