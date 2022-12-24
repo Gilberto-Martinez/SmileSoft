@@ -1305,6 +1305,10 @@ def registrar_gasto_en_caja(id_comprobante):
 def mostar_apertura_exitosa_caja(request):
     return render(request, 'mensajes/msj_caja_abierta3.html')
 
+# def probar_sumar_factura(fecha_inicio, fecha_fin):
+#     factura = Factura.objects.filter(fecha>=fecha_inicio, fecha<=fecha_fin).aggregate(Sum('total_pagar'))
+#     total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
+
 # def verificar_apertura_caja_gasto():
 #     now = class_datetime.now()
 #     fecha_actual = now.date()
