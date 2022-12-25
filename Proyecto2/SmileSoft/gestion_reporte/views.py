@@ -331,6 +331,52 @@ def ingreso_mensual(request):
                                                    })
 
 
+
+
+
+def ingreso_fecha(request):
+    busqueda = request.POST.get("q")
+      #'filtro de fecha, y nombre 
+    filtro = request.POST.get("f")
+    listado_diario = Factura.objects.all().order_by("fecha")
+   
+    if filtro:
+        print("Buscado AQUI", filtro)
+       
+        listado_diario= Factura.objects.filter(Q(fecha__icontains=filtro)).filter(Q(fecha_fin__icontains=busqueda))
+
+    
+  
+    diario=[]
+    suma_mensual=0
+    for lista in listado_diario:
+     
+        ingreso= Factura.objects.get(id_factura=lista.id_factura)
+        monto=ingreso.total_pagar
+        fecha= ingreso.fecha
+        fecha_fin=ingreso.fecha
+        # mes= fecha.strftime('%m-%Y')
+       
+        # print('es mes',  mes)
+        
+        suma_mensual= suma_mensual+monto
+        
+        dia_dia= {
+            'monto':monto,
+            'fecha': fecha,
+            'fecha_fin':fecha_fin,
+            # 'mes':mes,
+           
+        }
+        
+        diario.append(dia_dia)
+    suma_mensual = '{:,}'.format(suma_mensual).replace(',','.')
+    
+    return render(request, "ingreso_fecha.html", {'diario':diario,
+                                                   'suma_mensual':suma_mensual,
+                                                   })
+
+
 def insumos_reporte(request):
     qs= Insumo.objects.all().values()
     
