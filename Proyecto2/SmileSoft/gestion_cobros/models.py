@@ -191,6 +191,7 @@ class Caja(models.Model):
     saldo_anterior = models.BigIntegerField(null=True, blank=True)
     monto_apertura = models.BigIntegerField()
     monto_cierre = models.BigIntegerField(null=True, blank=True)
+    ahorro = models.BigIntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name='Caja'
