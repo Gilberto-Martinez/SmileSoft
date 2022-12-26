@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-# from gestion_reporte.form import FiltroFechas
+from gestion_reporte.form import FiltroFechas
 from gestion_cobros.models import Caja
 from gestion_reporte.form import ReporteFacturaForm
 from gestion_tratamiento.models import Tratamiento
@@ -121,12 +121,6 @@ def cantidad_veces (lista, x):
 
 
 def tratamiento_mas_solicitado(request):
-    filtro = request.POST.get("f")
-    busqueda = request.POST.get("q")
-    listado_diario = Factura.objects.all().order_by("fecha")
-    if filtro or busqueda:
-        print("Buscado AQUI", filtro, busqueda)
-        listado_diario= Factura.objects.filter(Q(fecha__range=(filtro,busqueda)))
     
     qr= TratamientoConfirmado.objects.all().values()
     # data_realizado= pd.DataFrame(qr, columns=['Realizado'])
@@ -299,6 +293,7 @@ def ingreso_diario(request):
                                                    })
 
 def ingreso_mensual(request):
+    busqueda = request.POST.get("q")
       #'filtro de fecha, y nombre 
     filtro = request.POST.get("f")
     listado_diario = Factura.objects.all().order_by("fecha")
@@ -308,6 +303,8 @@ def ingreso_mensual(request):
        
         listado_diario= Factura.objects.filter(Q(fecha__icontains=filtro))
 
+    
+  
     diario=[]
     suma_mensual=0
     for lista in listado_diario:
@@ -335,33 +332,37 @@ def ingreso_mensual(request):
                                                    'suma_mensual':suma_mensual,
                                                    })
 
+
+
+
+
 def ingreso_fecha(request):
-    filtro = request.POST.get("f")
-    busqueda = request.POST.get("q")
+    # busqueda = request.POST.get("q")
+    #   #'filtro de fecha, y nombre 
+    # filtro = request.POST.get("f")
     listado_diario = Factura.objects.all().order_by("fecha")
-    if filtro or busqueda:
-        print("Buscado AQUI", filtro, busqueda)
-        listado_diario= Factura.objects.filter(Q(fecha__range=(filtro,busqueda)))
-    
-    
-        # fecha = request.POST.get("desde")
-        # # fecha_a_datetime = datetime.strptime(fecha, '%d/%m/%Y')
-        # # hasta = request.POST.get('hasta')
-        # fecha_fin = request.POST.get("hasta")
-        # # fecha_fin_a_datetime = datetime.strptime(fecha_fin, '%d/%m/%Y')
-     
-        print("entra aqui....")
-   
+    form = FiltroFechas(request.POST)
+
+    # if filtro:
+    #     print("Buscado AQUI", filtro)
+       
+        # listado_diario= Factura.objects.filter(Q(fecha__icontains=filtro)).filter(Q(fecha_fin__icontains=busqueda))
+    if form.is_valid():
+        fecha = request.POST.get("desde")
+        fecha_a_datetime = datetime.strptime(fecha, '%d/%m/%Y')
+        # hasta = request.POST.get('hasta')
+        fecha_fin = request.POST.get("hasta")
+        fecha_fin_a_datetime = datetime.strptime(fecha_fin, '%d/%m/%Y')
+        filtro= Factura.objects.filter(Q(fecha__range=(fecha_a_datetime, fecha_fin_a_datetime)))
+
     diario=[]
     suma_mensual=0
-    
     for lista in listado_diario:
-        print("ENTRA")
+     
         ingreso= Factura.objects.get(id_factura=lista.id_factura)
         monto=ingreso.total_pagar
         fecha= ingreso.fecha
-      
-        # fecha_fin=ingreso.fecha
+        fecha_fin=ingreso.fecha
         # mes= fecha.strftime('%m-%Y')
        
         # print('es mes',  mes)
@@ -371,8 +372,7 @@ def ingreso_fecha(request):
         dia_dia= {
             'monto':monto,
             'fecha': fecha,
-            
-            # 'fecha_fin':fecha_fin,
+            'fecha_fin':fecha_fin,
             # 'mes':mes,
            
         }
@@ -382,7 +382,8 @@ def ingreso_fecha(request):
     
     return render(request, "ingreso_fecha.html", {'diario':diario,
                                                    'suma_mensual':suma_mensual,
-                                                    
+                                                   
+                                                   'form':form, 
                                                    })
 
 
@@ -655,12 +656,8 @@ def reporte_ingresos(request):
     
     print("Es el numero de filas", contador_indices)
     
-    print("es el monto neto final -----------------", monto_neto)
+    print("es el monto neto-----------------", monto_neto)
     
-    #Ahorros
-    ahorros_tabla=table['ahorro']
-    print("es la TABLA AHORROS", ahorros_tabla)
-    ahorro_neto= ahorros_tabla.loc[ahorros_tabla.index[-1]]
     
     #Ingresos
     tabla_ingresos=CobroContado.objects.all().values()
@@ -885,7 +882,7 @@ def reporte_ingresos(request):
         'guaranies': guaranies.to_html, 
         'table': table,
         'monto_neto':monto_neto,
-        'ahorro_neto': ahorro_neto,
+        
         # 'data_mes': data_mes.to_html,
         # 'ingreso_tabla':ingreso_tabla,
         

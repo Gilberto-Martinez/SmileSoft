@@ -8,6 +8,7 @@ urlpatterns = [
     
     path("ingreso_diario/", ingreso_diario , name="ingreso_diario"),
     path("ingreso_mensual/", ingreso_mensual , name="ingreso_mensual"),
+    path("ingreso_fecha/", ingreso_fecha , name="ingreso_fecha"),
     
     path('tratamiento_cita/', ListadoTratamientoView.as_view(), name='tratamiento_cita'),
     
