@@ -49,10 +49,7 @@
           {% endcomment %}
             <hr>
             
-            <p  style= "font-size:20px; color:black;"> 1.- Ingresos en General: <p style= "font-size:20px; color:blue;"><b>{{caja|safe }} Gs. </b></p> </p> 
-            <hr>
-            
-            <p style= "font-size:20px"> 2. - Ingresos Diarios  </p>
+            <p style= "font-size:20px"> 1. - Ingresos Diarios  </p>
 
           {% comment %}   {{tabla_renombrada | safe }} --> Trae cada dia el monto obtenido
             <br>
@@ -62,12 +59,12 @@
             {{tabla_mensual_renombrada |safe}}
             <br>
      
-        {% comment %} <p> ES LA TABLA DE MONTO</p>
+        {% comment %} <p> ES LA TABLA DE MONTO Ingresados de forma individual</p>
 
-            {{monto | safe}} {% endcomment %}
+            {{monto | safe}}
             <hr>
-            
-            <p style= "font-size:20px"> 3. - Ingresos Mensuales</p>
+             {% endcomment %}
+            <p style= "font-size:20px"> 2. - Ingresos Mensuales</p>
             {{monto_por_mes_renombrada |safe }} 
             <br>
 {% comment %} {{guaranies |safe}}
@@ -83,16 +80,25 @@
             <p  style= "font-size:20px; color:black;"> 4. - Facturas cobradas por día </p>
  
             {{grupo_renombrado | safe}}
-            <hr> {% endcomment %}
-            <br>
-
-           
-                
-            
+            <hr> {% endcomment %}    
             {% comment %} <h2>MONTO MES</h2>
             <br>
             {{guaranies | safe}}
             <br>  {% endcomment %}
+
+            {% comment %} 
+            <!--TOTALES PARA LA CONCILICION DE CAJA-->
+            <p  style= "font-size:20px; color:black;"> 3.- Total de Ingresos: <p style= "font-size:20px; color:black;"><b>{{caja|safe }} Gs. </b></p> </p> 
+            <hr>
+            <p  style= "font-size:20px; color:black;"> 4.- Ahorro: <p style= "font-size:20px; color:black;"><b> {{ahorro_neto}} Gs. </b></p> </p> 
+            <hr> 
+            <!--fin de concilicion-->
+            {% endcomment %}
+          
+            <p  style= "font-size:20px; color:black;"> 3.- Total en Caja: <p style= "font-size:20px; color:blue;"><b> {{monto_neto}} Gs. </b></p> </p> 
+            <hr>
+            <br>
+          
            
             <h3> Gráfico de Ingresos Mensuales </h3>
             <center style="width: 450px">

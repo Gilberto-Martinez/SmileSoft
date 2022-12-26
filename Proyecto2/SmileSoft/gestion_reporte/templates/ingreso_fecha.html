@@ -29,9 +29,27 @@
               
             
 <br> <br>
-                        <strong>  <FONT COLOR="blue" style="font-size: 1.0rem" > &nbsp;  Fecha Inicio</FONT> </strong>
                       
-                  {{form.date_range}}
+                          <form  class="form-inline" method="POST">
+                                {% csrf_token %}
+
+                                <div class="d-flex justify-content-between">
+                                        
+                                    <label class="m-0 col-md-6 text-right">Rango de Fechas:</label>
+                                            <input type="date" name="f"  class="form-control bg-light border-0 small "  aria-label="search" value="{{request.POST.filtro}}" >
+                                            <input type="date" name="q"   class="form-control bg-light border-0 small "  aria-label="search" value="{{request.POST.busqueda}}" >
+                                        <div class="input-group-append">
+                                            <button  class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="{{request.POST.buscar}}">
+                                                <!--ICONO LUPA-->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                </div>
+                            </form>
+                      <br>
+                  
                         <table>
                             <!--table striped es para que resalte 1 fila y otra no-->
                             <!--table-bordered para bordes-->
@@ -40,11 +58,8 @@
                                     
                                         <tr>
                                             <th>Nro</th>
-                                            <th>Fecha inicio </th>
-                                            
-                                            <th>Fecha Fin</th> 
+                                            <th>Fecha inicio </th>                                           
                                             <th>Monto en Gs.</th>
-                                       
                                         </tr>
                                  
 
@@ -57,13 +72,13 @@
                                         <tr>
                                             <td >{{forloop.counter}}</td>
                                             <td >{{c.fecha}}</td> 
-                                            <td>{{c.fecha_fin}}</td>
+                                            <td>{{c.fecha_ordenada}}</td>
                                             {% comment %} <td >{{c.hora}} hs.</td> {% endcomment %}
                                             <td >{{c.monto}} Gs.</td>
                                         </tr>
                                         {% endfor %}
                                         <tr>
-                                            <td><b>Total por Mes: </b></td>
+                                            <td><b>Total ingresado: </b></td>
                                             <td></td>
                                             <td></td>
                                             <td><b>{{suma_mensual}} Gs</b></td>
@@ -79,8 +94,8 @@
                                 </tbody>
                             </table>
                         </table>
-                        <!--end TABLA-->
-                        <!-- </div> -->
+                  
+                  
             </div>
         </div>
             
