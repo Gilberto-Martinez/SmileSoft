@@ -17,6 +17,7 @@ from gestion_agendamiento.models import Cita
 from .forms import *
 from django.db.models import Q
 from datetime import datetime as class_datetime
+from datetime import timedelta
 import datetime
 
 def mostrar_tratamientos_cobrar(request, id_paciente):
@@ -789,14 +790,20 @@ def guardar_datos_apertura_caja2(request, numero_documento):
     now = class_datetime.now()
     fecha_actual = now.date()
     hora_actual = now.time()
+    # fecha_ayer = fecha_actual - timedelta(days=1)
 
     # total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
+
+    # Obterner registro de caja del dia anterior
+    caja_anterior = Caja.objects.last()
+    monto_cierre_anterior = caja_anterior.monto_cierre
+    ahorro_anterior = caja_anterior.ahorro
 
     caja_temp = Caja(
                     id_cajero = cajero,
                     fecha_apertura = fecha_actual,
                     hora_apertura = hora_actual,
-                    # saldo_anterior = total_caja['monto_total__sum'],
+                    saldo_anterior = monto_cierre_anterior,
     )
 
     # monto_total_s= '{:,}'.format(total_caja['monto_total__sum']).replace(',','.')
@@ -809,12 +816,14 @@ def guardar_datos_apertura_caja2(request, numero_documento):
     }
 
     if request.method == 'POST':
-        form = CajaForm(data = request.POST, files=request.FILES)
+        form = CajaForm(data = request.POST, files=request.FILES, instance=caja_temp)
         if form.is_valid():
             caja = form.save(commit=False)
             caja.id_cajero = cajero
             caja.fecha_apertura = fecha_actual
             caja.hora_apertura = hora_actual
+            caja.saldo_anterior = monto_cierre_anterior
+            caja.ahorro = ahorro_anterior + (monto_cierre_anterior - caja.monto_apertura)
             caja.save()
             return redirect('/cobros/apertura_exitosa/')
         else:
