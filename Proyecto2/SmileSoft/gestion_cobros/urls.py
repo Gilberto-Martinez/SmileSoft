@@ -50,4 +50,5 @@ urlpatterns = [
     path('apertura_exitosa/', mostar_apertura_exitosa_caja, name="apertura_exitosa"),
     path('solicitar_monto_efectivo/<int:id_cobro>', solicitar_monto_efectivo, name="solicitar_monto_efectivo"),
     path('mostrar_montos/<int:id_cobro>', mostrar_vuelto, name="mostrar_montos"),
+    # path('visualizar_gasto/<int:id_cobro>', visualizar_gasto, name="visualizar_gasto"),
 ]
