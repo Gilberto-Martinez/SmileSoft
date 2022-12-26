@@ -1,0 +1,113 @@
+{%extends 'panel_control/base.html'%}
+
+{%block content%}
+<!-- {%if perms.gestion_administrativo.add_cargo%} -->
+    <div class="col-12 col-md-6 offset-md-3">
+            <div class="card">
+                <br>
+                <center>  
+                    <h1 style="font-family: Bodoni;">
+                        <b>
+                            Datos del comprobante
+                        </b> 
+                    </h1> 
+                </center>
+                    <!-- <div class="container mt-3 text-center">
+                        <i> ¡ Modifique el estado de la factura ! </i>
+                    </div> -->
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if messages %}
+                                        <ul class="messages">
+                                            {% for message in messages %}
+                                            <li>
+                                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error:
+                                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                <B><FONT COLOR="BLUE">¡La operación fue exitosa!: </FONT>
+                                                
+                                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia:
+                                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Aviso: {% endif %}
+                                                {{ message }}
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                            {% endif %}
+                        <div style="margin: 20px;" >
+                            <table>
+                                <h5>
+                                    <b>Fecha de pago:</b>
+                                    {{fecha}}
+                                </h5>
+                                <!-- <div class="form-group">
+                                    <br><label><b>Fecha</b></label></br>
+                                    {{fecha}}
+                                </div> -->
+                                <div class="form-group">
+                                    <br><label for="{{form.numero_comprobante.name}}"><b>{{form.numero_comprobante.label}}</b></label></br>
+                                    {{form.numero_comprobante}}
+                                </div>
+                                <div class="form-group">
+                                    <br><label for="{{form.timbrado.name}}"><b>{{form.timbrado.label}}</b></label></br>
+                                    {{form.timbrado}}
+                                </div>
+                                <div class="form-group">
+                                    <br><label for="{{form.razon_social.name}}"><b>{{form.razon_social.label}}</b></label></br>
+                                    {{form.razon_social}}
+                                <div class="form-group">
+                                    <br><label for="{{form.condicion_venta.name}}"><b>{{form.condicion_venta.label}}</b></label></br>
+                                    {{form.condicion_venta}}
+                                </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <br><label for="{{form.total_iva_5.name}}"><b>{{form.total_iva_5.label}}</b></label></br>
+                                    {{form.total_iva_5}}
+                                </div>
+                                <div class="form-group">
+                                    <br><label for="{{form.iva_10.name}}"><b>{{form.iva_10.label}}</b></label></br>
+                                    {{form.iva_10}}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <br><label for="{{form.monto_total.name}}"><b>{{form.monto_total.label}}</b></label></br>
+                                    {{monto_total}}
+                                </div>
+                                <br>
+                                <br>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <!-- <button class="btn btn-primary" type="submit" style="margin: 10px;">
+                                <i class="bi-save"></i>
+                                Guardar
+                            </button> -->
+                            <a onclick="history.back()" class="btn btn-danger" style="margin: 10px;">
+                                <i class="bi-x-circle"></i>
+                                Atrás
+                            </a>
+                        </div>
+                        <table  align="right" >
+                            <div class="container mt-3 text-center">
+                                <a href="http://127.0.0.1:8000/panel_control/inicio/" data-toggle="tooltip" title="Regresa al inicio"> 🔼Inicio</a>
+                            </div>
+                        </table>
+                    
+                        <table  align="left" >
+                            <tr>
+                                <td> 
+                                    <a href="/cobros/listar_gastos/" class="btn btn-info">
+                                        <i class="bi-view-list"></i>
+                                        Ver listado de comprobantes
+                                    </a> 
+                                </td>
+                            </tr>
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+    </div>
+<!-- {%endif%} -->
+{%endblock%}

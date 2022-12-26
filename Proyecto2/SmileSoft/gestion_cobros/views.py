@@ -1314,6 +1314,21 @@ def registrar_gasto_en_caja(id_comprobante):
 def mostar_apertura_exitosa_caja(request):
     return render(request, 'mensajes/msj_caja_abierta3.html')
 
+
+def visualizar_gasto(request, id_comprobante):
+    comprobante = ComprobanteGasto.objects.get(id_comprobante=id_comprobante)
+    data = {
+        'form':ComprobanteReadOnly(instance=comprobante),
+        'fecha':comprobante.fecha,
+        'monto_total':comprobante.monto_total
+    }
+
+    # if request.method == 'POST':
+    #     form = ComprobanteReadOnlyForm(data=request.POST, files=request.FILES, instance=comprobante)
+    #     if form.is_valid():
+    #         pass
+    return render(request, 'gastos/visualizar_gasto.html', data)
+
 # def probar_sumar_factura(fecha_inicio, fecha_fin):
 #     factura = Factura.objects.filter(fecha>=fecha_inicio, fecha<=fecha_fin).aggregate(Sum('total_pagar'))
 #     total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
