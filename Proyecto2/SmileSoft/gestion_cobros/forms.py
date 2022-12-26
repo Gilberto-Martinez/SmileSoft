@@ -399,6 +399,30 @@ class ComprobanteGastoForm(forms.ModelForm):
         ]
 
 
+class ComprobanteReadOnlyForm(forms.ModelForm):
+    fecha = forms.DateField(label='Fecha de emisión del comprobante', widget=forms.NumberInput(attrs={'class':'form-control', 'type':'date', 'readonly':True}))
+    numero_comprobante = forms.CharField(label='Número de comprobante', widget=forms.TextInput(attrs={'class':'form-control','readonly':True}))
+    razon_social = forms.CharField(label='Razón social', widget=forms.TextInput(attrs={'class':'form-control', 'readonly':True}))
+    CO = 'Contado'
+    CR = 'Credito'
+    CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
+    condicion_venta = forms.ChoiceField(label='Condición de venta', choices=CONDICIONES, widget=forms.Select(attrs={'class': 'form-control', 'readonly':True}))
+    timbrado = forms.IntegerField(label='Timbrado', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
+    monto_total = forms.IntegerField(label='Total pagado', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
+    total_iva_5 = forms.IntegerField(label='IVA 5%', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
+    class Meta:
+        model = ComprobanteGasto
+        fields = [
+                'fecha',
+                'numero_comprobante',
+                'razon_social', 
+                'condicion_venta',
+                'timbrado',
+                'total_iva_5',
+                'total_iva_10',
+                'monto_total',
+        ]
+
 class ComprobanteReadOnly(forms.ModelForm):
     fecha = forms.DateField(label='Fecha de emisión del comprobante', widget=forms.NumberInput(attrs={'class':'form-control', 'type':'date', 'readonly':True}))
     numero_comprobante = forms.CharField(label='Número de comprobante', widget=forms.TextInput(attrs={'class':'form-control','readonly':True}))
@@ -408,6 +432,9 @@ class ComprobanteReadOnly(forms.ModelForm):
     CONDICIONES = ((CO, 'Contado'), (CR, 'Credito'))
     condicion_venta = forms.ChoiceField(label='Condición de venta', choices=CONDICIONES, widget=forms.Select(attrs={'class': 'form-control', 'readonly':True}))
     timbrado = forms.IntegerField(label='Timbrado', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
+    total_iva_5 = forms.FloatField(label='IVA 5%', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
+    total_iva_10 = forms.IntegerField(label='IVA 10%', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
+    monto_total = forms.IntegerField(label='Monto pagado', widget=forms.NumberInput(attrs={'class':'form-control', 'readonly':True}))
     class Meta:
         model = ComprobanteGasto
         fields = [
@@ -416,9 +443,9 @@ class ComprobanteReadOnly(forms.ModelForm):
                 'razon_social', 
                 'condicion_venta',
                 'timbrado',
-                # 'total_iva_5',
-                # 'total_iva_10',
-                # 'monto_total',
+                'total_iva_5',
+                'total_iva_10',
+                'monto_total',
         ]
 
 

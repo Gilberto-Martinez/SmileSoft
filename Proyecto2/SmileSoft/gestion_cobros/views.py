@@ -1321,6 +1321,28 @@ def registrar_gasto_en_caja(id_comprobante):
 def mostar_apertura_exitosa_caja(request):
     return render(request, 'mensajes/msj_caja_abierta3.html')
 
+
+def visualizar_gasto(request, id_comprobante):
+    comprobante = ComprobanteGasto.objects.get(id_comprobante=id_comprobante)
+    detalles_comprobante = DetalleComprobante.objects.filter(comprobante=comprobante)
+    monto_total = '{:,}'.format(comprobante.monto_total).replace(',','.')
+    total_iva_5 = '{:,}'.format(comprobante.total_iva_5).replace(',','.')
+    total_iva_10 = '{:,}'.format(comprobante.total_iva_10).replace(',','.')
+    data = {
+        'form':ComprobanteReadOnly(instance=comprobante),
+        'fecha':comprobante.fecha,
+        'detalles_comprobante':detalles_comprobante,
+        'monto_total':monto_total,
+        'total_iva_5':total_iva_5,
+        'total_iva_10':total_iva_10
+    }
+
+    # if request.method == 'POST':
+    #     form = ComprobanteReadOnlyForm(data=request.POST, files=request.FILES, instance=comprobante)
+    #     if form.is_valid():
+    #         pass
+    return render(request, 'gastos/visualizar_gasto.html', data)
+
 # def probar_sumar_factura(fecha_inicio, fecha_fin):
 #     factura = Factura.objects.filter(fecha>=fecha_inicio, fecha<=fecha_fin).aggregate(Sum('total_pagar'))
 #     total_caja  = CobroContado.objects.all().aggregate(Sum('monto_total'))
