@@ -657,6 +657,13 @@ def generar_factura(request,id_factura):
 #--->Listado de Facturas----#
 def listar_facturas (request):
     facturas = Factura.objects.all().order_by('nro_factura')
+     #'filtro de fecha
+    filtro = request.POST.get("f")
+ 
+    if filtro:
+        print("Buscado AQUI", filtro)
+        facturas= Factura.objects.filter(Q(fecha__icontains=filtro))
+    
     lista_facturas = []
     anulado = False
     for factura in facturas:
