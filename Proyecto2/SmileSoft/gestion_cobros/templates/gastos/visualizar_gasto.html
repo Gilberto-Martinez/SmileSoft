@@ -60,22 +60,60 @@
                                 </div>
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <br><label for="{{form.total_iva_5.name}}"><b>{{form.total_iva_5.label}}</b></label></br>
                                     {{form.total_iva_5}}
                                 </div>
                                 <div class="form-group">
-                                    <br><label for="{{form.iva_10.name}}"><b>{{form.iva_10.label}}</b></label></br>
-                                    {{form.iva_10}}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <br><label for="{{form.monto_total.name}}"><b>{{form.monto_total.label}}</b></label></br>
-                                    {{monto_total}}
-                                </div>
+                                    <br><label for="{{form.total_iva_10.name}}"><b>{{form.total_iva_10.label}}</b></label></br>
+                                    {{form.total_iva_10}}
+                                </div> -->
                                 <br>
                                 <br>
                             </table>
+                            <br>
+                            <h4 style="color: white; background-color: lightskyblue;" align="center">
+                                Detalles de Comprobante
+                            </h4>
+                            <div style="margin: 20px;">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        {%if detalles_comprobante%}
+                                            <tr>
+                                                <th>Cantidad</th>
+                                                <th>Descripción</th>
+                                                <th>Precio unitario</th>
+                                                <!-- <th>Exentas</th> -->
+                                                <th>IVA 5%</th>
+                                                <th>IVA 10%</th> 
+                                            </tr>
+                                        {%endif%}
+                                    </thead>
+                                    <tbody>
+                                        {%if detalles_comprobante%}
+                                            {%for c in detalles_comprobante%}
+                                            <tr>
+                                                <td>{{c.cantidad}}</td>
+                                                <td>{{c.descripcion}}</td>
+                                                <td>{{c.precio_unitario}}</td>
+                                                <td>{{c.iva_5}}</td>
+                                                <td>{{c.iva_10}}</td>
+                                            </tr>
+                                            {%endfor%}
+                                            <tr>
+                                                <td><b>Totales</b></td>
+                                                <td></td>
+                                                <td><b>{{monto_total}} Gs</b></td>
+                                                <td>{{total_iva_5}}</td>
+                                                <td>{{total_iva_10}}</td>
+                                            </tr>
+                                        {%else%}
+                                            <h5 align="center">
+                                                No hay valores que mostrar
+                                            </h5>
+                                        {%endif%}
+                                    </tbody>
+                                </table>
                         </div>
 
                         <div class="d-flex justify-content-center">

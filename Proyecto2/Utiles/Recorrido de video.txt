@@ -1,0 +1,29 @@
+PARA VIDEO
+-Pantalla de invitado
+-Solicitar usuario de paciente en Login
+-Iniciar sesion como paciente
+-Mostrar las funcionalidades que puede resalizar el paciente
+-Mostrar calendario de usuario
+-Agendar cita del lado del paciente
+-Loguear como asistente
+-Mostrar lista de Tratamientos
+-Mostrar brevemente agregar insumos
+-Mostrar lista de insumos
+-Confirmar cita
+-Mostrar que descuenta insumo
+-Loguear como cajero
+-Cobrar cita
+-Loguear como Odontologo
+-Revisar lista de tratamientos pendientes y confirmar la cita
+-Mostrar el historial clinico del paciente
+-Asignar tratamiento como odontologo
+-Como cajero, mostrar cobros registrados
+-Registrar un gasto y visualizar
+-Hacer cierre de caja
+-Paciente ver su propio historial
+-Como administrador mostrar roles y usuarios
+-Mostrar los reportes como Administrador
+-Cerrar sesion
+
+
+

@@ -1324,10 +1324,17 @@ def mostar_apertura_exitosa_caja(request):
 
 def visualizar_gasto(request, id_comprobante):
     comprobante = ComprobanteGasto.objects.get(id_comprobante=id_comprobante)
+    detalles_comprobante = DetalleComprobante.objects.filter(comprobante=comprobante)
+    monto_total = '{:,}'.format(comprobante.monto_total).replace(',','.')
+    total_iva_5 = '{:,}'.format(comprobante.total_iva_5).replace(',','.')
+    total_iva_10 = '{:,}'.format(comprobante.total_iva_10).replace(',','.')
     data = {
         'form':ComprobanteReadOnly(instance=comprobante),
         'fecha':comprobante.fecha,
-        'monto_total':comprobante.monto_total
+        'detalles_comprobante':detalles_comprobante,
+        'monto_total':monto_total,
+        'total_iva_5':total_iva_5,
+        'total_iva_10':total_iva_10
     }
 
     # if request.method == 'POST':
