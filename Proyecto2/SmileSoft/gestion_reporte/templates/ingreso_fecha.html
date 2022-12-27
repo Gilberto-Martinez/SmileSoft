@@ -35,7 +35,7 @@
 
                                 <div class="d-flex justify-content-between">
                                         
-                                    <label class="m-0 col-md-6 text-right">Rango de Fechas:</label>
+                                    <label class="m-0 col-md-6 text-right"><b>Rango de Fechas:</b></label>
                                             <input type="date" name="f"  class="form-control bg-light border-0 small "  aria-label="search" value="{{request.POST.filtro}}" >
                                             <input type="date" name="q"   class="form-control bg-light border-0 small "  aria-label="search" value="{{request.POST.busqueda}}" >
                                         <div class="input-group-append">
@@ -72,7 +72,6 @@
                                         <tr>
                                             <td >{{forloop.counter}}</td>
                                             <td >{{c.fecha}}</td> 
-                                            <td>{{c.fecha_ordenada}}</td>
                                             {% comment %} <td >{{c.hora}} hs.</td> {% endcomment %}
                                             <td >{{c.monto}} Gs.</td>
                                         </tr>
@@ -80,7 +79,7 @@
                                         <tr>
                                             <td><b>Total ingresado: </b></td>
                                             <td></td>
-                                            <td></td>
+                                            
                                             <td><b>{{suma_mensual}} Gs</b></td>
                                         </tr>
                                     {% else %}
