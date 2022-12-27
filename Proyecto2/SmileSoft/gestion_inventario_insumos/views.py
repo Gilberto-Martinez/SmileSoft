@@ -66,7 +66,7 @@ def agregar_insumo (request):
 #***Vista de listar Insumo
 
 
-@permission_required('gestion_inventario_insumos.listar_insumo', login_url="/panel_control/error/",)
+# @permission_required('gestion_inventario_insumos.listar_insumo', login_url="/panel_control/error/",)
 #funciona pero no es lista
 # def listar_insumo(request):
     
