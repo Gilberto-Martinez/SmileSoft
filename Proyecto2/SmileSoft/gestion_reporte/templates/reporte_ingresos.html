@@ -75,12 +75,14 @@
             {{general |safe}}
             <br>
             {{tabla_monto_renombrada |safe}} {% endcomment %}
-            <hr>
-            {% comment %} FUNCIONA EL CONTEO DE FACTURA PERO NO COINCIDE
+            
+            {% comment %} FUNCIONA EL CONTEO DE FACTURA 
             <p  style= "font-size:20px; color:black;"> 4. - Facturas cobradas por día </p>
- 
-            {{grupo_renombrado | safe}}
-            <hr> {% endcomment %}    
+            {{conteo}}
+            <hr>
+            ES CONTEO
+            {{grupo_renombrado | safe}} {% endcomment %}
+            <hr>  
             {% comment %} <h2>MONTO MES</h2>
             <br>
             {{guaranies | safe}}
@@ -95,7 +97,7 @@
             <!--fin de concilicion-->
             {% endcomment %}
           
-            <p  style= "font-size:20px; color:black;"> 3.- Total en Caja: <p style= "font-size:20px; color:blue;"><b> {{monto_neto}} Gs. </b></p> </p> 
+            <p  style= "font-size:20px; color:black;"> 3.- Total en Caja: <p style= "font-size:20px; color:blue;"><b> {{gs}} Gs. </b></p> </p> 
             <hr>
             <br>
           

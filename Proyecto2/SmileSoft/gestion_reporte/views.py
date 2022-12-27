@@ -162,7 +162,7 @@ def tratamiento_mas_solicitado(request):
     resultado={}
     for clave in conteo:  
         valor=conteo[clave]
-        if valor != 1:
+        if valor >2:
             resultado[clave] = valor
             print(resultado)
             
@@ -650,12 +650,13 @@ def reporte_ingresos(request):
     contador_indices=len(valores_caja.index)
     
     monto_neto= valores_caja.loc[valores_caja.index[-1]]
+    gs='{:,}'.format(monto_neto).replace(',','.')
     
     print("es monto NETO", valores_caja)
     
     print("Es el numero de filas", contador_indices)
     
-    print("es el monto neto final -----------------", monto_neto)
+    print("es el monto neto final -----------------", monto_neto, gs)
     
     #Ahorros
     ahorros_tabla=table['ahorro']
@@ -668,7 +669,12 @@ def reporte_ingresos(request):
     #Tabla de Ingresos y Montos en General
     
     data= Factura.objects.all().values()
+    
     df = pd.DataFrame(data)
+    
+    facturas_emitidas=df['estado']
+    conteo= facturas_emitidas.count()
+    
     df[['fecha', 'total_pagar']]
     tabla_factura = pd.DataFrame(data, columns=['fecha','total_pagar'])
     tabla_factura_renombrada = tabla_factura.rename({'fecha':'Mes', 'total_pagar': 'total'}, axis=1)
@@ -726,6 +732,7 @@ def reporte_ingresos(request):
     guaranies=monto_por_mes_renombrada.set_index('Gs')# trae la columna de totales por mes
     
     monto_por_mes_renombrada=monto_por_mes_renombrada.set_index('Gs')# trae la columna de totales por mes
+   
     '''INSERTA UNA NUEVA COLUMNA'''
     
     nombre_de_meses= ['Octubre','Noviembre','Diciembre']
@@ -885,7 +892,9 @@ def reporte_ingresos(request):
         'guaranies': guaranies.to_html, 
         'table': table,
         'monto_neto':monto_neto,
+        'gs':gs,
         'ahorro_neto': ahorro_neto,
+        'conteo':conteo,
         # 'data_mes': data_mes.to_html,
         # 'ingreso_tabla':ingreso_tabla,
         
