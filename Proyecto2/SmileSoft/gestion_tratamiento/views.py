@@ -431,7 +431,7 @@ def verificar_fecha_hora_agendamiento(id_cita):
     cita = Cita.objects.get(id_cita=id_cita)
     now = datetime.now()
     fecha_actual = now.date()
-    hora_actual = now.time()
+    # hora_actual = now.time()
 
     # fecha_cita = str(cita.fecha)
     # fecha_cita = datetime.strptime(fecha_cita, "%Y-%m-%d")
@@ -444,10 +444,9 @@ def verificar_fecha_hora_agendamiento(id_cita):
 
     if cita.fecha < fecha_actual:
         respuesta = True
-    else:
-        if cita.fecha == fecha_actual:
-            if cita.hora_atencion.hora < hora_actual:
-                respuesta = True
+    # else:
+    #     if cita.fecha == fecha_actual:
+    #         respuesta = True
 
     return respuesta
 
