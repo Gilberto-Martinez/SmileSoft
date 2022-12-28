@@ -1,0 +1,12 @@
+1- Paciente genere usuario, se loguee y se agende (Adrian)
+
+2-Asistente muestra tratamientos, mostrar que se asigna insumos al tratamiento
+confirma cita, agenda una cita simple, Agenda un tratamiento asignado por el odontologo (Gloria)
+
+3-apertura de caja, cobro de tratamiento/consulta, registro de gastos. (Adrian)
+
+4-Odontologo confirma tratamiento realizado, muestra historial clinico (pdf), asignar tratamiento(Leslie)
+
+5- Cierre de caja, facturacion(Adrian)
+
+6 - reportes (Gloria)
