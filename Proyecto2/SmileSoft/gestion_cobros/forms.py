@@ -203,7 +203,7 @@ class FacturaUpdateForm(forms.ModelForm):
     E = 'Emitido'
     A = 'Anulado'
     ESTADOS = ((E, 'Emitido'), (A, 'Anulado'))
-    estado = forms.ChoiceField(choices=ESTADOS, widget = forms.Select (attrs = {'class': 'form-control',}))
+    estado = forms.ChoiceField(choices=ESTADOS, widget = forms.Select (attrs = {'class': 'form-control','readonly':True,}))
     
     class Meta:
         model = Factura
