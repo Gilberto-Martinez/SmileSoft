@@ -138,7 +138,7 @@ def verificar_datos_cita(request, numero_documento, menor_edad):
     Verifica los siguientes datos:
         -Si la persona (paciente en cuestion) es mayor de edad, en caso contrario se solicitará ingresar el nombre de la razon social
         -Que la fecha agendada sea mayor o igual a la fecha actual, en caso contrario muestra mensajes de error
-        -Que la hora agendada (si fecha agendad = fecha actual) sea mayor a la hora actual, en caso contrario muestra mensajes de error 
+        -Que la hora agendada (si fecha agendada = fecha actual) sea mayor a la hora actual, en caso contrario muestra mensajes de error 
     """
 
     paciente = Paciente.objects.get(numero_documento=numero_documento)
@@ -155,10 +155,11 @@ def verificar_datos_cita(request, numero_documento, menor_edad):
                 respuesta = True
             else:
                 if cita.fecha == fecha_actual:
-                    if cita.hora_atencion.hora > hora_actual:
-                        respuesta = True
-                    else:
-                        return render(request, 'mensajes/error_hora_pasada.html',{'id_cita':id_cita})
+                    respuesta = True
+                    # if cita.hora_atencion.hora > hora_actual:
+                    #     respuesta = True
+                    # else:
+                    #     return render(request, 'mensajes/error_hora_pasada.html',{'id_cita':id_cita})
                 else:
                     return render(request, 'mensajes/error_fecha_pasada.html',{'id_cita':id_cita})
 
