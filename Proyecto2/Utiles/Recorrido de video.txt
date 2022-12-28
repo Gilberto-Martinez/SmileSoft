@@ -1,11 +1,12 @@
 PARA VIDEO
--Pantalla de invitado
--Solicitar usuario de paciente en Login
--Iniciar sesion como paciente
--Mostrar las funcionalidades que puede resalizar el paciente
--Mostrar calendario de usuario
--Agendar cita del lado del paciente
--Loguear como asistente
+01 Mostrar modulo administrativo, usuarios y roles - ADMINISTRADOR
+02 Registrar un paciente - ASISTENTE
+03 Invitado, Inicio
+04 Solicitar usuario, inicio de sesion y primera consulta - Paciente
+05 Registrar un paciente - ASISTENTE
+06 Apertura de caja y cobro de tratamiento - ASISTENTE
+07 Confirmar tratamiento realizado - ODONTOLOGO
+08 Asignar tratamiento a paciente - ODONTOLOGO
 -Mostrar lista de Tratamientos
 -Mostrar brevemente agregar insumos
 -Mostrar lista de insumos
