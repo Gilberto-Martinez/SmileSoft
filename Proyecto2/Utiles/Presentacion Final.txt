@@ -1,0 +1,21 @@
+....(el profe va a saludar primero y luego nos dara la palabra).....
+Empiezo..(Gloria).
+
+Bueno.. Damos inicio a la Presentacion del Proyecto Final de Grado de este semestre del Año lectivo 2022
+
+Somos estudiantes de la carrera de Lic. en Ciencias Informáticas, con enfasis en 
+Analisis de Sistemas,me presento, mi nombre es Gloria Mercedes Flores Espinoza y soy una de la 3 Desarrolladoras de
+este sistema  odontologico que lleva por nombre Smilesoft, y el cual con mucha satisfaccion y orgullo me complace presentarle , 
+ Continuando con esta presentacion cedo la palabra a mis compañeros de equipo.
+---
+Continua (Adrian)
+Buenas noches Profer, compañeras
+Es un placer saludarles.
+Mi nombre es Adrián Martinez, soy parte de este equipo de desarrollo, 
+en la que culminamos un proyecto que hoy tenemos el agrado de presentar. 
+Nuestros agradecimientos a nuestro Tutor, el Licenciado Diego Ruiz Diaz que nos ha guiado durante este proceso. 
+Nuestros agradecimientos tambien al consultorio Odontologico Consuldent
+ que es la empresa que nos ha abierto las puertas para que podamos indagar y conocer la problematica que atraviesan a la cual buscamos
+  dar solucion a traves de un sistema informativo. De mi parte tambien mis agradecimientos a mis compañeras con quienes estuvimos  
+  trabajando arduamente durante este tiempo.
+Y sin mas que decir, le cedo este espacio a la compañera.
